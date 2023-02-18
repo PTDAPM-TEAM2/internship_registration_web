@@ -1,5 +1,7 @@
 package com.group4.edu.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
 import com.group4.edu.service.JwtService;
 import com.group4.edu.service.AccountService;
@@ -17,8 +19,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
+import java.text.ParseException;
+import java.util.*;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
     private final static String TOKEN_HEADER = "authorization";
@@ -31,25 +38,46 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        boolean auth = false;
+        request = request;
+        String requestString = ((HttpServletRequest) request).getRequestURI();
+        if(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue())){
+            auth = true;
+        }
         if (httpRequest.getHeader(TOKEN_HEADER) != null) {
             String authToken = httpRequest.getHeader(TOKEN_HEADER).replace("Bearer ", "");
             if (jwtService.validateTokenLogin(authToken)) {
-                String username = jwtService.getUsernameFromToken(authToken);
-                Account account = accountService.loadUserByUsername(username);
-                if (account != null) {
-                    boolean enabled = true;
-                    boolean accountNonExpired = true;
-                    boolean credentialsNonExpired = true;
-                    boolean accountNonLocked = true;
-                    UserDetails userDetail = new User(username, account.getPassword(), enabled, accountNonExpired,
-                            credentialsNonExpired, accountNonLocked, new HashSet<GrantedAuthority>());
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
-                            null, userDetail.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                String username = null;
+                try {
+                    username = jwtService.getUsernameFromToken(authToken);
+                    Account account = accountService.loadUserByUsername(username);
+                    if (account != null) {
+                        boolean enabled = true;
+                        boolean accountNonExpired = true;
+                        boolean credentialsNonExpired = true;
+                        boolean accountNonLocked = true;
+                        UserDetails userDetail = new User(username, account.getPassword(), enabled, accountNonExpired,
+                                credentialsNonExpired, accountNonLocked, new HashSet<GrantedAuthority>());
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
+                                null, userDetail.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        auth = true;
+                    }
+                } catch (ParseException e) {
+
                 }
             }
         }
-        chain.doFilter(request, response);
+        if(!auth){
+                Map<String, ArrayList<String>> responseBody = new HashMap<>();
+
+                responseBody.put("errors", new ArrayList<>(List.of("Failed to authenticate.")));
+                httpServletResponse.setStatus(UNAUTHORIZED.value());
+                httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(httpServletResponse.getOutputStream(), responseBody);
+        }
+        chain.doFilter(request, httpServletResponse);
     }
 }

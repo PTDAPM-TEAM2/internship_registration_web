@@ -25,10 +25,14 @@ public class LoginController {
         ResponseToken result = new ResponseToken();
         HttpStatus httpStatus = null;
         try {
+            System.out.println(accountService.checkLogin(accountDto));
             if (accountService.checkLogin(accountDto)) {
-                result.setAccess_Token(jwtService.generateTokenLogin(accountDto.getUsername()));
-                result.setStatusCode(HttpStatus.OK.toString());
-                httpStatus = HttpStatus.OK;
+                String token = jwtService.generateTokenLogin(accountDto.getUsername());
+                if(accountService.saveTokenByUsername(token,accountDto.getUsername())){
+                    result.setAccess_Token(token);
+                    result.setStatusCode(HttpStatus.OK.toString());
+                    httpStatus = HttpStatus.OK;
+                }
             } else {
                 result.setMessenger("Wrong userId and password");
                 httpStatus = HttpStatus.BAD_REQUEST;

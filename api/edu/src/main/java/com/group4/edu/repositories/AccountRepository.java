@@ -10,7 +10,11 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
+    @Query("select a from Account a where a.username = ?1")
     Account findByUsername(String username);
+
+    @Query("select a.token from Account a where a.username = ?1")
+    String getTokenByUsename(String username);
     @Query("select new com.group4.edu.dto.AccountDto(e) from Account e")
     List<AccountDto> getAll();
 }

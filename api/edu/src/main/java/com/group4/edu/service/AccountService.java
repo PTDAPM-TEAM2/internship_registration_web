@@ -12,5 +12,9 @@ public interface AccountService {
 
     AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername);
 
+    boolean saveTokenByUsername(String token,String username);
+
     List<AccountDto> getAll();
+
+    String getTokenByUsername(String username);
 }

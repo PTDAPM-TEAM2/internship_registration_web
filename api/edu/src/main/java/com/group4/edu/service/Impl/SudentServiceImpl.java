@@ -80,6 +80,9 @@ public class SudentServiceImpl implements StudentService {
         if(studentDto.getGrade().getId() != null){
             grade = gradeRepository.findById(studentDto.getGrade().getId()).orElse(null);
         }
+        if(grade == null && studentDto.getGrade().getName() !=null){
+            grade = gradeRepository.findByName(studentDto.getGrade().getName()).orElse(null);
+        }
         if(grade == null){
             if(studentDto.getGrade().getName() == null){
                 throw new Exception("Không có tên lớp hoặc id của lớp không chính xác");

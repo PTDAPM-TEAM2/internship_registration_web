@@ -8,6 +8,7 @@ import com.group4.edu.dto.RoleDto;
 import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.service.AccountService;
+import com.group4.edu.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -88,8 +90,24 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
+    @Override
+    public boolean saveTokenByUsername(String token, String username) {
+        Account account = accountRepository.findByUsername(username);
+        if(account != null){
+            account.setToken(token);
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
+    }
+
     public List<AccountDto> getAll(){
         return accountRepository.getAll();
+    }
+
+    @Override
+    public String getTokenByUsername(String username) {
+        return accountRepository.getTokenByUsename(username);
     }
 
 

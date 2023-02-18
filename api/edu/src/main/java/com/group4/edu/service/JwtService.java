@@ -8,15 +8,21 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
 public class JwtService {
     public static final String USERNAME = "username";
     public static final String SECRET_KEY = "11111111111111111111111111111111";
-    public static final int EXPIRE_TIME = 864000000;
+    public static final int EXPIRE_TIME = 8;
+    @Autowired
+    private AccountService accountService;
     public String generateTokenLogin(String username) {
         String token = null;
         try {
@@ -59,14 +65,12 @@ public class JwtService {
         expiration = claims.getExpirationTime();
         return expiration;
     }
-    public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) throws ParseException {
         String username = null;
-        try {
-            JWTClaimsSet claims = getClaimsFromToken(token);
-            username = claims.getStringClaim(USERNAME);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JWTClaimsSet claims = getClaimsFromToken(token);
+        if(claims == null)
+            return null;
+        username = claims.getStringClaim(USERNAME);
         return username;
     }
     private byte[] generateShareSecret() {
@@ -76,6 +80,7 @@ public class JwtService {
         return sharedSecret;
     }
     private Boolean isTokenExpired(String token) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
@@ -83,11 +88,16 @@ public class JwtService {
         if (token == null || token.trim().length() == 0) {
             return false;
         }
-        String username = getUsernameFromToken(token);
-        if (username == null || username.isEmpty()) {
+        String username = null;
+        try {
+            username = getUsernameFromToken(token);
+        } catch (ParseException e) {
             return false;
         }
-        if (isTokenExpired(token)) {
+        if (username == null || username.isEmpty() || !token.equals(accountService.getTokenByUsername(username))) {
+            return false;
+        }
+        if (!isTokenExpired(token)) {
             return false;
         }
         return true;

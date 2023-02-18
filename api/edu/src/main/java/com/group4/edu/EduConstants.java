@@ -26,4 +26,15 @@ public class EduConstants {
             return value;
         }
     }
+
+    public static enum RequestNotAuth{
+        LOGIN("/login");
+        private String value;
+        private RequestNotAuth(String value){
+            this.value = value;
+        }
+        public String getValue(){
+            return value;
+        }
+    }
 }
