@@ -1,0 +1,6 @@
+1. http://localhost:8080/crate-user-admin
+2. http://localhost:8080/login
+	body: {
+			"username":"ten tk",
+			"password":"mat khau"
+		}
