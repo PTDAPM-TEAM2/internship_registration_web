@@ -180,7 +180,7 @@ public class SudentServiceImpl implements StudentService {
                     return null;
                 }
             }
-            startLine = rowIndex;
+            startLine = rowIndex++;
         }
         List<StudentDto> studentDtos = new ArrayList<>();
         List< DataErrorImportExcelDto> dataError = new ArrayList<>();
@@ -196,12 +196,7 @@ public class SudentServiceImpl implements StudentService {
             studentDto.setFullName(row.getCell(2).getStringCellValue());
             studentDto.setAddress(row.getCell(3).getStringCellValue());
             studentDto.setGender(row.getCell(4).getStringCellValue());
-            try {
-                studentDto.setDateOfBirth(format.parse(this.getStringCellValue(row.getCell(5))));
-            } catch (ParseException e) {
-                System.out.println(this.getStringCellValue(row.getCell(5)));
-                continue;
-            }
+            studentDto.setDateOfBirth(row.getCell(5).getDateCellValue());
             GradeDto gradeDto = new GradeDto();
             gradeDto.setName(row.getCell(6).getStringCellValue());
             studentDto.setGrade(gradeDto);

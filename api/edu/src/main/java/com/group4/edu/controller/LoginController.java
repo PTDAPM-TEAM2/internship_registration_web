@@ -65,6 +65,10 @@ public class LoginController {
     @Transactional
     @GetMapping ("/create-user-admin")
     public ResponseEntity<?> createAccountAdmin(){
+        Role role = roleRepository.findByRole(EduConstants.Role.ROLEADMIN.getValue());
+        if(role != null){
+            return new ResponseEntity<String>("Chạy 1 lần thôi cha :33", HttpStatus.OK);
+        }
         Set<Role> roleSet = new HashSet<>();
         Role role1 = new Role();
         Role role2 = new Role();
@@ -78,7 +82,13 @@ public class LoginController {
         roleSet.add(role1);
         roleSet.add(role2);
         roleSet.add(role3);
-        List<Role> roleList = roleRepository.saveAll(roleSet);
+        List<Role> roleList = null;
+        try {
+            roleList = roleRepository.saveAll(roleSet);
+        }
+        catch (Exception e){
+            return new ResponseEntity<String>("Chạy 1 lần thôi cha :33", HttpStatus.OK);
+        }
         AccountDto accountDto = new AccountDto();
         accountDto.setPassword("admin");
         accountDto.setUsername("admin");
