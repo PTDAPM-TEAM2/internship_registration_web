@@ -9,5 +9,5 @@ public interface UserService {
 //    UserDto saveOrUpdate(UserDto userDto);
     List<UserDto> getAll();
 
-    Object getCurrentUser(HttpServletRequest request);
+    Object getCurrentUser();
 }

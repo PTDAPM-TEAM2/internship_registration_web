@@ -1,5 +1,8 @@
 package com.group4.edu.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Role;
 import com.group4.edu.domain.User;
 
@@ -18,6 +21,9 @@ public class UserDto extends BaseDto{
     private String gender;
     private String phoneNumber;
     private String urlImg;
+    private Boolean isAdmin = false;
+    private Boolean isLecturer = false;
+    private Boolean isStudent = false;
 
     private Set<RoleDto> roles;
 
@@ -62,6 +68,15 @@ public class UserDto extends BaseDto{
             this.roles = new HashSet<>();
             for(Role role: roles){
                 this.roles.add(new RoleDto(role));
+                if(role.getCode().equals(EduConstants.UserType.ADMIN.getValue())){
+                    this.isAdmin = true;
+                }
+                if(role.getCode().equals(EduConstants.UserType.LECTURERS.getValue())){
+                    this.isLecturer = true;
+                }
+                if(role.getCode().equals(EduConstants.UserType.STUDENT.getValue())){
+                    this.isStudent = true;
+                }
             }
         }
     }
@@ -156,4 +171,32 @@ public class UserDto extends BaseDto{
     public void setRoles(Set<RoleDto> roles) {
         this.roles = roles;
     }
+
+    @JsonIgnore
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
+    @JsonIgnore
+    public Boolean getLecturer() {
+        return isLecturer;
+    }
+
+    void setLecturer(Boolean lecturer) {
+        isLecturer = lecturer;
+    }
+
+    @JsonIgnore
+    public Boolean getStudent() {
+        return isStudent;
+    }
+
+    void setStudent(Boolean student) {
+        isStudent = student;
+    }
+
 }

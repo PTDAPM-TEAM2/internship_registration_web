@@ -13,6 +13,8 @@ import com.group4.edu.service.JwtService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.RequestUntil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,31 +45,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object getCurrentUser(HttpServletRequest request) {
-        try {
-           String username = jwtService.getUsernameFromToken(RequestUntil.getTokenByRequest(request));
-            User user = userRepository.getUserByUsernamefromAccount(username).orElse(null);
-            System.out.println(username);
-            Set<Role> roles = new HashSet<>();
-            Account account = accountRepository.findByUsername(username);
-            if(account.getAccountRoleSet() != null){
-                for(AccountRole accountRole: account.getAccountRoleSet()){
-                    roles.add(accountRole.getRole());
-                }
+    public Object getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userRepository.getUserByUsernamefromAccount(username).orElse(null);
+        System.out.println(username);
+        Set<Role> roles = new HashSet<>();
+        Account account = accountRepository.findByUsername(username);
+        if(account.getAccountRoleSet() != null){
+            for(AccountRole accountRole: account.getAccountRoleSet()){
+                roles.add(accountRole.getRole());
             }
-            if(user == null || user.getUserType() == null || user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())){
-                return new UserDto(user,roles);
-            }
-            if(user.getUserType().equals(EduConstants.UserType.LECTURERS.getValue())){
-                Lecturers lecturers = lecturersRepository.findById(user.getId()).orElse(null);
-                return new LecturersDto(lecturers,roles);
-            }
-            if(user.getUserType().equals(EduConstants.UserType.STUDENT.getValue())){
-                Student student = studentRepository.findById(user.getId()).orElse(null);
-                return new StudentDto(student, roles);
-            }
-        } catch (ParseException e) {
-            return null;
+        }
+        if(user == null || user.getUserType() == null || user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())){
+            return new UserDto(user,roles);
+        }
+        if(user.getUserType().equals(EduConstants.UserType.LECTURERS.getValue())){
+            Lecturers lecturers = lecturersRepository.findById(user.getId()).orElse(null);
+            return new LecturersDto(lecturers,roles);
+        }
+        if(user.getUserType().equals(EduConstants.UserType.STUDENT.getValue())){
+            Student student = studentRepository.findById(user.getId()).orElse(null);
+            return new StudentDto(student, roles);
         }
         return null;
     }
