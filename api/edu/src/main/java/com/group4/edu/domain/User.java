@@ -9,11 +9,16 @@ import java.util.Date;
         strategy = InheritanceType.JOINED
 )
 public class User extends BaseObject{
+    private String firstName;
+    private String lastName;
     private String fullName;
     private String email;
     private Date dateOfBirth;
     private String address;
+    private String gender;
+    private String phoneNumber;
     private Integer userType;
+    private String urlImg;
 
     @OneToOne(mappedBy = "user")
     private Account account;
@@ -64,5 +69,45 @@ public class User extends BaseObject{
 
     public void setUserType(Integer userType) {
         this.userType = userType;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
     }
 }

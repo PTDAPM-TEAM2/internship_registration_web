@@ -10,7 +10,7 @@ public interface AccountService {
 
     Account loadUserByUsername(String username);
 
-    AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername);
+    AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername) throws Exception;
 
     boolean saveTokenByUsername(String token,String username);
 

@@ -40,10 +40,10 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         boolean auth = false;
-        request = request;
         String requestString = ((HttpServletRequest) request).getRequestURI();
-        if(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue())){
-            auth = true;
+        if(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue()) || requestString.equals(EduConstants.RequestNotAuth.CREATEADMIN.getValue())){
+            chain.doFilter(request, httpServletResponse);
+            return;
         }
         if (httpRequest.getHeader(TOKEN_HEADER) != null) {
             String authToken = httpRequest.getHeader(TOKEN_HEADER).replace("Bearer ", "");
@@ -77,7 +77,8 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                 httpServletResponse.setStatus(UNAUTHORIZED.value());
                 httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(httpServletResponse.getOutputStream(), responseBody);
+                response = httpServletResponse;
         }
-        chain.doFilter(request, httpServletResponse);
+        chain.doFilter(request, response);
     }
 }

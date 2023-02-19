@@ -17,4 +17,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     String getTokenByUsename(String username);
     @Query("select new com.group4.edu.dto.AccountDto(e) from Account e")
     List<AccountDto> getAll();
+
+    @Query(value = "SELECT CASE  WHEN count(a)> 0 THEN true ELSE false END FROM Account a where a.username =?1")
+    public Boolean existsByUserName(String username);
 }

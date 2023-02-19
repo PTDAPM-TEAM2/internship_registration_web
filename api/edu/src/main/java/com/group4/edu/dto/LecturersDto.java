@@ -1,8 +1,11 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.Lecturers;
+import com.group4.edu.domain.Role;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LecturersDto extends BaseDto {
     private String fullName;
@@ -10,6 +13,7 @@ public class LecturersDto extends BaseDto {
     private Date dateOfBirth;
     private String address;
     private String lecturersCode;
+    private Set<RoleDto> roles;
 
     public LecturersDto(Lecturers entity){
         this.fullName = entity.getFullName();
@@ -17,9 +21,24 @@ public class LecturersDto extends BaseDto {
         this.dateOfBirth = entity.getDateOfBirth();
         this.address = entity.getAddress();
         this.lecturersCode  = entity.getLecturersCode();
+
     }
 
     public LecturersDto() {
+    }
+
+    public LecturersDto(Lecturers entity, Set<Role> roles){
+        this.fullName = entity.getFullName();
+        this.email = entity.getEmail();
+        this.dateOfBirth = entity.getDateOfBirth();
+        this.address = entity.getAddress();
+        this.lecturersCode  = entity.getLecturersCode();
+        if(roles != null){
+            this.roles = new HashSet<>();
+            for(Role role: roles){
+                this.roles.add(new RoleDto(role));
+            }
+        }
     }
 
     public String getFullName() {
@@ -60,5 +79,13 @@ public class LecturersDto extends BaseDto {
 
     public void setLecturersCode(String lecturersCode) {
         this.lecturersCode = lecturersCode;
+    }
+
+    public Set<RoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleDto> roles) {
+        this.roles = roles;
     }
 }

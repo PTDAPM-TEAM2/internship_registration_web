@@ -3,7 +3,6 @@ package com.group4.edu.dto;
 public class ResponseToken {
     private String access_Token;
     private String statusCode;
-
     private  String messenger;
 
     public ResponseToken() {

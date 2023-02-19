@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername) {
+    public AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername) throws Exception {
         if(accountDto != null && accountDto.getUsername() != null && ! accountDto.getUsername().trim().isEmpty() && accountDto.getPassword() != null && !accountDto.getPassword().isEmpty()){
             Account entity = null;
             if(id != null){
@@ -58,6 +58,14 @@ public class AccountServiceImpl implements AccountService {
             }
             if(entity == null){
                 entity = new Account();
+                if(accountRepository.existsByUserName(accountDto.getUsername())){
+                    throw new Exception("Ten tai khoan da ton tai");
+                }
+            }
+            else {
+                if(!accountDto.getUsername().equals(entity.getUsername())&& accountRepository.existsByUserName(accountDto.getUsername())){
+                    throw new Exception("Ten tai khoan da ton tai");
+                }
             }
             entity.setUsername(accountDto.getUsername());
             entity.setPassword(passwordEncoder.encode(accountDto.getPassword()));

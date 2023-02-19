@@ -1,15 +1,17 @@
 package com.group4.edu.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.*;
+
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "tbl_accountrole")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class AccountRole extends BaseObject{
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id")
     private Account account;
 

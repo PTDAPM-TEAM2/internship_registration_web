@@ -76,6 +76,11 @@ public class SudentServiceImpl implements StudentService {
         entity.setAddress(studentDto.getAddress());
         entity.setEmail(studentDto.getEmail());
         entity.setDateOfBirth(studentDto.getDateOfBirth());
+        entity.setFirstName(studentDto.getFirstName());
+        entity.setLastName(studentDto.getLastName());
+        entity.setGender(studentDto.getGender());
+        entity.setPhoneNumber(studentDto.getPhoneNumber());
+        entity.setUrlImg(studentDto.getUrlImg());
         Grade grade = null;
         if(studentDto.getGrade().getId() != null){
             grade = gradeRepository.findById(studentDto.getGrade().getId()).orElse(null);
@@ -108,6 +113,7 @@ public class SudentServiceImpl implements StudentService {
             accountRole.setRole(role);
             accountRoleSet.add(accountRole);
             account.setAccountRoleSet(accountRoleSet);
+            account.setUser(entity);
             account = accountRepository.save(account);
             entity.setAccount(account);
         }

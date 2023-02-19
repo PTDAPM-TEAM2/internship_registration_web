@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -42,8 +44,15 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public AccountDto save(@RequestBody AccountDto accountDto){
-        return accountService.saveOrUpdate(accountDto,null,true);
+    public ResponseEntity<?> save(@RequestBody AccountDto accountDto){
+        try {
+            return new ResponseEntity<>(accountService.saveOrUpdate(accountDto,null,true),HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, String > response = new HashMap<>();
+            response.put("code","400");
+            response.put("messenger",e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/get-all")

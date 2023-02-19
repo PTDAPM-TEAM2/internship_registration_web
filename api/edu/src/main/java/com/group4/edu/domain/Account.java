@@ -1,17 +1,26 @@
 package com.group4.edu.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "tbl_account")
-public class Account  extends BaseObject{
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+public class Account extends BaseObject{
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonBackReference
     private Set<AccountRole> accountRoleSet;
     private String token;
     @OneToOne(cascade = CascadeType.ALL)

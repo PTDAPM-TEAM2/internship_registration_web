@@ -3,6 +3,7 @@ package com.group4.edu;
 import com.group4.edu.domain.Role;
 
 public class EduConstants {
+    public static String hederAuthorization = "authorization";
     public static enum Role {
         ROLEADMIN("ADMIN"), ROLESTUDENT("STUDENT"), ROLELECTURERS("LECTURERS");
         private String value;
@@ -28,7 +29,7 @@ public class EduConstants {
     }
 
     public static enum RequestNotAuth{
-        LOGIN("/login");
+        LOGIN("/login"),CREATEADMIN("/create-user-admin");
         private String value;
         private RequestNotAuth(String value){
             this.value = value;

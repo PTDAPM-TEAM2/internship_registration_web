@@ -9,6 +9,9 @@ import javax.persistence.Table;
 public class Role extends  BaseObject{
     @Column(nullable = false, unique = true)
     String role;
+
+    @Column(unique = true)
+    Integer code;
     String decription;
 
     public String getRole() {
@@ -25,5 +28,13 @@ public class Role extends  BaseObject{
 
     public void setDecription(String decription) {
         this.decription = decription;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 }
