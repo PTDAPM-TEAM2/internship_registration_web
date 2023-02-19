@@ -1,6 +1,20 @@
-1. http://localhost:8080/crate-user-admin
-2. http://localhost:8080/login
+1.Tạo tài khoản admin có ten tk là admin, mk: admin. Copy link paste vào trình duyệt là được 
+  Method Get http://localhost:8080/crate-user-admin
+
+2. Method Post http://localhost:8080/login
 	body: {
 			"username":"ten tk",
 			"password":"mat khau"
+		}
+ Sau khi login thành công sẽ nhận được token. Mọi request gửi lên đều phải gắn thêm token vào header dạng "Bearer "+token. Vd:
+
+ "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzY4MDMyNTEsInVzZXJuYW1lIjoiYWRtaW4ifQ.gQEzVZXUhOeAHE5zUtf6ycW5Y6edt4hS5o7mCS06GKo"
+
+3.Lấy thông tin của user đã đăng nhập gồm các thông tin cơ bản và quyền
+   Method Get  http://localhost:8080/api/user/get-current-user
+
+4.Tải file excel chứa thông tin sinh viên
+   Method Post http://localhost:8080/api/student/import-excel
+	body: {
+			"file": file xlsx
 		}
