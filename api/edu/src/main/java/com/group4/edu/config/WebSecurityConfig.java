@@ -86,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/crate-user-admin").permitAll()
-                .antMatchers("/api/**").authenticated();
+                .antMatchers("/api/**").permitAll();
 //                .and()
 //                .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class);
     }
