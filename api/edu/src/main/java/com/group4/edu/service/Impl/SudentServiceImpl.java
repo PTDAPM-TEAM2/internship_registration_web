@@ -2,14 +2,12 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
-import com.group4.edu.dto.DataErrorImportExcelDto;
-import com.group4.edu.dto.GradeDto;
-import com.group4.edu.dto.ResponseImportExcelStudentDto;
-import com.group4.edu.dto.StudentDto;
+import com.group4.edu.dto.*;
 import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.GradeRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.repositories.StudentRepository;
+import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -28,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class SudentServiceImpl implements StudentService {
@@ -209,6 +209,24 @@ public class SudentServiceImpl implements StudentService {
                 dataError.add(new DataErrorImportExcelDto(rowIndex, e.getMessage()));
             }
         }
+        //Su dung da luong de gui Email;
+//        int numberOfThread = 10;
+//        ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
+//        for(StudentDto studentDto: studentDtos){
+//            executor.execute(new Runnable() {
+//                private MailServiceImpl mailService = new MailServiceImpl();
+//                @Override
+//                public void run() {
+//                    String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
+//                    MailDto mailDto = new MailDto();
+//                    mailDto.setMsgBody(msgBody);
+//                    mailDto.setRecipient(studentDto.getEmail());
+//                    mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
+//                    mailService.sendSimpleMail(mailDto);
+//                    System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
+//                }
+//            });
+//        }
         return new ResponseImportExcelStudentDto(studentDtos.size()+dataError.size(),studentDtos.size(),dataError.size(),studentDtos,dataError);
     }
     private String getStringCellValue(XSSFCell cell){

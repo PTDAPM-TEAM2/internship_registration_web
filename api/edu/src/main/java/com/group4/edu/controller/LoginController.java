@@ -31,7 +31,6 @@ public class LoginController {
     private AccountService accountService;
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private UserRepository userRepository;
 
