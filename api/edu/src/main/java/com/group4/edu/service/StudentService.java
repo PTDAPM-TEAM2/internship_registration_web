@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface StudentService {
-    StudentDto saveOrUpdate(StudentDto studentDto,Long id) throws Exception;
+    StudentDto saveOrUpdate(StudentDto studentDto,Long id, int studentType) throws Exception;
 
     List<StudentDto> getAll();
     ResponseImportExcelStudentDto importExcel(MultipartFile file);

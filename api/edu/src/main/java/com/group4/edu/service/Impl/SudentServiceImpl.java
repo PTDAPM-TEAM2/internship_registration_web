@@ -3,10 +3,7 @@ package com.group4.edu.service.Impl;
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
 import com.group4.edu.dto.*;
-import com.group4.edu.repositories.AccountRepository;
-import com.group4.edu.repositories.GradeRepository;
-import com.group4.edu.repositories.RoleRepository;
-import com.group4.edu.repositories.StudentRepository;
+import com.group4.edu.repositories.*;
 import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
@@ -43,12 +40,15 @@ public class SudentServiceImpl implements StudentService {
     private GradeRepository gradeRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public StudentDto saveOrUpdate(StudentDto studentDto, Long id) throws Exception {
+    public StudentDto saveOrUpdate(StudentDto studentDto, Long id, int studentType) throws Exception {
         if(studentDto == null){
             throw new Exception("Thông tin sinh vieen bị trống hoặc lỗi");
         }
@@ -61,7 +61,7 @@ public class SudentServiceImpl implements StudentService {
         if(studentDto.getEmail() == null || studentDto.getEmail().trim().equals("")){
             throw new Exception("Email sinh viên bị trống");
         }
-        if(studentDto.getGrade()== null){
+        if(studentDto.getGrade()== null|| studentDto.getGrade().getName() == null || studentDto.getGrade().getName().trim().equals("")){
             throw new Exception("Lớp sinh viên không đúng");
         }
         Student entity = null;
@@ -74,11 +74,11 @@ public class SudentServiceImpl implements StudentService {
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
         }
         if(entity == null){
-            if(studentRepository.existsByStudentCode(studentDto.getStudentCode())){
-                throw new Exception("Trùng mã sinh vieen: "+studentDto.getStudentCode());
+            entity = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(null);
+            if(entity == null){
+                entity = new Student();
+                isNewAccount = true;
             }
-            entity = new Student();
-            isNewAccount = true;
         }
         else {
             if(!studentDto.getStudentCode().equals(entity.getStudentCode()) && studentRepository.existsByStudentCode(studentDto.getStudentCode())){
@@ -104,33 +104,41 @@ public class SudentServiceImpl implements StudentService {
             grade = gradeRepository.findByName(studentDto.getGrade().getName()).orElse(null);
         }
         if(grade == null){
-            if(studentDto.getGrade().getName() == null || studentDto.getGrade().getName().trim().equals("")){
-                throw new Exception("Tên lớp bij trống");
-            }
             grade = new Grade();
             grade.setName(studentDto.getGrade().getName());
             grade = gradeRepository.save(grade);
         }
         entity.setGrade(grade);
-        if(isNewAccount){
+//        if(isNewAccount){
+//            account = new Account();
+//            account.setUsername(studentDto.getStudentCode());
+//            account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
+//            Role role = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT.getValue());
+//            if(role == null){
+//                role = new Role();
+//                role.setRole(EduConstants.Role.ROLESTUDENT.getValue());
+//                role = roleRepository.save(role);
+//            }
+//            Set<AccountRole> accountRoleSet = new HashSet<>();
+//            AccountRole accountRole = new AccountRole();
+//            accountRole.setAccount(account);
+//            accountRole.setRole(role);
+//            accountRoleSet.add(accountRole);
+//            account.setAccountRoleSet(accountRoleSet);
+//            account.setUser(entity);
+//            account = accountRepository.save(account);
+//            entity.setAccount(account);
+//        }
+        account = entity.getAccount();
+        if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
             account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
-            Role role = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT.getValue());
-            if(role == null){
-                role = new Role();
-                role.setRole(EduConstants.Role.ROLESTUDENT.getValue());
-                role = roleRepository.save(role);
-            }
-            Set<AccountRole> accountRoleSet = new HashSet<>();
-            AccountRole accountRole = new AccountRole();
-            accountRole.setAccount(account);
-            accountRole.setRole(role);
-            accountRoleSet.add(accountRole);
-            account.setAccountRoleSet(accountRoleSet);
-            account.setUser(entity);
-            account = accountRepository.save(account);
             entity.setAccount(account);
+        }
+
+        if(studentType == EduConstants.StudentType.STUDENT_DA.getValue()){
+            Role role = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
         }
         return new StudentDto(studentRepository.save(entity));
     }
@@ -203,30 +211,30 @@ public class SudentServiceImpl implements StudentService {
             studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(7)));
             studentDto.setEmail(row.getCell(8).getStringCellValue());
             try {
-                studentDto = this.saveOrUpdate(studentDto,null);
+                studentDto = this.saveOrUpdate(studentDto,null,1);
                 studentDtos.add(studentDto);
             } catch (Exception e) {
                 dataError.add(new DataErrorImportExcelDto(rowIndex, e.getMessage()));
             }
         }
-        //Su dung da luong de gui Email;
-//        int numberOfThread = 10;
-//        ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
-//        for(StudentDto studentDto: studentDtos){
-//            executor.execute(new Runnable() {
-//                private MailServiceImpl mailService = new MailServiceImpl();
-//                @Override
-//                public void run() {
-//                    String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
-//                    MailDto mailDto = new MailDto();
-//                    mailDto.setMsgBody(msgBody);
-//                    mailDto.setRecipient(studentDto.getEmail());
-//                    mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
-//                    mailService.sendSimpleMail(mailDto);
-//                    System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
-//                }
-//            });
-//        }
+//        Su dung da luong de gui Email;
+        int numberOfThread = 10;
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
+        for(StudentDto studentDto: studentDtos){
+            executor.execute(new Runnable() {
+                private MailServiceImpl mailService = new MailServiceImpl();
+                @Override
+                public void run() {
+                    String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
+                    MailDto mailDto = new MailDto();
+                    mailDto.setMsgBody(msgBody);
+                    mailDto.setRecipient(studentDto.getEmail());
+                    mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
+                    mailService.sendSimpleMail(mailDto);
+                    System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
+                }
+            });
+        }
         return new ResponseImportExcelStudentDto(studentDtos.size()+dataError.size(),studentDtos.size(),dataError.size(),studentDtos,dataError);
     }
     private String getStringCellValue(XSSFCell cell){

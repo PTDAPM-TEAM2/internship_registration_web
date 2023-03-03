@@ -1,5 +1,6 @@
 package com.group4.edu.config;
 
+import com.group4.edu.EduConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -84,10 +85,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Disable crsf cho đường dẫn /rest/**
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/crate-user-admin").permitAll()
-                .antMatchers("/api/**").permitAll();
+                .antMatchers("/login").permitAll().anyRequest().permitAll();
+//                .antMatchers("/api/**").hasRole("ADMIN")
 //                .and()
-//                .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class);
+//                .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class)
+//                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 }

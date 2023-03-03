@@ -1,6 +1,6 @@
 package com.group4.edu.dto;
 
-import com.group4.edu.domain.Lecturers;
+import com.group4.edu.domain.Lecturer;
 import com.group4.edu.domain.Role;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ public class LecturersDto extends BaseDto {
     private String lecturersCode;
     private Set<RoleDto> roles;
 
-    public LecturersDto(Lecturers entity){
+    public LecturersDto(Lecturer entity){
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
@@ -27,16 +27,16 @@ public class LecturersDto extends BaseDto {
     public LecturersDto() {
     }
 
-    public LecturersDto(Lecturers entity, Set<Role> roles){
+    public LecturersDto(Lecturer entity, Set<Role> roles){
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
         this.address = entity.getAddress();
         this.lecturersCode  = entity.getLecturersCode();
-        if(roles != null){
+        if(entity.getAccount() != null && entity.getAccount().getRoles() != null){
             this.roles = new HashSet<>();
-            for(Role role: roles){
-                this.roles.add(new RoleDto(role));
+            for(Role role: entity.getAccount().getRoles()){
+                this.roles.add(new RoleDto());
             }
         }
     }

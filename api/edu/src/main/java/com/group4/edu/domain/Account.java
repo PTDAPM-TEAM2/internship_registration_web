@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.group4.edu.EduConstants;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,9 +22,8 @@ public class Account extends BaseObject{
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonBackReference
-    private Set<AccountRole> accountRoleSet;
+    @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    Set<Role> roles;
     private String token;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -43,12 +45,12 @@ public class Account extends BaseObject{
         this.password = password;
     }
 
-    public Set<AccountRole> getAccountRoleSet() {
-        return accountRoleSet;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAccountRoleSet(Set<AccountRole> accountRoleSet) {
-        this.accountRoleSet = accountRoleSet;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public User getUser() {
@@ -65,5 +67,19 @@ public class Account extends BaseObject{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Set<GrantedAuthority> getGranteRole(){
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        int i = 0;
+        for(Role role: roles){
+            grantedAuthorities.add(new GrantedAuthority() {
+                @Override
+                public String getAuthority() {
+                   return role.getRole();
+                }
+            });
+        }
+        return grantedAuthorities;
     }
 }

@@ -64,19 +64,10 @@ public class UserDto extends BaseDto{
         this.gender = entity.getGender();
         this.phoneNumber = entity.getPhoneNumber();
         this.urlImg = entity.getUrlImg();
-        if(roles != null){
+        if(entity.getAccount() != null && entity.getAccount().getRoles() != null){
             this.roles = new HashSet<>();
-            for(Role role: roles){
+            for(Role role: entity.getAccount().getRoles()){
                 this.roles.add(new RoleDto(role));
-                if(role.getCode().equals(EduConstants.UserType.ADMIN.getValue())){
-                    this.isAdmin = true;
-                }
-                if(role.getCode().equals(EduConstants.UserType.LECTURERS.getValue())){
-                    this.isLecturer = true;
-                }
-                if(role.getCode().equals(EduConstants.UserType.STUDENT.getValue())){
-                    this.isStudent = true;
-                }
             }
         }
     }

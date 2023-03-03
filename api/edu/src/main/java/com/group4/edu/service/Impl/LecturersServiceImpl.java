@@ -3,10 +3,10 @@ package com.group4.edu.service.Impl;
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
 import com.group4.edu.domain.AccountRole;
-import com.group4.edu.domain.Lecturers;
+import com.group4.edu.domain.Lecturer;
 import com.group4.edu.domain.Role;
 import com.group4.edu.dto.LecturersDto;
-import com.group4.edu.repositories.LecturersRepository;
+import com.group4.edu.repositories.LecturerRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.service.LecturersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Service
 public class LecturersServiceImpl implements LecturersService {
     @Autowired
-    private LecturersRepository lecturersRepository;
+    private LecturerRepository lecturerRepository;
     @Autowired
     private RoleRepository roleRepository;
 
@@ -35,23 +35,23 @@ public class LecturersServiceImpl implements LecturersService {
                 throw new Exception("Tên giảng viên bị trống");
             }
             boolean isNewAccount = false;
-            Lecturers entity = null;
+            Lecturer entity = null;
             Account account = null;
             if(id != null){
-                entity = lecturersRepository.findById(id).orElse(null);
+                entity = lecturerRepository.findById(id).orElse(null);
             }
             if(entity == null && dto.getId() != null){
-                entity = lecturersRepository.findById(dto.getId()).orElse(null);
+                entity = lecturerRepository.findById(dto.getId()).orElse(null);
             }
             if(entity == null){
-                if(lecturersRepository.existsByLecturersCode(dto.getLecturersCode())){
-                    throw new Exception("Ma gian vien da ton tai");
+                if(lecturerRepository.existsByLecturersCode(dto.getLecturersCode())){
+                    throw new Exception("Ma giang vien da ton tai");
                 }
-                entity = new Lecturers();
+                entity = new Lecturer();
                 isNewAccount = true;
             }
             else {
-                if(!dto.getLecturersCode().equals(entity.getLecturersCode())&&lecturersRepository.existsByLecturersCode(dto.getLecturersCode())){
+                if(!dto.getLecturersCode().equals(entity.getLecturersCode())&& lecturerRepository.existsByLecturersCode(dto.getLecturersCode())){
                     throw new Exception("Ma giảng viên đã tồn tại");
                 }
             }
@@ -74,19 +74,19 @@ public class LecturersServiceImpl implements LecturersService {
                 }
                 Set<AccountRole> accountRoleSet = new HashSet<>();
                 AccountRole accountRole = new AccountRole();
-                accountRole.setAccount(account);
-                accountRole.setRole(role);
-                accountRoleSet.add(accountRole);
-                account.setAccountRoleSet(accountRoleSet);
+//                accountRole.setAccount(account);
+//                accountRole.setRole(role);
+//                accountRoleSet.add(accountRole);
+//                account.setAccountRoleSet(accountRoleSet);
             }
             entity.setAccount(account);
-            return new LecturersDto(lecturersRepository.save(entity));
+            return new LecturersDto(lecturerRepository.save(entity));
         }
         return null;
     }
 
     @Override
     public List<LecturersDto> getAll() {
-        return lecturersRepository.getAll();
+        return lecturerRepository.getAll();
     }
 }

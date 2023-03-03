@@ -14,7 +14,8 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     List<StudentDto> getAll();
 
     @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Student e where e.studentCode =?1")
-    public Boolean existsByStudentCode(String code);
+    Boolean existsByStudentCode(String code);
 
-    Student findByStudentCode(String studentCode);
+    @Query(value = "SELECT e FROM Student e where e.studentCode =?1")
+    Optional<Student> findByStudentCode(String studentCode);
 }

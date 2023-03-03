@@ -6,7 +6,7 @@ import com.group4.edu.dto.AccountDto;
 import java.util.List;
 
 public interface AccountService {
-    public Boolean checkLogin(AccountDto accountDto);
+    public Boolean checkLogin(AccountDto accountDto,Integer type) throws Exception;
 
     Account loadUserByUsername(String username);
 
@@ -17,4 +17,5 @@ public interface AccountService {
     List<AccountDto> getAll();
 
     String getTokenByUsername(String username);
+    void logout();
 }

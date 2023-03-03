@@ -23,10 +23,10 @@ public class StudentController {
 
     @Autowired
     private UserService userService;
-    @PostMapping("/save")
+    @PostMapping("/save/da")
     public ResponseEntity<?> save(@RequestBody StudentDto dto){
         try {
-            StudentDto result = studentService.saveOrUpdate(dto, null);
+            StudentDto result = studentService.saveOrUpdate(dto, null,1);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception ex){

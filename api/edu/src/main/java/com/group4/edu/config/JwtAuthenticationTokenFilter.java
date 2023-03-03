@@ -3,10 +3,12 @@ package com.group4.edu.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
+import com.group4.edu.domain.Role;
 import com.group4.edu.service.JwtService;
 import com.group4.edu.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.jaas.JaasGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -39,11 +41,11 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        boolean auth = false;
+        boolean auth = true;
         String requestString = ((HttpServletRequest) request).getRequestURI();
-        System.out.println(requestString);
-        System.out.println(EduConstants.RequestNotAuth.LOGIN.getValue());
-        System.out.println(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue()));
+//        System.out.println(requestString);
+//        System.out.println(EduConstants.RequestNotAuth.LOGIN.getValue());
+//        System.out.println(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue()));
         if(requestString.equals(EduConstants.RequestNotAuth.LOGIN.getValue()) || requestString.equals(EduConstants.RequestNotAuth.CREATEADMIN.getValue())){
             chain.doFilter(request, response);
             return;
@@ -61,12 +63,14 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                         boolean credentialsNonExpired = true;
                         boolean accountNonLocked = true;
                         UserDetails userDetail = new User(username, account.getPassword(), enabled, accountNonExpired,
-                                credentialsNonExpired, accountNonLocked, new HashSet<GrantedAuthority>());
+                                credentialsNonExpired, accountNonLocked, account.getGranteRole());
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
                                 null, userDetail.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        auth = true;
+                        for(GrantedAuthority g: userDetail.getAuthorities()){
+                            System.out.println("A:"+g.getAuthority());
+                        }
                     }
                 } catch (ParseException e) {
 
