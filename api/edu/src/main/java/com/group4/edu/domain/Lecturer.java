@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tbl_ecturers")
+@Table(name = "tbl_lecturer")
 public class Lecturer extends User{
     @Column(unique = true)
     private String lecturersCode;
