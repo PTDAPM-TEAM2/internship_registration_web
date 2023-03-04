@@ -1,7 +1,6 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.Account;
-import com.group4.edu.domain.AccountRole;
 import com.group4.edu.domain.Role;
 
 import java.util.HashSet;

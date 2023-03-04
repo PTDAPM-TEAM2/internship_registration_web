@@ -2,15 +2,12 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
-import com.group4.edu.domain.AccountRole;
 import com.group4.edu.domain.Role;
-import com.group4.edu.domain.User;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.RoleDto;
 import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.service.AccountService;
-import com.group4.edu.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,30 +77,30 @@ public class AccountServiceImpl implements AccountService {
             }
             entity.setUsername(accountDto.getUsername());
             entity.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-            if (accountDto.getRoles() != null && accountDto.getRoles().size() > 0) {
-                Set<AccountRole> accountRoleSet = new HashSet<>();
-                for (RoleDto roleDto : accountDto.getRoles()) {
-                    Role role = null;
-                    if (roleDto.getId() != null) {
-                        role = roleRepository.findById(roleDto.getId()).orElse(null);
-                    }
-                    if (role != null) {
-//                       AccountRole accountRole = new AccountRole();
-//                       accountRole.setAccount(entity);
-//                       accountRole.setRole(role);
-//                       accountRoleSet.add(accountRole);
-                    }
-                }
-//               if(accountRoleSet!= null && accountRoleSet.size()>0){
-//                   if(entity.getAccountRoleSet() == null){
-//                       entity.setAccountRoleSet(accountRoleSet);
-//                   }
-//                   else {
-//                       entity.getAccountRoleSet().clear();
-//                       entity.getAccountRoleSet().addAll(accountRoleSet);
-//                   }
-//               }
-            }
+//            if (accountDto.getRoles() != null && accountDto.getRoles().size() > 0) {
+//                Set<AccountRole> accountRoleSet = new HashSet<>();
+//                for (RoleDto roleDto : accountDto.getRoles()) {
+//                    Role role = null;
+//                    if (roleDto.getId() != null) {
+//                        role = roleRepository.findById(roleDto.getId()).orElse(null);
+//                    }
+//                    if (role != null) {
+////                       AccountRole accountRole = new AccountRole();
+////                       accountRole.setAccount(entity);
+////                       accountRole.setRole(role);
+////                       accountRoleSet.add(accountRole);
+//                    }
+//                }
+////               if(accountRoleSet!= null && accountRoleSet.size()>0){
+////                   if(entity.getAccountRoleSet() == null){
+////                       entity.setAccountRoleSet(accountRoleSet);
+////                   }
+////                   else {
+////                       entity.getAccountRoleSet().clear();
+////                       entity.getAccountRoleSet().addAll(accountRoleSet);
+////                   }
+////               }
+//            }
             return new AccountDto(accountRepository.save(entity));
         }
         return null;
