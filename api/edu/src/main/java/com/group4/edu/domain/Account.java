@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.group4.edu.EduConstants;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -73,12 +74,7 @@ public class Account extends BaseObject{
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         int i = 0;
         for(Role role: roles){
-            grantedAuthorities.add(new GrantedAuthority() {
-                @Override
-                public String getAuthority() {
-                   return role.getRole();
-                }
-            });
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return grantedAuthorities;
     }

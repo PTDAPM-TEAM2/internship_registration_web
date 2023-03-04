@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().write("Access Denied!");
+                response.getWriter().write("Đăng nhập đúng quyền hộ cái bạn trẻ ơi!");
             }
         };
     }
@@ -83,12 +83,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     protected void configure(HttpSecurity http) throws Exception {
         // Disable crsf cho đường dẫn /rest/**
-        http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll().anyRequest().permitAll();
-//                .antMatchers("/api/**").hasRole("ADMIN")
-//                .and()
-//                .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class)
-//                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/account/**","/api/role/**").hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue())
+                .and()
+                .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class)
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 }

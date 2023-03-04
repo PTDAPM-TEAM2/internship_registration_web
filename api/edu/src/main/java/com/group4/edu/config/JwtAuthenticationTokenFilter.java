@@ -68,23 +68,14 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                                 null, userDetail.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        for(GrantedAuthority g: userDetail.getAuthorities()){
-                            System.out.println("A:"+g.getAuthority());
+                        for (GrantedAuthority g : authentication.getAuthorities()) {
+                            System.out.println("A:" + g.getAuthority());
                         }
                     }
                 } catch (ParseException e) {
 
                 }
             }
-        }
-        if(!auth){
-                Map<String, ArrayList<String>> responseBody = new HashMap<>();
-
-                responseBody.put("errors", new ArrayList<>(List.of("Failed to authenticate.")));
-                httpServletResponse.setStatus(UNAUTHORIZED.value());
-                httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(httpServletResponse.getOutputStream(), responseBody);
-                response = httpServletResponse;
         }
         chain.doFilter(request, response);
     }

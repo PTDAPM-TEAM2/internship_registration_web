@@ -88,7 +88,7 @@ public class LoginController {
         }
         return new ResponseEntity<ResponseToken>(result, httpStatus);
     }
-    @GetMapping("/logou")
+    @GetMapping("/logout")
     public void logout(){
         accountService.logout();
     }
