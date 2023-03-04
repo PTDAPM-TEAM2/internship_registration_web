@@ -24,8 +24,6 @@ public class GradeServiceImpl implements GradeService {
 
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private AccountRoleRepository accountRoleRepository;
 
     @Autowired
     private AccountService accountService;

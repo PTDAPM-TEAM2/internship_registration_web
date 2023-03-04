@@ -11,7 +11,6 @@ public class Internship extends BaseObject{
     private String internshipPosition;
     private Double mark;
     private String evaluate;
-    private String nameInstructor;
 
     @ManyToOne
     @JoinColumn (name = "company_id")
@@ -51,14 +50,6 @@ public class Internship extends BaseObject{
 
     public void setEvaluate(String evaluate) {
         this.evaluate = evaluate;
-    }
-
-    public String getNameInstructor() {
-        return nameInstructor;
-    }
-
-    public void setNameInstructor(String nameInstructor) {
-        this.nameInstructor = nameInstructor;
     }
 
     public Company getCompany() {

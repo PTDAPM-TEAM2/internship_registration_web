@@ -2,7 +2,6 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
-import com.group4.edu.domain.AccountRole;
 import com.group4.edu.domain.Lecturer;
 import com.group4.edu.domain.Role;
 import com.group4.edu.dto.LecturersDto;
@@ -72,8 +71,8 @@ public class LecturersServiceImpl implements LecturersService {
                     role.setRole(EduConstants.Role.ROLELECTURERS.getValue());
                     role = roleRepository.save(role);
                 }
-                Set<AccountRole> accountRoleSet = new HashSet<>();
-                AccountRole accountRole = new AccountRole();
+//                Set<AccountRole> accountRoleSet = new HashSet<>();
+//                AccountRole accountRole = new AccountRole();
 //                accountRole.setAccount(account);
 //                accountRole.setRole(role);
 //                accountRoleSet.add(accountRole);
