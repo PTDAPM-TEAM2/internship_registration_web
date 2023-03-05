@@ -85,8 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Disable crsf cho đường dẫn /rest/**
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/login-tt").permitAll()
-                .antMatchers("/public/**").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/api/account/**").hasAuthority(EduConstants.Role.ROLEADMIN.getValue())
                 .antMatchers("/api/role/**").hasAuthority(EduConstants.Role.ROLEADMIN.getValue())
                 .anyRequest().hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue(), EduConstants.Role.ROLELECTURERS.getValue(),EduConstants.Role.ROLESTUDENT_DA.getValue(),EduConstants.Role.ROLESTUDENT_TT.getValue())
