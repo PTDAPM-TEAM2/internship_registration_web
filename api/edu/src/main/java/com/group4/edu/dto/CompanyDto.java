@@ -1,20 +1,27 @@
-package com.group4.edu.domain;
+package com.group4.edu.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "tbl_company")
-public class Company extends BaseObject{
+import com.group4.edu.domain.Company;
+
+public class CompanyDto extends BaseDto {
     private String nameCompany;
     private String email;
     private String phoneNumber;
     private String address;
-
-    @Column(name = "taxCode", unique = true)
     private String taxCode;
     private String description;
+
+    public CompanyDto() {
+    }
+
+    public CompanyDto(Company entity) {
+        this.nameCompany = entity.getNameCompany();
+        this.email = entity.getEmail();
+        this.phoneNumber = entity.getPhoneNumber();
+        this.address = entity.getAddress();
+        this.taxCode = entity.getTaxCode();
+        this.description = entity.getDescription();
+    }
 
     public String getNameCompany() {
         return nameCompany;
