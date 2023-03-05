@@ -50,7 +50,7 @@ public class SudentServiceImpl implements StudentService {
     @Transactional(rollbackFor = {Exception.class})
     public StudentDto saveOrUpdate(StudentDto studentDto, Long id, int studentType) throws Exception {
         if(studentDto == null){
-            throw new Exception("Thông tin sinh vieen bị trống hoặc lỗi");
+            throw new Exception("Thông tin sinh viên bị trống hoặc lỗi");
         }
         if(studentDto.getStudentCode() == null || studentDto.getStudentCode().trim().equals("")){
             throw  new Exception("Mã sinh viên bị trống");
