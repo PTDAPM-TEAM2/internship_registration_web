@@ -6,9 +6,11 @@ import com.group4.edu.domain.Role;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.ChangePasswordDto;
 import com.group4.edu.dto.RoleDto;
+import com.group4.edu.dto.UserDto;
 import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.service.AccountService;
+import com.group4.edu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,9 @@ public class AccountServiceImpl implements AccountService {
     private RoleRepository roleRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Boolean checkLogin(AccountDto accountDto, Integer type) throws Exception {
@@ -58,6 +63,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername) throws Exception {
+        UserDto userDto = (UserDto) userService.getCurrentUser();
+        if(!userDto.getAdmin()){
+            return null;
+        }
         if (accountDto != null && accountDto.getUsername() != null && !accountDto.getUsername().trim().isEmpty() && accountDto.getPassword() != null && !accountDto.getPassword().isEmpty()) {
             Account entity = null;
             if (id != null) {
@@ -129,6 +138,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean changePassword(ChangePasswordDto passwordDto) throws Exception {
+
         if(passwordDto == null|| (passwordDto.getNewPassword() == null || passwordDto.getNewPassword().length()<8
                 || passwordDto.getOldPassword() == null)){
             throw new Exception("Mật khẩu có tối thiểu 8 ký tự");

@@ -109,36 +109,52 @@ public class SudentServiceImpl implements StudentService {
             grade = gradeRepository.save(grade);
         }
         entity.setGrade(grade);
-//        if(isNewAccount){
-//            account = new Account();
-//            account.setUsername(studentDto.getStudentCode());
-//            account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
-//            Role role = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT.getValue());
-//            if(role == null){
-//                role = new Role();
-//                role.setRole(EduConstants.Role.ROLESTUDENT.getValue());
-//                role = roleRepository.save(role);
-//            }
-//            Set<AccountRole> accountRoleSet = new HashSet<>();
-//            AccountRole accountRole = new AccountRole();
-//            accountRole.setAccount(account);
-//            accountRole.setRole(role);
-//            accountRoleSet.add(accountRole);
-//            account.setAccountRoleSet(accountRoleSet);
-//            account.setUser(entity);
-//            account = accountRepository.save(account);
-//            entity.setAccount(account);
-//        }
         account = entity.getAccount();
+        Role roleDa = null;
+        Role roleTT = null;
+        if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
+            roleDa = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
+        }
+        if(EduConstants.StudentType.STUDENT_TT.getValue().equals(studentType)){
+            roleTT = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_TT.getValue());
+        }
         if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
             account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
             entity.setAccount(account);
+            account = accountRepository.save(account);
         }
-
-        if(studentType == EduConstants.StudentType.STUDENT_DA.getValue()){
-            Role role = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
+        if(account.getRoles() == null){
+            Set<Role> roleSet = new HashSet<>();
+            if(roleDa != null){
+                roleSet.add(roleDa);
+            }
+            if(roleTT != null){
+                roleSet.add(roleDa);
+            }
+            account.setRoles(roleSet);
+        }
+        else {
+            boolean checkRoleDa = false;
+            boolean checkRoleTT = false;
+            for(Role role: account.getRoles()){
+                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey())){
+                    checkRoleDa = true;
+                }
+                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
+                    checkRoleTT = true;
+                }
+                if(checkRoleDa && checkRoleTT){
+                    break;
+                }
+            }
+            if(!checkRoleDa && roleDa != null){
+                account.getRoles().add(roleDa);
+            }
+            if(!checkRoleTT && roleTT != null){
+                account.getRoles().add(roleTT);
+            }
         }
         return new StudentDto(studentRepository.save(entity));
     }
