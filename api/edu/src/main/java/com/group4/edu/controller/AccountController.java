@@ -38,4 +38,6 @@ public class AccountController {
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(accountService.getAll(), HttpStatus.OK);
     }
+
+
 }

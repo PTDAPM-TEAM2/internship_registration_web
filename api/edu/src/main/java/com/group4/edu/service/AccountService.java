@@ -2,6 +2,7 @@ package com.group4.edu.service;
 
 import com.group4.edu.domain.Account;
 import com.group4.edu.dto.AccountDto;
+import com.group4.edu.dto.ChangePasswordDto;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface AccountService {
     List<AccountDto> getAll();
 
     String getTokenByUsername(String username);
+
+    String changePassword(ChangePasswordDto passwordDto);
     void logout();
 }

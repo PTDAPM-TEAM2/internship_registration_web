@@ -4,6 +4,7 @@ import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
 import com.group4.edu.domain.Role;
 import com.group4.edu.dto.AccountDto;
+import com.group4.edu.dto.ChangePasswordDto;
 import com.group4.edu.dto.RoleDto;
 import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.RoleRepository;
@@ -124,6 +125,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String getTokenByUsername(String username) {
         return accountRepository.getTokenByUsename(username);
+    }
+
+    @Override
+    public String changePassword(ChangePasswordDto passwordDto) {
+    return null;
     }
 
     @Override
