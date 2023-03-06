@@ -16,7 +16,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import styles from './Login.module.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../Theme/Theme.jsx';
-
+import userApi from "../../api/userApi";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -71,7 +71,7 @@ function Login() {
         if (username === '' || password === '') {
             setErrorMessage('Nhập thiếu thông tin! Vui lòng nhập lại!')
         }
-        else if (username !== 'admin' || password !== 'admin') {
+        else if (!userApi.login({username: username, password: password})) {
             setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
         }
         else if (context.toggle === true) {
@@ -93,7 +93,7 @@ function Login() {
             }, 800)
         }
 
-        console.log(context.toggle);
+        // console.log(context.toggle);
     }
 
     const handleClickShowPassword = () => {
