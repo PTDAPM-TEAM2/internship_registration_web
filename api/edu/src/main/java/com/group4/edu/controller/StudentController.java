@@ -24,9 +24,20 @@ public class StudentController {
     @Autowired
     private UserService userService;
     @PostMapping("/save/da")
-    public ResponseEntity<?> save(@RequestBody StudentDto dto){
-        try {
+    public ResponseEntity<?> save(@RequestBody StudentDto dto) throws Exception {
+       // try {
             StudentDto result = studentService.saveOrUpdate(dto, null,1);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        //}
+        //catch (Exception ex){
+        //   return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    @PostMapping("/save/tt")
+    public ResponseEntity<?> saveTT(@RequestBody StudentDto dto){
+        try {
+            StudentDto result = studentService.saveOrUpdate(dto, null,2);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception ex){
