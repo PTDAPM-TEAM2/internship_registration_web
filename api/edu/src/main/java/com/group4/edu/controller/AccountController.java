@@ -1,5 +1,6 @@
 package com.group4.edu.controller;
 
+import com.group4.edu.dto.ChangePasswordDto;
 import com.group4.edu.dto.ResponseToken;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.service.JwtService;
@@ -37,6 +38,16 @@ public class AccountController {
     @GetMapping("/get-all")
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(accountService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePass(@RequestBody ChangePasswordDto passwordDto){
+        try {
+            return new ResponseEntity<>(accountService.changePassword(passwordDto),HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
 

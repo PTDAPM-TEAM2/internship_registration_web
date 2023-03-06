@@ -19,6 +19,6 @@ public interface AccountService {
 
     String getTokenByUsername(String username);
 
-    String changePassword(ChangePasswordDto passwordDto);
+    boolean changePassword(ChangePasswordDto passwordDto) throws Exception;
     void logout();
 }

@@ -128,8 +128,30 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String changePassword(ChangePasswordDto passwordDto) {
-    return null;
+    public boolean changePassword(ChangePasswordDto passwordDto) throws Exception {
+        if(passwordDto == null|| (passwordDto.getNewPassword() == null || passwordDto.getNewPassword().length()<8
+                || passwordDto.getOldPassword() == null)){
+            throw new Exception("Mật khẩu có tối thiểu 8 ký tự");
+        }
+        if(!passwordDto.getNewPassword().equals(passwordDto.getReNewPassword())){
+            throw new Exception("Nhập lại mật khẩu mới không khớp");
+        }
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(userDetails == null || userDetails.getUsername() == null){
+            throw new Exception("Không tìm thấy tài khoản");
+        }
+        String username = userDetails.getUsername();
+        Account account = accountRepository.findByUsername(username);
+        if(account == null){
+            throw new Exception("Không tìm thấy tài khoản");
+        }
+
+        if(!passwordEncoder.matches(passwordDto.getOldPassword(), account.getPassword())){
+            throw  new Exception("Mật khẩu không chính xác");
+        }
+        account.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+        accountRepository.save(account);
+        return true;
     }
 
     @Override

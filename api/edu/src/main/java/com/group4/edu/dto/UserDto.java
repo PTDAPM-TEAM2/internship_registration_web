@@ -54,6 +54,7 @@ public class UserDto extends BaseDto{
     }
 
     public UserDto(User entity, Set<Role> roles){
+        this.setId(entity.getId());
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
