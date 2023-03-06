@@ -4,7 +4,7 @@ import com.group4.edu.domain.BaseObject;
 import com.group4.edu.domain.GraduationThesis;
 
 
-public class GraduationThesisDto extends BaseObject {
+public class GraduationThesisDto extends BaseDto {
     String urlOutline;
     String nameGraduationThesis;
     private Double mark1;
@@ -23,15 +23,21 @@ public class GraduationThesisDto extends BaseObject {
     public GraduationThesisDto(GraduationThesis entity) {
         this.urlOutline = entity.getUrlOutline();
         this.nameGraduationThesis = entity.getNameGraduationThesis();
+        this.setId(entity.getId());
         this.mark1 = entity.getMark1();
         this.mark2 = entity.getMark2();
         this.mark3 = entity.getMark3();
         this.avgMark = entity.getAvgMark();
         this.status = entity.getStatus();
-        this.isAccept = entity.getAccept();
-        this.student = new StudentDto(entity.getStudent());
-        this.registerTime = new RegisterTimeDto(entity.getRegisterTime());
-        this.lecturer = new LecturersDto(entity.getLecturer());
+        if(entity.getAccept() != null)
+            this.isAccept = entity.getAccept();
+        if(entity.getStudent() != null)
+            this.student = new StudentDto(entity.getStudent());
+        if(entity.getRegisterTime() != null)
+            this.registerTime = new RegisterTimeDto(entity.getRegisterTime());
+        if(entity.getLecturer() != null){
+            this.lecturer = new LecturersDto(entity.getLecturer());
+        }
     }
 
     public String getUrlOutline() {

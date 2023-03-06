@@ -2,15 +2,15 @@ package com.group4.edu.controller;
 
 import com.group4.edu.dto.GraduationThesisDto;
 import com.group4.edu.dto.RegisterTimeDto;
+import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.RegisterTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -28,5 +28,22 @@ public class GraduationThesisController {
         catch (Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    //5.7 Use case “Xem thông tin đồ án”
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable("id") Long id){
+        try {
+            GraduationThesisDto result = graduationThesisService.getById(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/getAllBySearch")
+    public List<GraduationThesisDto> getAllBySearch(@RequestBody SearchObjectDto dto){
+        return graduationThesisService.getGraduationThesis(dto);
     }
 }

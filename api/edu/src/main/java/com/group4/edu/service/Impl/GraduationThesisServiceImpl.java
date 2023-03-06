@@ -13,13 +13,10 @@ import com.group4.edu.repositories.StudentRepository;
 import com.group4.edu.service.GraduationThesisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.Query;
 import java.util.List;
 
 @Service
 public class GraduationThesisServiceImpl implements GraduationThesisService {
-    public javax.persistence.EntityManager manager;
 
     @Autowired
     GraduationThesisRepository graduationThesisRepository;
@@ -90,31 +87,27 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
             entity.setLecturer(lecturer);
         }
+        if(dto.getAccept()!=null && dto.getAccept() == false){
+            if(entity.getLecturer() != null){
+                entity.setLecturer(null);
+            }
+        }
         entity = graduationThesisRepository.save(entity);
         return new GraduationThesisDto(entity);
     }
 
     // xem thông tin đồ án
+    public GraduationThesisDto getById(Long id) throws Exception {
+        GraduationThesis graduationThesis = graduationThesisRepository.findById(id).orElse(null);
+        if(graduationThesis == null){
+            throw new Exception("Do an khong ton tai");
+        }
+        return new GraduationThesisDto(graduationThesis);
+    }
 
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
-        String whereClause = " where ";
-        String sql = "SELECT new com.group4.edu.dto.GraduationThesisDto(entity) FROM GraduationThesis as entity";
-        sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
 
-        if (dto.getStatus() != null) {
-            sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
-            whereClause += " AND (entity.status = :status)";
-        }
-
-        sql += whereClause;
-        Query query = manager.createQuery(sql, GraduationThesisDto.class);
-
-        if (dto.getStatus() != null) {
-            query.setParameter("status", dto.getStatus());
-        }
-
-        List<GraduationThesisDto> entities = query.getResultList();
-        return entities;
+        return null;
     }
 }
