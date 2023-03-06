@@ -9,6 +9,20 @@ import styles from './QLDA.module.css';
 function QLDA() {
     const [startDate, setStartDate] = React.useState(dayjs());
     const [dueDate, setDueDate] = React.useState(dayjs());
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const getDate = dayjs();
+    const handleClick = () => {
+        if (startDate < getDate) {
+            setErrorMessage('Ngày không hợp lệ');
+        }
+        else if (startDate > dueDate) {
+            setErrorMessage('Ngày không hợp lệ');
+        }
+        else {
+            setErrorMessage('');
+        }
+
+    }
     return (
         <div>
             <div className={styles.chooseDate}>
@@ -37,12 +51,17 @@ function QLDA() {
                     </LocalizationProvider>
                 </div>
             </div>
+            <div style={{ backgroundColor: "none", height: 10 }}>
+                {errorMessage && <p style={{ color: 'red', marginTop: 20 }}>{errorMessage}</p>}
+            </div>
             <div>
-                <button className={`${styles.button} ${styles.btnSave}`}>Cập nhập</button>
+                <button className={`${styles.button} ${styles.btnSave}`} onClick={handleClick}>Cập nhập</button>
             </div>
             <div className={styles.btnFt}>
-                <button className={`${styles.button} ${styles.btnXD}`}>Xét duyệt đồ án</button>
-                <Link to='/danh-sach-do-an'>
+                <Link to='/quan-ly-do-an/xet-duyet-do-an'>
+                    <button className={`${styles.button} ${styles.btnXD}`}>Xét duyệt đồ án</button>
+                </Link>
+                <Link to='/quan-ly-do-an/danh-sach-do-an'>
                     <button className={`${styles.button} ${styles.btnDS}`}>Danh sách đồ án</button>
                 </Link>
             </div>

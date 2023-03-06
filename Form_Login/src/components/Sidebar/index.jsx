@@ -17,17 +17,16 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
 import Stack from '@mui/material/Stack';
-import PersonIcon from '@mui/icons-material/Person';
 import Popover from '@mui/material/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import styles from './Sidebar.module.css';
 import { Link } from 'react-router-dom';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useLocation } from 'react-router-dom';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
+import Home from '@mui/icons-material/Home';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
@@ -63,6 +62,18 @@ function Sidebar() {
     const [open, setOpen] = React.useState(true);
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
+    const [activeButton, setActiveButton] = React.useState('button1');
+
+    const handleButtonClick = (buttonName) => {
+        setActiveButton(buttonName);
+    };
+
+
+
+    // const handleItemClick = () => {
+    //     console.log(active);
+    // }
+
     const handleDrawerOpen = () => {
         setOpen(true);
         setWidth(300);
@@ -105,11 +116,13 @@ function Sidebar() {
                                 <div>
                                     <IconButton variant="contained" {...bindTrigger(popupState)}>
                                         <div style={{ width: "35px", height: "35px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <PersonIcon ></PersonIcon>
-                                            <ExpandMoreIcon />
+                                            {/* <PersonIcon ></PersonIcon>
+                                            <ExpandMoreIcon /> */}
+                                            <PowerSettingsNewIcon onClick={() => window.location.href = "/dang-nhap"} />
+
                                         </div>
                                     </IconButton>
-                                    <Popover
+                                    {/* <Popover
                                         {...bindPopover(popupState)}
                                         anchorOrigin={{
                                             vertical: 'bottom',
@@ -132,7 +145,7 @@ function Sidebar() {
                                         </Typography>
                                         <Typography sx={{ p: 1 }}>
                                             <ListItem disablePadding>
-                                                <ListItemButton onClick={() => window.location.href = "/dang-nhap"}>
+                                                <ListItemButton onClick={() => window.location.href = "/dang-nhap"} ref={nav}>
                                                     <ListItemIcon>
                                                         <LogoutIcon />
                                                     </ListItemIcon>
@@ -140,7 +153,7 @@ function Sidebar() {
                                                 </ListItemButton>
                                             </ListItem>
                                         </Typography>
-                                    </Popover>
+                                    </Popover> */}
                                 </div>
                             )}
                         </PopupState>
@@ -182,51 +195,67 @@ function Sidebar() {
                             marginTop: 10,
                         }}
                     />
-                    <h1>ADMIN</h1>
-                    <List>
-                        <IconButton>
-                            <AccountCircleIcon className={styles.icon} />
-                        </IconButton>
-                        <IconButton onClick={() => window.location.href = "/dang-nhap"}>
-                            <LogoutIcon className={styles.icon} />
-                        </IconButton>
-                    </List>
+                    <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>ADMIN</h1>
+
                 </Stack>
 
                 {(location.pathname === '/quan-ly-do-an-sinh-vien' ||
                     location.pathname === '/quan-ly-do-an' ||
                     location.pathname === '/quan-ly-giao-vien-da' ||
                     location.pathname === '/quan-ly-sinh-vien-da' ||
-                    location.pathname === '/danh-sach-do-an' ||
-                    location.pathname === '/danh-sach-sinh-vien-da' ||
-                    location.pathname === '/danh-sach-giao-vien-da'
+                    location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
+                    location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
+                    location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
+                    location.pathname === '/ChiTietXD' ||
+                    location.pathname === '/ThemSV-da' ||
+                    location.pathname === '/ThemGV-da' ||
+                    location.pathname === '/ChiTietSV-da' ||
+                    location.pathname === '/ChiTietGV-da' ||
+                    location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
+                    location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
+                    location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
+                    location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv'
                 ) &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                            <Link to="/quan-ly-do-an-sinh-vien" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button1' ? styles.active : {}}
+                                    onClick={() => handleButtonClick('button1')} >
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <Home className={styles.icon} />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Trang chủ' />
+                                </ListItemButton>
+                            </Link >
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button2' ? styles.active : {}}
+                                    onClick={() => handleButtonClick('button2')}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
+                                    <ListItemIcon>
+                                        <MenuBookIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý đồ án' />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button3' ? styles.active : {}}
+                                    onClick={() => handleButtonClick('button3')} >
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý sinh viên' />
                                 </ListItemButton>
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button4' ? styles.active : {}}
+                                    onClick={() => handleButtonClick('button4')}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý giáo viên' />
                                 </ListItemButton>
@@ -243,14 +272,31 @@ function Sidebar() {
                     location.pathname === '/quan-ly-sinh-vien-tt' ||
                     location.pathname === '/danh-sach-cong-ty' ||
                     location.pathname === '/danh-sach-sinh-vien-tt' ||
-                    location.pathname === '/danh-sach-giao-vien-tt')
+                    location.pathname === '/danh-sach-giao-vien-tt' ||
+                    location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
+                    location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
+                    location.pathname === '/ChiTietCT-tt' ||
+                    location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
+                    location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
+                    location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
+                )
                     &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-cong-ty" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                            <Link to="/quan-ly-sinh-vien-thuc-tap" style={{ width: '100%', textDecoration: 'none' }}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <Home className={styles.icon} />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Trang chủ' />
+                                </ListItemButton>
+                            </Link >
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <Link to="/quan-ly-cong-ty" style={{ width: '100%', textDecoration: 'none' }}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
+                                    <ListItemIcon>
+                                        <MenuBookIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý công ty' />
                                 </ListItemButton>
@@ -258,9 +304,9 @@ function Sidebar() {
                         </ListItem>
                         <ListItem disablePadding>
                             <Link to="/quan-ly-sinh-vien-tt" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý sinh viên' />
                                 </ListItemButton>
@@ -268,9 +314,9 @@ function Sidebar() {
                         </ListItem>
                         <ListItem disablePadding>
                             <Link to="/quan-ly-giao-vien-tt" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white' }}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
                                     <ListItemIcon>
-                                        <HomeIcon className={styles.icon} />
+                                        <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Quản lý giáo viên' />
                                 </ListItemButton>

@@ -5,14 +5,15 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Sidebar from "../../Sidebar/index.jsx";
-import { useContext } from 'react';
-import { ThemeContext } from '../../Theme/Theme.jsx';
 import styles from './DSGiaoVien.module.css';
-import { Link } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import SearchIcon from '@mui/icons-material/Search';
 
 const columns = [
     {
@@ -22,50 +23,83 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'DoAn',
-        label: 'Tên đồ án',
+        id: 'TenGiangVien',
+        label: 'Tên giảng viên',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'SinhVien',
-        label: 'Tên sinh viên',
+        id: 'Khoa',
+        label: 'Khoa',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'GiaoVien',
-        label: 'Tên giáo viên',
+        id: 'SLSV',
+        label: 'Số lượng sinh viên quản lý',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Ngay',
-        label: 'Ngày',
+        id: 'SĐT',
+        label: 'Số điện thoại',
         minWidth: 170,
         align: 'center',
     },
 ];
 
-function createData(STT, DoAn, SinhVien, GiaoVien, Ngay) {
-    return { STT, DoAn, SinhVien, GiaoVien, Ngay };
+function createData(STT, TenGiangVien, Khoa, SLSV, SĐT) {
+    return { STT, TenGiangVien, Khoa, SLSV, SĐT };
 }
 
 const rows = [
-    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
-    createData(2, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
-    createData(3, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
+    createData(1, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
+    createData(2, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
+    createData(3, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
 ];
 function DSGV() {
+    const navigate = useNavigate();
+
+    function handleGo() {
+        navigate('/ThemGV-da');
+    }
+    const [value, setValue] = React.useState('');
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+    function handleGoClick() {
+        navigate('/ChiTietGV-da');
+    }
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.contain}>
+                <div className={styles.header}>
+                    <div className={styles.search}>
+                        <input type="text" placeholder="Nhập tìm kiếm: " />
+                        <SearchIcon />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ marginBottom: '22px' }}>
+                            <FormControl sx={{ m: 1, width: 350, mt: 3, height: 50 }}>
+                                <InputLabel id="demo-simple-select-label" >Lọc</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={value}
+                                    onChange={handleChange}
+                                    label="Lọc"
+                                >
+                                    <MenuItem value={10}>Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={20}>Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <button className={styles.button} style={{ color: 'white' }} onClick={handleGo}>Thêm</button>
+                    </div>
+                </div>
                 <div className={styles.direct}>
-                    <Link to='/quan-ly-giao-vien-da'>
-                        Quản lý giáo viên
-                    </Link>
-                    <p>{'>'} Danh sách giáo viên</p>
+                    <p>Danh sách giảng viên</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -87,7 +121,7 @@ function DSGV() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGoClick}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     return (
@@ -106,9 +140,6 @@ function DSGV() {
                         </TableContainer>
                     </Paper>
                 </div>
-                <Link to='/quan-ly-giao-vien-da'>
-                    <button className={styles.btn}>Quay lại</button>
-                </Link>
             </div>
         </div>
 

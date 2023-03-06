@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -7,16 +6,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import { Link, useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import Grid from '@mui/material/Grid';
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import styles from './Login.module.css';
-import Alert from '../Alert/index.jsx';
 import { useContext } from 'react';
 import { ThemeContext } from '../Theme/Theme.jsx';
 
@@ -30,7 +27,6 @@ function Login() {
     const [width, setWidth] = useState(window.innerWidth);
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
-
     const context = useContext(ThemeContext);
     const handleClickTT = () => {
         context.updateToggle(false);
@@ -73,10 +69,10 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (username === '' || password === '') {
-            setErrorMessage('Hãy điền đủ tên đăng nhập và mật khẩu!')
+            setErrorMessage('Nhập thiếu thông tin! Vui lòng nhập lại!')
         }
         else if (username !== 'admin' || password !== 'admin') {
-            setErrorMessage('Tên đăng nhập hoặc mật khẩu sai. Hãy thử lại!');
+            setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
         }
         else if (context.toggle === true) {
             setShowAlert(true);
@@ -106,7 +102,17 @@ function Login() {
 
     return (
         <div className={styles.bg}>
-            {showAlert && <Alert/>}
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        top: '3%',
+                        right: '1%'
+                    }}>
+                        <AlertTitle>Đăng nhập thành công</AlertTitle>
+                    </Alert>
+                </div>}
             <Grid container columns={12} sx={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <Box
@@ -124,7 +130,7 @@ function Login() {
                     >
                         {hide && (width >= 1000) &&
                             <div className={styles.image}>
-                                <img src="https://trangedu.com/wp-content/uploads/2020/05/dh-thuy-loi.jpg" alt="" />
+                                <img src="https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-6/334267397_525694706433267_7682866644021379812_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=4GtWw4SbqrEAX9tLaiF&_nc_ht=scontent.fhan5-8.fna&oh=00_AfCRG3RZbyxRez9OjS2-CGsf4zNHUUQ_qEpEUTkVwMt_yw&oe=64048D2A" alt="" />
                             </div>
                         }
                         <Stack

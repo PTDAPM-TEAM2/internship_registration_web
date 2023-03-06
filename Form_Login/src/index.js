@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './components/Theme/Theme.jsx';
 import { Provider } from 'mobx-react';
-import Store from './Store';
+import Store from './stores/Store';
 
 const myStore = new Store();
 const root = ReactDOM.createRoot(document.getElementById('root'));

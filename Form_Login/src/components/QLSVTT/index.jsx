@@ -2,7 +2,7 @@ import React from 'react'
 
 const QLSVTT = () => {
   return (
-    <div>thực tập</div>
+    <div></div>
   )
 }
 

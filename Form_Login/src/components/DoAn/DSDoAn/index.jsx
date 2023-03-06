@@ -12,7 +12,8 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../Theme/Theme.jsx';
 import styles from './DSDoAn.module.css';
 import { Link } from 'react-router-dom';
-
+import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 const columns = [
     {
         id: 'STT',
@@ -57,15 +58,19 @@ const rows = [
 ];
 function DSDA() {
     const context = useContext(ThemeContext);
+    const navigate = useNavigate();
+    function handleGoClick() {
+        navigate('/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv');
+    }
+
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.contain}>
+                <div className={styles.btnND}>
+                    <Button variant="contained" onClick={handleGoClick}>Nhập điểm</Button>
+                </div>
                 <div className={styles.direct}>
-                    <Link to='/quan-ly-do-an'>
-                        Quản lý đồ án
-                    </Link>
-                    <p>{'>'} Danh sách đồ án</p>
+                    <p>Danh sách đồ án</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -106,11 +111,8 @@ function DSDA() {
                         </TableContainer>
                     </Paper>
                 </div>
-                <Link to='/quan-ly-do-an'>
-                    <button className={styles.btn}>Quay lại</button>
-                </Link>
             </div>
-        </div>
+        </div >
 
     )
 }

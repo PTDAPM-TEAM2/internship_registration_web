@@ -1,35 +1,10 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Stack from '@mui/material/Stack';
-import PersonIcon from '@mui/icons-material/Person';
-import Popover from '@mui/material/Popover';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import PeopleIcon from '@mui/icons-material/People';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import styles from './Dashboard.module.css';
-import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 const drawerWidth = 300;
 
@@ -115,79 +90,100 @@ export default function Dashboard() {
     return (
         <div className={styles.contain}>
             <Main open={open}>
-                <div style={{ width: '100%' }}>
-                    <div className={styles.db}>
-                        <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
-                            <div className={styles.infoTag}>
-                                <h1>1</h1>
-                                {(location.pathname === '/quan-ly-do-an-sinh-vien' ||
-                                    location.pathname === '/quan-ly-do-an' ||
-                                    location.pathname === '/quan-ly-giao-vien-da' ||
-                                    location.pathname === '/quan-ly-sinh-vien-da') &&
+                {(location.pathname === '/quan-ly-do-an-sinh-vien' ||
+                    location.pathname === '/quan-ly-do-an' ||
+                    location.pathname === '/quan-ly-giao-vien-da' ||
+                    location.pathname === '/quan-ly-sinh-vien-da') &&
+                    <div style={{ width: '100%' }}>
+                        <div className={styles.db}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
+                                <div className={styles.infoTag}>
                                     <p>Đồ án</p>
-                                }
-                                {(location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
-                                    location.pathname === '/quan-ly-cong-ty' ||
-                                    location.pathname === '/quan-ly-giao-vien-tt' ||
-                                    location.pathname === '/quan-ly-sinh-vien-tt') &&
+                                </div>
+                                <div className={styles.bgDB}>
+                                    <MenuBookIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
+                                <div className={styles.infoTag}>
+                                    <p>Sinh viên</p>
+                                </div>
+                                <div className={styles.bgDB1}>
+                                    <PeopleIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                                <div className={styles.infoTag}>
+                                    <p>Giáo viên</p>
+                                </div>
+                                <div className={styles.bgDB2}>
+                                    <PeopleIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
+                                <div className={styles.infoTime}>
+                                    <div className={styles.time}>{formatTime(time)}</div>
+                                    <div className={styles.date}>{formatDate(time)}</div>
+                                </div>
+                                <div className={styles.bgDB3}>
+                                    <AccessTimeIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{ paddingTop: 40 }}>
+                            {/* {children.map((child) => child)} */}
+                            {/* <Outlet /> */}
+
+                        </div>
+                    </div>
+                }
+                {(location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
+                    location.pathname === '/quan-ly-cong-ty' ||
+                    location.pathname === '/quan-ly-giao-vien-tt' ||
+                    location.pathname === '/quan-ly-sinh-vien-tt') &&
+                    <div style={{ width: '100%' }}>
+                        <div className={styles.db}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
+                                <div className={styles.infoTag}>
                                     <p>Thực tập</p>
-                                }
+                                </div>
+                                <div className={styles.bgDB}>
+                                    <MenuBookIcon style={{ fontSize: 130 }} />
+                                </div>
                             </div>
-                            <div className={styles.bgDB}>
-                                <MenuBookIcon style={{ fontSize: 130 }} />
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
+                                <div className={styles.infoTag}>
+                                    <p>Sinh viên</p>
+                                </div>
+                                <div className={styles.bgDB1}>
+                                    <PeopleIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                                <div className={styles.infoTag}>
+                                    <p>Giáo viên</p>
+                                </div>
+                                <div className={styles.bgDB2}>
+                                    <PeopleIcon style={{ fontSize: 130 }} />
+                                </div>
+                            </div>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
+                                <div className={styles.infoTime}>
+                                    <div className={styles.time}>{formatTime(time)}</div>
+                                    <div className={styles.date}>{formatDate(time)}</div>
+                                </div>
+                                <div className={styles.bgDB3}>
+                                    <AccessTimeIcon style={{ fontSize: 130 }} />
+                                </div>
                             </div>
                         </div>
-                        <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
-                            <div className={styles.infoTag}>
-                                <h1>1</h1>
-                                <p>Sinh viên</p>
-                            </div>
-                            <div className={styles.bgDB1}>
-                                <GroupAddIcon style={{ fontSize: 130 }} />
-                            </div>
-                        </div>
-                        <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
-                            <div className={styles.infoTag}>
-                                <h1>1</h1>
-                                <p>Giáo viên</p>
-                            </div>
-                            <div className={styles.bgDB2}>
-                                <GroupAddIcon style={{ fontSize: 130 }} />
-                            </div>
-                        </div>
-                        <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
-                            <div className={styles.infoTime}>
-                                <div className={styles.time}>{formatTime(time)}</div>
-                                <div className={styles.date}>{formatDate(time)}</div>
-                            </div>
-                            <div className={styles.bgDB3}>
-                                <AccessTimeIcon style={{ fontSize: 130 }} />
-                            </div>
+                        <div style={{ paddingTop: 40 }}>
+                            {/* {children.map((child) => child)} */}
+                            {/* <Outlet /> */}
+
                         </div>
                     </div>
-                    <div style={{ paddingTop: 40 }}>
-                        {/* {children.map((child) => child)} */}
-                        {/* <Outlet /> */}
-
-                    </div>
-                </div>
-                {/* {
-                        direct === false &&
-                        <div style={{ paddingTop: 100 }}>
-                            {childrenOfChild.map((child) => child)}
-                        </div>
-                    } */}
-                {/* {['Đồ án', 'Sinh viên', 'Giáo viên'].map((item, index) => (
-                        <div className={styles.dashBoard}>
-                            <h1>1</h1>
-                            <p>{item}</p>
-                            <div className={styles.bgDB2}>
-                                <GroupAddIcon style={{ fontSize: 130 }} />
-                            </div>
-                            <a href="http://">Xem thêm</a>
-                        </div>
-                    ))} */}
-
+                }
             </Main>
         </div >
     );

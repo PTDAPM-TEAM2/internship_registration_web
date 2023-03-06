@@ -8,10 +8,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './DSSinhVien.module.css';
-import { Link } from 'react-router-dom';
-import Sidebar from "../../Sidebar/index.jsx";
 import { useContext } from 'react';
 import { ThemeContext } from '../../Theme/Theme.jsx';
+import { useNavigate } from "react-router-dom";
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
 
 const columns = [
     {
@@ -22,50 +26,83 @@ const columns = [
     },
     {
         id: 'Hoten',
-        label: 'Họ tên',
+        label: 'Tên sinh viên',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Ma',
-        label: 'Mã sinh viên',
+        id: 'Lop',
+        label: 'Lớp',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Khoa',
-        label: 'Khoa',
+        id: 'TenDoAn',
+        label: 'Tên đồ án',
+        minWidth: 170,
+        align: 'center',
+    },
+    {
+        id: 'Ky',
+        label: 'Kỳ',
         minWidth: 170,
         align: 'center',
     }
 ];
 
-function createData(STT, Hoten, Ma, Khoa) {
-    return { STT, Hoten, Ma, Khoa };
+function createData(STT, Hoten, Lop, TenDoAn, Ky) {
+    return { STT, Hoten, Lop, TenDoAn, Ky };
 }
 
 const rows = [
-    createData(1, 'Nguyễn Đức Tâm', '2051060693', 'Công nghệ thông tin'),
-    createData(2, 'Nguyễn Đức Tâm', '2051060693', 'Công nghệ thông tin'),
-    createData(3, 'Nguyễn Đức Tâm', '2051060693', 'Công nghệ thông tin'),
+    createData(1, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
+    createData(2, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
+    createData(3, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
 ];
-function DSDA() {
+function DSSVDA() {
+    const navigate = useNavigate();
+
+    function handleMoveAdd() {
+        navigate('/ThemSV-da');
+    }
+    const [value, setValue] = React.useState('');
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+    function handleGoClick() {
+        navigate('/ChiTietSV-da');
+    }
     const context = useContext(ThemeContext);
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.contain}>
                 <div className={styles.header}>
-                    <div className={styles.direct}>
-                        <Link to='/quan-ly-sinh-vien-da'  className={styles.link}>
-                            Quản lý sinh viên
-                        </Link>
-                        <p>{'>'} Danh sách sinh viên</p>
+                    <div className={styles.search}>
+                        <input type="text" placeholder="Nhập tìm kiếm: " />
+                        <SearchIcon />
                     </div>
-                    {/* <div className={styles.search}>
-                            <input type="text" placeholder="Search" />
-                            <SearchIcon />
-                        </div> */}
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ marginBottom: '22px' }}>
+                            <FormControl sx={{ m: 1, width: 350, mt: 3, height: 50 }}>
+                                <InputLabel id="demo-simple-select-label" >Lọc</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={value}
+                                    onChange={handleChange}
+                                    label="Lọc"
+                                >
+                                    <MenuItem value={10}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={20}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</button>
+                    </div>
+                </div>
+                <div className={styles.direct}>
+                    <p>Danh sách sinh viên</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -87,7 +124,7 @@ function DSDA() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} >
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGoClick}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     return (
@@ -106,12 +143,9 @@ function DSDA() {
                         </TableContainer>
                     </Paper>
                 </div>
-                <Link to='/quan-ly-sinh-vien-da' >
-                    <button className={styles.btn}>Quay lại</button>
-                </Link>
             </div>
         </div>
 
     )
 }
-export default DSDA;
+export default DSSVDA;
