@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class EntityAuditListener {
-//    @PrePersist
+    @PrePersist
     public void beforePersit(AuditableEntity auditableEntity) {
         Date date = new Date();
         auditableEntity.setCreateDate(date);
@@ -27,7 +27,7 @@ public class EntityAuditListener {
         }
     }
 
-//    @PreUpdate
+    @PreUpdate
     public void beforeMerge(AuditableEntity auditableEntity) {
         Date date = new Date();
         auditableEntity.setModifyDate(date);
