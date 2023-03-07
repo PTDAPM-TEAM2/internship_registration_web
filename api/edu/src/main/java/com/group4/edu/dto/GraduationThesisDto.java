@@ -1,6 +1,5 @@
 package com.group4.edu.dto;
 
-import com.group4.edu.domain.BaseObject;
 import com.group4.edu.domain.GraduationThesis;
 
 
@@ -12,7 +11,7 @@ public class GraduationThesisDto extends BaseDto {
     private Double mark3;
     private Double avgMark;
     Integer status; //0 đang chờ duyệt, 1 đang làmm, 2 là bị huỷ, 3 hoàn thành
-    Boolean isAccept; //0 giáo viên chưa tiếp nhận, 1 giáo viên đã tiếp nhận
+    Integer isAccept;
     StudentDto student;
     RegisterTimeDto registerTime;
     LecturersDto lecturer;
@@ -23,14 +22,13 @@ public class GraduationThesisDto extends BaseDto {
     public GraduationThesisDto(GraduationThesis entity) {
         this.urlOutline = entity.getUrlOutline();
         this.nameGraduationThesis = entity.getNameGraduationThesis();
-        this.setId(entity.getId());
         this.mark1 = entity.getMark1();
         this.mark2 = entity.getMark2();
         this.mark3 = entity.getMark3();
         this.avgMark = entity.getAvgMark();
         this.status = entity.getStatus();
-        if(entity.getAccept() != null)
-            this.isAccept = entity.getAccept();
+        if(entity.getIsAccept() != null)
+            this.isAccept = entity.getIsAccept();
         if(entity.getStudent() != null)
             this.student = new StudentDto(entity.getStudent());
         if(entity.getRegisterTime() != null)
@@ -96,12 +94,12 @@ public class GraduationThesisDto extends BaseDto {
         this.status = status;
     }
 
-    public Boolean getAccept() {
+    public Integer getIsAccept() {
         return isAccept;
     }
 
-    public void setAccept(Boolean accept) {
-        isAccept = accept;
+    public void setIsAccept(Integer isAccept) {
+        this.isAccept = isAccept;
     }
 
     public StudentDto getStudent() {

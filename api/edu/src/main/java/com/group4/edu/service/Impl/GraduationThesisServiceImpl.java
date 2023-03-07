@@ -37,19 +37,19 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             throw new Exception("Hãy nhập thông tin");
         }
         GraduationThesis entity = null;
-        if(dto.getStudent() != null && dto.getStudent().getId() != null
-                && dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null ){
-            List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllBySVAndRegisterTime(dto.getStudent().getId(), dto.getRegisterTime().getId());
-            if(graduationThesis != null && graduationThesis.size() > 0){
-                throw new Exception("Sinh viên đã có đồ án");
-            }
-        }
 
         if(dto.getId() != null){
             entity = graduationThesisRepository.findById(dto.getId()).orElse(null);
         }
         if(entity == null){
             entity = new GraduationThesis();
+            if(dto.getStudent() != null && dto.getStudent().getId() != null
+                    && dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null ){
+                List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllBySVAndRegisterTime(dto.getStudent().getId(), dto.getRegisterTime().getId());
+                if(graduationThesis != null && graduationThesis.size() > 0){
+                    throw new Exception("Sinh viên đã có đồ án");
+                }
+            }
         }
 
         if(dto.getNameGraduationThesis() != null){
@@ -76,8 +76,8 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto.getStatus() != null){
             entity.setStatus(dto.getStatus());
         }
-        if(dto.getAccept() != null){
-            entity.setAccept((dto.getAccept()));
+        if(dto.getIsAccept() != null){
+            entity.setIsAccept((dto.getIsAccept()));
         }
         if(dto.getStudent() != null && dto.getStudent().getId() != null){
             Student student = studentRepository.findById(dto.getStudent().getId()).orElse(null);
@@ -100,7 +100,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
             entity.setLecturer(lecturer);
         }
-        if(dto.getAccept()!=null && dto.getAccept() == false){
+        if(dto.getIsAccept()!=null && dto.getIsAccept() == 0){
             if(entity.getLecturer() != null){
                 entity.setLecturer(null);
             }
@@ -128,6 +128,12 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
 //            sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
             whereClause += " AND (entity.status = :status)";
         }
+        if(dto.getLecturerId() != null){
+            whereClause += " AND (entity.lecturer.id = :lecturerId)";
+        }
+        if(dto.getIsAccept() != null){
+            whereClause += " AND (entity.isAccept = :isAccept)";
+        }
 
         sql += whereClause;
         Query query = manager.createQuery(sql, GraduationThesisDto.class);
@@ -135,7 +141,12 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if (dto.getStatus() != null) {
             query.setParameter("status", dto.getStatus());
         }
-
+        if(dto.getLecturerId() != null){
+            query.setParameter("lecturerId", dto.getLecturerId());
+        }
+        if(dto.getIsAccept() != null){
+            query.setParameter("isAccept", dto.getIsAccept());
+        }
         List<GraduationThesisDto> entities = query.getResultList();
         return entities;
     }

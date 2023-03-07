@@ -16,6 +16,7 @@ public class LecturersDto extends BaseDto {
     private Set<RoleDto> roles;
 
     public LecturersDto(Lecturer entity){
+        this.setId(entity.getId());
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
