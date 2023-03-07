@@ -1,12 +1,14 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_role")
-public class Role extends  BaseObject{
+public class Role extends BaseObject {
     @Column(nullable = false, unique = true)
     String role;
 

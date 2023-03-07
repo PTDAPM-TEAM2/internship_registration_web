@@ -1,5 +1,7 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ import java.util.Date;
 @Inheritance(
         strategy = InheritanceType.JOINED
 )
-public class User extends BaseObject{
+public class User extends BaseObject {
     private String firstName;
     private String lastName;
     private String fullName;

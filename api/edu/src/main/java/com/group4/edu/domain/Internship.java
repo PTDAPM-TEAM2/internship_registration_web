@@ -1,5 +1,7 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -7,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_intern_ship")
-public class Internship extends BaseObject{
+public class Internship extends BaseObject {
     private String internshipPosition;
     private Double mark;
     private String evaluate;
