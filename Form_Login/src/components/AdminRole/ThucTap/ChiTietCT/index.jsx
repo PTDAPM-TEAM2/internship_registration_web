@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietCT.module.css';
-import Sidebar from '../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -86,7 +85,6 @@ const ChiTietCT = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết công ty</p>

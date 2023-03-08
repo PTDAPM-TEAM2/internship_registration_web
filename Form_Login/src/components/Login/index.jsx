@@ -18,7 +18,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../Theme/Theme.jsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import userApi from "../../api/userApi";
+import userApi from "../../api/authApi";
 
 function Login() {
     const [username, setUsername] = useState("");

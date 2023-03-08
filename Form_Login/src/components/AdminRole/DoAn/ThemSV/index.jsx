@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ThemSV.module.css';
-import Sidebar from '../../Sidebar';
+import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -10,7 +10,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Grid from '@mui/material/Grid';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -52,9 +51,7 @@ const ThemSV = () => {
         email: '',
     };
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = RegExp(
-        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
-    );
+    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
     const validation = Yup.object().shape({
         name: Yup.string().required('Required'),
         email: Yup.string()

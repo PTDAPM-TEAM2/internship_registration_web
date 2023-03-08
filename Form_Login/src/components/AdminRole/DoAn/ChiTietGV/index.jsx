@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { TextField } from '@mui/material';
-import styles from './ThemGV.module.css';
-import Sidebar from '../../Sidebar';
+import { Button, TextField } from '@mui/material';
+import styles from './ChiTietGV.module.css';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -9,69 +8,74 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
-const ThemGV = () => {
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center',
+
+};
+
+const ChiTietGV = () => {
     const [showAlert, setShowAlert] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
-    const [imageFile, setImageFile] = React.useState(null);
-    const [imageUrl, setImageUrl] = React.useState(null);
     const [date, setDate] = React.useState(dayjs());
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleImageFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
-
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         setShowAlert(true);
         setTimeout(() => {
-            navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da');
+            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
+            setShowAlert(false);
         }, 1000)
+        console.log('Sửa');
     }
+
+    function handleGo() {
+        setOpen(false);
+        setTimeout(() => {
+            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
+        }, 500)
+    }
+
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thêm Giảng Viên</p>
-                    <form onSubmit={handleSubmit}>
+                    <p className={styles.title}>Thông tin chi tiết giảng viên</p>
+                    <form>
                         <div className={styles.formAccount}>
                             <div>
                                 <div className={styles.txt}>
-                                    {(imageFile === null) &&
-                                        <div>
-                                            <label htmlFor="file" className={styles.upload} >
-                                                <FileUploadIcon />
-                                                <span>Tải lên</span>
-                                            </label>
-                                            <input className={styles.fileInput} name='file' id='file' type="file" accept=".jpg, .jpeg, .png" onChange={handleImageFileChange} />
-                                        </div>
-                                    }
-                                    {
-                                        imageFile &&
-                                        <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }}/>
-                                        </div>
-                                    }
+                                    <div className={styles.image}>
+                                        <img src="" alt='avatar' style={{ maxWidth: '100%' }} />
+                                    </div>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Giới tính: </p>
-                                    <TextField required />
+                                    <TextField defaultValue='Nữ' required />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Họ tên: </p>
-                                    <TextField className={styles.txtField} />
+                                    <TextField defaultValue='Nguyễn Ngọc Châu' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số căn cước: </p>
-                                    <TextField className={styles.txtField} />
+                                    <TextField defaultValue='045587934300' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Ngày sinh: </p>
@@ -83,49 +87,65 @@ const ThemGV = () => {
                                                 setDate(newValue);
                                             }}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs()}
+                                            defaultValue={dayjs('01/02/1988')}
                                         />
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Nơi sinh: </p>
-                                    <TextField className={styles.txtField} />
+                                    <TextField defaultValue='Hà Nội' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField className={styles.txtField} />
+                                    <TextField defaultValue='09877547123' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
-                                    <TextField className={styles.txtField} />
+                                    <TextField defaultValue='chau@gmail.com' className={styles.txtField} />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã giảng viên{'('} Tên đăng nhập {')'}: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <p>Mã giảng viên: </p>
+                                <TextField defaultValue='1002003987' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField defaultValue='Công nghệ thông tin' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Số lượng SV quản lý: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField defaultValue='25' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField defaultValue='Chautlu1234' className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} style={{ color: 'white' }}>Thêm</button>
+                            <Button className={styles.button} onClick={handleSubmit}>Sửa</Button>
+                            <Button className={styles.button} onClick={handleOpen}>Xóa</Button>
                         </div>
                     </form>
                 </div>
-
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} >
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Có muốn xóa không ?
+                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                        <Button className={styles.button} onClick={handleGo}>Có</Button>
+                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                    </div>
+                </Box>
+            </Modal>
             {showAlert &&
                 <div>
                     <Alert severity="success" sx={{
@@ -134,11 +154,11 @@ const ThemGV = () => {
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                        <AlertTitle>Sửa thông tin giảng viên thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>
     );
 };
 
-export default ThemGV;
+export default ChiTietGV;

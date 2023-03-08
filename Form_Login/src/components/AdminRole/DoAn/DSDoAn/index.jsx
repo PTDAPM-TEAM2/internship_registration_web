@@ -7,12 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useContext } from 'react';
-import { ThemeContext } from '../../Theme/Theme.jsx';
-import styles from './DSCT.module.css';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+import styles from './DSDoAn.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import companyApi from '../../../api/companyApi.js';
 const columns = [
     {
         id: 'STT',
@@ -21,52 +20,55 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'Ma',
-        label: 'Mã công ty',
+        id: 'DoAn',
+        label: 'Tên đồ án',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Ten',
-        label: 'Tên công ty',
+        id: 'SinhVien',
+        label: 'Tên sinh viên',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'SDT',
-        label: 'Số điện thoại',
+        id: 'GiaoVien',
+        label: 'Tên giáo viên',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Email',
-        label: 'Email',
+        id: 'Ngay',
+        label: 'Ngày',
         minWidth: 170,
         align: 'center',
     },
 ];
 
-function createData(STT, Ma, Ten, SĐT, Email) {
-    return { STT, Ma, Ten, SĐT, Email };
+function createData(STT, DoAn, SinhVien, GiaoVien, Ngay) {
+    return { STT, DoAn, SinhVien, GiaoVien, Ngay };
 }
 
-var rows = [
-    // createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    // createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    // createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+const rows = [
+    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
+    createData(2, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
+    createData(3, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
 ];
-function DSCT() {
-    rows = companyApi.getAll();
+function DSDA() {
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
-    const handleGo = () => {
-        navigate('/ChiTietCT-tt')
+    function handleGoClick() {
+        navigate('/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv');
     }
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
+                <div className={styles.btnND}>
+                    <Button variant="contained" onClick={handleGoClick}>Nhập điểm</Button>
+                </div>
                 <div className={styles.direct}>
-                    <p>Danh sách công ty</p>
+                    <p>Danh sách đồ án</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -88,7 +90,7 @@ function DSCT() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGo}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     return (
@@ -112,4 +114,4 @@ function DSCT() {
 
     )
 }
-export default DSCT;
+export default DSDA;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
-import styles from './ChiTietGV.module.css';
-import Sidebar from '../../Sidebar';
+import styles from './ChiTietSV.module.css';
+// import Sidebar from '../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -24,10 +24,10 @@ const style = {
     boxShadow: 24,
     p: 4,
     textAlign: 'center',
-
+    
 };
 
-const ChiTietGV = () => {
+const ChiTietSV = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ const ChiTietGV = () => {
     const handleSubmit = () => {
         setShowAlert(true);
         setTimeout(() => {
-            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
+            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
             setShowAlert(false);
         }, 1000)
         console.log('Sửa');
@@ -47,16 +47,16 @@ const ChiTietGV = () => {
     function handleGo() {
         setOpen(false);
         setTimeout(() => {
-            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
+            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
         }, 500)
     }
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
+            {/* <Sidebar /> */}
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thông tin chi tiết giảng viên</p>
+                    <p className={styles.title}>Thông tin chi tiết sinh viên</p>
                     <form>
                         <div className={styles.formAccount}>
                             <div>
@@ -67,17 +67,17 @@ const ChiTietGV = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Giới tính: </p>
-                                    <TextField defaultValue='Nữ' required />
+                                    <TextField defaultValue='Nam' required />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Họ tên: </p>
-                                    <TextField defaultValue='Nguyễn Ngọc Châu' className={styles.txtField} />
+                                    <TextField defaultValue='Nguyễn Đức Tâm' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số căn cước: </p>
-                                    <TextField defaultValue='045587934300' className={styles.txtField} />
+                                    <TextField defaultValue='064202000021' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Ngày sinh: </p>
@@ -89,40 +89,44 @@ const ChiTietGV = () => {
                                                 setDate(newValue);
                                             }}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs('01/02/1988')}
+                                            defaultValue={dayjs()}
                                         />
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Nơi sinh: </p>
-                                    <TextField defaultValue='Hà Nội' className={styles.txtField} />
+                                    <TextField defaultValue='Gia Lai' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField defaultValue='09877547123' className={styles.txtField} />
+                                    <TextField defaultValue='0123456789' className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
-                                    <TextField defaultValue='chau@gmail.com' className={styles.txtField} />
+                                    <TextField defaultValue='tam21@gmail.com' className={styles.txtField} />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã giảng viên: </p>
-                                <TextField defaultValue='1002003987' className={styles.txtFieldBot} />
+                                <p>Mã sinh viên: </p>
+                                <TextField defaultValue='2051061234' className={styles.txtFieldBot} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p>Lớp: </p>
+                                <TextField defaultValue='62PM02' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
                                 <TextField defaultValue='Công nghệ thông tin' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
-                                <p>Số lượng SV quản lý: </p>
-                                <TextField defaultValue='25' className={styles.txtFieldBot} />
+                                <p>Mật khẩu: </p>
+                                <TextField defaultValue='abc12345' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField defaultValue='Chautlu1234' className={styles.txtFieldBot} />
+                                <p>Kỳ: </p>
+                                <TextField defaultValue='01/2022-2023' className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>
@@ -143,8 +147,8 @@ const ChiTietGV = () => {
                         Có muốn xóa không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <Button className={styles.button} onClick={handleGo}>Có</Button>
-                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleGo}>Có</button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleClose}>Không</button>
                     </div>
                 </Box>
             </Modal>
@@ -156,11 +160,11 @@ const ChiTietGV = () => {
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Sửa thông tin giảng viên thành công !</AlertTitle>
+                        <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>
     );
 };
 
-export default ChiTietGV;
+export default ChiTietSV;

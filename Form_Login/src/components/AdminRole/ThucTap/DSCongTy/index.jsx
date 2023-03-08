@@ -6,17 +6,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import SearchIcon from '@mui/icons-material/Search';
-import styles from './DSSinhVien.module.css';
 import { useContext } from 'react';
-import { ThemeContext } from '../../Theme/Theme.jsx';
-import { useNavigate } from "react-router-dom";
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+import styles from './DSCT.module.css';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-
+import { useNavigate } from "react-router-dom";
+import companyApi from '../../../../api/companyApi.js';
 const columns = [
     {
         id: 'STT',
@@ -25,84 +21,52 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'Hoten',
-        label: 'Tên sinh viên',
+        id: 'Ma',
+        label: 'Mã công ty',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Lop',
-        label: 'Lớp',
+        id: 'Ten',
+        label: 'Tên công ty',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'TenDoAn',
-        label: 'Tên đồ án',
+        id: 'SDT',
+        label: 'Số điện thoại',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Ky',
-        label: 'Kỳ',
+        id: 'Email',
+        label: 'Email',
         minWidth: 170,
         align: 'center',
-    }
+    },
 ];
 
-function createData(STT, Hoten, Lop, TenDoAn, Ky) {
-    return { STT, Hoten, Lop, TenDoAn, Ky };
+function createData(STT, Ma, Ten, SĐT, Email) {
+    return { STT, Ma, Ten, SĐT, Email };
 }
 
-const rows = [
-    createData(1, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData(2, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData(3, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
+var rows = [
+    // createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    // createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    // createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
 ];
-function DSSV() {
-    const navigate = useNavigate();
-
-    function handleMoveAdd() {
-        navigate('/ThemSV-da');
-    }
-    const [value, setValue] = React.useState('');
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
-    function handleGoClick() {
-        navigate('/ChiTietSV-da');
-    }
+function DSCT() {
+    rows = companyApi.getAll();
     const context = useContext(ThemeContext);
+    const navigate = useNavigate();
+    const handleGo = () => {
+        navigate('/ChiTietCT-tt')
+    }
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
-                <div className={styles.header}>
-                    <div className={styles.search}>
-                        <input type="text" placeholder="Nhập tìm kiếm: " />
-                        <SearchIcon />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ marginBottom: '22px' }}>
-                            <FormControl sx={{ m: 1, width: 350, mt: 3, height: 50 }}>
-                                <InputLabel id="demo-simple-select-label">Lọc</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={value}
-                                    onChange={handleChange}
-                                    label="Lọc"
-                                >
-                                    <MenuItem value={10}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <Button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</Button>
-                    </div>
-                </div>
                 <div className={styles.direct}>
-                    <p>Danh sách sinh viên</p>
+                    <p>Danh sách công ty</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -124,11 +88,11 @@ function DSSV() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGoClick}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGo}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     return (
-                                                        <TableCell key={column.id} align={column.align} >
+                                                        <TableCell key={column.id} align={column.align}>
                                                             {column.format && typeof value === 'number'
                                                                 ? column.format(value)
                                                                 : value}
@@ -144,8 +108,8 @@ function DSSV() {
                     </Paper>
                 </div>
             </div>
-        </div>
+        </div >
 
     )
 }
-export default DSSV;
+export default DSCT;
