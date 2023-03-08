@@ -98,7 +98,7 @@ function DSSVDA() {
                                 </Select>
                             </FormControl>
                         </div>
-                        <button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</button>
+                        <Button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</Button>
                     </div>
                 </div>
                 <div className={styles.direct}>

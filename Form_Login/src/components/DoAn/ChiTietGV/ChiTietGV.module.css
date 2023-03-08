@@ -66,7 +66,10 @@ form {
     font-size: 18px;
     width: 150px;
     margin: 0 10px;
-    background-color: #5698ff;
+    color: white !important;
+    background-color: #5698ff !important;
+    margin: 0 10px !important;
+
 
 }
 
@@ -126,6 +129,7 @@ form {
     white-space: nowrap;
     margin-bottom: 30px;
     cursor: pointer;
+    
 }
 .formAccount{
     display: flex;

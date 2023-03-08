@@ -62,9 +62,9 @@
     will-change: box-shadow, transform;
     font-size: 18px;
     width: 150px;
-    color: white;
-    background-color: #5698ff;
-    margin: 0 20px;
+    color: white !important;
+    background-color: #5698ff !important;
+    margin: 0 20px !important;
 }
 
 .button:focus {

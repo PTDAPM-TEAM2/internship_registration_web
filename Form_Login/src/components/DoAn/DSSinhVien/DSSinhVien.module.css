@@ -80,7 +80,9 @@
     will-change: box-shadow, transform;
     font-size: 18px;
     width: 150px;
-    background-color: #5698ff;
+    color: white !important;
+    background-color: #5698ff !important;
+    
 }
 
 .button:focus {

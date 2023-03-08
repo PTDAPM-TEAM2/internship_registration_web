@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -16,7 +16,8 @@ import AlertTitle from '@mui/material/AlertTitle';
 import styles from './Login.module.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../Theme/Theme.jsx';
-
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -36,18 +37,6 @@ function Login() {
         context.updateToggle(true);
 
     }
-
-    // useEffect(() =>{
-    //     if(toggle === false){
-    //         btnTT.current.addEventListener('.active', handleClickTT);
-    //         btnDA.current.removeEventListener('.active', handleClickDA);
-    //     }
-    //     else {
-    //         btnTT.current.addEventListener('.active', handleClickDA);
-    //         btnDA.current.removeEventListener('.active', handleClickTT);
-    //     }
-
-    // }, [])
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1000) {
@@ -81,7 +70,7 @@ function Login() {
             setPassword('');
             setTimeout(() => {
                 navigate('/quan-ly-do-an-sinh-vien');
-            }, 800)
+            }, 500)
         }
         else if (context.toggle === false) {
             setShowAlert(true);
@@ -90,7 +79,7 @@ function Login() {
             setPassword('');
             setTimeout(() => {
                 navigate('/quan-ly-sinh-vien-thuc-tap');
-            }, 800)
+            }, 500)
         }
 
         console.log(context.toggle);
@@ -191,12 +180,6 @@ function Login() {
                             <button className={styles.btnSubmit}>
                                 Đăng nhập
                             </button>
-                            {/* <Stack
-                                direction="row"
-                            >
-                                Don't have an account
-                                <Link to="/register">Sign up here</Link>
-                            </Stack> */}
                         </Stack>
                     </Box>
                 </form >

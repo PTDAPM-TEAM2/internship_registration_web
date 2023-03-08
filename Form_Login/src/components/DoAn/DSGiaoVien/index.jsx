@@ -95,7 +95,7 @@ function DSGV() {
                                 </Select>
                             </FormControl>
                         </div>
-                        <button className={styles.button} style={{ color: 'white' }} onClick={handleGo}>Thêm</button>
+                        <Button className={styles.button} style={{ color: 'white' }} onClick={handleGo}>Thêm</Button>
                     </div>
                 </div>
                 <div className={styles.direct}>

@@ -82,7 +82,8 @@
     white-space: nowrap;
     will-change: box-shadow, transform;
     font-size: 18px;
-    background-color: #5698ff;
+    background-color: #5698ff !important;
+    
 
 }
 

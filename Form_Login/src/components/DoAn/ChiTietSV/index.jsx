@@ -130,8 +130,8 @@ const ChiTietSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px',backgroundColor: '#5698ff' }} onClick={handleSubmit}>Sửa</Button>
-                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px', backgroundColor: '#5698ff' }} onClick={handleOpen}>Xóa</Button>
+                            <Button className={styles.button} onClick={handleSubmit}>Sửa</Button>
+                            <Button className={styles.button} onClick={handleOpen}>Xóa</Button>
                         </div>
                     </form>
                 </div>
@@ -144,7 +144,7 @@ const ChiTietSV = () => {
             >
                 <Box sx={style} >
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Bạn muốn xóa không ?
+                        Có muốn xóa không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
                         <button className={styles.button} sx={{ color: 'white' }} onClick={handleGo}>Có</button>

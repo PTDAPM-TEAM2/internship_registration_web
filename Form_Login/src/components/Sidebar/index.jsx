@@ -62,11 +62,15 @@ function Sidebar() {
     const [open, setOpen] = React.useState(true);
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
-    const [activeButton, setActiveButton] = React.useState('button1');
+    // const [activeButton, setActiveButton] = React.useState('button1');
 
-    const handleButtonClick = (buttonName) => {
-        setActiveButton(buttonName);
-    };
+    const [pathname, setPathname] = React.useState("/quan-ly-do-an");
+
+    React.useEffect(() => {
+        if (location.pathname) {
+            return setPathname(location.pathname);
+        }
+    }, [location.pathname])
 
 
 
@@ -218,8 +222,7 @@ function Sidebar() {
                 ) &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an-sinh-vien" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button1' ? styles.active : {}}
-                                    onClick={() => handleButtonClick('button1')} >
+                            <Link to="/quan-ly-do-an-sinh-vien" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an-sinh-vien" ? styles.active : {}}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
@@ -229,8 +232,7 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button2' ? styles.active : {}}
-                                    onClick={() => handleButtonClick('button2')}>
+                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an" ? styles.active : {}}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
@@ -240,8 +242,7 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button3' ? styles.active : {}}
-                                    onClick={() => handleButtonClick('button3')} >
+                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-sinh-vien-da" ? styles.active : {}}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
@@ -251,8 +252,7 @@ function Sidebar() {
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={activeButton === 'button4' ? styles.active : {}}
-                                    onClick={() => handleButtonClick('button4')}>
+                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}  className={pathname === "/quan-ly-giao-vien-da" ? styles.active : {}}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
@@ -263,7 +263,7 @@ function Sidebar() {
                         </ListItem>
 
                     </List>
-                }
+                } 
 
 
                 {(location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||

@@ -73,8 +73,8 @@ const ChiTietXD = () => {
                     </form>
                 </div>
                 <div className={styles.btn}>
-                    <button className={styles.button} onClick={handleOpen} >Đồng ý</button>
-                    <button className={styles.button} onClick={handleOpen} >Từ chối</button>
+                    <Button className={styles.button} onClick={handleOpen} >Đồng ý</Button>
+                    <Button className={styles.button} onClick={handleOpen} >Từ chối</Button>
                 </div>
             </div>
             <Modal
@@ -88,8 +88,8 @@ const ChiTietXD = () => {
                         Bạn có chắc chắn với sự lựa chọn này không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <button className={styles.button}  onClick={handleGo}>Có</button>
-                        <button className={styles.button}  onClick={handleClose}>Không</button>
+                        <Button className={styles.button} onClick={handleGo}>Có</Button>
+                        <Button className={styles.button} onClick={handleClose}>Không</Button>
                     </div>
                 </Box>
             </Modal>
