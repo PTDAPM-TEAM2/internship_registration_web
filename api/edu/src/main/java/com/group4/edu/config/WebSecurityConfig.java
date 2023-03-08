@@ -84,7 +84,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // Disable crsf cho đường dẫn /rest/**
         http.csrf().disable();
+        http.cors().disable();
         http.authorizeRequests()
+                .antMatchers("/logout").permitAll()
                 .antMatchers("/login-da").permitAll()
                 .antMatchers("/login-tt").permitAll()
                 .antMatchers("/api/account/**").hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue(), EduConstants.Role.ROLELECTURERS.getValue(),EduConstants.Role.ROLESTUDENT_DA.getValue(),EduConstants.Role.ROLESTUDENT_TT.getValue())
