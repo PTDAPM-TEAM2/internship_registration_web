@@ -16,6 +16,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
+import studentApi from '../../../../api/AdminRole/studentApi';
+
+
 
 const columns = [
     {
@@ -54,12 +57,12 @@ function createData(STT, Hoten, Lop, TenDoAn, Ky) {
     return { STT, Hoten, Lop, TenDoAn, Ky };
 }
 
-const rows = [
+var rows = [
     createData(1, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
     createData(2, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
     createData(3, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
 ];
-function DSSVDA() {
+async function DSSVDA() {
     const navigate = useNavigate();
 
     function handleMoveAdd() {
@@ -74,6 +77,11 @@ function DSSVDA() {
         navigate('/ChiTietSV-da');
     }
     const context = useContext(ThemeContext);
+
+    // console.log(context.token);
+    // rows = await studentApi.getAll(context.token);
+    console.log((await studentApi.getAll(context.token))[0]);
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>

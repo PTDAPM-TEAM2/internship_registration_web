@@ -19,6 +19,7 @@ import { ThemeContext } from '../Theme/Theme.jsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import userApi from "../../api/authApi";
+import { async } from "q";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -56,15 +57,16 @@ function Login() {
     })
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        // console.log((await userApi.login({username: username, password: password})));
         if (username === '' || password === '') {
             setErrorMessage('Nhập thiếu thông tin! Vui lòng nhập lại!')
         }
-        else if (!userApi.login({username: username, password: password})) {
-            setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
-        }
         else if (context.toggle === true) {
+            var tk = await userApi.loginDA({username: username, password: password});
+            if (tk !== ""){
+            context.token = tk;
             setShowAlert(true);
             setErrorMessage('');
             setUsername('');
@@ -72,8 +74,14 @@ function Login() {
             setTimeout(() => {
                 navigate('/quan-ly-do-an-sinh-vien');
             }, 500)
-        }
+            }else {
+                setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
+            }
+    }
         else if (context.toggle === false) {
+            var tk = userApi.loginTT({username: username, password: password});
+            if(tk !== ""){
+                context.token = tk;
             setShowAlert(true);
             setErrorMessage('');
             setUsername('');
@@ -81,8 +89,12 @@ function Login() {
             setTimeout(() => {
                 navigate('/quan-ly-sinh-vien-thuc-tap');
             }, 500)
-        }
-
+            } else {
+                setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
+            }
+    }
+        
+        
         // console.log(context.toggle);
     }
 
