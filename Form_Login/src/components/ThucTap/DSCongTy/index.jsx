@@ -12,6 +12,7 @@ import styles from './DSCT.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import companyApi from '../../../api/companyApi.js';
 const columns = [
     {
         id: 'STT',
@@ -32,7 +33,7 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'SĐT',
+        id: 'SDT',
         label: 'Số điện thoại',
         minWidth: 170,
         align: 'center',
@@ -49,12 +50,13 @@ function createData(STT, Ma, Ten, SĐT, Email) {
     return { STT, Ma, Ten, SĐT, Email };
 }
 
-const rows = [
-    createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+var rows = [
+    // createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    // createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    // createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
 ];
 function DSCT() {
+    rows = companyApi.getAll();
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     const handleGo = () => {
