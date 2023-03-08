@@ -19,7 +19,7 @@ import { ThemeContext } from '../Theme/Theme.jsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import userApi from "../../api/authApi";
-
+import userRole from "../../api/userRole";
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -64,23 +64,40 @@ function Login() {
         else if (!userApi.login({username: username, password: password})) {
             setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
         }
-        else if (context.toggle === true) {
-            setShowAlert(true);
-            setErrorMessage('');
-            setUsername('');
-            setPassword('');
-            setTimeout(() => {
-                navigate('/quan-ly-do-an-sinh-vien');
-            }, 500)
-        }
-        else if (context.toggle === false) {
-            setShowAlert(true);
-            setErrorMessage('');
-            setUsername('');
-            setPassword('');
-            setTimeout(() => {
-                navigate('/quan-ly-sinh-vien-thuc-tap');
-            }, 500)
+        else {
+            var role = "admin";
+            
+            if (context.toggle === true) {
+                setShowAlert(true);
+                setErrorMessage('');
+                setUsername('');
+                setPassword('');
+                setTimeout(() => {
+                    if(role === "admin"){
+                        navigate('/quan-ly-do-an-sinh-vien');
+                    }else if(role === "students"){
+
+                    }else if(role === "teachers"){
+
+                    }
+                }, 500)
+            }
+            else if (context.toggle === false) {
+                setShowAlert(true);
+                setErrorMessage('');
+                setUsername('');
+                setPassword('');
+                setTimeout(() => {
+                    if(role === "admin"){
+                        navigate('/quan-ly-sinh-vien-thuc-tap');
+
+                    }else if(role === "students"){
+
+                    }else if(role === "teachers"){
+                        
+                    }
+                }, 500)
+            }
         }
 
         // console.log(context.toggle);
