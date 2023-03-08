@@ -1,6 +1,8 @@
 package com.group4.edu.controller;
 
+import com.group4.edu.domain.Student;
 import com.group4.edu.dto.ResponseImportExcelStudentDto;
+import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.dto.StudentDto;
 import com.group4.edu.dto.UserDto;
 import com.group4.edu.service.StudentService;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -47,15 +50,24 @@ public class StudentController {
 
     @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
     public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
-        UserDto userInfo = (UserDto) userService.getCurrentUser();
-        if(userInfo.getAdmin()){
-            ResponseImportExcelStudentDto result = studentService.importExcel(file);
-            return new ResponseEntity<>(result, result == null? HttpStatus.BAD_REQUEST:HttpStatus.OK);
-        }
-        Map<String, String> err = new HashMap<>();
-        err.put("statusCoce","403");
-        err.put("message","forbidden");
-        return new ResponseEntity<>(err,HttpStatus.FORBIDDEN);
+//        UserDto userInfo = (UserDto) userService.getCurrentUser();
+//        if(userInfo.getAdmin()){
+//            ResponseImportExcelStudentDto result = studentService.importExcel(file);
+//            return new ResponseEntity<>(result, result == null? HttpStatus.BAD_REQUEST:HttpStatus.OK);
+//        }
+//        Map<String, String> err = new HashMap<>();
+//        err.put("statusCoce","403");
+//        err.put("message","forbidden");
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/get-st-da-by-search")
+    public List<StudentDto> GetStDa(StudentSearchDto studentSearchDto){
+        return studentService.getStDaBySearch(studentSearchDto,1);
+    }
+
+    @RequestMapping(value = "/get-st-tt-by-search")
+    public List<StudentDto> GetStTT(StudentSearchDto studentSearchDto){
+        return studentService.getStDaBySearch(studentSearchDto,2);
+    }
 }

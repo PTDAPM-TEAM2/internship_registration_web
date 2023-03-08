@@ -11,6 +11,8 @@ public class Student extends User{
     @JoinColumn(name = "garde_id",nullable = false)
     private Grade grade;
 
+     private Integer studentType; // 1 da, 2tt,
+
     public String getStudentCode() {
         return studentCode;
     }

@@ -3,6 +3,7 @@ package com.group4.edu.service.Impl;
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
 import com.group4.edu.dto.*;
+import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
@@ -86,8 +87,8 @@ public class SudentServiceImpl implements StudentService {
                 throw new Exception("Trùng mã sinh vieen: "+studentDto.getStudentCode());
             }
         }
-        entity.setUserType(EduConstants.UserType.STUDENT.getValue());
         entity.setStudentCode(studentDto.getStudentCode());
+        entity.setUserType(EduConstants.UserType.STUDENT.getValue());
         entity.setFullName(studentDto.getFullName());
         entity.setAddress(studentDto.getAddress());
         entity.setEmail(studentDto.getEmail());
@@ -124,6 +125,7 @@ public class SudentServiceImpl implements StudentService {
             account.setUsername(studentDto.getStudentCode());
             account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
             entity.setAccount(account);
+            account.setUser(entity);
             account = accountRepository.save(account);
         }
         if(account.getRoles() == null){
@@ -254,6 +256,27 @@ public class SudentServiceImpl implements StudentService {
         }
         return new ResponseImportExcelStudentDto(studentDtos.size()+dataError.size(),studentDtos.size(),dataError.size(),studentDtos,dataError);
     }
+
+    @Override
+    public List<StudentDto> getStDaBySearch(StudentSearchDto dto,int type) {
+        List<Student> studentList = studentRepository.findAll();
+        List<StudentDto> studentDtos = new ArrayList<>();
+        for (Student st: studentList){
+            Account account = st.getAccount();
+            for(Role role: account.getRoles()){
+                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey()) && type == 1){
+                    studentDtos.add(new StudentDto(st));
+                    break;
+                }
+                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2){
+                    studentDtos.add(new StudentDto(st));
+                    break;
+                }
+            }
+        }
+        return studentDtos;
+    }
+
     private String getStringCellValue(XSSFCell cell){
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,8 +80,9 @@ public class CmlRunner implements CommandLineRunner{
 //    }
 
     private void createDefaultUser(String username, String pass, int type) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Account account = new Account();
-        account.setPassword(pass);
+        account.setPassword(passwordEncoder.encode(pass));
         account.setUsername(username);
         try {
            account = accountRepository.save(account);
