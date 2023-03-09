@@ -11,7 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import Sidebar from '../../../Sidebar';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -52,6 +52,7 @@ const ChiTietGV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
+            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>

@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-
+import Sidebar from '../../../Sidebar';
 const ThemGV = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const navigate = useNavigate();
@@ -29,11 +29,12 @@ const ThemGV = () => {
         e.preventDefault();
         setShowAlert(true);
         setTimeout(() => {
-            navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da');
+            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
         }, 1000)
     }
     return (
         <div style={{ display: 'flex' }}>
+            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thêm Giảng Viên</p>
@@ -59,7 +60,7 @@ const ThemGV = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Giới tính: </p>
-                                    <TextField required />
+                                    <TextField />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>

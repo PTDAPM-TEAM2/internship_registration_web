@@ -56,9 +56,9 @@ function createData(STT, Hoten, Lop, TenDoAn, Ky) {
 
 const rows = [
     createData(1, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData(2, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData(3, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
+
 ];
+
 function DSSVDA() {
     const navigate = useNavigate();
 

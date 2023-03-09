@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
-// import Sidebar from '../../Sidebar';
+import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -53,7 +53,7 @@ const ChiTietSV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            {/* <Sidebar /> */}
+            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết sinh viên</p>

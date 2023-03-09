@@ -5,11 +5,17 @@ const ThemeContext = createContext()
 
 function ThemeProvider({children}) {
     const [toggle, setToggle] = useState(false);
+    const [activeButton, setActiveButton] = useState('btnQLDASV');
     const updateToggle = (newValue) => {
         setToggle(newValue);
     }
+    const updateButton = (newValue) => {
+        setActiveButton(newValue);
+    }
     const value = {
         toggle,
+        activeButton,
+        updateButton,
         updateToggle,
     }
     return (

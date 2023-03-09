@@ -13,6 +13,35 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+
+const initialValues = {
+    image: '',
+    name: '',
+    gender: '',
+    idCard: '',
+    dob: '',
+    pob: '',
+    phone: '',
+    email: '',
+};
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
+const validationSchema = Yup.object({
+    // name: Yup.string().required('Required'),
+    email: Yup.string()
+        .email("Invalid email address")
+        .required("It is required"),
+    // gender: Yup.string().required('Required'),
+    // idCard: Yup.string()
+    //     .matches(/^[A-Z]{2}\d{7}$/, "Invalid identity card format")
+    //     .required("Required"),
+    // dob: Yup.string().required('Required'),
+    // pob: Yup.string().required('Required'),
+    // phone: Yup.string().matches(phoneRegex, "Invalid phone").required("Phone is required")
+
+});
+
+
 const ThemSV = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const navigate = useNavigate();
@@ -27,52 +56,17 @@ const ThemSV = () => {
         setImageUrl(imageUrl);
     };
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     setShowAlert(true);
-    //     setTimeout(() => {
-    //         navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-    //     }, 1000)
-    // }
+  
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
-        setSubmitting(false);
-    }
-
-    const initialValues = {
-        image: '',
-        name: '',
-        gender: '',
-        idCard: '',
-        dob: '',
-        pob: '',
-        phone: '',
-        email: '',
-    };
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
-    const validation = Yup.object().shape({
-        name: Yup.string().required('Required'),
-        email: Yup.string()
-            .matches(emailRegex, "Invalid email address")
-            .required("Required"),
-        gender: Yup.string().required('Required'),
-        idCard: Yup.string()
-            .matches(/^[A-Z]{2}\d{7}$/, "Invalid identity card format")
-            .required("Required"),
-        dob: Yup.string().required('Required'),
-        pob: Yup.string().required('Required'),
-        phone: Yup.string().matches(phoneRegex, "Invalid phone").required("Phone is required")
-
-    });
 
     const formik = useFormik({
-        initialValues,
-        validation,
-        onSubmit: handleSubmit,
+        initialValues: initialValues,
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
     })
-
+    console.log(formik.errors.email)
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -113,7 +107,6 @@ const ThemSV = () => {
                                         id="gender"
                                         name="gender"
                                         onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.gender}
                                     />
                                 </div>
@@ -126,9 +119,10 @@ const ThemSV = () => {
                                         id='name'
                                         name='name'
                                         onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.name}
+
                                     />
+
                                 </div>
                                 {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
                                 <div className={styles.txt} >
@@ -138,7 +132,6 @@ const ThemSV = () => {
                                         id="idCard"
                                         name="idCard"
                                         onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.identityCard}
                                     />
                                 </div>
@@ -163,7 +156,6 @@ const ThemSV = () => {
                                         id="pob"
                                         name="pob"
                                         onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.placeOfBirth}
                                     />
                                 </div>
@@ -174,7 +166,6 @@ const ThemSV = () => {
                                         id="phone"
                                         name="phone"
                                         onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.phoneNumber}
                                     />
                                 </div>
@@ -185,10 +176,12 @@ const ThemSV = () => {
                                         id="email"
                                         name="email"
                                         type="email"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
                                         value={formik.values.email}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
                                     />
+
                                 </div>
                             </div>
                         </div>

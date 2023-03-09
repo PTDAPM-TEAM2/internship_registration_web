@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ChiTietXD.module.css';
-// import Sidebar from '../../Sidebar';
+import Sidebar from '../../../Sidebar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -37,7 +37,7 @@ const ChiTietXD = () => {
     }
     return (
         <div style={{ display: 'flex' }}>
-            {/* <Sidebar /> */}
+            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%', border: '1px solid black' }}>
                     <p className={styles.title}>Xét duyệt đồ án</p>
@@ -64,7 +64,7 @@ const ChiTietXD = () => {
                         </div>
                         <div className={styles.txt}>
                             <p>File đánh giá của giảng viên: </p>
-                            <TextField label="Cù Việt Dũng<Nguyễn Đức Tâm>.docx" className={styles.txtField} disabled />
+                            <TextField label="Nguyễn Đức Tâm.pdf" className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Tên giảng viên: </p>
@@ -101,7 +101,7 @@ const ChiTietXD = () => {
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Tạo tài khoản giáo viên làm đồ án thành công !</AlertTitle>
+                        <AlertTitle>Xác nhận yêu cầu thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>

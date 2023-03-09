@@ -27,6 +27,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import Home from '@mui/icons-material/Home';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { ThemeContext } from '../Theme/Theme.jsx';
 
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
@@ -62,21 +63,22 @@ function Sidebar() {
     const [open, setOpen] = React.useState(true);
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
-    // const [activeButton, setActiveButton] = React.useState('button1');
+    const context = React.useContext(ThemeContext);
 
-    const [pathname, setPathname] = React.useState("/quan-ly-do-an");
+    // const [pathname, setPathname] = React.useState("/quan-ly-do-an");
 
-    React.useEffect(() => {
-        if (location.pathname) {
-            return setPathname(location.pathname);
-        }
-    }, [location.pathname])
+    // React.useEffect(() => {
+    //     if (location.pathname) {
+    //         return setPathname(location.pathname);
+    //     }
+    // }, [location.pathname])
 
 
 
-    // const handleItemClick = () => {
-    //     console.log(active);
-    // }
+    const handleItemClick = (value) => {
+        context.updateButton(value);
+        
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -222,8 +224,13 @@ function Sidebar() {
                 ) &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an-sinh-vien" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an-sinh-vien" ? styles.active : {}}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
+                            <Link
+                                to="/quan-ly-do-an-sinh-vien"
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => handleItemClick('btnQLDASV')}
+                                className={context.activeButton === 'btnQLDASV' ? styles.active : {}}
+                            >
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}>
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
                                     </ListItemIcon>
@@ -232,7 +239,12 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an" ? styles.active : {}}>
+                            <Link
+                                to="/quan-ly-do-an"
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => handleItemClick('btnQLDA')}
+                                className={context.activeButton === 'btnQLDA' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
@@ -242,7 +254,12 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-sinh-vien-da" ? styles.active : {}}>
+                            <Link
+                                to="/quan-ly-sinh-vien-da"
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => handleItemClick('btnQLSVDA')}
+                                className={context.activeButton === 'btnQLSVDA' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
@@ -252,7 +269,12 @@ function Sidebar() {
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}  className={pathname === "/quan-ly-giao-vien-da" ? styles.active : {}}>
+                            <Link
+                                to="/quan-ly-giao-vien-da"
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => handleItemClick('btnQLGVDA')}
+                                className={context.activeButton === 'btnQLGVDA' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
@@ -263,7 +285,7 @@ function Sidebar() {
                         </ListItem>
 
                     </List>
-                } 
+                }
 
 
                 {(location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
