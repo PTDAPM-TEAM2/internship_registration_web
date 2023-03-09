@@ -11,11 +11,13 @@ import java.util.Set;
 public class StudentDto extends UserDto{
     private String studentCode;
     private GradeDto grade;
+    private Integer studentType;
 
     public StudentDto(){}
     public StudentDto(Student entity){
         super(entity);
         this.setId(entity.getId());
+        this.studentType = entity.getStudentType();
         this.studentCode  = entity.getStudentCode();
         if(entity.getGrade() != null){
             this.grade = new GradeDto(entity.getGrade());
@@ -25,11 +27,13 @@ public class StudentDto extends UserDto{
     public StudentDto(Student entity, boolean nonGetGrade){
         super(entity);
         this.studentCode  = entity.getStudentCode();
+        this.studentType = entity.getStudentType();
     }
 
     public StudentDto(Student entity, Set<Role> roles){
         super(entity,roles);
         this.studentCode  = entity.getStudentCode();
+        this.studentType = entity.getStudentType();
         if(entity.getGrade() != null){
             this.grade = new GradeDto(entity.getGrade());
         }

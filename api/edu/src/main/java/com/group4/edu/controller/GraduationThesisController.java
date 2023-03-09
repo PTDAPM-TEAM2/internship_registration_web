@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -29,6 +31,11 @@ public class GraduationThesisController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
+//    public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
+//
+//    }
 
     //5.7 Use case “Xem thông tin đồ án”
     @GetMapping("/{id}")

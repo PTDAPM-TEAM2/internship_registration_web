@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +34,15 @@ public class SudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private GradeRepository gradeRepository;
-
     @Autowired
-    private UserRepository userRepository;
+    private MailServiceImpl mailService;
 
-    @Autowired
-    private UserService userService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -112,13 +109,28 @@ public class SudentServiceImpl implements StudentService {
         }
         entity.setGrade(grade);
         account = entity.getAccount();
+        if(entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
+            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
+        }
         Role roleDa = null;
         Role roleTT = null;
         if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
             roleDa = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
+            if(entity.getStudentType() == null){
+                entity.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+            }
+            else {
+                entity.setStudentType(EduConstants.StudentType.ALL.getValue());
+            }
         }
         if(EduConstants.StudentType.STUDENT_TT.getValue().equals(studentType)){
             roleTT = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_TT.getValue());
+            if(entity.getStudentType() == null){
+                entity.setStudentType(EduConstants.StudentType.STUDENT_TT.getValue());
+            }
+            else {
+                entity.setStudentType(EduConstants.StudentType.ALL.getValue());
+            }
         }
         if(account == null){
             account = new Account();
@@ -134,7 +146,7 @@ public class SudentServiceImpl implements StudentService {
                 roleSet.add(roleDa);
             }
             if(roleTT != null){
-                roleSet.add(roleDa);
+                roleSet.add(roleTT);
             }
             account.setRoles(roleSet);
         }
@@ -217,7 +229,6 @@ public class SudentServiceImpl implements StudentService {
         System.out.println(sheet.getRow(rowIndex).getCell(0).getRawValue());
         while ((getIndexData && rowIndex - startLine <totalLine) || (sheet.getRow(rowIndex)!= null &&!this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))){
             row = sheet.getRow(rowIndex++);
-            System.out.println(rowIndex);
             StudentDto studentDto = new StudentDto();
             studentDto.setStudentCode(getStringCellValue(row.getCell(1)));
             studentDto.setFullName(row.getCell(2).getStringCellValue());
@@ -241,7 +252,6 @@ public class SudentServiceImpl implements StudentService {
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
         for(StudentDto studentDto: studentDtos){
             executor.execute(new Runnable() {
-                private MailServiceImpl mailService = new MailServiceImpl();
                 @Override
                 public void run() {
                     String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
@@ -249,8 +259,9 @@ public class SudentServiceImpl implements StudentService {
                     mailDto.setMsgBody(msgBody);
                     mailDto.setRecipient(studentDto.getEmail());
                     mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
-                    mailService.sendSimpleMail(mailDto);
-                    System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
+                    Boolean result = mailService.sendSimpleMail(mailDto);
+                    if(result)
+                        System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
                 }
             });
         }

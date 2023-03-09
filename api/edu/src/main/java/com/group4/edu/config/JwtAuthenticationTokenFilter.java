@@ -76,6 +76,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 
                 }
             }
+            else {
+
+            }
         }
         if(!auth){
                 Map<String, ArrayList<String>> responseBody = new HashMap<>();

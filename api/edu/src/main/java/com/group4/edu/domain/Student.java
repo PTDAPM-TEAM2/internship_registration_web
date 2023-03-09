@@ -28,4 +28,12 @@ public class Student extends User{
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
+
+    public Integer getStudentType() {
+        return studentType;
+    }
+
+    public void setStudentType(Integer studentType) {
+        this.studentType = studentType;
+    }
 }
