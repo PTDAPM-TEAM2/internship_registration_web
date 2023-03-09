@@ -20,7 +20,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import userApi from "../../api/authApi";
 import Variables from "../../utils/variables";
-
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -63,37 +62,41 @@ function Login() {
         if (username === '' || password === '') {
             setErrorMessage('Nhập thiếu thông tin! Vui lòng nhập lại!')
         }
-        else if (!userApi.login({username: username, password: password})) {
-            setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
-        }
-        if (context.toggle === true) {
-            setShowAlert(true);
-            setErrorMessage('');
-            setUsername('');
-            setPassword('');
-            setTimeout(() => {
-                if(Variables.userRole === 'teachers'){
-                }else if(Variables.userRole === 'students'){
+        // else if (!userApi.login({username: username, password: password})) {
+        //     setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
+        // }
+        else {
+            if (context.toggle === true) {
+                setShowAlert(true);
+                setErrorMessage('');
+                setUsername('');
+                setPassword('');
+                setTimeout(() => {
+                    if(Variables.userRole === "admin"){
+                        navigate('/quan-ly-do-an-sinh-vien');
+                    }else if(Variables.userRole === "students"){
 
-                }else{
-                    navigate('/quan-ly-do-an-sinh-vien');
-                }
-            }, 500)
-        }
-        else if (context.toggle === false) {
-            setShowAlert(true);
-            setErrorMessage('');
-            setUsername('');
-            setPassword('');
-            setTimeout(() => {
-                if(Variables.userRole === 'teachers'){
-                    navigate('/trang-chu-giang-vien')
-                }else if(Variables.userRole === 'students'){
+                    }else if(Variables.userRole === "teachers"){
+                        navigate('/trang-chu-giang-vien');
+                    }
+                }, 500)
+            }
+            else if (context.toggle === false) {
+                setShowAlert(true);
+                setErrorMessage('');
+                setUsername('');
+                setPassword('');
+                setTimeout(() => {
+                    if(Variables.userRole === "admin"){
+                        navigate('/quan-ly-sinh-vien-thuc-tap');
 
-                }else{
-                    navigate('/quan-ly-sinh-vien-thuc-tap');
-                }
-            }, 500)
+                    }else if(Variables.userRole === "students"){
+
+                    }else if(Variables.userRole === "teachers"){
+                        navigate('/trang-chu-giang-vien');
+                    }
+                }, 500)
+            }
         }
 
         // console.log(context.toggle);

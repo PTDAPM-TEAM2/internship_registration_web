@@ -36,7 +36,10 @@ import TTCN from './components/TeacherRole/ThongTinCaNhan';
 function App() {
   return (
     <div className="App">
-      { Variables.userRole === 'admin' ? 
+      { 
+      // Toán tử 3 ngôi
+      Variables.userRole === 'admin' ? 
+      // admin role
       (<Router>
         <Routes>
           <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
@@ -72,7 +75,10 @@ function App() {
           <Route path='/ChiTietXD' element={<CTXD />} />
         </Routes> 
       </Router>) 
-      : (
+      : 
+      // nếu không phải admin role thì trả vè teachers rol
+      // teachers role
+      Variables.userRole === 'teachers' ? (
         <Router>
           <Routes>
             <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
@@ -83,7 +89,9 @@ function App() {
             </Route>
           </Routes>
         </Router>
-        )
+        ) :
+        // students role
+        <Router></Router>
       }
     </div>
   );
