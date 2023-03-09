@@ -20,6 +20,8 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import userApi from "../../api/authApi";
 import Variables from "../../utils/variables";
+import { async } from "q";
+
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -56,7 +58,7 @@ function Login() {
     })
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (username === '' || password === '') {
@@ -67,6 +69,9 @@ function Login() {
         // }
         else {
             if (context.toggle === true) {
+                var tk = await userApi.loginDA({username: username, password: password});
+                if (tk !== ""){
+                context.token = tk;
                 setShowAlert(true);
                 setErrorMessage('');
                 setUsername('');
@@ -79,9 +84,14 @@ function Login() {
                     }else if(Variables.userRole === "teachers"){
                         navigate('/trang-chu-giang-vien');
                     }
-                }, 500)
+                }, 500)}else {
+                    setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
+                }
             }
             else if (context.toggle === false) {
+                var tk = userApi.loginTT({username: username, password: password});
+                if(tk !== ""){
+                    context.token = tk;
                 setShowAlert(true);
                 setErrorMessage('');
                 setUsername('');
@@ -95,7 +105,9 @@ function Login() {
                     }else if(Variables.userRole === "teachers"){
                         navigate('/trang-chu-giang-vien');
                     }
-                }, 500)
+                }, 500) } else {
+                    setErrorMessage('Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!');
+                }
             }
         }
 

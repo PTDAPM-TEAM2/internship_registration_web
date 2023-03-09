@@ -19,14 +19,25 @@ class UserApi {
 
   // }
 
-  login = (params) => {
-    const url = "/login";
-    if (params.username === 'admin' && params.password === 'admin'){
-      return true;
-    }
-    // return axiosClient.post(url, {params});
-    return false;
+  loginTT = (params) => {
+    const url = "/login-tt";
+    // if (params.username === 'admin' && params.password === 'admin'){
+    //   return true;
+    // }
+    // console.log(axiosClient.post(url, params))
+    return  axiosClient.post(url, params).then(res => res.access_Token);
   };
+
+  loginDA = (params) => {
+    const url = "/login-da";
+    // if (params.username === 'admin' && params.password === 'admin'){
+    //   return true;
+    // }
+    // console.log(axiosClient.post(url, params))
+    return  axiosClient.post(url, params).then(res => res.access_Token);
+  };
+
+  
 }
 
 const userApi = new UserApi();

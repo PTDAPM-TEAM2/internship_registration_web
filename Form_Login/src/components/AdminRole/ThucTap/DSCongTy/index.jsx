@@ -12,7 +12,7 @@ import styles from './DSCT.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import companyApi from '../../../../api/companyApi.js';
+import companyApi from '../../../../api/AdminRole/companyApi.js';
 const columns = [
     {
         id: 'STT',
@@ -56,7 +56,7 @@ var rows = [
     // createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
 ];
 function DSCT() {
-    rows = companyApi.getAll();
+    rows = companyApi.getAll;
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     const handleGo = () => {

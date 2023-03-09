@@ -13,6 +13,7 @@ import { ThemeContext } from '../../../Theme/Theme.jsx';
 import styles from './XDDoAn.module.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import projectApi from '../../../../api/AdminRole/projectApi.js';
 const columns = [
     {
         id: 'STT',
@@ -50,12 +51,13 @@ function createData(STT, DoAn, SinhVien, GiaoVien, Ky) {
     return { STT, DoAn, SinhVien, GiaoVien, Ky };
 }
 
-const rows = [
+var rows = [
     createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Cù Việt Dũng', '01/2022-2023'),
     createData(2, 'Quản lý du học sinh Đức', 'Hoàng Nam', 'Cù Việt Dũng', '01/2022-2023'),
     createData(3, 'Quản lý du học sinh Tây Ban Nha', 'Lương Nam', 'Cù Việt Dũng', '01/2022-2023'),
 ];
 function DSDA() {
+    rows = projectApi.getAll();
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     function handleGoClick() {
