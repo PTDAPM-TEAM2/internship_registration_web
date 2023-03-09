@@ -1,12 +1,14 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_company")
-public class Company extends BaseObject{
+public class Company extends BaseObject {
     private String nameCompany;
     private String email;
     private String phoneNumber;

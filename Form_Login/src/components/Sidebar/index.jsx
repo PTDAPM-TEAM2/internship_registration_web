@@ -27,7 +27,8 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import Home from '@mui/icons-material/Home';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-
+import Variables from '../../utils/variables';
+import { bool } from 'yup';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -58,19 +59,20 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 function Sidebar() {
+    const check = Variables.userRole
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
     // const [activeButton, setActiveButton] = React.useState('button1');
 
-    const [pathname, setPathname] = React.useState("/quan-ly-do-an");
+    // const [pathname, setPathname] = React.useState("/quan-ly-do-an");
 
-    React.useEffect(() => {
-        if (location.pathname) {
-            return setPathname(location.pathname);
-        }
-    }, [location.pathname])
+    // React.useEffect(() => {
+    //     if (location.pathname) {
+    //         return setPathname(location.pathname);
+    //     }
+    // }, [location.pathname])
 
 
 
@@ -199,11 +201,16 @@ function Sidebar() {
                             marginTop: 10,
                         }}
                     />
-                    <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>ADMIN</h1>
+                    <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>{
+                        Variables.userRole === 'admin' ?
+                        "ADMIN" : Variables.userRole === 'teachers' ? 'GIANG VIEN' : 'SINH VIEN'
+                    }</h1>
 
                 </Stack>
 
-                {(location.pathname === '/quan-ly-do-an-sinh-vien' ||
+                { 
+                    // admin
+                    check === 'admin' ? (location.pathname === '/quan-ly-do-an-sinh-vien' ||
                     location.pathname === '/quan-ly-do-an' ||
                     location.pathname === '/quan-ly-giao-vien-da' ||
                     location.pathname === '/quan-ly-sinh-vien-da' ||
@@ -218,46 +225,53 @@ function Sidebar() {
                     location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                     location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
                     location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
-                    location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv'
-                ) &&
+                    location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
+                    // teachers role
+                    : check === "teachers" ? (
+                        location.pathname === '/trang-chu-giang-vien' || 
+                        location.pathname === '/thong-tin-ca-nhan'
+                    ) : 
+                    // students role
+                    (location.pathname === '/trang-chu-giang-vien')
+                    &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an-sinh-vien" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an-sinh-vien" ? styles.active : {}}>
+                            <Link to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : ""} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Trang chủ' />
+                                    <ListItemText primary= 'Trang chủ' />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-do-an" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-do-an" ? styles.active : {}}>
+                            <Link to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : ""} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý đồ án' />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý đồ án' : 'Thông tin cá nhân'} />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }} className={pathname === "/quan-ly-sinh-vien-da" ? styles.active : {}}>
+                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý sinh viên' />
+                                    <ListItemText primary={ check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
                                 </ListItemButton>
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}  className={pathname === "/quan-ly-giao-vien-da" ? styles.active : {}}>
+                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý giáo viên' />
+                                    <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
@@ -266,7 +280,10 @@ function Sidebar() {
                 } 
 
 
-                {(location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
+                {(check === 'admin' ? 
+                // admin role
+                (
+                    location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
                     location.pathname === '/quan-ly-cong-ty' ||
                     location.pathname === '/quan-ly-giao-vien-tt' ||
                     location.pathname === '/quan-ly-sinh-vien-tt' ||
@@ -279,11 +296,20 @@ function Sidebar() {
                     location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
                     location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
                     location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
-                )
+                ) : 
+                // teachers role
+                check === "teachers" ? 
+                (location.pathname === '/trang-chu-giang-vien' || 
+                location.pathname === '/thong-tin-ca-nhan' ||
+                location.pathname === '/trang-chu-giang-vien' || 
+                location.pathname === '/thong-tin-ca-nhan' ||
+                location.pathname === '/trang-chu-giang-vien') : 
+                // students role
+                (location.pathname === '/trang-chu-giang-vien'))
                     &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-thuc-tap" style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link to={check === 'admin' ? "/quan-ly-sinh-vien-thuc-tap" : "/trang-chu-giang-vien"} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
@@ -293,40 +319,50 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-cong-ty" style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link to={check  === 'admin' ? "/quan-ly-cong-ty" : check === 'teachers' ? '/thong-tin-ca-nhan' : ''} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý công ty' />
+                                    <ListItemText primary={check  === 'admin' ? 'Quản lý công ty' : check === 'teachers' ? 'Thông tin cá nhân' : ''} />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-tt" style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link to={check === 'admin' ? "/quan-ly-sinh-vien-tt" : check === 'teachers' ? '' : ''} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý sinh viên' />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : check === 'teachers' ? 'Xác Nhận Yêu Cầu Sinh Viên' : ''} />
                                 </ListItemButton>
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-tt" style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link to={check === 'admin' ? "/quan-ly-giao-vien-tt" : check === 'teachers' ? '' : ''} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary='Quản lý giáo viên' />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : ''} />
                                 </ListItemButton>
                             </Link >
                         </ListItem>
+                        {check === 'teachers' ? <ListItem disablePadding>
+                            <Link to= '/' style={{ width: '100%', textDecoration: 'none' }}>
+                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
+                                    <ListItemIcon>
+                                        <GroupRoundedIcon className={styles.icon} />
+                                    </ListItemIcon>
+                                    <ListItemText primary='Danh Sách Đồ Án' />
+                                </ListItemButton>
+                            </Link >
+                        </ListItem> : ''
+                        }
                     </List>
                 }
             </Drawer>
         </Box>
     )
 }
-
 export default Sidebar

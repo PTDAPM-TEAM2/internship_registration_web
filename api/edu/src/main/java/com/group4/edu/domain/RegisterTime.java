@@ -1,5 +1,6 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 
 import javax.persistence.Column;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tbl_register_time")
-public class RegisterTime extends BaseObject{
+public class RegisterTime extends BaseObject {
     private Date timeStart;
     private Date timeEnd;
     private Integer type;// 1 là đăng ký đồ án, 2 là đăng ký thực tập

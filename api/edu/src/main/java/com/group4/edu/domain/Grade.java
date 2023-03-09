@@ -1,11 +1,13 @@
 package com.group4.edu.domain;
 
+import com.group4.edu.domain.core.BaseObject;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "tbl_grade")
-public class Grade extends BaseObject{
+public class Grade extends BaseObject {
     @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -1,5 +1,6 @@
 package com.group4.edu.controller;
 
+import com.group4.edu.domain.User;
 import com.group4.edu.dto.ChangePasswordDto;
 import com.group4.edu.dto.ResponseToken;
 import com.group4.edu.dto.AccountDto;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +51,16 @@ public class AccountController {
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PersistenceContext
+    EntityManager manager;
+    @GetMapping("/test/{id}")
+    public User customFindMethod( @PathVariable Long id) {
+        return (User) manager.createQuery("select u FROM User u WHERE u.id = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+
     }
 
 
