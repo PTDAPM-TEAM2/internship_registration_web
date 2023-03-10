@@ -1,6 +1,5 @@
 package com.group4.edu.dto;
 
-import com.group4.edu.domain.BaseObject;
 import com.group4.edu.domain.RegisterTime;
 
 import javax.persistence.Entity;

@@ -29,11 +29,17 @@ import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout/Layout';
-
+import TCGV from './components/TeacherRole/TrangChuGiangVien';
+import Variables from './utils/variables';
+import TTCN from './components/TeacherRole/ThongTinCaNhan';
 function App() {
   return (
     <div className="App">
-      <Router>
+      { 
+      // Toán tử 3 ngôi
+      Variables.userRole === 'admin' ? 
+      // admin role
+      (<Router>
         <Routes>
           <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
           <Route path='/dang-nhap' element={<Login />} />
@@ -58,6 +64,7 @@ function App() {
             <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
             <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
             <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
+            <Route path='trang-chu-giang-vien' element={<TCGV/>}></Route>
           </Route>
           <Route path='/ThemGV-da' element={<ThemGV />} />
           <Route path='/ThemSV-da' element={<ThemSV />} />
@@ -65,8 +72,26 @@ function App() {
           <Route path='/ChiTietGV-da' element={<CTGV />} />
           <Route path='/ChiTietCT-tt' element={<CTCT />} />
           <Route path='/ChiTietXD' element={<CTXD />} />
-        </Routes>
-      </Router>
+        </Routes> 
+      </Router>) 
+      : 
+      // nếu không phải admin role thì trả vè teachers rol
+      // teachers role
+      Variables.userRole === 'teachers' ? (
+        <Router>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
+            <Route path='/dang-nhap' element={<Login />} />
+            <Route path='/' element={<Layout />}>
+              <Route path='trang-chu-giang-vien' element={<TCGV/>}></Route>
+              <Route path='thong-tin-ca-nhan' element={<TTCN/>}></Route>
+            </Route>
+          </Routes>
+        </Router>
+        ) :
+        // students role
+        <Router></Router>
+      }
     </div>
   );
 }

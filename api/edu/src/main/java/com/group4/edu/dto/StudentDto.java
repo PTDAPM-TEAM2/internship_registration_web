@@ -15,6 +15,7 @@ public class StudentDto extends UserDto{
     public StudentDto(){}
     public StudentDto(Student entity){
         super(entity);
+        this.setId(entity.getId());
         this.studentCode  = entity.getStudentCode();
         if(entity.getGrade() != null){
             this.grade = new GradeDto(entity.getGrade());
