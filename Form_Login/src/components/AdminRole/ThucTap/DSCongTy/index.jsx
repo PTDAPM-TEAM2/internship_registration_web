@@ -51,12 +51,12 @@ function createData(STT, Ma, Ten, SĐT, Email) {
 }
 
 var rows = [
-    // createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    // createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
-    // createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    createData(1, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    createData(2, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
+    createData(3, '001', 'APANZO', '0123456789', 'apz123@gmail.com'),
 ];
 function DSCT() {
-    rows = companyApi.getAll;
+    // rows = companyApi.getAll;
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     const handleGo = () => {

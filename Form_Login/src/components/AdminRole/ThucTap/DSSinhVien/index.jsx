@@ -16,7 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
-
+import '../../../../../src/button.css'
 const columns = [
     {
         id: 'STT',
@@ -98,7 +98,7 @@ function DSSV() {
                                 </Select>
                             </FormControl>
                         </div>
-                        <Button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</Button>
+                        <Button className='button' onClick={handleMoveAdd}>Thêm</Button>
                     </div>
                 </div>
                 <div className={styles.direct}>

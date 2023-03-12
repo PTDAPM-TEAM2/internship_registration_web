@@ -19,25 +19,19 @@ const initialValues = {
     name: '',
     gender: '',
     idCard: '',
-    dob: '',
+    dob: dayjs(),
     pob: '',
     phone: '',
     email: '',
 };
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
 const validationSchema = Yup.object({
-    // name: Yup.string().required('Required'),
-    email: Yup.string()
-        .email("Invalid email address")
-        .required("It is required"),
-    // gender: Yup.string().required('Required'),
-    // idCard: Yup.string()
-    //     .matches(/^[A-Z]{2}\d{7}$/, "Invalid identity card format")
-    //     .required("Required"),
-    // dob: Yup.string().required('Required'),
-    // pob: Yup.string().required('Required'),
-    // phone: Yup.string().matches(phoneRegex, "Invalid phone").required("Phone is required")
+    name: Yup.string().required(),
+    email: Yup.string().email().required(),
+    gender: Yup.string().required(),
+    idCard: Yup.string().matches(/^[0-9]{12}$/).required(),
+    dob: Yup.date().max(new Date()).required(),
+    pob: Yup.string().required(),
+    phone: Yup.string().matches(/^[0-9]{10}$/).required()
 
 });
 
@@ -47,7 +41,6 @@ const ThemSV = () => {
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
-    const [date, setDate] = React.useState(dayjs());
 
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
@@ -56,17 +49,19 @@ const ThemSV = () => {
         setImageUrl(imageUrl);
     };
 
-  
-
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            // setShowAlert(true);
+            // setTimeout(() => {
+            //     setShowAlert(false);
+            // }, 2000)
         },
     })
-    console.log(formik.errors.email)
+    console.log(formik.errors);
+    console.log(showAlert);
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -108,6 +103,7 @@ const ThemSV = () => {
                                         name="gender"
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
+                                        error={formik.touched.gender && Boolean(formik.errors.gender)}
                                     />
                                 </div>
                             </div>
@@ -120,11 +116,9 @@ const ThemSV = () => {
                                         name='name'
                                         onChange={formik.handleChange}
                                         value={formik.values.name}
-
+                                        error={formik.touched.name && Boolean(formik.errors.name)}
                                     />
-
                                 </div>
-                                {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
                                 <div className={styles.txt} >
                                     <label htmlFor='idCard'>Số căn cước: </label>
                                     <TextField
@@ -133,6 +127,7 @@ const ThemSV = () => {
                                         name="idCard"
                                         onChange={formik.handleChange}
                                         value={formik.values.identityCard}
+                                        error={formik.touched.idCard && Boolean(formik.errors.idCard)}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -140,12 +135,11 @@ const ThemSV = () => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
                                             renderInput={(props) => <TextField {...props} className={styles.txtDate} />}
-                                            value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
+                                            value={formik.values.dob}
+                                            onChange={(value) => formik.handleChange({ target: { name: 'dob', value } })}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs()}
+                                            // defaultValue={dayjs()}
+                                            error={formik.touched.dob && Boolean(formik.errors.dob)}
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -156,7 +150,9 @@ const ThemSV = () => {
                                         id="pob"
                                         name="pob"
                                         onChange={formik.handleChange}
-                                        value={formik.values.placeOfBirth}
+                                        value={formik.values.pob}
+                                        error={formik.touched.pob && Boolean(formik.errors.pob)}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -167,6 +163,7 @@ const ThemSV = () => {
                                         name="phone"
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
+                                        error={formik.touched.phone && Boolean(formik.errors.phone)}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -175,13 +172,10 @@ const ThemSV = () => {
                                         className={styles.txtField}
                                         id="email"
                                         name="email"
-                                        type="email"
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
-                                        helperText={formik.touched.email && formik.errors.email}
                                     />
-
                                 </div>
                             </div>
                         </div>
@@ -287,7 +281,12 @@ const ThemSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting}>Thêm</button>
+                            <button className={styles.button} disabled={formik.isSubmitting} type="submit" onClick={() => {
+                                setShowAlert(true)
+                                setTimeout(() => {
+                                    setShowAlert(false);
+                                }, 2000)
+                            }}>Thêm</button>
                         </div>
                     </form>
                 </div>
@@ -295,6 +294,41 @@ const ThemSV = () => {
             </div>
             {
                 showAlert &&
+                <div>    {
+                    formik.errors !== {} &&
+                    < div >
+                        < Alert severity="error" sx={{
+                            position: 'fixed',
+                            width: '40%',
+                            bottom: '0',
+                            right: '2%'
+                        }}>
+                            <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
+                        </Alert>
+                    </div>
+                }
+                </div>
+
+            }
+            {
+                showAlert &&
+                <div>    {
+                    formik.errors === {} &&
+                    < div >
+                        < Alert severity="success" sx={{
+                            position: 'fixed',
+                            width: '40%',
+                            bottom: '0',
+                            right: '2%'
+                        }}>
+                            <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                        </Alert>
+                    </div>
+                }
+                </div>
+
+            }
+            {/* {showAlert && formik.errors === {} &&
                 <div>
                     <Alert severity="success" sx={{
                         position: 'absolute',
@@ -305,7 +339,9 @@ const ThemSV = () => {
                         <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
                     </Alert>
                 </div>
-            }
+
+
+            } */}
         </div >
     );
 };

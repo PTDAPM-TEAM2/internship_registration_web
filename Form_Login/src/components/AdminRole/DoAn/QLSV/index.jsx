@@ -8,7 +8,7 @@ function QLSV() {
                 <button className={`${styles.button} ${styles.btnEx}`}>Nhập dữ liệu sinh viên từ Excel</button>
             </Link>
             <Link to='/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da'>
-                <button className={`${styles.button} ${styles.btnDS}`}>Danh sách sinh viên</button>
+                <button className={`${styles.button} ${styles.btnDS}`} onClick={() => console.log(true)}>Danh sách sinh viên</button>
             </Link>
 
         </div>

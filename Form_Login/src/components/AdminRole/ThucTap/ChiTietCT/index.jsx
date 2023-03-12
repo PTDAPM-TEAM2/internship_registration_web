@@ -16,7 +16,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-
+import Sidebar from '../../../Sidebar';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -85,6 +85,7 @@ const ChiTietCT = () => {
 
     return (
         <div style={{ display: 'flex' }}>
+            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết công ty</p>
@@ -126,7 +127,7 @@ const ChiTietCT = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px', width: 300 }} onClick={handleOpen}>Thêm sinh viên thự tập</Button>
+                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px', width: 300 }} onClick={handleOpen}>Thêm sinh viên thực tập</Button>
                         </div>
                     </form>
                 </div>

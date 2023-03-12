@@ -16,7 +16,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
-import studentApi from '../../../../api/AdminRole/studentApi';
+import '../../../../../src/button.css'
+// import studentApi from '../../../../api/AdminRole/studentApi';
 
 
 const columns = [
@@ -56,11 +57,12 @@ function createData(STT, Hoten, Lop, TenDoAn, Ky) {
     return { STT, Hoten, Lop, TenDoAn, Ky };
 }
 
-var rows = [
+const rows = [
     createData(1, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-
+    createData(2, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
+    createData(3, 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
 ];
-async function DSSVDA() {
+function DSSV() {
     const navigate = useNavigate();
 
     function handleMoveAdd() {
@@ -74,12 +76,11 @@ async function DSSVDA() {
     function handleGoClick() {
         navigate('/ChiTietSV-da');
     }
-    const context = useContext(ThemeContext);
+    // const context = useContext(ThemeContext);
 
     // console.log(context.token);
     // rows = await studentApi.getAll(context.token);
-    console.log((await studentApi.getAll(context.token))[0]);
-
+    // console.log((await studentApi.getAll(context.token))[0]);
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -91,7 +92,7 @@ async function DSSVDA() {
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <div style={{ marginBottom: '22px' }}>
                             <FormControl sx={{ m: 1, width: 350, mt: 3, height: 50 }}>
-                                <InputLabel id="demo-simple-select-label" >Lọc</InputLabel>
+                                <InputLabel id="demo-simple-select-label">Lọc</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
@@ -104,7 +105,7 @@ async function DSSVDA() {
                                 </Select>
                             </FormControl>
                         </div>
-                        <Button className={styles.button} style={{ color: 'white' }} onClick={handleMoveAdd}>Thêm</Button>
+                        <Button className='button' onClick={handleMoveAdd}>Thêm</Button>
                     </div>
                 </div>
                 <div className={styles.direct}>
@@ -154,4 +155,4 @@ async function DSSVDA() {
 
     )
 }
-export default DSSVDA;
+export default DSSV;
