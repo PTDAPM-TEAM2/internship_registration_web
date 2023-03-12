@@ -32,7 +32,13 @@ import Layout from './components/Layout/Layout';
 import TCGV from './components/TeacherRole/TrangChuGiangVien';
 import Variables from './utils/variables';
 import TTCN from './components/TeacherRole/ThongTinCaNhan';
-
+import Sidebar from './components/Sidebar'
+import DSSVYC from './components/TeacherRole/DanhSachSVYeuCau';
+import DSSV from './components/TeacherRole/DanhSachSV';
+import ProjectListStudents from './components/TeacherRole/DanhSachDoAn';
+import SRequirementDetails from './components/TeacherRole/DanhSachSVYeuCau/DanhSachYCChiTiet';
+import SInformationDetails from './components/TeacherRole/DanhSachSV/DanhSachSVChiTiet';
+import PInformationDetails from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet';
 function App() {
   return (
     <div className="App">
@@ -84,8 +90,16 @@ function App() {
             <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
             <Route path='/dang-nhap' element={<Login />} />
             <Route path='/' element={<Layout />}>
+              {/* Main screen */}
               <Route path='trang-chu-giang-vien' element={<TCGV/>}></Route>
               <Route path='thong-tin-ca-nhan' element={<TTCN/>}></Route>
+              <Route path='danh-sach-sinh-vien-yeu-cau' element={<DSSVYC/>}></Route>
+              <Route path='danh-sach-sinh-vien' element={<DSSV/>}></Route>
+              <Route path='danh-sach-do-an-sinh-vien' element={<ProjectListStudents/>}></Route>
+              {/* Navigate another screen */}
+              <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails/>}></Route>
+              <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails/>}></Route>
+              <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails/>}></Route>
             </Route>
           </Routes>
         </Router>

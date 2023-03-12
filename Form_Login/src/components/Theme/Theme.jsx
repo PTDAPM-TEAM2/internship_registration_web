@@ -6,6 +6,7 @@ const ThemeContext = createContext()
 function ThemeProvider({children}) {
     const [token, setToken] = useState("");
     const [toggle, setToggle] = useState(false);
+    const [activeButton, setActiveButton] = useState("trangchu"); 
     const updateToggle = (newValue) => {
         setToggle(newValue);
     }
@@ -14,12 +15,17 @@ function ThemeProvider({children}) {
         setToken(newValue);
     }
 
+    const updateButton = (newValue) => {
+        setActiveButton(newValue);
+    }
 
     const value = {
         toggle,
         updateToggle,
         token,
-        updateToken
+        updateToken,
+        activeButton,
+        updateButton
     }
     return (
         <ThemeContext.Provider value={value}>

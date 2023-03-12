@@ -1,0 +1,135 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+.inputValue{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+.title {
+    width: 100%;
+    height: 50px;
+    background-color: #d9d9d9;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+.form {
+    padding: 0 40px;
+    width: 100%;
+    padding-top: 70px;
+}
+.btn{
+    padding: 10px;
+}
+
+.btnForm{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+}
+
+.button {
+    appearance: none;
+    /* background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%); */
+    border: 0;
+    border-radius: 6px;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    cursor: pointer;
+    height: 48px;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+    width: 150px;
+    color: white !important;
+    background-color: #23434E !important;
+}
+
+.button:focus {
+    box-shadow: #23434E 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #23434E 0 -3px 0 inset;
+}
+
+.button:hover {
+    box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #23434E 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    box-shadow: #23434E 0 3px 7px inset;
+    transform: translateY(2px);
+}
+.link{
+    text-decoration: none;
+}
+
+.fileInput{
+    display: none;
+}
+
+.infoAccount {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    border: 1px solid black;
+    padding: 15px 30px;
+}
+.txt{
+    width: auto;
+    text-align: left;
+}
+.txtField{
+    width: 100%;
+}
+
+.txtGender{
+    width: 100px;
+}
+
+.image{
+    width: 160px;
+    height: 190px;
+    border: 1px solid black;
+    object-fit: cover;
+    overflow: hidden;
+}
+.userProfile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    outline: none;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.formAccount{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+.txtDate{
+    width: 400px;
+    margin: 0 10px;
+}
+
+@media (min-width: 1024px) {
+
+}

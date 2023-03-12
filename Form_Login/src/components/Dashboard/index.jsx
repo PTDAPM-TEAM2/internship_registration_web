@@ -164,10 +164,9 @@ export default function Dashboard() {
                     location.pathname === '/quan-ly-sinh-vien-tt')
                     // teachers role
                     : Variables.userRole === 'teachers' ?
-                    (location.pathname === '/trang-chu-giang-vien' ||
-                    location.pathname === '/thong-tin-ca-nhan' ||
-                    location.pathname === '/quan-ly-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt') : 
+                    (
+                    location.pathname === '/trang-chu-giang-vien'
+                    ) : 
                     // students role
                     (location.pathname === '/trang-chu-giang-vien')
                     ) &&

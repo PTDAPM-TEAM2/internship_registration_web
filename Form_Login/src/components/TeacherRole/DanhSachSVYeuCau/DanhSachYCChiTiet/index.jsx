@@ -1,20 +1,19 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 // import styles from 'Information.module.css';
-import styles from '../ThongTinCaNhan/Information.module.css';
-import Sidebar from '../../Sidebar';
+import styles from './StudentDetails.module.css';
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
-const TTCN = () => {
+import { useLocation } from 'react-router-dom';
+const SRequirementDetails = () => {
+    const location = useLocation()
+    const state = location.state;
+    console.log(`aaa ${state.item.name}`);
     const [showAlert, setShowAlert] = React.useState(false);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
@@ -27,7 +26,8 @@ const TTCN = () => {
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
     };
-    
+
+
     const handleSubmit = (values, { setSubmitting }) => {
         console.log(values);
         setSubmitting(false);
@@ -66,6 +66,9 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
+    // const {item} = props.location.state;
+    // console.log(item);
+
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
@@ -75,10 +78,10 @@ const TTCN = () => {
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >
-                                <div className={styles.txt}>
+                                {state && <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src="https://images.pexels.com/photos/35537/child-children-girl-happy.jpg?auto=compress&cs=tinysrgb&w=600" alt="" />
+                                            <img className={styles.userProfile} src={state.item.image} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -96,16 +99,17 @@ const TTCN = () => {
                                             <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
                                         </div>
                                     }
-                                </div>
+                                </div>}
                                 <div className={styles.txt}>
                                     <label htmlFor="gender">Giới tính: </label>
                                     <TextField
                                         className={styles.txtGender}
                                         id="gender"
+                                        defaultValue={state.item.gender}
                                         name="gender"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.gender}
+                                        // value={formik.values.gender}
                                     />
                                 </div>
                             </div>
@@ -115,10 +119,11 @@ const TTCN = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id='name'
+                                        defaultValue={state.item.name}
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.name}
+                                        // value={formik.values.name}
                                     />
                                 </div>
                                 {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
@@ -128,22 +133,23 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
+                                        defaultValue={state.item.passport}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.identityCard}
+                                        // value={formik.values.identityCard}
                                     />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='dob'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} className={styles.txtField} />}
-                                            value={date}
+                                            renderInput={(props) => <TextField {...props} className={styles.txtField} defaultValue={state.item.dateOfBirth}/>}
+                                            // value={date}
                                             onChange={(newValue) => {
                                                 setDate(newValue);
                                             }}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs()}
+                                            
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -153,6 +159,7 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="pob"
                                         name="pob"
+                                        defaultValue={state.item.address}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         value={formik.values.placeOfBirth}
@@ -163,6 +170,7 @@ const TTCN = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id="phone"
+                                        defaultValue={state.item.phoneNumber}
                                         name="phone"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -175,10 +183,11 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="email"
                                         name="email"
+                                        defaultValue={state.item.email}
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.email}
+                                        // value={formik.values.email}
                                     />
                                 </div>
                             </div>
@@ -186,39 +195,35 @@ const TTCN = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã giáo viên: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={state.item.idMonitor}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={state.item.major}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={state.item.password}/>
+                            </div>
+                            <div className={styles.txt}>
+                                <p>Đề tài: </p>
+                                <TextField className={styles.txtField} defaultValue={state.item.topic}/>
                             </div>
                         </div>
-                        <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting}>Đổi mật khẩu</button>
+                        <div className={styles.btnForm}>
+                            <div className={styles.btn}>
+                                <button className={styles.button} disabled={formik.isSubmitting}>Đồng ý</button>
+                            </div>
+                            <div className={styles.btn}>
+                                <button className={styles.button} disabled={formik.isSubmitting}>Từ chối</button>
+                            </div>
                         </div>
                     </form>
                 </div>
 
             </div>
-            {
-                showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Đổi mật khẩu thành công</AlertTitle>
-                    </Alert>
-                </div>
-            }
         </div >
     );
 };
 
-export default TTCN;
+export default SRequirementDetails;

@@ -65,10 +65,12 @@ function Login() {
     else {
       if (context.toggle === true) {
         try {
-          var tk = await userApi.loginDA({
-            username: username,
-            password: password,
-          });
+        //   var tk = await userApi.loginDA({
+        //     username: username,
+        //     password: password,
+        //   });
+        var tk = 'skjdakjd';
+
           if (tk !== "") {
             context.token = tk;
             setShowAlert(true);
@@ -92,8 +94,9 @@ function Login() {
           setErrorMessage("Lỗi kết nối");
         }
       } else if (context.toggle === false) {
-        try {
-          var tk = userApi.loginTT({ username: username, password: password });
+        // try {
+        //   var tk = await userApi.loginTT({ username: username, password: password });
+        var tk = 'skjdakjd';
           if (tk !== "") {
             context.token = tk;
             setShowAlert(true);
@@ -113,9 +116,9 @@ function Login() {
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
           }
-        } catch (error) {
-          setErrorMessage("Lỗi kết nối");
-        }
+        // } catch (error) {
+        //   setErrorMessage("Lỗi kết nối");
+        // }
       }
     }
 
