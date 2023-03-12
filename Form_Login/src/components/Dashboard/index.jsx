@@ -90,21 +90,21 @@ export default function Dashboard() {
     return (
         <div className={styles.contain}>
             <Main open={open}>
-                { (
+                {(
                     // admin role
-                    Variables.userRole === 'admin' ? 
-                    (location.pathname === '/quan-ly-do-an-sinh-vien' ||
-                    location.pathname === '/quan-ly-do-an' ||
-                    location.pathname === '/quan-ly-giao-vien-da' ||
-                    location.pathname === '/quan-ly-sinh-vien-da') : 
-                    // students role
-                    (location.pathname === '')
-                    ) &&
+                    Variables.userRole === 'admin' ?
+                        (location.pathname === '/quan-ly-do-an-sinh-vien' ||
+                            location.pathname === '/quan-ly-do-an' ||
+                            location.pathname === '/quan-ly-giao-vien-da' ||
+                            location.pathname === '/quan-ly-sinh-vien-da') :
+                        // students role
+                        (location.pathname === '')
+                ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
                                 <div className={styles.infoTag}>
-                                     <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : ""}</p>
+                                    <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : ""}</p>
                                 </div>
                                 <div className={styles.bgDB}>
                                     <MenuBookIcon style={{ fontSize: 130 }} />
@@ -136,15 +136,15 @@ export default function Dashboard() {
                                         <div className={styles.bgDB3}>
                                             <AccessTimeIcon style={{ fontSize: 130 }} />
                                         </div>
-                                    </div> : 
-                                    <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
-                                        <div className={styles.infoTag}>
-                                            <p>Danh Sách Đồ Án</p>
+                                    </div> :
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                                            <div className={styles.infoTag}>
+                                                <p>Danh Sách Đồ Án</p>
+                                            </div>
+                                            <div className={styles.bgDB2}>
+                                                <PeopleIcon style={{ fontSize: 130 }} />
+                                            </div>
                                         </div>
-                                        <div className={styles.bgDB2}>
-                                            <PeopleIcon style={{ fontSize: 130 }} />
-                                        </div>
-                                    </div>
                                 }
                             </div>
                         </div>
@@ -156,21 +156,21 @@ export default function Dashboard() {
                     </div>
                 }
                 {(
-                // admin role
-                Variables.userRole === 'admin' ? 
-                (location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
-                    location.pathname === '/quan-ly-cong-ty' ||
-                    location.pathname === '/quan-ly-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt')
-                    // teachers role
-                    : Variables.userRole === 'teachers' ?
-                    (location.pathname === '/trang-chu-giang-vien' ||
-                    location.pathname === '/thong-tin-ca-nhan' ||
-                    location.pathname === '/quan-ly-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt') : 
-                    // students role
-                    (location.pathname === '/trang-chu-giang-vien')
-                    ) &&
+                    // admin role
+                    Variables.userRole === 'admin' ?
+                        (location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
+                            location.pathname === '/quan-ly-cong-ty' ||
+                            location.pathname === '/quan-ly-giao-vien-tt' ||
+                            location.pathname === '/quan-ly-sinh-vien-tt')
+                        // teachers role
+                        : Variables.userRole === 'teachers' ?
+                            (location.pathname === '/trang-chu-giang-vien' ||
+                                location.pathname === '/thong-tin-ca-nhan' ||
+                                location.pathname === '/quan-ly-giao-vien-tt' ||
+                                location.pathname === '/quan-ly-sinh-vien-tt') :
+                            // students role
+                            (location.pathname === '/trang-chu-giang-vien')
+                ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
@@ -199,28 +199,28 @@ export default function Dashboard() {
                             </div>
                             {
                                 // admin role
-                                Variables.userRole === "admin" ? 
-                                <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
-                                    <div className={styles.infoTime}>
-                                        <div className={styles.time}>{formatTime(time)}</div>
-                                        <div className={styles.date}>{formatDate(time)}</div>
-                                    </div>
-                                    <div className={styles.bgDB3}>
-                                        <AccessTimeIcon style={{ fontSize: 130 }} />
-                                    </div>
-                                </div> : 
-                                // teacher role
-                                Variables.userRole === "teachers" ?
-                                <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }} >
-                                    <div className={styles.infoTag}>
-                                        <p>Danh sách đồ án</p>
-                                    </div>
-                                    <div className={styles.bgDB2}>
-                                        <PeopleIcon style={{ fontSize: 130 }} />
-                                    </div>
-                                </div> : 
-                                // students role
-                                <div></div>
+                                Variables.userRole === "admin" ?
+                                    <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
+                                        <div className={styles.infoTime}>
+                                            <div className={styles.time}>{formatTime(time)}</div>
+                                            <div className={styles.date}>{formatDate(time)}</div>
+                                        </div>
+                                        <div className={styles.bgDB3}>
+                                            <AccessTimeIcon style={{ fontSize: 130 }} />
+                                        </div>
+                                    </div> :
+                                    // teacher role
+                                    Variables.userRole === "teachers" ?
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }} >
+                                            <div className={styles.infoTag}>
+                                                <p>Danh sách đồ án</p>
+                                            </div>
+                                            <div className={styles.bgDB2}>
+                                                <PeopleIcon style={{ fontSize: 130 }} />
+                                            </div>
+                                        </div> :
+                                        // students role
+                                        <div></div>
                             }
                         </div>
                         <div style={{ paddingTop: 40 }}>

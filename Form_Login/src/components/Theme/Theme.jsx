@@ -6,7 +6,6 @@ const ThemeContext = createContext()
 function ThemeProvider({children}) {
     const [token, setToken] = useState("");
     const [toggle, setToggle] = useState(false);
-    const [activeButton, setActiveButton] = useState('btnQLDASV');
     const updateToggle = (newValue) => {
         setToggle(newValue);
     }
@@ -16,13 +15,15 @@ function ThemeProvider({children}) {
     const updateToken = (newValue) => {
         setToken(newValue);
     }
+
+
     const value = {
         toggle,
-        activeButton,
-        updateButton,
         updateToggle,
         token,
-        updateToken
+        updateToken,
+        activeButton,
+        updateButton
     }
     return (
         <ThemeContext.Provider value={value}>
