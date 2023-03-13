@@ -7,7 +7,7 @@ function QLGVTT() {
             <Link to='/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt'>
                 <button className={`${styles.button} ${styles.btnEx}`}>Nhập dữ liệu giảng viên từ Excel</button>
             </Link>
-            <Link >
+            <Link to='/quan-ly-giao-vien-tt/danh-sach-giao-vien-tt'>
                 <button className={`${styles.button} ${styles.btnDS}`}>Danh sách giảng viên</button>
             </Link>
 

@@ -47,21 +47,21 @@ const columns = [
     },
 ];
 
-function createData(STT, DoAn, SinhVien, GiaoVien, Ky) {
-    return { STT, DoAn, SinhVien, GiaoVien, Ky };
+function createData(STT, DoAn, SinhVien, GiaoVien, Ky, MaSV, Lop, File) {
+    return { STT, DoAn, SinhVien, GiaoVien, Ky,  MaSV, Lop, File };
 }
 
 var rows = [
-    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Cù Việt Dũng', '01/2022-2023'),
-    createData(2, 'Quản lý du học sinh Đức', 'Hoàng Nam', 'Cù Việt Dũng', '01/2022-2023'),
-    createData(3, 'Quản lý du học sinh Tây Ban Nha', 'Lương Nam', 'Cù Việt Dũng', '01/2022-2023'),
+    createData(1, 'Quản lý nhân sự công ty ABC', 'Trung Thị Linh', 'Cù Việt Dũng', '01/2022-2023', '2051063000', '62PM02', 'TrungThiLinh.pdf'),
+    createData(2, 'Quản lý cửa hàng thú cưng', 'Nguyễn Thị Bích Ngọc', 'Cù Việt Dũng', '01/2022-2023', '2051063111', '62PM02', 'NguyenThiBichNgoc.pdf'),
 ];
 function DSDA() {
-    rows = projectApi.getAll();
+    // rows = projectApi.getAll();
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
-    function handleGoClick() {
-        navigate('/ChiTietXD');
+    function handleGoClick(item) {
+        navigate('/ChiTietXD', { state: { item } });
+        console.log(item);
     }
     return (
         <div style={{ display: 'flex' }}>
@@ -89,17 +89,12 @@ function DSDA() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGoClick}>
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-                                                })}
+                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.STT}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.DoAn}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.SinhVien}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.GiaoVien}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
                                             </TableRow>
                                         );
                                     })}

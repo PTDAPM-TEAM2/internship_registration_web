@@ -26,6 +26,7 @@ import CTCT from './components/AdminRole/ThucTap/ChiTietCT';
 import DLSVTT from './components/AdminRole/ThucTap/DLSVTT';
 import DLGVTT from './components/AdminRole/ThucTap/DLGVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
+import DSGVTT from './components/AdminRole/ThucTap/DSGiaoVien';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -72,6 +73,7 @@ function App() {
                 <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
                 <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
                 <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
+                <Route path='quan-ly-giao-vien-tt/danh-sach-giao-vien-tt' element={<DSGVTT />} />
                 <Route path='trang-chu-giang-vien' element={<TCGV />}></Route>
               </Route>
               <Route path='/ThemGV-da' element={<ThemGV />} />

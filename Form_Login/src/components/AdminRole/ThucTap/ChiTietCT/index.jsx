@@ -17,6 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import Sidebar from '../../../Sidebar';
+import { useLocation } from 'react-router-dom';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -67,6 +68,8 @@ const ChiTietCT = () => {
     const navigate = useNavigate();
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const location = useLocation();
+    const state = location.state;
     const handleAdd = () => {
         setOpen(false)
         setShowAlert(true);
@@ -94,36 +97,36 @@ const ChiTietCT = () => {
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Mã công ty: </p>
-                                    <TextField defaultValue='001' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.Ma} className={styles.txtField} />
                                 </div>
 
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField defaultValue='0123456789' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.SĐT} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Địa chỉ: </p>
-                                    <TextField defaultValue='Hà Nội' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.Diachi} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Tên công ty: </p>
-                                    <TextField defaultValue='APANZO' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.Ten} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
-                                    <TextField defaultValue='apanzo123@gmail.com' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.Email} className={styles.txtField} />
                                 </div>
 
                                 <div className={styles.txt}>
                                     <p>Tax_Code: </p>
-                                    <TextField defaultValue='11111' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.tax_code} className={styles.txtField} />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mô tả về công ty: </p>
-                                <TextField defaultValue='' className={styles.txtFieldBot} multiline rows={8} />
+                                <TextField defaultValue={state.item.mota} className={styles.txtFieldBot} multiline rows={8} />
                             </div>
                         </div>
                         <div className={styles.btn}>

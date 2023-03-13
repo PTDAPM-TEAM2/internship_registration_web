@@ -118,9 +118,9 @@ const DSSVYC = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
-                    {data.map((item) => ( 
-                      <div className={styles.card}> 
-                          <a className={styles.cardItem} onClick={() => {toComponent(item)}}>
+                    {data.map((item, index) => ( 
+                      <div className={styles.card} key={index}> 
+                          <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
                               <img src={item.image} alt='' className={styles.itemImage}/> 
                               <div className={styles.body}> 
                                   <a><b>Họ và tên: </b>{item.name}</a> 
@@ -128,7 +128,7 @@ const DSSVYC = () => {
                                   <p><b>Lớp: </b>{item.sClass}</p> 
                                   <p><b>Khoa: </b>{item.major}</p> 
                               </div> 
-                          </a>
+                          </div>
                       </div>
                     ))} 
                 </div> 

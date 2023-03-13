@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Sidebar from '../../../Sidebar';
+import { useLocation } from 'react-router-dom';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -33,7 +34,8 @@ const ChiTietGV = () => {
     const [date, setDate] = React.useState(dayjs());
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const location = useLocation();
+    const state = location.state;
     const handleSubmit = () => {
         setShowAlert(true);
         setTimeout(() => {
@@ -72,15 +74,16 @@ const ChiTietGV = () => {
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Họ tên: </p>
-                                    <TextField defaultValue='Nguyễn Ngọc Châu' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.TenGiangVien} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số căn cước: </p>
-                                    <TextField defaultValue='045587934300' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.SĐT}className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Ngày sinh: </p>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <TextField defaultValue={state.item.NgaySinh}className={styles.txtField} />
+                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
                                             renderInput={(props) => <TextField {...props} style={{ width: 400 }} />}
                                             value={date}
@@ -90,38 +93,38 @@ const ChiTietGV = () => {
                                             format="YYYY/MM/DD"
                                             defaultValue={dayjs('01/02/1988')}
                                         />
-                                    </LocalizationProvider>
+                                    </LocalizationProvider> */}
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Nơi sinh: </p>
-                                    <TextField defaultValue='Hà Nội' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.NoiSinh} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField defaultValue='09877547123' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.SĐT} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
-                                    <TextField defaultValue='chau@gmail.com' className={styles.txtField} />
+                                    <TextField defaultValue={state.item.email} className={styles.txtField} />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã giảng viên: </p>
-                                <TextField defaultValue='1002003987' className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.MaGV} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField defaultValue='Công nghệ thông tin' className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.Khoa} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Số lượng SV quản lý: </p>
-                                <TextField defaultValue='25' className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.SLSV} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField defaultValue='Chautlu1234' className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.Mk} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>

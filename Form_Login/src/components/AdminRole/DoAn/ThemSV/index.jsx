@@ -12,7 +12,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import Variables from '../../../../utils/variables';
 
 const initialValues = {
     image: '',
@@ -23,6 +23,11 @@ const initialValues = {
     pob: '',
     phone: '',
     email: '',
+    masv: '',
+    lop: '',
+    ky: '',
+    mk: '',
+
 };
 const validationSchema = Yup.object({
     name: Yup.string().required(),
@@ -31,10 +36,17 @@ const validationSchema = Yup.object({
     idCard: Yup.string().matches(/^[0-9]{12}$/).required(),
     dob: Yup.date().max(new Date()).required(),
     pob: Yup.string().required(),
-    phone: Yup.string().matches(/^[0-9]{10}$/).required()
+    phone: Yup.string().matches(/^[0-9]{10}$/).required(),
+    masv: Yup.string().required(),
+    lop: Yup.string().required(),
+    ky: Yup.string().required(),
+    mk: Yup.string().required(),
 
 });
 
+function createData(Hoten, Lop, TenDoAn, Ky, SoCC, NgaySinh, NoiSinh, SDT, email, Ma, Mk, GiangVien, Khoa, gt) {
+    return { Hoten, Lop, TenDoAn, Ky, SoCC, NgaySinh, NoiSinh, SDT, email, Ma, Mk, GiangVien, Khoa, gt };
+}
 
 const ThemSV = () => {
     const [showAlert, setShowAlert] = React.useState(false);
@@ -54,14 +66,13 @@ const ThemSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // setShowAlert(true);
-            // setTimeout(() => {
-            //     setShowAlert(false);
-            // }, 2000)
+            Variables.studentList.push(createData(values.name, values.lop,  '', values.ky, values.idCard, values.dob, values.pob, values.phone, values.email, values.masv, values.mk, '', '', values.gender ));
+            console.log(Variables.studentList);
+            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
         },
     })
-    console.log(formik.errors);
-    console.log(showAlert);
+    // console.log(formik.errors);
+    // console.log(showAlert);
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -261,31 +272,51 @@ const ThemSV = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="masv"
+                                    name="masv"
+                                    value={formik.values.masv}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.masv && Boolean(formik.errors.masv)}
+                                />
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <TextField className={styles.txtFieldBot} />
-                            </div>
-                            <div className={styles.txt}>
-                                <p>Khoa: </p>
-                                <TextField className={styles.txtFieldBot} />
-                            </div>
-                            <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="lop"
+                                    name="lop"
+                                    value={formik.values.lop}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.lop && Boolean(formik.errors.lop)}
+                                />
                             </div>
                             <div className={styles.txt}>
                                 <p>Kỳ: </p>
-                                <TextField className={styles.txtFieldBot} />
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="ky"
+                                    name="ky"
+                                    value={formik.values.ky}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.ky && Boolean(formik.errors.ky)}
+                                />
+                            </div>
+                            <div className={styles.txt}>
+                                <p>Mật khẩu: </p>
+                                <TextField className={styles.txtFieldBot}
+                                    id="mk"
+                                    name="mk"
+                                    value={formik.values.mk}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.mk && Boolean(formik.errors.mk)}
+                                />
                             </div>
                         </div>
                         <div className={styles.btn}>
                             <button className={styles.button} disabled={formik.isSubmitting} type="submit" onClick={() => {
                                 setShowAlert(true)
-                                setTimeout(() => {
-                                    setShowAlert(false);
-                                }, 2000)
                             }}>Thêm</button>
                         </div>
                     </form>
@@ -293,42 +324,55 @@ const ThemSV = () => {
 
             </div>
             {
-                showAlert &&
-                <div>    {
-                    formik.errors !== {} &&
-                    < div >
-                        < Alert severity="error" sx={{
-                            position: 'fixed',
-                            width: '40%',
-                            bottom: '0',
-                            right: '2%'
-                        }}>
-                            <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
-                        </Alert>
-                    </div>
-                }
-                </div>
+                // formik.errors !== {} ?
+                //     (showAlert &&
+                //     < div >
+                //         < Alert severity="error" sx={{
+                //             position: 'fixed',
+                //             width: '40%',
+                //             bottom: '0',
+                //             right: '2%'
+                //         }}>
+                //             <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
+                //         </Alert>
+                //     </div>)
+                //     : (showAlert &&
+                //     < div >
+                //         < Alert severity="success" sx={{
+                //             position: 'fixed',
+                //             width: '40%',
+                //             bottom: '0',
+                //             right: '2%'
+                //         }}>
+                //             <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                //         </Alert>
+                //     </div>)
+                // formik.errors == {} ?
+                // showAlert &&
+                // < div >
+                //     < Alert severity="error" sx={{
+                //         position: 'fixed',
+                //         width: '40%',
+                //         bottom: '0',
+                //         right: '2%'
+                //     }}>
+                //         <AlertTitle>True</AlertTitle>
+                //     </Alert>
+                // </div>
+                // : showAlert &&
+                // < div >
+                //     < Alert severity="success" sx={{
+                //         position: 'fixed',
+                //         width: '40%',
+                //         bottom: '0',
+                //         right: '2%'
+                //     }}>
+                //         <AlertTitle>false</AlertTitle>
+                //     </Alert>
+                // </div>
 
             }
-            {
-                showAlert &&
-                <div>    {
-                    formik.errors === {} &&
-                    < div >
-                        < Alert severity="success" sx={{
-                            position: 'fixed',
-                            width: '40%',
-                            bottom: '0',
-                            right: '2%'
-                        }}>
-                            <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
-                        </Alert>
-                    </div>
-                }
-                </div>
-
-            }
-            {/* {showAlert && formik.errors === {} &&
+            {showAlert && formik.errors === {} &&
                 <div>
                     <Alert severity="success" sx={{
                         position: 'absolute',
@@ -341,7 +385,7 @@ const ThemSV = () => {
                 </div>
 
 
-            } */}
+            }
         </div >
     );
 };
