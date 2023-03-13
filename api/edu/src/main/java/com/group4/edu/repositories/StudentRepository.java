@@ -1,5 +1,6 @@
 package com.group4.edu.repositories;
 
+import com.group4.edu.domain.GraduationThesis;
 import com.group4.edu.domain.Student;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.StudentDto;
@@ -20,4 +21,5 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Query(value = "SELECT e FROM Student e where e.studentCode =?1")
     Optional<Student> findByStudentCode(String studentCode);
+
 }

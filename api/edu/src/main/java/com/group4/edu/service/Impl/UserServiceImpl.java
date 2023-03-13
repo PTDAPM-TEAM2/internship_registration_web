@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 //                roles.add(accountRole.getRole());
 //            }
 //        }
-        if(user == null || user.getUserType() == null || user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())){
+        if(user != null && user.getUserType() != null && user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())){
             return new UserDto(user,roles);
         }
         if(user.getUserType().equals(EduConstants.UserType.LECTURERS.getValue())){
@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
         }
         if(user.getUserType().equals(EduConstants.UserType.STUDENT.getValue())){
             Student student = studentRepository.findById(user.getId()).orElse(null);
+
             return new StudentDto(student, roles);
         }
         return null;

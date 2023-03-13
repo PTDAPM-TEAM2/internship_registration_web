@@ -32,10 +32,11 @@ public class GraduationThesisController {
         }
     }
 
-//    @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
-//    public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
-//
-//    }
+    @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
+    public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
+        GraduationThesisDto result = graduationThesisService.addOutline(file);
+        return new ResponseEntity<>(result, result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);
+    }
 
     //5.7 Use case “Xem thông tin đồ án”
     @GetMapping("/{id}")

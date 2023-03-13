@@ -3,10 +3,7 @@ package com.group4.edu.domain;
 import com.group4.edu.domain.core.BaseObject;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,8 +12,10 @@ public class RegisterTime extends BaseObject {
     private Date timeStart;
     private Date timeEnd;
     private Integer type;// 1 là đăng ký đồ án, 2 là đăng ký thực tập
-    private String semester;
 
+    @ManyToOne
+    @JoinColumn(name = "semester_id")
+    private Semester semester;
     public Date getTimeStart() {
         return timeStart;
     }
@@ -41,11 +40,12 @@ public class RegisterTime extends BaseObject {
         this.type = type;
     }
 
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 }
+

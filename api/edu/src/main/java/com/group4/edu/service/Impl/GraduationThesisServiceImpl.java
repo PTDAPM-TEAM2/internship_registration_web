@@ -11,8 +11,13 @@ import com.group4.edu.repositories.LecturerRepository;
 import com.group4.edu.repositories.RegisterTimeRepository;
 import com.group4.edu.repositories.StudentRepository;
 import com.group4.edu.service.GraduationThesisService;
+import com.group4.edu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -31,6 +36,8 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     RegisterTimeRepository registerTimeRepository;
     @Autowired
     LecturerRepository lecturerRepository;
+    @Autowired
+    private UserService userService;
     //
     public GraduationThesisDto save (GraduationThesisDto dto) throws Exception {
         if(dto == null){
@@ -70,9 +77,6 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
 
         // để set được isAccept và status: thì phải là id của giáo viên phải đúng với giáo viên người dùng chọn hoặc id admin
-        if(dto.getUrlOutline() != null){
-            entity.setUrlOutline((dto.getUrlOutline()));
-        }
         if(dto.getStatus() != null){
             entity.setStatus(dto.getStatus());
         }
@@ -86,13 +90,13 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
             entity.setStudent(student);
         }
-        if(dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null){
-            RegisterTime registerTime = registerTimeRepository.findById(dto.getRegisterTime().getId()).orElse(null);
-            if(registerTime == null){
-                throw new Exception("Học kỳ không tồn tại");
-            }
-            entity.setRegisterTime(registerTime);
-        }
+//        if(dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null){
+//            RegisterTime registerTime = registerTimeRepository.findById(dto.getRegisterTime().getId()).orElse(null);
+//            if(registerTime == null){
+//                throw new Exception("Học kỳ không tồn tại");
+//            }
+//            entity.setRegisterTime(registerTime);
+//        }
         if(dto.getLecturer() != null && dto.getLecturer().getId() != null){
             Lecturer lecturer = lecturerRepository.findById(dto.getLecturer().getId()).orElse(null);
             if(lecturer == null){
@@ -149,5 +153,29 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         List<GraduationThesisDto> entities = query.getResultList();
         return entities;
+    }
+
+    @Override
+    public GraduationThesisDto addOutline(MultipartFile file) {
+        if(file == null){
+            return null;
+        }
+        Student student = null;
+        try {
+            student = (Student) userService.getCurrentUser();
+        }
+        catch (Exception ex){
+            return null;
+        }
+//        List<GraduationThesis> listDa = graduationThesisRepository.findByStId(student.getId());
+//        if(listDa == null && listDa.size()<=0){
+//            return null;
+//        }
+//        GraduationThesis graduationThesis = listDa.get(0);
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        System.out.println("file upload"+fileName);
+
+        return new GraduationThesisDto();
+
     }
 }

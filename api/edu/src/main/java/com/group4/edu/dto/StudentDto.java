@@ -12,6 +12,7 @@ public class StudentDto extends UserDto{
     private String studentCode;
     private GradeDto grade;
     private Integer studentType;
+    private GraduationThesisDto graduationThesis;
 
     public StudentDto(){}
     public StudentDto(Student entity){
@@ -53,5 +54,21 @@ public class StudentDto extends UserDto{
 
     public void setGrade(GradeDto grade) {
         this.grade = grade;
+    }
+
+    public Integer getStudentType() {
+        return studentType;
+    }
+
+    public void setStudentType(Integer studentType) {
+        this.studentType = studentType;
+    }
+
+    public GraduationThesisDto getGraduationThesis() {
+        return graduationThesis;
+    }
+
+    public void setGraduationThesis(GraduationThesisDto graduationThesis) {
+        this.graduationThesis = graduationThesis;
     }
 }
