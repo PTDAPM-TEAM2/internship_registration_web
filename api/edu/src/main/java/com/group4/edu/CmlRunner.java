@@ -5,6 +5,7 @@ import com.group4.edu.dto.AccountDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.AccountService;
 import com.group4.edu.service.JwtService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +39,8 @@ public class CmlRunner implements CommandLineRunner{
     private StudentRepository studentRepository;
     @Autowired
     private GradeRepository gradeRepository;
+    @Autowired
+    private SemesterRepository semesterRepository;
 
 //    @Transactional
 //    @Bean
@@ -245,5 +251,15 @@ public class CmlRunner implements CommandLineRunner{
         System.out.println("Tai khoan co quyen Sinh vien thuc tap: SV001-SV001");
         System.out.println("Tai khoan co quyen Sinh vien lam ca TT va DA: SV002-SV002");
         System.out.println("**********************************************************");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = formatter.parse(EduConstants.dateInString);
+        String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
+        Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
+        if(semester  ==  null){
+            semester = new Semester();
+            semester.setCode(code);
+            semester.setActive(true);
+            semesterRepository.save(semester);
+        }
     }
 }

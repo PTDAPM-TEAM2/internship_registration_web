@@ -3,6 +3,7 @@ package com.group4.edu;
 import com.group4.edu.domain.Role;
 
 public class EduConstants {
+    public static final String dateInString = "12-03-2023";
     public static String hederAuthorization = "authorization";
     public static enum Role {
         ROLEADMIN(1,"ADMIN"), ROLESTUDENT_DA(3,"STUDENT_DA"),ROLESTUDENT_TT(4,"STUDENT_TT") , ROLELECTURERS(2,"LECTURER");

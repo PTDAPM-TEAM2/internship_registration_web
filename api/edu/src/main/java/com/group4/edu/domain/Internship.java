@@ -23,8 +23,8 @@ public class Internship extends BaseObject {
     Student student;
 
     @ManyToOne
-    @JoinColumn(name = "register_time_id")
-    RegisterTime registerTime;
+    @JoinColumn(name = "semester_id")
+    Semester semester;
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id")
@@ -70,19 +70,19 @@ public class Internship extends BaseObject {
         this.student = student;
     }
 
-    public RegisterTime getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(RegisterTime registerTime) {
-        this.registerTime = registerTime;
-    }
-
     public Lecturer getLecturer() {
         return lecturer;
     }
 
     public void setLecturer(Lecturer lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }

@@ -13,6 +13,6 @@ import java.util.List;
 
 public interface GraduationThesisRepository extends JpaRepository<GraduationThesis,Long> {
     @Query("select new com.group4.edu.dto.GraduationThesisDto(e) from GraduationThesis e" +
-            " where e.registerTime.id = ?2 and e.student.id = ?1")
-    List<GraduationThesisDto> getAllBySVAndRegisterTime(Long IdSv, Long registerTimeId);
+            " where e.semester.id = ?2 and e.student.id = ?1 and e.semester.active = true")
+    List<GraduationThesisDto> getAllByStIdAndSemesterId(Long IdSv, Long semesterId);
 }

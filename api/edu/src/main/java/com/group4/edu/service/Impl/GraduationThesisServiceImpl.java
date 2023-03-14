@@ -27,7 +27,6 @@ import java.util.List;
 public class GraduationThesisServiceImpl implements GraduationThesisService {
     @PersistenceContext
     EntityManager manager;
-
     @Autowired
     GraduationThesisRepository graduationThesisRepository;
     @Autowired
@@ -38,7 +37,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     LecturerRepository lecturerRepository;
     @Autowired
     private UserService userService;
-    //
+
     public GraduationThesisDto save (GraduationThesisDto dto) throws Exception {
         if(dto == null){
             throw new Exception("Hãy nhập thông tin");
@@ -51,8 +50,8 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(entity == null){
             entity = new GraduationThesis();
             if(dto.getStudent() != null && dto.getStudent().getId() != null
-                    && dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null ){
-                List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllBySVAndRegisterTime(dto.getStudent().getId(), dto.getRegisterTime().getId());
+                    && dto.getSemester() != null && dto.getSemester().getId() != null ){
+                List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllByStIdAndSemesterId(dto.getStudent().getId(), dto.getSemester().getId());
                 if(graduationThesis != null && graduationThesis.size() > 0){
                     throw new Exception("Sinh viên đã có đồ án");
                 }
@@ -90,13 +89,6 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
             entity.setStudent(student);
         }
-//        if(dto.getRegisterTime() != null && dto.getRegisterTime().getId() != null){
-//            RegisterTime registerTime = registerTimeRepository.findById(dto.getRegisterTime().getId()).orElse(null);
-//            if(registerTime == null){
-//                throw new Exception("Học kỳ không tồn tại");
-//            }
-//            entity.setRegisterTime(registerTime);
-//        }
         if(dto.getLecturer() != null && dto.getLecturer().getId() != null){
             Lecturer lecturer = lecturerRepository.findById(dto.getLecturer().getId()).orElse(null);
             if(lecturer == null){
@@ -167,11 +159,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         catch (Exception ex){
             return null;
         }
-//        List<GraduationThesis> listDa = graduationThesisRepository.findByStId(student.getId());
-//        if(listDa == null && listDa.size()<=0){
-//            return null;
-//        }
-//        GraduationThesis graduationThesis = listDa.get(0);
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         System.out.println("file upload"+fileName);
 

@@ -13,7 +13,7 @@ public class GraduationThesisDto extends BaseDto {
     Integer status; //0 đang chờ duyệt, 1 đang làmm, 2 là bị huỷ, 3 hoàn thành
     Integer isAccept;
     StudentDto student;
-    RegisterTimeDto registerTime;
+    SemesterDto semester;
     LecturersDto lecturer;
 
     public GraduationThesisDto() {
@@ -31,8 +31,8 @@ public class GraduationThesisDto extends BaseDto {
             this.isAccept = entity.getIsAccept();
         if(entity.getStudent() != null)
             this.student = new StudentDto(entity.getStudent());
-        if(entity.getRegisterTime() != null)
-            this.registerTime = new RegisterTimeDto(entity.getRegisterTime());
+        if(entity.getSemester() != null)
+            this.semester = new SemesterDto(entity.getSemester());
         if(entity.getLecturer() != null){
             this.lecturer = new LecturersDto(entity.getLecturer());
         }
@@ -110,12 +110,12 @@ public class GraduationThesisDto extends BaseDto {
         this.student = student;
     }
 
-    public RegisterTimeDto getRegisterTime() {
-        return registerTime;
+    public SemesterDto getSemester() {
+        return semester;
     }
 
-    public void setRegisterTime(RegisterTimeDto registerTime) {
-        this.registerTime = registerTime;
+    public void setSemester(SemesterDto semester) {
+        this.semester = semester;
     }
 
     public LecturersDto getLecturer() {
