@@ -23,7 +23,7 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
     @Autowired
     private SemesterRepository semesterRepository;
     @Override
-    public RegisterTimeDto save(RegisterTimeDto dto) throws Exception {
+    public RegisterTimeDto save(RegisterTimeDto dto, Integer type) throws Exception {
         if(dto == null){
             throw new Exception("Thông tin thời gian đang bị trống");
         }
@@ -56,6 +56,7 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity = registerTimeRepository.save(entity);
+        entity.setType(type);
         return new RegisterTimeDto(entity);
     }
 }

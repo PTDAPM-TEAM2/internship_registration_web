@@ -1,6 +1,7 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.Grade;
+import com.group4.edu.domain.GraduationThesis;
 import com.group4.edu.domain.Role;
 import com.group4.edu.domain.Student;
 
@@ -22,6 +23,19 @@ public class StudentDto extends UserDto{
         this.studentCode  = entity.getStudentCode();
         if(entity.getGrade() != null){
             this.grade = new GradeDto(entity.getGrade());
+        }
+    }
+
+    public StudentDto(Student entity, GraduationThesis thesis){
+        super(entity);
+        this.setId(entity.getId());
+        this.studentType = entity.getStudentType();
+        this.studentCode  = entity.getStudentCode();
+        if(entity.getGrade() != null){
+            this.grade = new GradeDto(entity.getGrade());
+        }
+        if(thesis != null){
+            this.graduationThesis = new GraduationThesisDto(thesis);
         }
     }
 

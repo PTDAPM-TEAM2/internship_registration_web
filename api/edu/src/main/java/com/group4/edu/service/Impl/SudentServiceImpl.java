@@ -43,6 +43,9 @@ public class SudentServiceImpl implements StudentService {
     @Autowired
     private MailServiceImpl mailService;
 
+    @Autowired
+    private GraduationThesisRepository thesisRepository;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -276,7 +279,8 @@ public class SudentServiceImpl implements StudentService {
             Account account = st.getAccount();
             for(Role role: account.getRoles()){
                 if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey()) && type == 1){
-                    studentDtos.add(new StudentDto(st));
+                    List<GraduationThesis> graduationThesiss = thesisRepository.getGraduationThesisByStId(st.getId());
+                    studentDtos.add(new StudentDto(st, graduationThesiss.size()>0?graduationThesiss.get(0):null));
                     break;
                 }
                 if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2){

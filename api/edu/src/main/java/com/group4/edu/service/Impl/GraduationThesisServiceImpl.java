@@ -1,17 +1,14 @@
 package com.group4.edu.service.Impl;
 
-import com.group4.edu.domain.GraduationThesis;
-import com.group4.edu.domain.Lecturer;
-import com.group4.edu.domain.RegisterTime;
-import com.group4.edu.domain.Student;
+import com.group4.edu.EduConstants;
+import com.group4.edu.domain.*;
 import com.group4.edu.dto.GraduationThesisDto;
 import com.group4.edu.dto.SearchObjectDto;
-import com.group4.edu.repositories.GraduationThesisRepository;
-import com.group4.edu.repositories.LecturerRepository;
-import com.group4.edu.repositories.RegisterTimeRepository;
-import com.group4.edu.repositories.StudentRepository;
+import com.group4.edu.dto.StudentDto;
+import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,6 +18,12 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,6 +41,8 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SemesterRepository semesterRepository;
     public GraduationThesisDto save (GraduationThesisDto dto) throws Exception {
         if(dto == null){
             throw new Exception("Hãy nhập thông tin");
@@ -84,7 +89,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         if(dto.getStudent() != null && dto.getStudent().getId() != null){
             Student student = studentRepository.findById(dto.getStudent().getId()).orElse(null);
-            if(student == null){
+            if(student == null||(student.getStudentType() !=1 && student.getStudentType() != 3)){
                 throw new Exception("Sinh viên không tồn tại");
             }
             entity.setStudent(student);
@@ -101,6 +106,12 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
                 entity.setLecturer(null);
             }
         }
+        //
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = formatter.parse(EduConstants.dateInString);
+        String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
+        Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
+        entity.setSemester(semester);
         entity = graduationThesisRepository.save(entity);
         return new GraduationThesisDto(entity);
     }
@@ -148,22 +159,47 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     }
 
     @Override
-    public GraduationThesisDto addOutline(MultipartFile file) {
+    public GraduationThesisDto addOutline(MultipartFile file) throws Exception {
         if(file == null){
             return null;
         }
         Student student = null;
         try {
-            student = (Student) userService.getCurrentUser();
+            StudentDto studentDto = (StudentDto) userService.getCurrentUser();
+            if(studentDto != null){
+                student = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(null);
+                if(student == null){
+                    return null;
+                }
+            }
         }
         catch (Exception ex){
+            System.out.println(ex.getMessage());
             return null;
         }
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = student.getStudentCode()+ "."+StringUtils.cleanPath(file.getOriginalFilename());
         System.out.println("file upload"+fileName);
+        try {
+            // Lưu trữ tệp trong thư mục được chỉ định
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(EduConstants.PATH_UPLOAD_OUTLINE + fileName);
+            Files.write(path, bytes);
+            System.out.println(student.getId());
+            List<GraduationThesis> thesis = graduationThesisRepository.getGraduationThesisByStId(student.getId());
+            if(thesis != null && thesis.size() >0){
+                GraduationThesis thesis1 = thesis.get(0);
+                thesis1.setUrlOutline(EduConstants.RESOURCE_FOLDER_OUTLINE_PUBLIC+fileName);
+                thesis1 =  graduationThesisRepository.save(thesis1);
+                return new GraduationThesisDto(thesis1);
+            }
+            else {
+                throw new Exception("Không tìm thấy đồ án");
+            }
 
-        return new GraduationThesisDto();
+        } catch (IOException e) {
+            throw  new Exception("Lỗi server");
+        }
 
     }
 }

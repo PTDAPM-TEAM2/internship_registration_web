@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -32,10 +33,16 @@ public class GraduationThesisController {
         }
     }
 
-    @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
+    @RequestMapping(value = "/add-outline", method = RequestMethod.POST)
     public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
-        GraduationThesisDto result = graduationThesisService.addOutline(file);
-        return new ResponseEntity<>(result, result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);
+        GraduationThesisDto result = null;
+        System.out.println(file.getOriginalFilename());
+        try {
+            result = graduationThesisService.addOutline(file);
+            return new ResponseEntity<>("abc", result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Collections.singletonMap("error",e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     //5.7 Use case “Xem thông tin đồ án”

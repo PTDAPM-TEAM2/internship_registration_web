@@ -8,6 +8,7 @@ public class SemesterDto extends BaseDto{
     private Boolean active; //Còn hoạt động hay không
     public SemesterDto(){}
     public SemesterDto(Semester entity){
+        this.setId(entity.getId());
         this.code = entity.getCode();
         this.indexValue = entity.getIndexValue();
         this.active = entity.getActive();

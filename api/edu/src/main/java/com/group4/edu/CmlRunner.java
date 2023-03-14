@@ -152,6 +152,7 @@ public class CmlRunner implements CommandLineRunner{
             student.setAccount(account);
             account.setUser(student);
             student.setUserType(type<=3?type:3);
+            student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
             student.setStudentCode(username);
             student.setGrade(grade);
             studentRepository.save(student);
@@ -177,6 +178,7 @@ public class CmlRunner implements CommandLineRunner{
             student.setAccount(account);
             account.setUser(student);
             student.setUserType(type<=3?type:3);
+            student.setStudentType(EduConstants.StudentType.STUDENT_TT.getValue());
             student.setStudentCode(username);
             student.setGrade(grade);
             studentRepository.save(student);
@@ -207,6 +209,7 @@ public class CmlRunner implements CommandLineRunner{
             student.setUserType(type<=3?type:3);
             student.setStudentCode(username);
             student.setGrade(grade);
+            student.setStudentType(EduConstants.StudentType.ALL.getValue());
             studentRepository.save(student);
         }
         accountRepository.save(account);

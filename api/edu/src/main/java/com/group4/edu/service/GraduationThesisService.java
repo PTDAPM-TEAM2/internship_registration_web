@@ -10,6 +10,6 @@ public interface GraduationThesisService {
     GraduationThesisDto save (GraduationThesisDto dto) throws Exception;
     GraduationThesisDto getById(Long id) throws Exception;
     List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto);
-    GraduationThesisDto addOutline(MultipartFile file);
+    GraduationThesisDto addOutline(MultipartFile file) throws Exception;
 
 }
