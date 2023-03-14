@@ -1,9 +1,11 @@
 package com.group4.edu.repositories;
 
+import com.group4.edu.domain.GraduationThesis;
 import com.group4.edu.domain.Lecturer;
 import com.group4.edu.dto.LecturersDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,5 @@ public interface LecturerRepository extends JpaRepository<Lecturer,Long> {
 
     @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Lecturer e where e.lecturersCode =?1")
     public Boolean existsByLecturersCode(String code);
+
 }

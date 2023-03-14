@@ -19,4 +19,5 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
     @Query("select e from GraduationThesis e" +
             " where e.student.id = ?1 and e.semester.active = true")
     List<GraduationThesis> getGraduationThesisByStId(Long stId);
+
 }

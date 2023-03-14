@@ -10,6 +10,7 @@ import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -127,13 +128,17 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
 
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
-        String whereClause = " where true = true ";
+        String whereClause = " where true = true and (entity.status = 1 or entity.status = 2)";
         String sql = "SELECT new com.group4.edu.dto.GraduationThesisDto(entity) FROM GraduationThesis as entity";
 //        sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
 
         if (dto.getStatus() != null) {
 //            sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
-            whereClause += " AND (entity.status = :status)";
+            if(dto.getStatus() == 3){
+                whereClause += " AND (entity.status = 1 OR entity.status = 0)";
+            }else {
+                whereClause += " AND (entity.status = :status)";
+            }
         }
         if(dto.getLecturerId() != null){
             whereClause += " AND (entity.lecturer.id = :lecturerId)";
@@ -142,6 +147,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             whereClause += " AND (entity.isAccept = :isAccept)";
         }
 
+        if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
+            whereClause += " AND (entity.student.fullName like :fullName)";
+        }
         sql += whereClause;
         Query query = manager.createQuery(sql, GraduationThesisDto.class);
 
@@ -154,6 +162,10 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto.getIsAccept() != null){
             query.setParameter("isAccept", dto.getIsAccept());
         }
+        if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
+            query.setParameter("fullName", '%'+dto.getFullName()+'%');
+        }
+
         List<GraduationThesisDto> entities = query.getResultList();
         return entities;
     }
