@@ -106,11 +106,11 @@ const SRequirementDetails = () => {
     // console.log(item);
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }} className={styles.formContent}>
             {/* <Sidebar /> */}
             <div className={styles.form}>
-                <div style={{ width: '100%' }}>
                     <p className={styles.title}><b>Thông tin cá nhân</b></p>
+                <div style={{ width: '100%' }}>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >

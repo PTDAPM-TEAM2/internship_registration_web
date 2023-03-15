@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid black;
+    border: 1px solid black;
 }
 .form {
     padding: 0 40px;
@@ -92,6 +92,11 @@
     width: auto;
     text-align: left;
 }
+
+.txt label{
+    display: block;
+}
+
 .txtField{
     width: 100%;
 }
@@ -105,6 +110,7 @@
     height: 190px;
     border: 1px solid black;
     object-fit: cover;
+    padding-right: 50px;
     overflow: hidden;
 }
 .userProfile{
@@ -121,7 +127,7 @@
 }
 .formAccount{
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     padding: 15px 30px;
     border-left: 1px solid black;
     border-right: 1px solid black;
@@ -131,6 +137,98 @@
     margin: 0 10px;
 }
 
-@media (min-width: 1024px) {
+.infoImg{
+    padding-right: 50px;
+}
 
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+    .txtField{
+        width: 100%;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px){
+    .userProfile{
+        width: 110%;
+        height: 110%;
+        border: 1px solid black;
+        object-fit: cover;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+
+    .txt{
+        width: auto;
+        text-align: left;
+    }
+
+    .txtGender{
+        width: 100px;
+    }
+
+    .txtField{
+        width: 100%;
+    }
+    
+
+    .infoAccount {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 2560px){
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+
+    .txt{
+        width: auto;
+        text-align: left;
+    }
+
+    .txtGender{
+        width: 100px;
+    }
+
+    .txtField{
+        width: 100%;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
 }

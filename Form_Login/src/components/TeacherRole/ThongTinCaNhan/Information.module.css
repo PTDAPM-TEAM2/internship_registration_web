@@ -22,6 +22,10 @@ form {
     width: 100%;
     padding-top: 70px;
 }
+
+.infoImg{
+    padding-right: 50px;
+}
 .btn{
     position: relative;
     display: flex;
@@ -93,6 +97,10 @@ form {
     width: auto;
     text-align: left;
 }
+
+.txt label{
+    display: block;
+}
 .txtField{
     width: 100%;
 }
@@ -122,16 +130,104 @@ form {
 }
 .formAccount{
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     padding: 15px 30px;
     border-left: 2px solid black;
     border-right: 2px solid black;
 }
+
 .txtDate{
     width: 400px;
     margin: 0 10px;
 }
 
-@media (min-width: 1024px) {
 
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+    .txtField{
+        width: 100%;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px){
+    .userProfile{
+        width: 110%;
+        height: 110%;
+        border: 1px solid black;
+        object-fit: cover;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+
+    .txt{
+        width: auto;
+        text-align: left;
+    }
+
+    .txtGender{
+        width: 100px;
+    }
+
+    .txtField{
+        width: 100%;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 2560px){
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
+
+    .txt{
+        width: auto;
+        text-align: left;
+    }
+
+    .txtGender{
+        width: 100px;
+    }
+
+    .txtField{
+        width: 100%;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
 }
