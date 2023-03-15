@@ -12,27 +12,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #000; 
+    border: 2px solid #000;
 
 }
 
-.container { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    column-gap: 80px; 
-    border-left: 2px solid #000; 
-    border-right: 2px solid #000; 
-    border-bottom: 2px solid #000; 
-    row-gap: 30px; 
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 80px;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    row-gap: 30px;
     padding: 25px;
 }
 
-.card { 
-    border: 2px solid #000; 
+.card {
+    border: 2px solid #000;
     border-radius: 20px;
 }
 
-.cardItem{
+.cardItem {
     padding: 10px;
     padding-left: 60px;
     display: flex;
@@ -40,16 +40,48 @@
     align-items: center;
 }
 
-.body { 
-    padding: 10px; 
+.body {
+    padding: 10px;
     text-align: start;
 }
 
-.body h3 { margin-top: 0; }
+.body h3 {
+    margin-top: 0;
+}
 
-.body button { background-color: blue; color: white; }
+.body button {
+    background-color: blue;
+    color: white;
+}
 
-.circularProgressIndicator{
-    margin-left: 380px;
-    margin-right: auto;
+.circularProgressIndicator {
+    position: absolute;
+    left: 60%;
+    top: 28%;
+    transform: translate(-50%, -50%)
+}
+
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .circularProgressIndicator {
+        position: absolute;
+        left: 58%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .circularProgressIndicator {
+        position: absolute;
+        left: 57%;
+        top: 16%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 2560px) {
+    .circularProgressIndicator {
+        position: absolute;
+        left: 55%;
+        transform: translate(-50%, -50%)
+    }
 }

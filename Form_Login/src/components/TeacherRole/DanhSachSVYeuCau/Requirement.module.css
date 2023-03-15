@@ -17,9 +17,11 @@
 }
 
 .container { 
-    display: grid; 
+    display: grid;
     grid-template-columns: repeat(2, 1fr); 
     column-gap: 80px; 
+    align-items: center;
+    justify-content: center;
     border-left: 2px solid #000; 
     border-right: 2px solid #000; 
     border-bottom: 2px solid #000; 
@@ -53,7 +55,39 @@
 
 .body button { background-color: blue; color: white; }
 
+.indicator{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .circularProgressIndicator{
-    margin-left: 380px;
-    margin-right: auto;
+    position: absolute;
+    left: 60%;
+    transform: translate(-50%, -50%)
+}
+
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .circularProgressIndicator{
+        position: absolute;
+        left: 58%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px){
+    .circularProgressIndicator{
+        position: absolute;
+        left: 57%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 2560px){
+    .circularProgressIndicator{
+        position: absolute;
+        left: 55%;
+        transform: translate(-50%, -50%)
+    }
 }
