@@ -2,16 +2,17 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
-import com.group4.edu.dto.InternshipDto;
-import com.group4.edu.dto.RegisterinternshipDto;
-import com.group4.edu.dto.UserDto;
+import com.group4.edu.dto.*;
+import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.InternshipService;
+import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class InternshipServiceImpl implements InternshipService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private StudentService studentService;
     @Override
     public InternshipDto registerOrUpdateIntership(RegisterinternshipDto dto,Long internShipId) throws Exception {
         if(dto == null){
@@ -136,6 +140,35 @@ public class InternshipServiceImpl implements InternshipService {
             return new InternshipDto(internships.get(0),true);
         }
         return null;
+    }
+
+    @Override
+    public StudentInternshipFilterDto getStudentByfilter(StudentSearchDto dto) {
+        List<StudentDto> studentList = studentService.getStDaBySearch(null,EduConstants.StudentType.STUDENT_TT.getValue());
+        List<StudentDto> listSt1 = new ArrayList<>();
+        List<StudentDto> listSt2 = new ArrayList<>();
+        for(StudentDto studentDto: studentList){
+            if(studentDto.getInternship() != null){
+                listSt1.add(studentDto);
+            }
+            else {
+                listSt2.add(studentDto);
+            }
+        }
+        StudentInternshipFilterDto studentInternshipFilterDto = new StudentInternshipFilterDto();
+        if(dto == null||dto.getInternShipType().equals(1)){
+            studentInternshipFilterDto.setListSt1(listSt1);
+        }
+        if(dto == null|| dto.getInternShipType().equals(2)){
+            studentInternshipFilterDto.setListSt2(listSt2);
+        }
+        return studentInternshipFilterDto;
+    }
+
+    @Override
+    public List<StudentDto> findStudentByDto(StudentSearchDto dto) {
+
+        return studentRepository.findStudentTTByName(dto == null||dto.getKeySearchName()==null?"":dto.getKeySearchName());
     }
 
     private void validateRegisterInternShip(RegisterinternshipDto dto) throws Exception {

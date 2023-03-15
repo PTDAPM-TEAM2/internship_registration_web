@@ -54,6 +54,30 @@ public class StudentController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/da/{id}")
+    public ResponseEntity<?> updateDa(@PathVariable Long id,@RequestBody StudentDto dto){
+        try {
+            StudentDto result = studentService.saveOrUpdate(dto, id,1);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(new HashMap<>(Collections.singletonMap("messgae",ex.getMessage())), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/tt/{id}")
+    public ResponseEntity<?> updateTT(@PathVariable Long id,@RequestBody StudentDto dto){
+        try {
+            StudentDto result = studentService.saveOrUpdate(dto, id,2);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(new HashMap<>(Collections.singletonMap("messgae",ex.getMessage())), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
     public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
         ResponseImportExcelStudentDto result = studentService.importExcel(file);
@@ -68,5 +92,10 @@ public class StudentController {
     @RequestMapping(value = "/get-st-tt-by-search")
     public List<StudentDto> GetStTT(@RequestBody(required = false) StudentSearchDto studentSearchDto){
         return studentService.getStDaBySearch(studentSearchDto,2);
+    }
+
+    @DeleteMapping("/delete/tt/{id}")
+    public ResponseEntity<?> deleteStTT(@PathVariable Long id){
+        return new ResponseEntity<>(studentService.deleteStTT(id),HttpStatus.OK);
     }
 }

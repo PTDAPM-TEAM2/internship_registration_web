@@ -2,6 +2,7 @@ package com.group4.edu.controller;
 
 import com.group4.edu.dto.InternshipDto;
 import com.group4.edu.dto.RegisterinternshipDto;
+import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.service.InternshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,4 +32,13 @@ public class IntershipController {
         InternshipDto result = internshipService.getIntershipByCurrentUser();
         return new ResponseEntity<>(result,result==null?HttpStatus.BAD_REQUEST:HttpStatus.OK);
     }
+    @PostMapping("/get-st-by-filter")
+    public ResponseEntity<?> getStudentByFilter(@RequestBody(required = false) StudentSearchDto dto){
+        return new ResponseEntity<>(internshipService.getStudentByfilter(dto),HttpStatus.OK);
+    }
+    @PostMapping("/find-st")
+    public ResponseEntity<?> findStudent(@RequestBody StudentSearchDto dto){
+        return new ResponseEntity<>(internshipService.findStudentByDto(dto),HttpStatus.OK);
+    }
+
 }

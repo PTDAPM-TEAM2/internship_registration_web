@@ -115,7 +115,7 @@ public class SudentServiceImpl implements StudentService {
         }
         entity.setGrade(grade);
         account = entity.getAccount();
-        if(entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
+        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
             throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
         }
         Role roleDa = null;
@@ -294,6 +294,38 @@ public class SudentServiceImpl implements StudentService {
             }
         }
         return studentDtos;
+    }
+
+    @Override
+    public boolean deleteStTT(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())){
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+
+            studentRepository.deleteById(student.getId());
+            System.out.println(student.getId());
+            return true;
+        }
+        if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+            student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            if(account != null){
+                Set<Role> roleSet = account.getRoles();
+                for(Role role: roleSet){
+                    if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
+                        roleSet.remove(role);
+                    }
+                }
+            }
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            return true;
+        }
+        return false;
     }
 
     private String getStringCellValue(XSSFCell cell){
