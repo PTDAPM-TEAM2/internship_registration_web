@@ -65,12 +65,7 @@ function Login() {
         //     username: username,
         //     password: password,
         //   });
-<<<<<<< HEAD
         var tk = "hgasfhgsfdah";
-=======
-        var tk = 'skjdakjd';
-
->>>>>>> 2bbdb57d96a5e1ff029de7d27cf110264f9b4f81
           if (tk !== "") {
             context.token = tk;
             setShowAlert(true);
@@ -94,18 +89,14 @@ function Login() {
           setErrorMessage("Lỗi kết nối");
         }
       } else if (context.toggle === false) {
-<<<<<<< HEAD
         try {
         //   var tk = await userApi.loginTT({
         //     username: username,
         //     password: password,
         //   });
         var tk = "hgasfhgsfdah";
-=======
         // try {
         //   var tk = await userApi.loginTT({ username: username, password: password });
-        var tk = 'skjdakjd';
->>>>>>> 2bbdb57d96a5e1ff029de7d27cf110264f9b4f81
           if (tk !== "") {
             context.token = tk;
             setShowAlert(true);
@@ -125,9 +116,9 @@ function Login() {
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
           }
-        // } catch (error) {
-        //   setErrorMessage("Lỗi kết nối");
-        // }
+        } catch (error) {
+          setErrorMessage("Lỗi kết nối");
+        }
       }
     }
 

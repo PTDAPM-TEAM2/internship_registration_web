@@ -3,24 +3,44 @@ import { TextField } from '@mui/material';
 // import styles from 'Information.module.css';
 import styles from '../ThongTinCaNhan/Information.module.css';
 import Sidebar from '../../Sidebar';
-import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import {Link, useNavigate} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const TTCN = () => {
     const [showAlert, setShowAlert] = React.useState(false);
-    const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
     const [date, setDate] = React.useState(dayjs());
+      // Declare a state variable for data
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    // Use useEffect hook to fetch data when the component mounts
+    useEffect(() => {
+      // Define an async function that calls the API
+    async function fetchData() {
+      try {
+        // Make a GET request with Axios
+        const response = await axios.get("https://641028d1864814e5b648f368.mockapi.io/students");
+        // Store the response data in the state variable
+        setTimeout(() => {
+          setData(response.data);
+          setLoading(false)
+        }, 200);
+      } catch (error) {
+        // Handle error
+        console.error(error);
+      }
+    }
+    // Invoke the async function
+    fetchData();
+  }, []); // Pass an empty dependency array to run only once
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -66,6 +86,20 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
+    
+
+    const teacherProfile = [];
+    data.map((value) => {
+        if(value !== null){
+            teacherProfile.push(value);
+        }
+    })
+
+    const navigate = useNavigate();
+
+    function toComponent(item) {
+        navigate('doi-mat-khau', {state: {item}})
+    }
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
@@ -78,7 +112,7 @@ const TTCN = () => {
                                 <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src="https://images.pexels.com/photos/35537/child-children-girl-happy.jpg?auto=compress&cs=tinysrgb&w=600" alt="" />
+                                            <img className={styles.userProfile} src={teacherProfile.length === 0 ? '' : teacherProfile[29]['profileImage']} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -103,9 +137,9 @@ const TTCN = () => {
                                         className={styles.txtGender}
                                         id="gender"
                                         name="gender"
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['gender']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.gender}
                                     />
                                 </div>
                             </div>
@@ -118,7 +152,7 @@ const TTCN = () => {
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.name}
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['name']}
                                     />
                                 </div>
                                 {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
@@ -128,24 +162,21 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['passport']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.identityCard}
                                     />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='dob'>Ngày sinh: </label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                        <DatePicker
-                                            renderInput={(props) => <TextField {...props} className={styles.txtField} />}
-                                            value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
-                                            format="YYYY/MM/DD"
-                                            defaultValue={dayjs()}
-                                        />
-                                    </LocalizationProvider>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="idCard"
+                                        name="idCard"
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['dateOfBirth'].substr(0,5)}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='pob'>Nơi sinh: </label>
@@ -153,9 +184,9 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="pob"
                                         name="pob"
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['address']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.placeOfBirth}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -164,9 +195,9 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="phone"
                                         name="phone"
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['numberPhone']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.phoneNumber}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -178,7 +209,7 @@ const TTCN = () => {
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.email}
+                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['email']}
                                     />
                                 </div>
                             </div>
@@ -186,19 +217,19 @@ const TTCN = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã giáo viên: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['id']}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['major']}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} />
+                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['password']}/>
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting}>Đổi mật khẩu</button>
+                            <button className={styles.button} disabled={formik.isSubmitting} onClick= {() => {toComponent(teacherProfile[29]['password'])}}>Đổi mật khẩu</button>
                         </div>
                     </form>
                 </div>

@@ -29,6 +29,7 @@ import Home from '@mui/icons-material/Home';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Variables from '../../utils/variables';
 import { bool } from 'yup';
+import { ThemeContext } from '@emotion/react';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -64,6 +65,7 @@ function Sidebar() {
     const [open, setOpen] = React.useState(true);
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
+    const context = React.useContext(ThemeContext);
     // const [activeButton, setActiveButton] = React.useState('button1');
 
     // const [pathname, setPathname] = React.useState("/quan-ly-do-an");
@@ -207,7 +209,7 @@ function Sidebar() {
 
                 {
                     // admin
-                    check === 'admin' ? (location.pathname === '/quan-ly-do-an-sinh-vien' ||
+                    (check === 'admin' ? (location.pathname === '/quan-ly-do-an-sinh-vien' ||
                     location.pathname === '/quan-ly-do-an' ||
                     location.pathname === '/quan-ly-giao-vien-da' ||
                     location.pathname === '/quan-ly-sinh-vien-da' ||
@@ -229,11 +231,12 @@ function Sidebar() {
                         location.pathname === '/thong-tin-ca-nhan'
                     ) : 
                     // students role
-                    (location.pathname === '/trang-chu-giang-vien')
+                    (location.pathname === '/trang-chu-giang-vien'))
                     &&
                     <List>
-                        <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : ""} style={{ width: '100%', textDecoration: 'none' }}>
+                        {   check === 'admin' ?
+                            (<ListItem disablePadding>
+                            <Link to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "students" ? "/" : ""} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
@@ -241,9 +244,12 @@ function Sidebar() {
                                     <ListItemText primary= 'Trang chủ' />
                                 </ListItemButton>
                             </Link >
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : ""} style={{ width: '100%', textDecoration: 'none' }}>
+                            </ListItem>) : (null)
+                        }
+                        {
+                            check === 'admin' ? (
+                            <ListItem disablePadding>
+                            <Link to={check === 'admin' ? "/quan-ly-do-an" : check === "students" ? "/" : ""} style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
@@ -251,8 +257,11 @@ function Sidebar() {
                                     <ListItemText primary={check === 'admin' ? 'Quản lý đồ án' : 'Thông tin cá nhân'} />
                                 </ListItemButton>
                             </Link >
-                        </ListItem>
-                        <ListItem disablePadding>
+                            </ListItem>) : (null)
+                        }
+                        {
+                            check === 'admin' ? (
+                            <ListItem disablePadding>
                             <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
@@ -261,7 +270,10 @@ function Sidebar() {
                                     <ListItemText primary={ check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
                                 </ListItemButton>
                             </Link>
-                        </ListItem>
+                            </ListItem>) : (null)
+                        }
+                        {
+                            check === 'admin' ? (
                         <ListItem disablePadding>
                             <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
@@ -271,9 +283,9 @@ function Sidebar() {
                                     <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
                                 </ListItemButton>
                             </Link >
-                        </ListItem>
-
-                            </List>
+                        </ListItem>) : (null)
+                        }
+                    </List>
                 }
 
 
@@ -298,9 +310,16 @@ function Sidebar() {
                 check === "teachers" ? 
                 (location.pathname === '/trang-chu-giang-vien' || 
                 location.pathname === '/thong-tin-ca-nhan' ||
-                location.pathname === '/trang-chu-giang-vien' || 
-                location.pathname === '/thong-tin-ca-nhan' ||
-                location.pathname === '/trang-chu-giang-vien') : 
+                location.pathname === '/danh-sach-sinh-vien-yeu-cau' || 
+                location.pathname === '/danh-sach-sinh-vien' ||
+                location.pathname === '/danh-sach-do-an-sinh-vien' ||
+                location.pathname === '/danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' ||
+                location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
+                location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
+                location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' ||
+                location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' ||
+                location.pathname === '/thong-tin-ca-nhan/doi-mat-khau'    
+                ) : 
                 // students role
                 (location.pathname === '/trang-chu-giang-vien'))
                     &&
@@ -346,7 +365,7 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         {check === 'teachers' ? <ListItem disablePadding>
-                            <Link to= '/' style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link to= '/danh-sach-do-an-sinh-vien' style={{ width: '100%', textDecoration: 'none' }}>
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />

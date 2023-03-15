@@ -15,7 +15,7 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid black;
+    border: 2px solid black;
 }
 .form {
     padding: 0 40px;
@@ -86,7 +86,7 @@ form {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
-    border: 1px solid black;
+    border: 2px solid black;
     padding: 15px 30px;
 }
 .txt{
@@ -124,8 +124,8 @@ form {
     display: flex;
     justify-content: space-between;
     padding: 15px 30px;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
 }
 .txtDate{
     width: 400px;

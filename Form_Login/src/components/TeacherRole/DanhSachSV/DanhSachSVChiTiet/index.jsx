@@ -13,7 +13,6 @@ import { useLocation } from 'react-router-dom';
 const SInformationDetails = () => {
     const location = useLocation()
     const state = location.state;
-    console.log(`aaa ${state.item.name}`);
     const [showAlert, setShowAlert] = React.useState(false);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
@@ -81,7 +80,7 @@ const SInformationDetails = () => {
                                 {state && <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src={state.item.image} alt="" />
+                                            <img className={styles.userProfile} src={state.item.profileImage} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -126,7 +125,7 @@ const SInformationDetails = () => {
                                         // value={formik.values.name}
                                     />
                                 </div>
-                                {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
+                                {formik.touched.name && formik.errors.idsv && <div>{formik.errors.name}</div>}
                                 <div className={styles.txt} >
                                     <label htmlFor='idCard'>Căn cước: </label>
                                     <TextField
@@ -141,17 +140,15 @@ const SInformationDetails = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='dob'>Ngày sinh: </label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                        <DatePicker
-                                            renderInput={(props) => <TextField {...props} className={styles.txtField} defaultValue={state.item.dateOfBirth}/>}
-                                            // value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
-                                            format="YYYY/MM/DD"
-                                            
-                                        />
-                                    </LocalizationProvider>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="idCard"
+                                        name="idCard"
+                                        defaultValue={state.item.dateOfBirth.substr(0,10)}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        // value={formik.values.identityCard}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='pob'>Nơi sinh: </label>
@@ -170,7 +167,7 @@ const SInformationDetails = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id="phone"
-                                        defaultValue={state.item.phoneNumber}
+                                        defaultValue={state.item.numberPhone}
                                         name="phone"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -195,7 +192,7 @@ const SInformationDetails = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.msv}/>
+                                <TextField className={styles.txtField} defaultValue={state.item.idsv}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>

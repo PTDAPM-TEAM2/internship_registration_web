@@ -4,33 +4,49 @@ import { TextField } from '@mui/material';
 import styles from '../DanhSachDAChiTiet/ProjectInfDetails.module.css';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+
+import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useLocation } from 'react-router-dom';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 const PInformationDetails = () => {
     const location = useLocation()
     const state = location.state;
-    console.log(`aaa ${state.item.name}`);
     const [showAlert, setShowAlert] = React.useState(false);
-    const navigate = useNavigate();
-    const [imageFile, setImageFile] = React.useState(null);
-    const [imageUrl, setImageUrl] = React.useState(null);
-    const [date, setDate] = React.useState(dayjs());
 
-    const handleImageFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
-    };
-
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    console.log(`aaa ${state.item.name}`);
 
     const handleSubmit = (values, { setSubmitting }) => {
         console.log(values);
         setSubmitting(false);
+    }
+
+    function handleGo() {
+        setOpen(false);
+        setShowAlert(true);
+        // data.filter((data) => item.id !== id);
+        setTimeout(() => {
+            navigate('/danh-sach-do-an-sinh-vien');
+        }, 1000)
     }
 
     const initialValues = {
@@ -66,8 +82,11 @@ const PInformationDetails = () => {
         onSubmit: handleSubmit,
     })
 
-    // const {item} = props.location.state;
-    // console.log(item);
+    const navigate = useNavigate();
+
+    function toComponent(item){
+        navigate('danh-gia-tien-trinh', {state: {item}})
+    }
 
     return (
         <div style={{ display: 'flex' }}>
@@ -78,16 +97,22 @@ const PInformationDetails = () => {
                     <form onSubmit={formik.handleSubmit} className={styles.formInfor}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.formtitle}>
-                                <p><b>Đề tài:</b>{state.item.topicName}</p>
-                                <p><b>Tên sinh viên:</b>{state.item.name}</p>
-                                <p><b>Mã sinh viên:</b>{state.item.id}</p>
+                                <div className={styles.titleLeft}>
+                                    <p><b>Đề tài: </b>{state.item.topic}</p>
+                                    <p><b>Kỳ: </b>12/2022 - {state.item.period.substr(0, 4)}</p>
+                                </div>
+                                <div className={styles.titleRight}>
+                                    <p><b>Tên sinh viên: </b>{state.item.name}</p>
+                                    <p><b>Mã sinh viên: </b>{state.item.idsv}</p>
+                                </div>
+                                
                             </div>
                             <div className={styles.formContent}>
                                 <label htmlFor="content"><b>Nội dung: </b></label>
                                 <textarea
                                     className={styles.txtContent}
                                     id="content"
-                                    defaultValue={state.item.gender}
+                                    defaultValue={state.item.content}
                                     name="content"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -97,16 +122,31 @@ const PInformationDetails = () => {
                         </div>
                         <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting}>Đánh giá tiến trình</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick = {() => {toComponent(state.item)}}>Đánh giá tiến trình</button>
                                 </div>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting}>Cho ngừng đồ án</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick = {handleOpen}>Cho ngừng đồ án</button>
                                 </div>
                         </div>
                     </form>
                 </div>
-
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Có muốn cho ngưng đồ án không ?
+                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                        <Button className={styles.button} onClick={handleGo}>Có</Button>
+                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                    </div>
+                </Box>
+            </Modal>
         </div >
     );
 };

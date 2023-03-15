@@ -52,3 +52,8 @@
 .body h3 { margin-top: 0; }
 
 .body button { background-color: blue; color: white; }
+
+.circularProgressIndicator{
+    margin-left: 380px;
+    margin-right: auto;
+}

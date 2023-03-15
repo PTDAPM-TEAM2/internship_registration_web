@@ -133,3 +133,8 @@ form {
 @media (min-width: 1024px) {
 
 }
+
+.circularProgressIndicator{
+    margin-left: 380px;
+    margin-right: auto;
+}

@@ -1584,3 +1584,4 @@ org.eclipse.core.runtime.CoreException: Launch configuration EduApplication refe
 2023-03-02 16:23:58,040 [Worker-7: Launching edu (1)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B -Dmaven.test.skip=true -DskipTests -Dstyle.color=always install
 2023-03-02 16:24:26,647 [Worker-9: Launching edu (3)] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\ptdapm\API\internship_registration_web\api\edu
 2023-03-02 16:24:26,647 [Worker-9: Launching edu (3)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B -Dmaven.test.skip=true -DskipTests -Dstyle.color=always clean install
+2023-03-15 11:04:52,077 [Worker-6: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.

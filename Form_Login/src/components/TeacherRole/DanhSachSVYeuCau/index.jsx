@@ -2,113 +2,36 @@ import * as React from 'react';
 import styles from '../DanhSachSVYeuCau/Requirement.module.css';
 // import { DataGrid } from '@mui/x-data-grid';
 import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
-const data = [
-  {
-    id: 1,
-    image: "https://picsum.photos/200",
-    name: "Hà Lan Anh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0868273123",
-    dateOfBirth:"03/04/2002",
-    passport:"0102300424",
-    address: "Hà Nội",
-    email: "cchut@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý bãi đỗ xe"
-  },
-  {
-    id: 2,
-    image: "https://picsum.photos/200",
-    name: "Hà Lan Anh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0868273123",
-    dateOfBirth:"03/04/2002",
-    passport:"0102300424",
-    address: "Hà Nội",
-    email: "cchut@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý bãi đỗ xe"
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/200",
-    name: "Hà Lan Anh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0868273123",
-    dateOfBirth:"03/04/2002",
-    passport:"0102300424",
-    address: "Hà Nội",
-    email: "cchut@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý bãi đỗ xe"
-  },
-  {
-    id: 4,
-    image: "https://picsum.photos/200",
-    name: "Hà Lan Anh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0868273123",
-    dateOfBirth:"03/04/2002",
-    passport:"0102300424",
-    address: "Hà Nội",
-    email: "cchut@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý bãi đỗ xe"
-  },
-  {
-    id: 5,
-    image: "https://picsum.photos/200",
-    name: "Hà Lan Anh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0868273123",
-    dateOfBirth:"03/04/2002",
-    passport:"0102300424",
-    address: "Hà Nội",
-    email: "cchut@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý bãi đỗ xe"
-  },
-  {
-    id: 6,
-    image: "https://picsum.photos/200",
-    name: "Tạ Văn Vinh",
-    msv: "2051063222",
-    sClass: "62PM3",
-    major: "CNTT",
-    gender: "Nam",
-    phoneNumber:"0863128273",
-    dateOfBirth:"03/04/2002",
-    passport:"0230041024",
-    address: "Hà Nội",
-    email: "cutch@gmail.com",
-    idMonitor:"A00",
-    password: "*******",
-    topic: "Quản lý thực phẩm ăn nhanh"
-  },
-];
+import axios from 'axios';
 const DSSVYC = () => {
+    // Declare a state variable for data
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
+      // Use useEffect hook to fetch data when the component mounts
+    useEffect(() => {
+        // Define an async function that calls the API
+      async function fetchData() {
+        try {
+          // Make a GET request with Axios
+          const response = await axios.get("https://641028d1864814e5b648f368.mockapi.io/students");
+          // Store the response data in the state variable
+          setTimeout(() => {
+            setData(response.data);
+            setLoading(false)
+          }, 200);
+        } catch (error) {
+          // Handle error
+          console.error(error);
+        }
+      }
+      // Invoke the async function
+      fetchData();
+    }, []); // Pass an empty dependency array to run only once
     const navigate = useNavigate();
     function toComponent (item) {
       navigate('chi-tiet-yeu-cau', {state: {item}})
@@ -118,9 +41,11 @@ const DSSVYC = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
-                    {data.map((item) => ( 
-                      <div className={styles.card}> 
-                          <a className={styles.cardItem} onClick={() => {toComponent(item)}}>
+                    { loading === true ? (
+                      <CircularProgress color="success" className={styles.circularProgressIndicator}/>
+                    ) : (data.map((item, key) => ( 
+                      <div className={styles.card} key = {key}> 
+                          <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
                               <img src={item.image} alt='' className={styles.itemImage}/> 
                               <div className={styles.body}> 
                                   <a><b>Họ và tên: </b>{item.name}</a> 
@@ -128,9 +53,9 @@ const DSSVYC = () => {
                                   <p><b>Lớp: </b>{item.sClass}</p> 
                                   <p><b>Khoa: </b>{item.major}</p> 
                               </div> 
-                          </a>
+                          </div>
                       </div>
-                    ))} 
+                    )))} 
                 </div> 
             </div>
         </div>

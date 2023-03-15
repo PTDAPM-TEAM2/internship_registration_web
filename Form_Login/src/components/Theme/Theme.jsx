@@ -6,6 +6,8 @@ const ThemeContext = createContext()
 function ThemeProvider({children}) {
     const [token, setToken] = useState("");
     const [toggle, setToggle] = useState(false);
+    const [activeButton, setActiveButton] = useState('trang-chu');
+
     const updateToggle = (newValue) => {
         setToggle(newValue);
     }

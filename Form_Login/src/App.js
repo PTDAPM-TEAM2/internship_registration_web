@@ -39,6 +39,8 @@ import ProjectListStudents from './components/TeacherRole/DanhSachDoAn';
 import SRequirementDetails from './components/TeacherRole/DanhSachSVYeuCau/DanhSachYCChiTiet';
 import SInformationDetails from './components/TeacherRole/DanhSachSV/DanhSachSVChiTiet';
 import PInformationDetails from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet';
+import ProcessEvaluation from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
+import PasswordChanging from './components/TeacherRole/ThongTinCaNhan/DoiMatKhau';
 
 function App() {
   return (
@@ -101,6 +103,8 @@ function App() {
               <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails/>}></Route>
               <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails/>}></Route>
               <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails/>}></Route>
+              <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' element={<ProcessEvaluation/>}></Route>
+              <Route path='thong-tin-ca-nhan/doi-mat-khau' element={<PasswordChanging/>}></Route>
             </Route>
           </Routes>
         </Router>

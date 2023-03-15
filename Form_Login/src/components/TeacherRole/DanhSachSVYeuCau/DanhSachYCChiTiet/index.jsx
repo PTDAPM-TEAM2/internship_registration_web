@@ -4,17 +4,45 @@ import { TextField } from '@mui/material';
 import styles from './StudentDetails.module.css';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useLocation } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
+
 const SRequirementDetails = () => {
+    const [showAlert, setShowAlert] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const location = useLocation()
     const state = location.state;
-    console.log(`aaa ${state.item.name}`);
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [password, setPassword] = React.useState("");
+
+    const handlePasswordChange = (event) => {
+      setPassword(event.target.value);
+    };
+  
+
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
@@ -66,6 +94,14 @@ const SRequirementDetails = () => {
         onSubmit: handleSubmit,
     })
 
+    function handleGo() {
+        setOpen(false);
+        setShowAlert(true);
+        // data.filter((data) => item.id !== id);
+        setTimeout(() => {
+            navigate('/danh-sach-sinh-vien-yeu-cau');
+        }, 1000)
+    }
     // const {item} = props.location.state;
     // console.log(item);
 
@@ -81,7 +117,7 @@ const SRequirementDetails = () => {
                                 {state && <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src={state.item.image} alt="" />
+                                            <img className={styles.userProfile} src={state.item.profileImage} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -115,7 +151,7 @@ const SRequirementDetails = () => {
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt} >
-                                    <label htmlFor='name'>Họ tên: </label>
+                                    <label htmlFor='name'>Họ và tên: </label>
                                     <TextField
                                         className={styles.txtField}
                                         id='name'
@@ -141,17 +177,15 @@ const SRequirementDetails = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='dob'>Ngày sinh: </label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                        <DatePicker
-                                            renderInput={(props) => <TextField {...props} className={styles.txtField} defaultValue={state.item.dateOfBirth}/>}
-                                            // value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
-                                            format="YYYY/MM/DD"
-                                            
-                                        />
-                                    </LocalizationProvider>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="idCard"
+                                        name="idCard"
+                                        defaultValue={state.item.dateOfBirth.substr(0,10)}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        // value={formik.values.identityCard}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='pob'>Nơi sinh: </label>
@@ -170,11 +204,11 @@ const SRequirementDetails = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id="phone"
-                                        defaultValue={state.item.phoneNumber}
+                                        defaultValue={state.item.numberPhone}
                                         name="phone"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.phoneNumber}
+                                        value={formik.values.numberPhone}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -198,12 +232,12 @@ const SRequirementDetails = () => {
                                 <TextField className={styles.txtField} defaultValue={state.item.idMonitor}/>
                             </div>
                             <div className={styles.txt}>
-                                <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.major}/>
+                                <p>Lớp: </p>
+                                <TextField className={styles.txtField} defaultValue={state.item.sClass}/>
                             </div>
                             <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.password}/>
+                                <p>Khoa: </p>
+                                <TextField className={styles.txtField} defaultValue={state.item.major}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Đề tài: </p>
@@ -212,16 +246,42 @@ const SRequirementDetails = () => {
                         </div>
                         <div className={styles.btnForm}>
                             <div className={styles.btn}>
-                                <button className={styles.button} disabled={formik.isSubmitting}>Đồng ý</button>
+                                <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Đồng ý</button>
                             </div>
                             <div className={styles.btn}>
-                                <button className={styles.button} disabled={formik.isSubmitting}>Từ chối</button>
+                                <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Từ chối</button>
                             </div>
                         </div>
                     </form>
                 </div>
-
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Bạn có chắc chắn với sự lựa chọn này không ?
+                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                        <Button className={styles.button} onClick={handleGo}>Có</Button>
+                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                    </div>
+                </Box>
+            </Modal>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xác nhận yêu cầu thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div >
     );
 };
