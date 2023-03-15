@@ -13,6 +13,7 @@ public class LecturerDto extends UserDto {
 
     public LecturerDto(Lecturer entity){
         super(entity);
+        super.setId(entity.getId());
         this.lecturersCode  = entity.getLecturersCode();
 
     }

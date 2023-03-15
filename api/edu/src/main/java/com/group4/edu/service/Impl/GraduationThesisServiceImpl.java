@@ -2,10 +2,7 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
-import com.group4.edu.dto.GraduationThesisDto;
-import com.group4.edu.dto.SearchObjectDto;
-import com.group4.edu.dto.StudentDto;
-import com.group4.edu.dto.UserDto;
+import com.group4.edu.dto.*;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
@@ -25,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -221,5 +219,30 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             throw  new Exception("Lỗi server");
         }
 
+    }
+
+
+    // check những thằng nào isAccept == 0 hoặc == 1 thì sẽ được cập lại isAccept và có giáo viên
+    @Override
+    public List<GraduationThesisDto> setLecturerToStudent (LecturerStudentsDto lecturerStudentsDto){
+        List<GraduationThesisDto> graduationThesisDtos = new ArrayList<>();
+        if(lecturerStudentsDto == null || lecturerStudentsDto.getIdLecturer() == null
+                || lecturerStudentsDto.getIdStudents() == null || lecturerStudentsDto.getIdStudents().size() < 0)
+            return null;
+
+        for (Long idStudents : lecturerStudentsDto.getIdStudents()){
+            GraduationThesis graduationThesis = graduationThesisRepository.getByStudentId(idStudents);
+            if(graduationThesis != null && (graduationThesis.getIsAccept() == 1 || graduationThesis.getIsAccept() == 0 || graduationThesis.getIsAccept() == null)){
+                Lecturer leurer = lecturerRepository.findById(lecturerStudentsDto.getIdLecturer()).orElse(null);
+                if (leurer != null) {
+                    return null;
+                }
+                graduationThesis.setLecturer(leurer);
+                graduationThesis.setIsAccept(2);
+                graduationThesis = graduationThesisRepository.save(graduationThesis);
+                graduationThesisDtos.add(new GraduationThesisDto(graduationThesis));
+            }
+        }
+        return graduationThesisDtos;
     }
 }
