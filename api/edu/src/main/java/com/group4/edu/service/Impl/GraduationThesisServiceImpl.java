@@ -113,6 +113,15 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity = graduationThesisRepository.save(entity);
+
+        // set số lượng sinh viên làm đồ án mà giáo viên tiếp nhận
+        if (entity.getLecturer() != null && entity.getLecturer().getId() != null){
+            Lecturer lecturer = lecturerRepository.findById(entity.getLecturer().getId()).orElse(null);
+            if(lecturer != null){
+                lecturer.setNumberOfStudents(graduationThesisRepository.getNumberOfStudents(lecturer.getId()));
+                lecturerRepository.save(lecturer);
+            }
+        }
         return new GraduationThesisDto(entity);
     }
 

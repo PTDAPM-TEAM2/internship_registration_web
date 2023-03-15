@@ -5,6 +5,7 @@ import com.group4.edu.dto.GraduationThesisDto;
 import com.group4.edu.dto.SearchObjectDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
             " where e.student.id = ?1 and e.semester.active = true")
     List<GraduationThesis> getGraduationThesisByStId(Long stId);
 
+    @Query("select count(gr.id) from GraduationThesis gr inner join Lecturer le on gr.lecturer.id = le.id " +
+            " where (gr.status = 1 or gr.status = 2) and le.id = :lecturerId" +
+            " group by le.id")
+    Integer getNumberOfStudents (@Param("lecturerId") Long lecturerId);
 }

@@ -21,6 +21,7 @@ public class GraduationThesisDto extends BaseDto {
 
     public GraduationThesisDto(GraduationThesis entity) {
         if (entity != null) {
+            super.setId(entity.getId());
             this.urlOutline = entity.getUrlOutline();
             this.nameGraduationThesis = entity.getNameGraduationThesis();
             this.mark1 = entity.getMark1();
