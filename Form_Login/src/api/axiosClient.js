@@ -10,35 +10,38 @@
 //     paramsSerializer: params => qs.stringify(params)
 // });
 
-import axios from 'axios'
-import { parse, stringify } from 'qs'
+import axios from "axios";
+import { parse, stringify } from "qs";
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080",
-    headers:{
-        "Content-Type": "application/json",
-    
-        // "Access-Control-Allow-Origin": "'http://localhost:3000"
-    },
+  baseURL: "http://localhost:8080",
+  headers: {
+    "Content-Type": "application/json",
+
+    // "Access-Control-Allow-Origin": "'http://localhost:3000"
+  },
   paramsSerializer: {
     encode: parse,
     serialize: stringify,
   },
-})
+});
 
 axiosClient.interceptors.request.use(async (config) => {
-    //Handle token here
-    return config;
+  //Handle token here
+  return config;
 });
 
-axiosClient.interceptors.response.use((response) => {
-    if(response && response.data){
-        return response.data;
+axiosClient.interceptors.response.use(
+  (response) => {
+    if (response && response.data) {
+      return response.data;
     }
     return response;
-}, (error) => {
+  },
+  (error) => {
     //handle error
     throw error;
-});
+  }
+);
 
 export default axiosClient;
