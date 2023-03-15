@@ -5,6 +5,7 @@ import com.group4.edu.domain.*;
 import com.group4.edu.dto.GraduationThesisDto;
 import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.dto.StudentDto;
+import com.group4.edu.dto.UserDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
@@ -175,9 +176,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         Student student = null;
         try {
-            StudentDto studentDto = (StudentDto) userService.getCurrentUser();
+            UserDto studentDto = (UserDto) userService.getCurrentUser();
             if(studentDto != null){
-                student = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(null);
+                student = studentRepository.findById(studentDto.getId()).orElse(null);
                 if(student == null){
                     return null;
                 }

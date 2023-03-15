@@ -38,7 +38,7 @@ public class GraduationThesisController {
         GraduationThesisDto result = null;
         try {
             result = graduationThesisService.addOutline(file);
-            return new ResponseEntity<>("abc", result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);
+            return new ResponseEntity<>(result, result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Collections.singletonMap("error",e.getMessage()), HttpStatus.BAD_REQUEST);
         }
