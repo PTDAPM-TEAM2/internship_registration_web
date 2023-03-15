@@ -44,19 +44,13 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
         }else {
             throw new Exception("Thông tin thời gian bắt đầu đang bị trống");
         }
-
-        if(dto.getType() != null){
-            entity.setType(dto.getType());
-        }else {
-            throw new Exception("Thể loại thời gian không được trống");
-        }
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = formatter.parse(EduConstants.dateInString);
         String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
-        entity = registerTimeRepository.save(entity);
         entity.setType(type);
+        entity = registerTimeRepository.save(entity);
         return new RegisterTimeDto(entity);
     }
 }

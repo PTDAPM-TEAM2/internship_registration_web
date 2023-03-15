@@ -1,9 +1,6 @@
 package com.group4.edu.dto;
 
-import com.group4.edu.domain.Grade;
-import com.group4.edu.domain.GraduationThesis;
-import com.group4.edu.domain.Role;
-import com.group4.edu.domain.Student;
+import com.group4.edu.domain.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -14,6 +11,7 @@ public class StudentDto extends UserDto{
     private GradeDto grade;
     private Integer studentType;
     private GraduationThesisDto graduationThesis;
+    private InternshipDto internship;
 
     public StudentDto(){}
     public StudentDto(Student entity){
@@ -36,6 +34,18 @@ public class StudentDto extends UserDto{
         }
         if(thesis != null){
             this.graduationThesis = new GraduationThesisDto(thesis);
+        }
+    }
+    public StudentDto(Student entity, Internship internship){
+        super(entity);
+        this.setId(entity.getId());
+        this.studentType = entity.getStudentType();
+        this.studentCode  = entity.getStudentCode();
+        if(entity.getGrade() != null){
+            this.grade = new GradeDto(entity.getGrade());
+        }
+        if(internship != null){
+            this.internship = new InternshipDto(internship,true);
         }
     }
 
@@ -84,5 +94,13 @@ public class StudentDto extends UserDto{
 
     public void setGraduationThesis(GraduationThesisDto graduationThesis) {
         this.graduationThesis = graduationThesis;
+    }
+
+    public InternshipDto getInternship() {
+        return internship;
+    }
+
+    public void setInternship(InternshipDto internship) {
+        this.internship = internship;
     }
 }

@@ -90,7 +90,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         if(dto.getStudent() != null && dto.getStudent().getId() != null){
             Student student = studentRepository.findById(dto.getStudent().getId()).orElse(null);
-            if(student == null||(student.getStudentType() !=1 && student.getStudentType() != 3)){
+            if(student == null||!(student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue()) || student.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
                 throw new Exception("Sinh viên không tồn tại");
             }
             entity.setStudent(student);
@@ -108,9 +108,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
         }
         //
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = formatter.parse(EduConstants.dateInString);
-        String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
+        String code = SemesterDateTimeUntil.getCodeSemesterDefault();
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity = graduationThesisRepository.save(entity);

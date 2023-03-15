@@ -6,6 +6,7 @@ import com.group4.edu.service.RegisterTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,6 +16,7 @@ public class RegisterTimeController {
     @Autowired
     RegisterTimeService registerTimeService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     //5.51  Use case “Thiết lập thời gian đăng ký” *
     @PostMapping("/save-da")
     public ResponseEntity<?> saveDa(@RequestBody RegisterTimeDto dto){
@@ -26,6 +28,7 @@ public class RegisterTimeController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/save-tt")
     public ResponseEntity<?> saveTt(@RequestBody RegisterTimeDto dto){
         try {

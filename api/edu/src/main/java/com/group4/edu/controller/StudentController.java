@@ -29,6 +29,7 @@ public class StudentController {
 
     @Autowired
     private UserService userService;
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/save/da")
     public ResponseEntity<?> save(@RequestBody StudentDto dto) throws Exception {
         try {
@@ -52,7 +53,7 @@ public class StudentController {
         }
     }
 
-    @Secured("ADMIN")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
     public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
         ResponseImportExcelStudentDto result = studentService.importExcel(file);

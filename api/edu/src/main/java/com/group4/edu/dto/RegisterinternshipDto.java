@@ -1,28 +1,32 @@
 package com.group4.edu.dto;
 
-
-import com.group4.edu.domain.Company;
-
-public class CompanyDto extends BaseDto {
+public class RegisterinternshipDto {
+    private Long internshipId;
+    private String studentCode;
+    private Long studentId;
+    private String code;
+    private String internshipPosition;
     private String nameCompany;
     private String email;
     private String phoneNumber;
     private String address;
     private String taxCode;
     private String description;
-    private String code;
 
-    public CompanyDto() {
+    public String getCode() {
+        return code;
     }
 
-    public CompanyDto(Company entity) {
-        this.nameCompany = entity.getNameCompany();
-        this.email = entity.getEmail();
-        this.phoneNumber = entity.getPhoneNumber();
-        this.address = entity.getAddress();
-        this.taxCode = entity.getTaxCode();
-        this.description = entity.getDescription();
-        this.code = entity.getCode();
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getInternshipPosition() {
+        return internshipPosition;
+    }
+
+    public void setInternshipPosition(String internshipPosition) {
+        this.internshipPosition = internshipPosition;
     }
 
     public String getNameCompany() {
@@ -73,11 +77,27 @@ public class CompanyDto extends BaseDto {
         this.description = description;
     }
 
-    public String getCode() {
-        return code;
+    public String getStudentCode() {
+        return studentCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public Long getInternshipId() {
+        return internshipId;
+    }
+
+    public void setInternshipId(Long internshipId) {
+        this.internshipId = internshipId;
     }
 }

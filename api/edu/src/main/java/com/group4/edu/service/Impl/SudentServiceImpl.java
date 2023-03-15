@@ -8,6 +8,7 @@ import com.group4.edu.repositories.*;
 import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.*;
@@ -45,6 +46,8 @@ public class SudentServiceImpl implements StudentService {
 
     @Autowired
     private GraduationThesisRepository thesisRepository;
+    @Autowired
+    private IntershipRepository intershipRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -284,7 +287,8 @@ public class SudentServiceImpl implements StudentService {
                     break;
                 }
                 if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2){
-                    studentDtos.add(new StudentDto(st));
+                    List<Internship> internships = intershipRepository.getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(),st.getId());
+                    studentDtos.add(new StudentDto(st,internships.size()>0?internships.get(0):null));
                     break;
                 }
             }

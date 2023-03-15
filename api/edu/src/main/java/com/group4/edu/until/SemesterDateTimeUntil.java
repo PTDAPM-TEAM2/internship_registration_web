@@ -1,5 +1,9 @@
 package com.group4.edu.until;
 
+import com.group4.edu.EduConstants;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -56,5 +60,15 @@ public class SemesterDateTimeUntil {
             }
         }
         return null;
+    }
+    public static String getCodeSemesterDefault(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = formatter.parse(EduConstants.dateInString);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());;
+        }
+        return SemesterDateTimeUntil.getSemesterCodeByDate(date);
     }
 }

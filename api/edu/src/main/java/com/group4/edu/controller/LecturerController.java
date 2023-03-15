@@ -1,6 +1,6 @@
 package com.group4.edu.controller;
 
-import com.group4.edu.dto.LecturersDto;
+import com.group4.edu.dto.LecturerDto;
 import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.service.LecturersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class LecturerController {
     LecturersService lecturersService;
 
     @PostMapping("/getLecturersBySearch")
-    public ResponseEntity<List<LecturersDto>> getGraduationThesis(@RequestBody SearchObjectDto dto){
-        List<LecturersDto> re = lecturersService.getGraduationThesis(dto);
+    public ResponseEntity<List<LecturerDto>> getGraduationThesis(@RequestBody SearchObjectDto dto){
+        List<LecturerDto> re = lecturersService.getGraduationThesis(dto);
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
 }

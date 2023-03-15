@@ -2,10 +2,7 @@ package com.group4.edu.domain;
 
 import com.group4.edu.domain.core.BaseObject;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tbl_intern_ship")
@@ -14,7 +11,7 @@ public class Internship extends BaseObject {
     private Double mark;
     private String evaluate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "company_id")
     Company company;
 
