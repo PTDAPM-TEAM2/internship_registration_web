@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SearchIcon from '@mui/icons-material/Search';
-import styles from './DSSinhVien.module.css';
+import styles from './DSGiaoVien.module.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import { useNavigate } from "react-router-dom";
@@ -25,26 +25,20 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'MaSV',
-        label: 'Mã Sinh Viên',
-        minWidth: 170,
-        align: 'center',
-    },
-    {
         id: 'Hoten',
-        label: 'Tên sinh viên',
+        label: 'Tên giảng viên',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'Lop',
-        label: 'Lớp',
+        id: 'Khoa',
+        label: 'Khoa',
         minWidth: 170,
         align: 'center',
     },
     {
-        id: 'TenCongTy',
-        label: 'Tên Công Ty',
+        id: 'SLSV',
+        label: 'Số lượng sinh viên quản lý',
         minWidth: 170,
         align: 'center',
     },
@@ -56,20 +50,20 @@ const columns = [
     }
 ];
 
-function createData( MaSV, Hoten, Lop, TenCT, Ky) {
-    return {MaSV, Hoten, Lop, TenCT, Ky };
+function createData( Hoten, Khoa, SLSV, Ky) {
+    return { Hoten, Khoa, SLSV, Ky };
 }
 
 const rows = [
-    createData('2051063478', 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData('2051063472','Nguyễn Thị Bích Ngọc', '62PM02', 'Quản lý cửa hàng thú cưng', '01/2022-2023'),
-    createData('2051063471','Nguyễn Đức Đức Phong', '62PM02', 'Quản lý nhân sự công ty ABC', '01/2022-2023'),
+    createData('Cù Việt Dũng', 'Công nghệ thông tin', '20', '01/2022-2023'),
+    createData('Đoàn Thị Quế', 'Công nghệ thông tin', '30', '01/2022-2023'),
+    createData('Nguyễn Ngọc Châu', 'Công nghệ thông tin', '25', '01/2022-2023'),
 ];
 function DSSV() {
     const navigate = useNavigate();
 
     function handleMoveAdd() {
-        navigate('/ThemSV-tt');
+        navigate('/ThemGV-tt');
     }
     const [value, setValue] = React.useState('');
 
@@ -77,7 +71,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick() {
-        navigate('/ChiTietSV-tt');
+        navigate('/ChiTietGV-tt');
     }
     const context = useContext(ThemeContext);
     return (
@@ -104,11 +98,11 @@ function DSSV() {
                                 </Select>
                             </FormControl>
                         </div>
-                        <Button className='button' onClick={handleMoveAdd}>Thêm</Button>
+                        {/* <Button className='button' onClick={handleMoveAdd}>Thêm</Button> */}
                     </div>
                 </div>
                 <div className={styles.direct}>
-                    <p>Danh sách sinh viên</p>
+                    <p>Danh sách giảng viên</p>
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -132,10 +126,9 @@ function DSSV() {
                                         return (
                                             <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
                                                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.MaSV}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.Hoten}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Lop}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.TenCT}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.Khoa}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
                                             </TableRow>
                                         );

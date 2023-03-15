@@ -48,14 +48,14 @@ const columns = [
     },
 ];
 
-function createData(STT, TenGiangVien, Khoa, SLSV, SĐT) {
-    return { STT, TenGiangVien, Khoa, SLSV, SĐT };
+function createData(STT, TenGiangVien, Khoa, SLSV, SĐT, SoCC, NgaySinh, NoiSinh, email, gt, MaGV, Mk) {
+    return { STT, TenGiangVien, Khoa, SLSV, SĐT, SoCC, NgaySinh, NoiSinh, email, gt, MaGV, Mk };
 }
 
 const rows = [
-    createData(1, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
-    createData(2, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
-    createData(3, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0123456789'),
+    createData(1, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0927548193', '034324423233', '01/04/1988', 'Hà Nội', 'dung@gmail.com', 'Nam', '100045298', '*******'),
+    createData(2, 'Đoàn Thị Quế', 'Công nghệ thông tin', '30', '0325598619', '052345433454', '01/02/1988', 'Hà Nội', 'que@gmail.com', 'Nữ', '1000532452', '*******'),
+    createData(3, 'Nguyễn Ngọc Châu', 'Công nghệ thông tin', '25', '0977211480', '04234294234', '01/07/1989', 'Hà Nội', 'chau@gmail.com', 'Nữ', '100056354', '*******'),
 ];
 function DSGV() {
     const navigate = useNavigate();
@@ -68,8 +68,8 @@ function DSGV() {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-    function handleGoClick() {
-        navigate('/ChiTietGV-da');
+    function handleGoClick(item) {
+        navigate('/ChiTietGV-da', {state: {item}});
     }
     return (
         <div style={{ display: 'flex' }}>
@@ -121,17 +121,12 @@ function DSGV() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }} onClick={handleGoClick}>
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-                                                })}
+                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.STT}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.TenGiangVien}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.Khoa}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.SĐT}</TableCell>
                                             </TableRow>
                                         );
                                     })}

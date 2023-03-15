@@ -9,7 +9,7 @@ import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-
+import { useLocation } from 'react-router-dom';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -27,6 +27,8 @@ const ChiTietXD = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const location = useLocation();
+    const state = location.state;
     const navigate = useNavigate();
     function handleGo() {
         setOpen(false);
@@ -44,31 +46,31 @@ const ChiTietXD = () => {
                     <form className={styles.formInput}>
                         <div className={styles.txt}>
                             <p>Tên Sinh Viên: </p>
-                            <TextField label="Nguyễn Đức Tâm" className={styles.txtField} disabled />
+                            <TextField label={state.item.SinhVien} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Tên Đồ Án: </p>
-                            <TextField label="Quản lý du học sinh Việt Nam" className={styles.txtField} disabled />
+                            <TextField label={state.item.DoAn} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Mã Sinh Viên: </p>
-                            <TextField label="2050160693" className={styles.txtField} disabled />
+                            <TextField label={state.item.MaSV} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Kỳ Đồ Án: </p>
-                            <TextField label="01/2022-2023" className={styles.txtField} disabled />
+                            <TextField label={state.item.Ky} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Lớp: </p>
-                            <TextField label="Lớp" className={styles.txtField} disabled />
+                            <TextField label={state.item.Lop} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>File đánh giá của giảng viên: </p>
-                            <TextField label="Nguyễn Đức Tâm.pdf" className={styles.txtField} disabled />
+                            <TextField label={state.item.File} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Tên giảng viên: </p>
-                            <TextField label="Cù Việt Dũng" className={styles.txtField} disabled />
+                            <TextField label={state.item.GiaoVien} className={styles.txtField} disabled />
                         </div>
                     </form>
                 </div>
@@ -89,7 +91,7 @@ const ChiTietXD = () => {
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
                         <Button className={styles.button} onClick={handleGo}>Có</Button>
-                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                        <Button className={styles.button} onClick={handleGo}>Không</Button>
                     </div>
                 </Box>
             </Modal>

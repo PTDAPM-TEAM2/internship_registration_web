@@ -79,6 +79,12 @@ function Sidebar() {
         context.updateButton(value);
     }
 
+
+
+    // const handleItemClick = () => {
+    //     console.log(active);
+    // }
+
     const handleDrawerOpen = () => {
         setOpen(true);
         setWidth(300);
@@ -201,8 +207,8 @@ function Sidebar() {
                         }}
                     />
                     <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>{
-                        Variables.userRole === 'admin' ?
-                        "ADMIN" : Variables.userRole === 'teachers' ? 'GIANG VIEN' : 'SINH VIEN'
+                        check === 'admin' ?
+                            "ADMIN" : Variables.userRole === 'teachers' ? 'GIANG VIEN' : 'SINH VIEN'
                     }</h1>
 
                 </Stack>
@@ -241,7 +247,7 @@ function Sidebar() {
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary= 'Trang chủ' />
+                                    <ListItemText primary='Trang chủ' />
                                 </ListItemButton>
                             </Link >
                             </ListItem>) : (null)
@@ -267,7 +273,7 @@ function Sidebar() {
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary={ check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
                                 </ListItemButton>
                             </Link>
                             </ListItem>) : (null)
@@ -325,7 +331,14 @@ function Sidebar() {
                     &&
                     <List>
                         <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-sinh-vien-thuc-tap" : "/trang-chu-giang-vien"} style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link
+                                to={check === 'admin' ? "/quan-ly-sinh-vien-thuc-tap" : "/trang-chu-giang-vien"}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('trang-chu')
+                                }}
+                                className={context.activeButton === 'trang-chu' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <Home className={styles.icon} />
@@ -335,7 +348,14 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-cong-ty" : check === 'teachers' ? '/thong-tin-ca-nhan' : ''} style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link
+                                to={check === 'admin' ? "/quan-ly-cong-ty" : check === 'teachers' ? '/thong-tin-ca-nhan' : ''}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('QLCT')
+                                }}
+                                className={context.activeButton === 'QLCT' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
@@ -345,7 +365,14 @@ function Sidebar() {
                             </Link >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-sinh-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien-yeu-cau' : ''} style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link
+                                to={check === 'admin' ? "/quan-ly-sinh-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien-yeu-cau' : ''}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('QLSV')
+                                }}
+                                className={context.activeButton === 'QLSV' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
@@ -355,7 +382,14 @@ function Sidebar() {
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-giao-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien' : ''} style={{ width: '100%', textDecoration: 'none' }}>
+                            <Link
+                                to={check === 'admin' ? "/quan-ly-giao-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien' : ''}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('QLGV')
+                                }}
+                                className={context.activeButton === 'QLGV' ? styles.active : {}}
+                            >
                                 <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />

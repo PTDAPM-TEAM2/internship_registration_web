@@ -50,9 +50,7 @@ function createData(STT, DoAn, SinhVien, GiaoVien, Ngay) {
 }
 
 const rows = [
-    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
-    createData(2, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
-    createData(3, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Tâm Đức Nguyễn', '2023/03/08'),
+    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Cù Việt Dũng', '2023/03/08'),
 ];
 function DSDA() {
     const context = useContext(ThemeContext);
@@ -90,17 +88,10 @@ function DSDA() {
                                 <TableBody>
                                     {rows.map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} sx={{ cursor: 'pointer' }}>
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-                                                })}
+                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }}>
+                                                {columns.map((column) => (
+                                                    <TableCell key={column.id} sx={{ textAlign: 'center' }}>{row[column.id]}</TableCell>
+                                                ))}
                                             </TableRow>
                                         );
                                     })}

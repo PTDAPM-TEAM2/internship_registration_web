@@ -26,6 +26,7 @@ import CTCT from './components/AdminRole/ThucTap/ChiTietCT';
 import DLSVTT from './components/AdminRole/ThucTap/DLSVTT';
 import DLGVTT from './components/AdminRole/ThucTap/DLGVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
+import DSGVTT from './components/AdminRole/ThucTap/DSGiaoVien';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout/Layout';
