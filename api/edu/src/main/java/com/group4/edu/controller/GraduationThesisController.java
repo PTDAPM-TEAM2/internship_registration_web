@@ -36,7 +36,6 @@ public class GraduationThesisController {
     @RequestMapping(value = "/add-outline", method = RequestMethod.POST)
     public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
         GraduationThesisDto result = null;
-        System.out.println(file.getOriginalFilename());
         try {
             result = graduationThesisService.addOutline(file);
             return new ResponseEntity<>("abc", result == null?HttpStatus.BAD_REQUEST: HttpStatus.OK);

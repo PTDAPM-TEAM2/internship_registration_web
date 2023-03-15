@@ -189,7 +189,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
 
         String fileName = student.getStudentCode()+ "."+StringUtils.cleanPath(file.getOriginalFilename());
-        System.out.println("file upload"+fileName);
+        System.out.println("file upload: "+fileName);
         try {
             // Lưu trữ tệp trong thư mục được chỉ định
             byte[] bytes = file.getBytes();
