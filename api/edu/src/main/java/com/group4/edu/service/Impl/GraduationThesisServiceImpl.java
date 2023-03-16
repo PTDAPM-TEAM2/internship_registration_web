@@ -139,24 +139,24 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     }
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
-        String whereClause = " where true = true and (entity.status = 1 or entity.status = 2)";
+        String whereClause = " where true = true and (entity.status = 1 or entity.status = 0 or entity.status is null)";
         String sql = "SELECT new com.group4.edu.dto.GraduationThesisDto(entity) FROM GraduationThesis as entity";
 //        sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
 
-        if (dto.getStatus() != null) {
+        if (dto.getIsAccept() != null) {
 //            sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
-            if(dto.getStatus() == 3){
-                whereClause += " AND (entity.status = 1 OR entity.status = 0)";
+            if(dto.getIsAccept() == 3){
+                whereClause += " AND (entity.isAccept = 1 OR entity.isAccept = 0 OR entity.isAccept = :isAccept)";
             }else {
-                whereClause += " AND (entity.status = :status)";
+                whereClause += " AND (entity.isAccept = :isAccept)";
             }
         }
         if(dto.getLecturerId() != null){
             whereClause += " AND (entity.lecturer.id = :lecturerId)";
         }
-        if(dto.getIsAccept() != null){
-            whereClause += " AND (entity.isAccept = :isAccept)";
-        }
+//        if(dto.getIsAccept() != null){
+//            whereClause += " AND (entity.isAccept = :isAccept)";
+//        }
 
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             whereClause += " AND (entity.student.fullName like :fullName)";
@@ -164,9 +164,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         sql += whereClause;
         Query query = manager.createQuery(sql, GraduationThesisDto.class);
 
-        if (dto.getStatus() != null) {
-            query.setParameter("status", dto.getStatus());
-        }
+//        if (dto.getStatus() != null) {
+//            query.setParameter("status", dto.getStatus());
+//        }
         if(dto.getLecturerId() != null){
             query.setParameter("lecturerId", dto.getLecturerId());
         }
