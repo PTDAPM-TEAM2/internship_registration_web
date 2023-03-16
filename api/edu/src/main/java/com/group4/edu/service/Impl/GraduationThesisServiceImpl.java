@@ -124,6 +124,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     }
 
     // xem thông tin đồ án
+    @Override
     public GraduationThesisDto getById(Long id) throws Exception {
         GraduationThesis graduationThesis = graduationThesisRepository.findById(id).orElse(null);
         if(graduationThesis == null){
@@ -132,6 +133,10 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         return new GraduationThesisDto(graduationThesis);
     }
 
+    @Override
+    public GraduationThesisDto getByStudentId(Long id){
+        return graduationThesisRepository.getByStudentIdDto(id);
+    }
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
         String whereClause = " where true = true and (entity.status = 1 or entity.status = 2)";
@@ -232,9 +237,10 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
 
         for (Long idStudents : lecturerStudentsDto.getIdStudents()){
             GraduationThesis graduationThesis = graduationThesisRepository.getByStudentId(idStudents);
-            if(graduationThesis != null && (graduationThesis.getIsAccept() == 1 || graduationThesis.getIsAccept() == 0 || graduationThesis.getIsAccept() == null)){
+            if(graduationThesis != null && (graduationThesis.getIsAccept() == 1 || graduationThesis.getIsAccept() == 0
+                    || graduationThesis.getIsAccept() == null || graduationThesis.getLecturer() == null)){
                 Lecturer leurer = lecturerRepository.findById(lecturerStudentsDto.getIdLecturer()).orElse(null);
-                if (leurer != null) {
+                if (leurer == null) {
                     return null;
                 }
                 graduationThesis.setLecturer(leurer);

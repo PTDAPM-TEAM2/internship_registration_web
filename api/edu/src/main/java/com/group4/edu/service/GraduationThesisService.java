@@ -15,4 +15,6 @@ public interface GraduationThesisService {
 
     List<GraduationThesisDto> setLecturerToStudent (LecturerStudentsDto lecturerStudentsDto);
 
+    GraduationThesisDto getByStudentId(Long id);
+
 }

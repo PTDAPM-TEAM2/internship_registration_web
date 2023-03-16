@@ -57,6 +57,11 @@ public class GraduationThesisController {
         }
     }
 
+    @GetMapping("/getByStudentId/{id}")
+    public ResponseEntity<GraduationThesisDto> getByStudentId(@PathVariable("id") Long id){
+        GraduationThesisDto result = graduationThesisService.getByStudentId(id);
+        return ResponseEntity.ok(result);
+    }
     @PostMapping("/getAllBySearch")
     public List<GraduationThesisDto> getAllBySearch(@RequestBody SearchObjectDto dto){
         return graduationThesisService.getGraduationThesis(dto);
