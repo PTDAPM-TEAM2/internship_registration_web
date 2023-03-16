@@ -1,6 +1,7 @@
 package com.group4.edu.controller;
 
 import com.group4.edu.dto.GraduationThesisDto;
+import com.group4.edu.dto.LecturerStudentsDto;
 import com.group4.edu.dto.RegisterTimeDto;
 import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.service.GraduationThesisService;
@@ -56,8 +57,18 @@ public class GraduationThesisController {
         }
     }
 
+    @GetMapping("/getByStudentId/{id}")
+    public ResponseEntity<GraduationThesisDto> getByStudentId(@PathVariable("id") Long id){
+        GraduationThesisDto result = graduationThesisService.getByStudentId(id);
+        return ResponseEntity.ok(result);
+    }
     @PostMapping("/getAllBySearch")
     public List<GraduationThesisDto> getAllBySearch(@RequestBody SearchObjectDto dto){
         return graduationThesisService.getGraduationThesis(dto);
+    }
+
+    @PostMapping("/setLecturerToStudent")
+    public List<GraduationThesisDto> setLecturerToStudent(@RequestBody LecturerStudentsDto dto){
+        return graduationThesisService.setLecturerToStudent(dto);
     }
 }

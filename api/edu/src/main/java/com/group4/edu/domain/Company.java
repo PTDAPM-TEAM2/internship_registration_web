@@ -10,9 +10,7 @@ import javax.persistence.Table;
 @Table(name = "tbl_company")
 public class Company extends BaseObject {
     private String nameCompany;
-    @Column(unique = true)
     private String email;
-    @Column(unique = true)
     private String phoneNumber;
     private String address;
     private String code;

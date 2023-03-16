@@ -4,7 +4,6 @@ public class SearchObjectDto {
     Integer status; //0 đang chờ duyệt, 1 đang làmm, 2 là bị huỷ, 3 hoàn thành
 
     String fullName;
-
     Long lecturerId;
     Integer isAccept; //0 giáo viên không chấp nhận, 1 đang trong trạng thái chờ, 2 đã dđược chấp nhận // 3 là cả 0 và 1
 

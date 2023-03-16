@@ -2,10 +2,7 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
-import com.group4.edu.dto.GraduationThesisDto;
-import com.group4.edu.dto.SearchObjectDto;
-import com.group4.edu.dto.StudentDto;
-import com.group4.edu.dto.UserDto;
+import com.group4.edu.dto.*;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
@@ -25,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -113,10 +111,20 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity = graduationThesisRepository.save(entity);
+
+        // set số lượng sinh viên làm đồ án mà giáo viên tiếp nhận
+        if (entity.getLecturer() != null && entity.getLecturer().getId() != null){
+            Lecturer lecturer = lecturerRepository.findById(entity.getLecturer().getId()).orElse(null);
+            if(lecturer != null){
+                lecturer.setNumberOfStudents(graduationThesisRepository.getNumberOfStudents(lecturer.getId()));
+                lecturerRepository.save(lecturer);
+            }
+        }
         return new GraduationThesisDto(entity);
     }
 
     // xem thông tin đồ án
+    @Override
     public GraduationThesisDto getById(Long id) throws Exception {
         GraduationThesis graduationThesis = graduationThesisRepository.findById(id).orElse(null);
         if(graduationThesis == null){
@@ -125,26 +133,30 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         return new GraduationThesisDto(graduationThesis);
     }
 
+    @Override
+    public GraduationThesisDto getByStudentId(Long id){
+        return graduationThesisRepository.getByStudentIdDto(id);
+    }
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
-        String whereClause = " where true = true and (entity.status = 1 or entity.status = 2)";
+        String whereClause = " where true = true and (entity.status = 1 or entity.status = 0 or entity.status is null)";
         String sql = "SELECT new com.group4.edu.dto.GraduationThesisDto(entity) FROM GraduationThesis as entity";
 //        sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
 
-        if (dto.getStatus() != null) {
+        if (dto.getIsAccept() != null) {
 //            sql += "  INNER JOIN Student s ON entity.student.id = s.id ";
-            if(dto.getStatus() == 3){
-                whereClause += " AND (entity.status = 1 OR entity.status = 0)";
+            if(dto.getIsAccept() == 3){
+                whereClause += " AND (entity.isAccept = 1 OR entity.isAccept = 0 OR entity.isAccept = :isAccept)";
             }else {
-                whereClause += " AND (entity.status = :status)";
+                whereClause += " AND (entity.isAccept = :isAccept)";
             }
         }
         if(dto.getLecturerId() != null){
             whereClause += " AND (entity.lecturer.id = :lecturerId)";
         }
-        if(dto.getIsAccept() != null){
-            whereClause += " AND (entity.isAccept = :isAccept)";
-        }
+//        if(dto.getIsAccept() != null){
+//            whereClause += " AND (entity.isAccept = :isAccept)";
+//        }
 
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             whereClause += " AND (entity.student.fullName like :fullName)";
@@ -152,9 +164,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         sql += whereClause;
         Query query = manager.createQuery(sql, GraduationThesisDto.class);
 
-        if (dto.getStatus() != null) {
-            query.setParameter("status", dto.getStatus());
-        }
+//        if (dto.getStatus() != null) {
+//            query.setParameter("status", dto.getStatus());
+//        }
         if(dto.getLecturerId() != null){
             query.setParameter("lecturerId", dto.getLecturerId());
         }
@@ -212,5 +224,31 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             throw  new Exception("Lỗi server");
         }
 
+    }
+
+
+    // check những thằng nào isAccept == 0 hoặc == 1 thì sẽ được cập lại isAccept và có giáo viên
+    @Override
+    public List<GraduationThesisDto> setLecturerToStudent (LecturerStudentsDto lecturerStudentsDto){
+        List<GraduationThesisDto> graduationThesisDtos = new ArrayList<>();
+        if(lecturerStudentsDto == null || lecturerStudentsDto.getIdLecturer() == null
+                || lecturerStudentsDto.getIdStudents() == null || lecturerStudentsDto.getIdStudents().size() < 0)
+            return null;
+
+        for (Long idStudents : lecturerStudentsDto.getIdStudents()){
+            GraduationThesis graduationThesis = graduationThesisRepository.getByStudentId(idStudents);
+            if(graduationThesis != null && (graduationThesis.getIsAccept() == 1 || graduationThesis.getIsAccept() == 0
+                    || graduationThesis.getIsAccept() == null || graduationThesis.getLecturer() == null)){
+                Lecturer leurer = lecturerRepository.findById(lecturerStudentsDto.getIdLecturer()).orElse(null);
+                if (leurer == null) {
+                    return null;
+                }
+                graduationThesis.setLecturer(leurer);
+                graduationThesis.setIsAccept(2);
+                graduationThesis = graduationThesisRepository.save(graduationThesis);
+                graduationThesisDtos.add(new GraduationThesisDto(graduationThesis));
+            }
+        }
+        return graduationThesisDtos;
     }
 }

@@ -115,6 +115,7 @@ public class LecturersServiceImpl implements LecturersService {
                 whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) > 30";
         }
 
+
         sql += whereClause;
         Query query = manager.createQuery(sql, LecturerDto.class);
 
