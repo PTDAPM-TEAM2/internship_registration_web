@@ -29,7 +29,7 @@ import Home from '@mui/icons-material/Home';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Variables from '../../utils/variables';
 import { bool } from 'yup';
-import { ThemeContext } from '@emotion/react';
+import { ThemeContext } from '../Theme/Theme.jsx';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -213,121 +213,147 @@ function Sidebar() {
 
                 </Stack>
 
+
                 {
                     // admin
-                    (check === 'admin' ? (location.pathname === '/quan-ly-do-an-sinh-vien' ||
-                    location.pathname === '/quan-ly-do-an' ||
-                    location.pathname === '/quan-ly-giao-vien-da' ||
-                    location.pathname === '/quan-ly-sinh-vien-da' ||
-                    location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
-                    location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
-                    location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
-                    location.pathname === '/ChiTietXD' ||
-                    location.pathname === '/ThemSV-da' ||
-                    location.pathname === '/ThemGV-da' ||
-                    location.pathname === '/ChiTietSV-da' ||
-                    location.pathname === '/ChiTietGV-da' ||
-                    location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
-                    location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
-                    location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
-                    location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
-                    // teachers role
-                    : check === "teachers" ? (
-                        location.pathname === '/trang-chu-giang-vien' || 
-                        location.pathname === '/thong-tin-ca-nhan'
-                    ) : 
-                    // students role
-                    (location.pathname === '/trang-chu-giang-vien'))
+                    (check === 'admin' ?
+                        (location.pathname === '/quan-ly-do-an-sinh-vien' ||
+                            location.pathname === '/quan-ly-do-an' ||
+                            location.pathname === '/quan-ly-giao-vien-da' ||
+                            location.pathname === '/quan-ly-sinh-vien-da' ||
+                            location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
+                            location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
+                            location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
+                            location.pathname === '/ChiTietXD' ||
+                            location.pathname === '/ThemSV-da' ||
+                            location.pathname === '/ThemGV-da' ||
+                            location.pathname === '/ChiTietSV-da' ||
+                            location.pathname === '/ChiTietGV-da' ||
+                            location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
+                            location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
+                            location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
+                            location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
+                        // teachers role
+                        : check === "teachers" ? (
+                            location.pathname === '/trang-chu-giang-vien' ||
+                            location.pathname === '/thong-tin-ca-nhan'
+                        ) :
+                            // students role
+                            (location.pathname === '/trang-chu-giang-vien'))
                     &&
                     <List>
-                        {   check === 'admin' ?
-                            (<ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "students" ? "/" : ""} style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
-                                    <ListItemIcon>
-                                        <Home className={styles.icon} />
-                                    </ListItemIcon>
-                                    <ListItemText primary='Trang chủ' />
-                                </ListItemButton>
-                            </Link >
-                            </ListItem>) : (null)
-                        }
-                        {
-                            check === 'admin' ? (
+                        {check === 'admin' ?
                             <ListItem disablePadding>
-                            <Link to={check === 'admin' ? "/quan-ly-do-an" : check === "students" ? "/" : ""} style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
-                                    <ListItemIcon>
-                                        <MenuBookIcon className={styles.icon} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={check === 'admin' ? 'Quản lý đồ án' : 'Thông tin cá nhân'} />
-                                </ListItemButton>
-                            </Link >
-                            </ListItem>) : (null)
+                                <Link
+                                    to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : ""}
+                                    style={{ width: '100%', textDecoration: 'none' }}
+                                    onClick={() => {
+                                        handleItemClick('trang-chu')
+                                    }}
+                                    className={context.activeButton === 'trang-chu' ? styles.active : {}}
+                                >    <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
+                                        <ListItemIcon>
+                                            <Home className={styles.icon} />
+                                        </ListItemIcon>
+                                        <ListItemText primary='Trang chủ' />
+                                    </ListItemButton>
+                                </Link >
+                            </ListItem> : (null)
                         }
                         {
-                            check === 'admin' ? (
-                            <ListItem disablePadding>
-                            <Link to="/quan-ly-sinh-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
-                                    <ListItemIcon>
-                                        <GroupRoundedIcon className={styles.icon} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
-                                </ListItemButton>
-                            </Link>
-                            </ListItem>) : (null)
+                            check === 'admin' ?
+                                <ListItem disablePadding>
+                                    <Link
+                                        to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : ""}
+                                        style={{ width: '100%', textDecoration: 'none' }}
+                                        onClick={() => {
+                                            handleItemClick('QLDA')
+                                        }}
+                                        className={context.activeButton === 'QLDA' ? styles.active : {}}
+                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }}  >
+                                            <ListItemIcon>
+                                                <MenuBookIcon className={styles.icon} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={check === 'admin' ? 'Quản lý đồ án' : 'Thông tin cá nhân'} />
+                                        </ListItemButton>
+                                    </Link >
+                                </ListItem> : (null)
                         }
                         {
-                            check === 'admin' ? (
-                        <ListItem disablePadding>
-                            <Link to="/quan-ly-giao-vien-da" style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
-                                    <ListItemIcon>
-                                        <GroupRoundedIcon className={styles.icon} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
-                                </ListItemButton>
-                            </Link >
-                        </ListItem>) : (null)
+                            check === 'admin' ?
+                                <ListItem disablePadding>
+                                    <Link
+                                        to={check === 'admin' ? "/quan-ly-sinh-vien-da" : check === 'teachers' ? '' : ''}
+                                        style={{ width: '100%', textDecoration: 'none' }}
+                                        onClick={() => {
+                                            handleItemClick('QLSV')
+                                        }}
+                                        className={context.activeButton === 'QLSV' ? styles.active : {}}
+                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white' }} >
+                                            <ListItemIcon>
+                                                <GroupRoundedIcon className={styles.icon} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
+                                        </ListItemButton>
+                                    </Link>
+                                </ListItem> : (null)
+                        }
+                        {
+                            check === 'admin' ?
+                                <ListItem disablePadding>
+                                    <Link
+                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : check === 'teachers' ? '' : ''}
+                                        style={{ width: '100%', textDecoration: 'none' }}
+                                        onClick={() => {
+                                            handleItemClick('QLGV')
+                                        }}
+                                        className={context.activeButton === 'QLGV' ? styles.active : {}}
+                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
+                                            <ListItemIcon>
+                                                <GroupRoundedIcon className={styles.icon} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
+                                        </ListItemButton>
+                                    </Link >
+                                </ListItem> : (null)
                         }
                     </List>
                 }
 
 
-                {(check === 'admin' ? 
-                // admin role
-                (
-                    location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
-                    location.pathname === '/quan-ly-cong-ty' ||
-                    location.pathname === '/quan-ly-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt' ||
-                    location.pathname === '/danh-sach-cong-ty' ||
-                    location.pathname === '/danh-sach-sinh-vien-tt' ||
-                    location.pathname === '/danh-sach-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
-                    location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
-                    location.pathname === '/ChiTietCT-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
-                    location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
-                    location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
-                ) : 
-                // teachers role
-                check === "teachers" ? 
-                (location.pathname === '/trang-chu-giang-vien' || 
-                location.pathname === '/thong-tin-ca-nhan' ||
-                location.pathname === '/danh-sach-sinh-vien-yeu-cau' || 
-                location.pathname === '/danh-sach-sinh-vien' ||
-                location.pathname === '/danh-sach-do-an-sinh-vien' ||
-                location.pathname === '/danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' ||
-                location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
-                location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
-                location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' ||
-                location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' ||
-                location.pathname === '/thong-tin-ca-nhan/doi-mat-khau'    
-                ) : 
-                // students role
-                (location.pathname === '/trang-chu-giang-vien'))
+                {(check === 'admin' ?
+                    // admin role
+                    (
+                        location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
+                        location.pathname === '/quan-ly-cong-ty' ||
+                        location.pathname === '/quan-ly-giao-vien-tt' ||
+                        location.pathname === '/quan-ly-sinh-vien-tt' ||
+                        location.pathname === '/danh-sach-cong-ty' ||
+                        location.pathname === '/danh-sach-sinh-vien-tt' ||
+                        location.pathname === '/danh-sach-giao-vien-tt' ||
+                        location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
+                        location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
+                        location.pathname === '/ChiTietCT-tt' ||
+                        location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
+                        location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
+                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
+                    ) :
+                    // teachers role
+                    check === "teachers" ?
+                        (location.pathname === '/trang-chu-giang-vien' ||
+                            location.pathname === '/thong-tin-ca-nhan' ||
+                            location.pathname === '/danh-sach-sinh-vien-yeu-cau' ||
+                            location.pathname === '/danh-sach-sinh-vien' ||
+                            location.pathname === '/danh-sach-do-an-sinh-vien' ||
+                            location.pathname === '/danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' ||
+                            location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
+                            location.pathname === '/danh-sach-sinh-vien/chi-tiet-sinh-vien' ||
+                            location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' ||
+                            location.pathname === '/danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' ||
+                            location.pathname === '/thong-tin-ca-nhan/doi-mat-khau'
+                        ) :
+                        // students role
+                        (location.pathname === '/trang-chu-giang-vien'))
                     &&
                     <List>
                         <ListItem disablePadding>
@@ -367,7 +393,7 @@ function Sidebar() {
                         <ListItem disablePadding>
                             <Link
                                 to={check === 'admin' ? "/quan-ly-sinh-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien-yeu-cau' : ''}
-                                style={{ width: '100%', textDecoration: 'none' }}
+                                style={{ width: '100%', textDecoration: 'none', borderBottom: '1px solid white'  }}
                                 onClick={() => {
                                     handleItemClick('QLSV')
                                 }}
@@ -381,34 +407,45 @@ function Sidebar() {
                                 </ListItemButton>
                             </Link>
                         </ListItem>
-                        <ListItem disablePadding>
+
+                        {check === 'teachers' ?
+                            <ListItem disablePadding>
+                                <Link
+                                    to='/danh-sach-sinh-vien'
+                                    style={{ width: '100%', textDecoration: 'none' }}
+                                    onClick={() => {
+                                        handleItemClick('QLGV')
+                                    }}
+                                    className={context.activeButton === 'QLGV' ? styles.active : {}}
+                                >
+                                    <ListItemButton style={{ color: 'white', borderBottom: '1px solid white' }} >
+                                        <ListItemIcon>
+                                            <GroupRoundedIcon className={styles.icon} />
+                                        </ListItemIcon>
+                                        <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : ''} />
+                                    </ListItemButton>
+                                </Link >
+                            </ListItem>
+                            : ''
+                        }
+                        {check === 'teachers' ? <ListItem disablePadding>
                             <Link
-                                to={check === 'admin' ? "/quan-ly-giao-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien' : ''}
+                                to='/danh-sach-do-an-sinh-vien'
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
-                                    handleItemClick('QLGV')
+                                    handleItemClick('QLDA')
                                 }}
-                                className={context.activeButton === 'QLGV' ? styles.active : {}}
+                                className={context.activeButton === 'QLDA' ? styles.active : {}}
                             >
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
-                                    <ListItemIcon>
-                                        <GroupRoundedIcon className={styles.icon} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : ''} />
-                                </ListItemButton>
-                            </Link >
-                        </ListItem>
-                        {check === 'teachers' ? <ListItem disablePadding>
-                            <Link to= '/danh-sach-do-an-sinh-vien' style={{ width: '100%', textDecoration: 'none' }}>
-                                <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }} >
+                                <ListItemButton style={{ color: 'white', borderBottom: '1px solid white' }} >
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
                                     <ListItemText primary='Danh Sách Đồ Án' />
                                 </ListItemButton>
                             </Link >
-                        </ListItem> 
-                        : ''
+                        </ListItem>
+                            : ''
                         }
                     </List>
                 }

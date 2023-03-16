@@ -7,7 +7,7 @@ function createData(Hoten, Lop, TenDoAn, Ky, SoCC, NgaySinh, NoiSinh, SDT, email
 class Variables extends React.Component {
 
 
-    static userRole = "teachers";
+    static userRole = "admin";
 
 
 

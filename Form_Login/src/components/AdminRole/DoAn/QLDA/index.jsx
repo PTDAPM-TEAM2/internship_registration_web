@@ -6,10 +6,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Link } from 'react-router-dom'
 import styles from './QLDA.module.css';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 function QLDA() {
     const [startDate, setStartDate] = React.useState(dayjs());
     const [dueDate, setDueDate] = React.useState(dayjs());
     const [errorMessage, setErrorMessage] = React.useState('');
+    const [showAlert, setShowAlert] = React.useState(false);
     const getDate = dayjs();
     const handleClick = () => {
         if (startDate < getDate) {
@@ -20,6 +23,7 @@ function QLDA() {
         }
         else {
             setErrorMessage('');
+            setShowAlert(true);
         }
 
     }
@@ -65,6 +69,17 @@ function QLDA() {
                     <button className={`${styles.button} ${styles.btnDS}`}>Danh sách đồ án</button>
                 </Link>
             </div>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Thiết lập thời gian đăng ký đồ án thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div>
     )
 }

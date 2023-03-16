@@ -61,11 +61,10 @@ function Login() {
     } else {
       if (context.toggle === true) {
         try {
-        //   var tk = await userApi.loginDA({
-        //     username: username,
-        //     password: password,
-        //   });
-        var tk = "hgasfhgsfdah";
+          var tk = await userApi.loginDA({
+            username: username,
+            password: password,
+          });
           if (tk !== "") {
             context.token = tk;
             setShowAlert(true);
@@ -86,18 +85,23 @@ function Login() {
             );
           }
         } catch (error) {
-          setErrorMessage("Lỗi kết nối");
+          setErrorMessage("Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!");
         }
       } else if (context.toggle === false) {
         try {
-        //   var tk = await userApi.loginTT({
-        //     username: username,
-        //     password: password,
-        //   });
-        var tk = "hgasfhgsfdah";
-        // try {
-        //   var tk = await userApi.loginTT({ username: username, password: password });
+          var tk = await userApi.loginTT({
+            username: username,
+            password: password,
+          });
+          console.log(tk);
+          // try {
+          //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
+            var userInfo = await userApi.getInfo(tk);
+            if(userInfo.roles[0].id === 1){
+              Variables.userRole = 'admin'
+            } ;
+            console.log(Variables.userRole);            
             context.token = tk;
             setShowAlert(true);
             setErrorMessage("");
@@ -117,7 +121,12 @@ function Login() {
             );
           }
         } catch (error) {
-          setErrorMessage("Lỗi kết nối");
+          if (error.response.status === 400) {
+            setErrorMessage("Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!");
+          }
+          else{
+            setErrorMessage("Lỗi kết nối!");
+          }
         }
       }
     }
@@ -129,7 +138,7 @@ function Login() {
     setShowPassword((showPassword) => !showPassword);
   };
 
-  
+
 
   return (
     <div className={styles.bg}>
@@ -211,7 +220,7 @@ function Login() {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        // onMouseDown={handleMouseDownPassword}
+                      // onMouseDown={handleMouseDownPassword}
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

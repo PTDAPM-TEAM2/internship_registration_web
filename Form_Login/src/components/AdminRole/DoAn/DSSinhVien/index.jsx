@@ -19,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
+import { getStudents } from '../../../../axios';
 
 
 const columns = [
@@ -67,13 +68,28 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/ChiTietSV-da', {state: {item}});
+        navigate('/ChiTietSV-da', { state: { item } });
     }
     // const context = useContext(ThemeContext);
 
     // console.log(context.token);
     // rows = await studentApi.getAll(context.token);
     // console.log((await studentApi.getAll(context.token))[0]);
+    const [students, setStudent] = React.useState([]);
+
+    React.useEffect(() => {
+        const getAllItem = async () => {
+            try {
+                const response = await getStudents();
+                setStudent(response)
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getAllItem()
+    }, []);
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -122,13 +138,13 @@ function DSSV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {Variables.studentList.map((row, index) => {
+                                    {students.map((row, index) => {
                                         return (
                                             <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index+1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Hoten}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.hoTen}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.Lop}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.TenDoAn}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.DoAn}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
                                             </TableRow>
                                         );

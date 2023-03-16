@@ -7,6 +7,7 @@ function ThemeProvider({children}) {
     const [token, setToken] = useState("");
     const [toggle, setToggle] = useState(false);
     const [activeButton, setActiveButton] = useState('trang-chu');
+    
     const updateToggle = (newValue) => {
         setToggle(newValue);
     }
@@ -16,6 +17,7 @@ function ThemeProvider({children}) {
     const updateToken = (newValue) => {
         setToken(newValue);
     }
+    console.log(activeButton);
     const value = {
         activeButton,
         updateButton,
