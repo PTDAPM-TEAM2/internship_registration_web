@@ -16,6 +16,7 @@ public class CompanyDto extends BaseDto {
     }
 
     public CompanyDto(Company entity) {
+        super.setId(entity.getId());
         this.nameCompany = entity.getNameCompany();
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();

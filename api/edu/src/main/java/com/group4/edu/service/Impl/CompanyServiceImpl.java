@@ -17,10 +17,17 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto saveOrUpdate(CompanyDto dto)  {
         if(dto == null) return null;
 
-        Company entity = null;
-        if(dto.getId() != null){
-            entity = companyRepository.findById(dto.getId()).orElse(new Company());
+        List<Company> companys = companyRepository.findByTaxCode(dto.getTaxCode());
+        if(companys != null && companys.size() > 0){
+            System.out.println("Đã tồn tại công ty này");
+            return null;
         }
+        Company entity = null;
+        if(dto.getId() != null)
+            entity = companyRepository.findById(dto.getId()).orElse(null);
+        if(entity == null)
+            entity = new Company();
+
         entity.setTaxCode(dto.getTaxCode());
         entity.setNameCompany(dto.getNameCompany());
         entity.setAddress(dto.getAddress());
@@ -31,5 +38,10 @@ public class CompanyServiceImpl implements CompanyService {
 
         entity = companyRepository.save(entity);
         return new CompanyDto(entity);
+    }
+
+    @Override
+    public List<CompanyDto> getAll (){
+        return companyRepository.getAll();
     }
 }

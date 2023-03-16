@@ -11,6 +11,7 @@ public class WeeklyReviewDto extends BaseDto{
     }
 
     public WeeklyReviewDto(WeeklyReview entity) {
+        super.setId(entity.getId());
         this.title = entity.getTitle();
         this.content = entity.getContent();
 
