@@ -66,7 +66,7 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
-            context.token = tk;
+            context.updateToken(tk);
             setShowAlert(true);
             setErrorMessage("");
             setUsername("");
@@ -93,7 +93,7 @@ function Login() {
             username: username,
             password: password,
           });
-          console.log(tk);
+          // console.log(tk);
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {

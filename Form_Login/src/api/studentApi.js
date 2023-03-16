@@ -1,4 +1,4 @@
-import axiosClient from "../axiosClient";
+import axiosClient from "./axiosClient";
 class StudentApi {
   // lay tat ca sinh vien lam do an
   getAllSvDa = (params, token) => {
@@ -11,6 +11,7 @@ class StudentApi {
         },
       })
       .then((res) => res);
+      
   };
 
   // lay tat ca sinh vien thuc tap
@@ -40,7 +41,7 @@ class StudentApi {
               "multipart/form-data; boundary=<calculated when request is sent>",
           },
         },
-        params
+        // params
       )
       .then((res) => res);
     // return res, check res.status == 200 va check res.data co bang true thi la doi mk thanh cong

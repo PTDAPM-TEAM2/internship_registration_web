@@ -1,19 +1,23 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://640062db29deaba5cb362b79.mockapi.io/account';
+const BASE_URL = 'http://localhost:8080/api/student/get-st-da-by-search';
 
-// const instance = axios.create({
-//     BASE_URL,
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-// });
-
+export const getStudents = async (params, token) => {
+    // param co the de trong, neu can tim hoac loc sinh se truyen param
+    const url = "api/student/get-st-da-by-search";
+    return axios
+        .get(BASE_URL, params, {
+            headers: {
+                Authorization: "Bearer " + token, //the token is a variable which holds the token
+            },
+        })
+        .then((res) => res);
+};
 // Function to get all hotels
-export const getStudents = async () => {
-    const response = await axios.get(BASE_URL);
-    return response.data;
-}
+// export const getStudents = async () => {
+//     const response = await axios.get(BASE_URL);
+//     return response.data;
+// }
 
 // Function to add a new hotel
 export const addStudent = async (Student) => {

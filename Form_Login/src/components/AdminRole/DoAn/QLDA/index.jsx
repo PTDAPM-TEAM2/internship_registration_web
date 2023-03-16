@@ -24,6 +24,9 @@ function QLDA() {
         else {
             setErrorMessage('');
             setShowAlert(true);
+            setTimeout(()=>{
+                setShowAlert(false);
+            }, 2000)
         }
 
     }
