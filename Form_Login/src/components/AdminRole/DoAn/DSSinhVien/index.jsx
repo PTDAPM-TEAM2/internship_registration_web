@@ -19,7 +19,8 @@ import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
-import { getStudents } from '../../../../axios';
+// import { getStudents } from '../../../../axios';
+import userApi from "../../../../api/studentApi";
 
 
 const columns = [
@@ -59,6 +60,7 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
 
+
     function handleMoveAdd() {
         navigate('/ThemSV-da');
     }
@@ -76,13 +78,14 @@ function DSSV() {
     // rows = await studentApi.getAll(context.token);
     // console.log((await studentApi.getAll(context.token))[0]);
     const [students, setStudent] = React.useState([]);
-
+    
+    const context = useContext(ThemeContext);
+    console.log(context.token);
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await getStudents();
-                setStudent(response)
-                console.log(response);
+                const response = await userApi.getAllSvDa(null, context.token);
+                setStudent(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

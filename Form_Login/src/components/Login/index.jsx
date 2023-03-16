@@ -67,7 +67,7 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
-            context.token = tk;
+            context.updateToken(tk);
             setShowAlert(true);
             setErrorMessage("");
             setUsername("");
@@ -104,6 +104,7 @@ function Login() {
             password: password,
           });
           // console.log(await studentApi.getAllSvDa({}, tk));
+          // console.log(tk);
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {

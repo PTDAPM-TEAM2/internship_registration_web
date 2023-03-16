@@ -41,8 +41,8 @@ class StudentApi {
             "Content-Type":
               "multipart/form-data; boundary=<calculated when request is sent>",
           },
-        },
-        data
+        }
+        // params
       )
       .then((res) => res);
     // return res, check res.status == 200 va check res.data co bang true thi la doi mk thanh cong
