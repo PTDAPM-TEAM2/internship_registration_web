@@ -2,10 +2,7 @@ package com.group4.edu.domain;
 
 import com.group4.edu.domain.core.BaseObject;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tbl_intern_ship")
@@ -14,7 +11,7 @@ public class Internship extends BaseObject {
     private Double mark;
     private String evaluate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "company_id")
     Company company;
 
@@ -23,8 +20,8 @@ public class Internship extends BaseObject {
     Student student;
 
     @ManyToOne
-    @JoinColumn(name = "register_time_id")
-    RegisterTime registerTime;
+    @JoinColumn(name = "semester_id")
+    Semester semester;
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id")
@@ -70,19 +67,19 @@ public class Internship extends BaseObject {
         this.student = student;
     }
 
-    public RegisterTime getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(RegisterTime registerTime) {
-        this.registerTime = registerTime;
-    }
-
     public Lecturer getLecturer() {
         return lecturer;
     }
 
     public void setLecturer(Lecturer lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }

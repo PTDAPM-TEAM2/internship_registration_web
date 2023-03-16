@@ -13,6 +13,7 @@ public class Company extends BaseObject {
     private String email;
     private String phoneNumber;
     private String address;
+    private String code;
 
     @Column(name = "taxCode", unique = true)
     private String taxCode;
@@ -64,5 +65,13 @@ public class Company extends BaseObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import java.security.Principal;
-import java.security.Security;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,10 +23,10 @@ public class EntityAuditListener {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                Object userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                Object userDetails =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 if (userDetails instanceof UserDetails) {
                     UserDetails principal = (UserDetails) userDetails;
-                    if (Objects.nonNull(userDetails)) {
+                    if (Objects.nonNull(principal)) {
                         auditableEntity.setCreateBy(principal.getUsername());
                         auditableEntity.setModifyBy(principal.getUsername());
                     }
@@ -50,10 +48,10 @@ public class EntityAuditListener {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                Object userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 if (userDetails instanceof UserDetails) {
                     UserDetails principal = (UserDetails) userDetails;
-                    if (Objects.nonNull(userDetails)) {
+                    if (Objects.nonNull(principal)) {
                         auditableEntity.setModifyBy(principal.getUsername());
                     }
                 }

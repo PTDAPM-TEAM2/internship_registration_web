@@ -17,7 +17,7 @@ public class MailServiceImpl implements MailService {
     @Value("${spring.mail.username}") private String sender;
 
     @Override
-    public String sendSimpleMail(MailDto details) {
+    public Boolean sendSimpleMail(MailDto details) {
         try {
 //            details = new MailDto();
 //            details.setRecipient("luongvannam6898@gmail.com");
@@ -36,17 +36,18 @@ public class MailServiceImpl implements MailService {
 
             // Sending the mail
             javaMailSender.send(mailMessage);
-            return "Mail Sent Successfully...";
+            return true;
         }
 
         // Catch block to handle the exceptions
         catch (Exception e) {
-            return e.getMessage();
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
     @Override
-    public String sendMailWithAttachment(MailDto details) {
+    public Boolean sendMailWithAttachment(MailDto details) {
         return null;
     }
 }

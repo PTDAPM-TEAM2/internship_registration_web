@@ -1,10 +1,13 @@
 package com.group4.edu.config;
 
 import com.group4.edu.EduConstants;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -15,14 +18,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Bean
 //    @Override
@@ -83,8 +91,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     protected void configure(HttpSecurity http) throws Exception {
         // Disable crsf cho đường dẫn /rest/**
-        http.csrf().disable();
+        http.cors().and().csrf().disable();
         http.authorizeRequests()
+                .antMatchers("/logout").permitAll()
+                .antMatchers("/public/**").permitAll()
                 .antMatchers("/login-da").permitAll()
                 .antMatchers("/login-tt").permitAll()
                 .antMatchers("/api/account/**").hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue(), EduConstants.Role.ROLELECTURERS.getValue(),EduConstants.Role.ROLESTUDENT_DA.getValue(),EduConstants.Role.ROLESTUDENT_TT.getValue())
@@ -93,5 +103,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), JwtAuthenticationTokenFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> simpleCorsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
     }
 }
