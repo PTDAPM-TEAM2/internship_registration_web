@@ -6,6 +6,7 @@ import com.group4.edu.domain.Lecturer;
 import com.group4.edu.domain.Role;
 import com.group4.edu.dto.LecturerDto;
 import com.group4.edu.dto.SearchObjectDto;
+import com.group4.edu.repositories.AccountRepository;
 import com.group4.edu.repositories.LecturerRepository;
 import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.service.LecturersService;
@@ -29,6 +30,8 @@ public class LecturersServiceImpl implements LecturersService {
     private RoleRepository roleRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private AccountRepository accountRepository;
     @Override
     public LecturerDto saveOrUpdate(LecturerDto dto, Long id) throws Exception {
         if(dto != null){
@@ -59,6 +62,8 @@ public class LecturersServiceImpl implements LecturersService {
                     throw new Exception("Ma giảng viên đã tồn tại");
                 }
             }
+            entity.setDateOfBirth(dto.getDateOfBirth());
+            entity.setIdNumber(dto.getIdNumber());
             entity.setLecturersCode(dto.getLecturersCode());
             entity.setFullName(dto.getFullName());
             entity.setEmail(dto.getEmail());
@@ -76,12 +81,7 @@ public class LecturersServiceImpl implements LecturersService {
                     role.setRole(EduConstants.Role.ROLELECTURERS.getValue());
                     role = roleRepository.save(role);
                 }
-//                Set<AccountRole> accountRoleSet = new HashSet<>();
-//                AccountRole accountRole = new AccountRole();
-//                accountRole.setAccount(account);
-//                accountRole.setRole(role);
-//                accountRoleSet.add(accountRole);
-//                account.setAccountRoleSet(accountRoleSet);
+                account = accountRepository.save(account);
             }
             entity.setAccount(account);
             return new LecturerDto(lecturerRepository.save(entity));
