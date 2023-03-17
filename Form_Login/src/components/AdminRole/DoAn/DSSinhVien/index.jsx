@@ -85,6 +85,7 @@ function DSSV() {
         const getAllItem = async () => {
             try {
                 const response = await userApi.getAllSvDa(null, context.token);
+                console.log(await userApi.getAllSvDa(null, context.token));
                 setStudent(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
