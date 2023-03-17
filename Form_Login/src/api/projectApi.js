@@ -1,4 +1,4 @@
-import axiosClient from "../axiosClient";
+import axiosClient from "./axiosClient";
 class ProjectApi {
   // lay tat ca do an
   //   getAll = () => {
