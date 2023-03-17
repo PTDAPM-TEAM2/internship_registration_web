@@ -87,6 +87,7 @@ public class SudentServiceImpl implements StudentService {
                 throw new Exception("Trùng mã sinh vieen: "+studentDto.getStudentCode());
             }
         }
+        entity.setIdNumber(studentDto.getIdNumber());
         entity.setStudentCode(studentDto.getStudentCode());
         entity.setUserType(EduConstants.UserType.STUDENT.getValue());
         entity.setFullName(studentDto.getFullName());

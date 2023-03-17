@@ -11,6 +11,8 @@ import java.util.Date;
         strategy = InheritanceType.JOINED
 )
 public class User extends BaseObject {
+    private String IdNumber;
+
     private String firstName;
     private String lastName;
     private String fullName;
@@ -111,5 +113,13 @@ public class User extends BaseObject {
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
+    }
+
+    public String getIdNumber() {
+        return IdNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        IdNumber = idNumber;
     }
 }
