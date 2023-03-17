@@ -103,8 +103,7 @@ function Login() {
             username: username,
             password: password,
           });
-          // console.log(await studentApi.getAllSvDa({}, tk));
-          // console.log(tk);
+          console.log(tk);
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {

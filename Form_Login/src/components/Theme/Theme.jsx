@@ -16,6 +16,7 @@ function ThemeProvider({ children }) {
   const updateToken = (newValue) => {
     setToken(newValue);
   };
+  console.log(activeButton);
   const value = {
     activeButton,
     updateButton,
