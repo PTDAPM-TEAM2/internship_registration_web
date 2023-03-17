@@ -18,6 +18,7 @@ public class User extends BaseObject {
     private String fullName;
     private String email;
     private Date dateOfBirth;
+    private String placeOfBirth;
     private String address;
     private String gender;
     private String phoneNumber;
@@ -121,5 +122,13 @@ public class User extends BaseObject {
 
     public void setIdNumber(String idNumber) {
         IdNumber = idNumber;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 }

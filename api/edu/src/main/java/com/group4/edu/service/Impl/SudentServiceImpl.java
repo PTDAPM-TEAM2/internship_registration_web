@@ -88,6 +88,7 @@ public class SudentServiceImpl implements StudentService {
             }
         }
         entity.setIdNumber(studentDto.getIdNumber());
+        entity.setPlaceOfBirth(studentDto.getPlaceOfBitrh());
         entity.setStudentCode(studentDto.getStudentCode());
         entity.setUserType(EduConstants.UserType.STUDENT.getValue());
         entity.setFullName(studentDto.getFullName());
