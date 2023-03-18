@@ -29,6 +29,8 @@ import Home from '@mui/icons-material/Home';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Variables from '../../utils/variables';
 import { bool } from 'yup';
+import {useNavigate} from 'react-router-dom';
+
 import { ThemeContext } from '../Theme/Theme.jsx';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
@@ -95,6 +97,12 @@ function Sidebar() {
         setWidth(0);
     };
 
+    const navigate = useNavigate();
+    function toComponent (path) {
+        navigate(path);
+    }
+
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -126,7 +134,7 @@ function Sidebar() {
                             {(popupState) => (
                                 <div>
                                     <IconButton variant="contained" {...bindTrigger(popupState)}>
-                                        <div style={{ width: "35px", height: "35px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <div style={{ width: "35px", height: "35px", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                             {/* <PersonIcon ></PersonIcon>
                                             <ExpandMoreIcon /> */}
                                             <PowerSettingsNewIcon onClick={() => window.location.href = "/dang-nhap"} />
@@ -357,11 +365,17 @@ function Sidebar() {
                     &&
                     <List>
                         <ListItem disablePadding>
-                            <Link
-                                to={check === 'admin' ? "/quan-ly-sinh-vien-thuc-tap" : "/trang-chu-giang-vien"}
+                            <div
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
                                     handleItemClick('trang-chu')
+                                    if(check === 'admin'){
+                                        toComponent("/quan-ly-sinh-vien-thuc-tap")
+                                    }else if(check === 'teachers'){
+                                        toComponent("/trang-chu-giang-vien")
+                                    }else{
+
+                                    }
                                 }}
                                 className={context.activeButton === 'trang-chu' ? styles.active : {}}
                             >
@@ -371,14 +385,20 @@ function Sidebar() {
                                     </ListItemIcon>
                                     <ListItemText primary='Trang chủ' />
                                 </ListItemButton>
-                            </Link >
+                            </div >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link
-                                to={check === 'admin' ? "/quan-ly-cong-ty" : check === 'teachers' ? '/thong-tin-ca-nhan' : ''}
+                            <div
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
                                     handleItemClick('QLCT')
+                                    if(check === 'admin'){
+                                        toComponent("/quan-ly-cong-ty")
+                                    }else if(check === 'teachers'){
+                                        toComponent("/thong-tin-ca-nhan")
+                                    }else{
+
+                                    }
                                 }}
                                 className={context.activeButton === 'QLCT' ? styles.active : {}}
                             >
@@ -388,14 +408,20 @@ function Sidebar() {
                                     </ListItemIcon>
                                     <ListItemText primary={check === 'admin' ? 'Quản lý công ty' : check === 'teachers' ? 'Thông tin cá nhân' : ''} />
                                 </ListItemButton>
-                            </Link >
+                            </div >
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link
-                                to={check === 'admin' ? "/quan-ly-sinh-vien-tt" : check === 'teachers' ? '/danh-sach-sinh-vien-yeu-cau' : ''}
+                            <div
                                 style={{ width: '100%', textDecoration: 'none', borderBottom: '1px solid white'  }}
                                 onClick={() => {
                                     handleItemClick('QLSV')
+                                    if(check === 'admin'){
+                                        toComponent("/quan-ly-sinh-vien-tt")
+                                    }else if(check === 'teachers'){
+                                        toComponent("/danh-sach-sinh-vien-yeu-cau")
+                                    }else{
+
+                                    }
                                 }}
                                 className={context.activeButton === 'QLSV' ? styles.active : {}}
                             >
@@ -405,16 +431,16 @@ function Sidebar() {
                                     </ListItemIcon>
                                     <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : check === 'teachers' ? 'Xác Nhận Yêu Cầu Sinh Viên' : ''} />
                                 </ListItemButton>
-                            </Link>
+                            </div>
                         </ListItem>
 
                         {check === 'teachers' ?
                             <ListItem disablePadding>
-                                <Link
-                                    to='/danh-sach-sinh-vien'
+                                <div
                                     style={{ width: '100%', textDecoration: 'none' }}
                                     onClick={() => {
                                         handleItemClick('QLGV')
+                                        toComponent("/danh-sach-sinh-vien")
                                     }}
                                     className={context.activeButton === 'QLGV' ? styles.active : {}}
                                 >
@@ -424,16 +450,16 @@ function Sidebar() {
                                         </ListItemIcon>
                                         <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : ''} />
                                     </ListItemButton>
-                                </Link >
+                                </div >
                             </ListItem>
                             : ''
                         }
                         {check === 'teachers' ? <ListItem disablePadding>
-                            <Link
-                                to='/danh-sach-do-an-sinh-vien'
+                            <div
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
                                     handleItemClick('QLDA')
+                                    toComponent("/danh-sach-do-an-sinh-vien")
                                 }}
                                 className={context.activeButton === 'QLDA' ? styles.active : {}}
                             >
@@ -443,7 +469,7 @@ function Sidebar() {
                                     </ListItemIcon>
                                     <ListItemText primary='Danh Sách Đồ Án' />
                                 </ListItemButton>
-                            </Link >
+                            </div >
                         </ListItem>
                             : ''
                         }

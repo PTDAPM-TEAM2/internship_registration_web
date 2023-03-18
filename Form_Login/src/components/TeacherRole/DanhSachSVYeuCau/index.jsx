@@ -11,7 +11,7 @@ const DSSVYC = () => {
     // Declare a state variable for data
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-  
+    const location = useLocation()
       // Use useEffect hook to fetch data when the component mounts
     useEffect(() => {
         // Define an async function that calls the API
