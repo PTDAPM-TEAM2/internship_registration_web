@@ -325,6 +325,35 @@ public class SudentServiceImpl implements StudentService {
         return false;
     }
 
+    @Override
+    public boolean deleteStDa(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student == null){
+            return false;
+        }
+        if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
+            return true;
+        }
+        if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+            student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            if(account != null){
+                Set<Role> roleSet = account.getRoles();
+                roleSet.removeIf(role -> role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()));
+            }
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            return true;
+        }
+        return false;
+    }
+
     private String getStringCellValue(XSSFCell cell){
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);

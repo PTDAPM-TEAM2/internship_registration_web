@@ -94,6 +94,7 @@ public class StudentController {
         return studentService.getStDaBySearch(studentSearchDto,2);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/tt/{id}")
     public ResponseEntity<?> deleteStTT(@PathVariable Long id){
         return new ResponseEntity<>(studentService.deleteStTT(id),HttpStatus.OK);

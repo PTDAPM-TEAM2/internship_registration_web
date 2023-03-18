@@ -51,7 +51,7 @@ public class LoginController {
             if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_DA.getKey())) {
                 String token = jwtService.generateTokenLogin(accountDto.getUsername());
                 if (accountService.saveTokenByUsername(token, accountDto.getUsername())) {
-                    result.setAccess_Token("Bearer "+token);
+                    result.setAccess_Token(token);
                     result.setStatusCode(HttpStatus.OK.toString());
                     httpStatus = HttpStatus.OK;
                 }
