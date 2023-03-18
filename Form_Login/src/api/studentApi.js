@@ -4,7 +4,6 @@ class StudentApi {
   getAllSvDa = (params, token) => {
     // param co the de trong, neu can tim hoac loc sinh se truyen param
     const url = "api/student/get-st-da-by-search";
-    console.log(token);
     return axiosClient
       .post(url, params, {
         headers: {
