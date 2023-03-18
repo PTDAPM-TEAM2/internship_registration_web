@@ -71,9 +71,12 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login-tt", method = RequestMethod.POST)
-    public ResponseEntity<?> loginTt(HttpServletRequest request, @RequestBody AccountDto accountDto) {
+    public ResponseEntity<?> loginTt(HttpServletRequest request, @RequestBody AccloginDto accountDto1) {
         ResponseToken result = new ResponseToken();
         HttpStatus httpStatus = null;
+        AccountDto accountDto = new AccountDto();
+        accountDto.setUsername(accountDto1.getUsername());
+        accountDto.setPassword(accountDto1.getPassword());
         try {
             if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_TT.getKey())) {
                 String token = jwtService.generateTokenLogin(accountDto.getUsername());
