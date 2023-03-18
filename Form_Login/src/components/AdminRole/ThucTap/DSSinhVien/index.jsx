@@ -17,6 +17,7 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
+import userApi from "../../../../api/studentApi";
 const columns = [
     {
         id: 'STT',
@@ -56,14 +57,14 @@ const columns = [
     }
 ];
 
-function createData( MaSV, Hoten, Lop, TenCT, Ky) {
-    return {MaSV, Hoten, Lop, TenCT, Ky };
+function createData(MaSV, Hoten, Lop, TenCT, Ky) {
+    return { MaSV, Hoten, Lop, TenCT, Ky };
 }
 
 const rows = [
     createData('2051063478', 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData('2051063472','Nguyễn Thị Bích Ngọc', '62PM02', 'Quản lý cửa hàng thú cưng', '01/2022-2023'),
-    createData('2051063471','Nguyễn Đức Đức Phong', '62PM02', 'Quản lý nhân sự công ty ABC', '01/2022-2023'),
+    createData('2051063472', 'Nguyễn Thị Bích Ngọc', '62PM02', 'Quản lý cửa hàng thú cưng', '01/2022-2023'),
+    createData('2051063471', 'Nguyễn Đức Đức Phong', '62PM02', 'Quản lý nhân sự công ty ABC', '01/2022-2023'),
 ];
 function DSSV() {
     const navigate = useNavigate();
@@ -79,7 +80,22 @@ function DSSV() {
     function handleGoClick() {
         navigate('/ChiTietSV-tt');
     }
+    const [students, setStudent] = React.useState([]);
+
     const context = useContext(ThemeContext);
+    React.useEffect(() => {
+        const getAllItem = async () => {
+            try {
+                const response = await userApi.getAllSvTt(null, context.token);
+                setStudent(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getAllItem()
+    }, []);
+
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -128,15 +144,15 @@ function DSSV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row, index) => {
+                                    {students.map((row, index) => {
                                         return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
                                                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.MaSV}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Hoten}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Lop}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.TenCT}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.studentCode}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.graduationThesis}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
                                             </TableRow>
                                         );
                                     })}

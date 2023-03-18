@@ -6,12 +6,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Link } from 'react-router-dom'
 import styles from './QLSVTT.module.css';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import userApi from "../../../../api/studentApi";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+
 function QLSVTT() {
     const [startDate, setStartDate] = React.useState(dayjs());
     const [dueDate, setDueDate] = React.useState(dayjs());
     const [errorMessage, setErrorMessage] = React.useState('');
+    const [showAlert, setShowAlert] = React.useState(false);
     const getDate = dayjs();
-    const handleClick = () => {
+    const context = useContext(ThemeContext);
+
+    const handleClick = async () => {
         if (startDate < getDate) {
             setErrorMessage('Ngày không hợp lệ');
         }
@@ -19,7 +28,20 @@ function QLSVTT() {
             setErrorMessage('Ngày không hợp lệ');
         }
         else {
+            try {
+                const response = await userApi.registerTimeDA({
+                    timeStart: startDate,
+                    timeEnd: dueDate,
+                }, context.token);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
             setErrorMessage('');
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000)
         }
 
     }
@@ -65,6 +87,17 @@ function QLSVTT() {
                     <button className={`${styles.button} ${styles.btnDS}`}>Danh sách sinh viên</button>
                 </Link>
             </div>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'fixed',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Thiết lập thời gian đăng ký đồ án thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div>
     )
 }

@@ -13,28 +13,51 @@ public class GraduationThesisDto extends BaseDto {
     Integer status; //0 đang chờ duyệt, 1 đang làmm, 2 là bị huỷ, 3 hoàn thành
     Integer isAccept;
     StudentDto student;
-    RegisterTimeDto registerTime;
-    LecturersDto lecturer;
+    SemesterDto semester;
+    LecturerDto lecturer;
 
     public GraduationThesisDto() {
     }
 
     public GraduationThesisDto(GraduationThesis entity) {
-        this.urlOutline = entity.getUrlOutline();
-        this.nameGraduationThesis = entity.getNameGraduationThesis();
-        this.mark1 = entity.getMark1();
-        this.mark2 = entity.getMark2();
-        this.mark3 = entity.getMark3();
-        this.avgMark = entity.getAvgMark();
-        this.status = entity.getStatus();
-        if(entity.getIsAccept() != null)
-            this.isAccept = entity.getIsAccept();
-        if(entity.getStudent() != null)
-            this.student = new StudentDto(entity.getStudent());
-        if(entity.getRegisterTime() != null)
-            this.registerTime = new RegisterTimeDto(entity.getRegisterTime());
-        if(entity.getLecturer() != null){
-            this.lecturer = new LecturersDto(entity.getLecturer());
+        if (entity != null) {
+            super.setId(entity.getId());
+            this.urlOutline = entity.getUrlOutline();
+            this.nameGraduationThesis = entity.getNameGraduationThesis();
+            this.mark1 = entity.getMark1();
+            this.mark2 = entity.getMark2();
+            this.mark3 = entity.getMark3();
+            this.avgMark = entity.getAvgMark();
+            this.status = entity.getStatus();
+            if (entity.getIsAccept() != null)
+                this.isAccept = entity.getIsAccept();
+            if (entity.getStudent() != null)
+                this.student = new StudentDto(entity.getStudent());
+            if (entity.getSemester() != null)
+                this.semester = new SemesterDto(entity.getSemester());
+            if (entity.getLecturer() != null) {
+                this.lecturer = new LecturerDto(entity.getLecturer());
+            }
+        }
+    }
+
+    public GraduationThesisDto(GraduationThesis entity, boolean notGetStudent) {
+        if (entity != null) {
+            this.setId(entity.getId());
+            this.urlOutline = entity.getUrlOutline();
+            this.nameGraduationThesis = entity.getNameGraduationThesis();
+            this.mark1 = entity.getMark1();
+            this.mark2 = entity.getMark2();
+            this.mark3 = entity.getMark3();
+            this.avgMark = entity.getAvgMark();
+            this.status = entity.getStatus();
+            if (entity.getIsAccept() != null)
+                this.isAccept = entity.getIsAccept();
+            if (entity.getSemester() != null)
+                this.semester = new SemesterDto(entity.getSemester());
+            if (entity.getLecturer() != null) {
+                this.lecturer = new LecturerDto(entity.getLecturer());
+            }
         }
     }
 
@@ -110,19 +133,19 @@ public class GraduationThesisDto extends BaseDto {
         this.student = student;
     }
 
-    public RegisterTimeDto getRegisterTime() {
-        return registerTime;
+    public SemesterDto getSemester() {
+        return semester;
     }
 
-    public void setRegisterTime(RegisterTimeDto registerTime) {
-        this.registerTime = registerTime;
+    public void setSemester(SemesterDto semester) {
+        this.semester = semester;
     }
 
-    public LecturersDto getLecturer() {
+    public LecturerDto getLecturer() {
         return lecturer;
     }
 
-    public void setLecturer(LecturersDto lecturer) {
+    public void setLecturer(LecturerDto lecturer) {
         this.lecturer = lecturer;
     }
 }

@@ -2,23 +2,38 @@ import * as React from "react";
 import styles from './DLSVTT.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-function DLSVTT(DLSVTT) {
+import userApi from "../../../../api/studentApi";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+
+function DLSVTT() {
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
     const handleExcelFileChange = (event) => {
         const file = event.target.files[0];
         setExcelFile(file);
-        console.log(file.name.replace('.xlsx', ''))
+        // console.log(file.name.replace('.xlsx', ''))
     };
+    const formData = new FormData();
+    formData.append('file', excelFile);
+    const context = useContext(ThemeContext);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         {
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
-            }, 2000)
+            }, 2000);
+        }
+        try {
+            const response = await userApi.importExcelSvDa(formData, context.token);
+            console.log(response);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
     }
+
+
 
     return (
         <div style={{ position: 'relative' }}>
@@ -47,7 +62,7 @@ function DLSVTT(DLSVTT) {
                             </div>
 
                         }
-                         <label htmlFor="file" className={styles.label}>+ Nhập dữ liệu sinh viên từ Excel</label>
+                        <label htmlFor="file" className={styles.label}>+ Nhập dữ liệu sinh viên từ Excel</label>
                         <input className={styles.customFileInput} id="file" type="file" accept=".xlsx, .xls" onChange={handleExcelFileChange} />
                         <button className={styles.btn} onClick={handleSubmit}>Lưu</button>
                     </div>

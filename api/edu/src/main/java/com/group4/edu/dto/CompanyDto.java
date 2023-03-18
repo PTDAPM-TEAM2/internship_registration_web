@@ -10,17 +10,20 @@ public class CompanyDto extends BaseDto {
     private String address;
     private String taxCode;
     private String description;
+    private String code;
 
     public CompanyDto() {
     }
 
     public CompanyDto(Company entity) {
+        super.setId(entity.getId());
         this.nameCompany = entity.getNameCompany();
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();
         this.address = entity.getAddress();
         this.taxCode = entity.getTaxCode();
         this.description = entity.getDescription();
+        this.code = entity.getCode();
     }
 
     public String getNameCompany() {
@@ -69,5 +72,13 @@ public class CompanyDto extends BaseDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

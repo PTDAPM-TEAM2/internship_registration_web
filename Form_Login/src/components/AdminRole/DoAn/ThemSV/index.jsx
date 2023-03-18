@@ -13,6 +13,23 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Variables from '../../../../utils/variables';
+import MenuItem from '@mui/material/MenuItem';
+
+const currencies = [
+    {
+      value: '62PM2',
+    },
+    {
+      value: '62PM1',
+    },
+    {
+      value: '61TH1',
+    },
+    {
+      value: '60HT',
+    },
+  ];
+  
 
 const initialValues = {
     image: '',
@@ -41,7 +58,6 @@ const validationSchema = Yup.object({
     lop: Yup.string().required(),
     ky: Yup.string().required(),
     mk: Yup.string().required(),
-
 });
 
 function createData(Hoten, Lop, TenDoAn, Ky, SoCC, NgaySinh, NoiSinh, SDT, email, Ma, Mk, GiangVien, Khoa, gt) {
@@ -66,9 +82,11 @@ const ThemSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            Variables.studentList.push(createData(values.name, values.lop,  '', values.ky, values.idCard, values.dob, values.pob, values.phone, values.email, values.masv, values.mk, '', '', values.gender ));
+            Variables.studentList.push(createData(values.name, values.lop, '', values.ky, values.idCard, values.dob, values.pob, values.phone, values.email, values.masv, values.mk, '', '', values.gender));
             console.log(Variables.studentList);
-            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+            setTimeout(() => {
+                navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+            }, 2000)
         },
     })
     // console.log(formik.errors);
@@ -287,10 +305,17 @@ const ThemSV = () => {
                                     className={styles.txtFieldBot}
                                     id="lop"
                                     name="lop"
+                                    select
                                     value={formik.values.lop}
                                     onChange={formik.handleChange}
                                     error={formik.touched.lop && Boolean(formik.errors.lop)}
-                                />
+                                >
+                                    {currencies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.value}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </div>
                             <div className={styles.txt}>
                                 <p>Kỳ: </p>
@@ -316,7 +341,10 @@ const ThemSV = () => {
                         </div>
                         <div className={styles.btn}>
                             <button className={styles.button} disabled={formik.isSubmitting} type="submit" onClick={() => {
-                                setShowAlert(true)
+                                setShowAlert(true);
+                                setTimeout(() => {
+                                    setShowAlert(false);
+                                }, 2000)
                             }}>Thêm</button>
                         </div>
                     </form>
@@ -324,29 +352,29 @@ const ThemSV = () => {
 
             </div>
             {
-                // formik.errors !== {} ?
-                //     (showAlert &&
-                //     < div >
-                //         < Alert severity="error" sx={{
-                //             position: 'fixed',
-                //             width: '40%',
-                //             bottom: '0',
-                //             right: '2%'
-                //         }}>
-                //             <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
-                //         </Alert>
-                //     </div>)
-                //     : (showAlert &&
-                //     < div >
-                //         < Alert severity="success" sx={{
-                //             position: 'fixed',
-                //             width: '40%',
-                //             bottom: '0',
-                //             right: '2%'
-                //         }}>
-                //             <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
-                //         </Alert>
-                //     </div>)
+                formik.errors !== null ?
+                    (showAlert &&
+                        < div >
+                            < Alert severity="error" sx={{
+                                position: 'fixed',
+                                width: '40%',
+                                bottom: '0',
+                                right: '2%'
+                            }}>
+                                <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
+                            </Alert>
+                        </div>)
+                    : (showAlert &&
+                        < div >
+                            < Alert severity="success" sx={{
+                                position: 'fixed',
+                                width: '40%',
+                                bottom: '0',
+                                right: '2%'
+                            }}>
+                                <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                            </Alert>
+                        </div>)
                 // formik.errors == {} ?
                 // showAlert &&
                 // < div >
@@ -372,7 +400,7 @@ const ThemSV = () => {
                 // </div>
 
             }
-            {showAlert && formik.errors === {} &&
+            {/* {showAlert && formik.errors === {} &&
                 <div>
                     <Alert severity="success" sx={{
                         position: 'absolute',
@@ -385,7 +413,7 @@ const ThemSV = () => {
                 </div>
 
 
-            }
+            } */}
         </div >
     );
 };

@@ -1,35 +1,53 @@
 import { useState, createContext } from "react";
 
+const ThemeContext = createContext();
 
-const ThemeContext = createContext()
+function ThemeProvider({ children }) {
 
-function ThemeProvider({children}) {
-    const [token, setToken] = useState("");
-    const [toggle, setToggle] = useState(false);
-    const [activeButton, setActiveButton] = useState('trang-chu');
-    
-    const updateToggle = (newValue) => {
-        setToggle(newValue);
+  function cellValidate (e){
+    if(e === null){
+      return '';
     }
-    const updateButton = (newValue) => {
-        setActiveButton(newValue);
+    else {
+      return e;
     }
-    const updateToken = (newValue) => {
-        setToken(newValue);
+  }
+  function cellValidateName (e){
+    if(e === null){
+      return '';
     }
-    const value = {
-        activeButton,
-        updateButton,
-        toggle,
-        updateToggle,
-        token,
-        updateToken
+    else {
+      return e.nameGraduationThesis;
     }
-    return (
-        <ThemeContext.Provider value={value}>
-            {children}
-        </ThemeContext.Provider>
-    )
+  }
+
+  const [auth, setAuth] = useState(false);
+  const [token, setToken] = useState("");
+  const [toggle, setToggle] = useState(false);
+  const [activeButton, setActiveButton] = useState("trang-chu");
+
+  const updateToggle = (newValue) => {
+    setToggle(newValue);
+  };
+  const updateButton = (newValue) => {
+    setActiveButton(newValue);
+  };
+  const updateToken = (newValue) => {
+    setToken(newValue);
+  };
+  const value = {
+    cellValidateName,
+    cellValidate,
+    activeButton,
+    updateButton,
+    toggle,
+    updateToggle,
+    token,
+    updateToken,
+  };
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
-export { ThemeContext, ThemeProvider} 
+export { ThemeContext, ThemeProvider };

@@ -5,20 +5,20 @@ class StudentApi {
     // param co the de trong, neu can tim hoac loc sinh se truyen param
     const url = "api/student/get-st-da-by-search";
     return axiosClient
-      .get(url, `${params}`, {
+      .post(url, params, {
         headers: {
-          Authorization: `Bearer ${token}`, //the token is a variable which holds the token
+          Authorization: "Bearer " + token,
+          //the token is a variable which holds the token
         },
       })
       .then((res) => res);
-      
   };
 
   // lay tat ca sinh vien thuc tap
   getAllSvTt = (params, token) => {
     const url = "api/student/get-st-tt-by-search";
     return axiosClient
-      .get(url, params, {
+      .post(url, params, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
         },
@@ -29,7 +29,7 @@ class StudentApi {
   // import excel file do an
   importExcelSvDa = (data, token) => {
     // data la file excel
-    const url = "/api/user/get-current-user";
+    const url = "/api/student/import-excel-da";
     return axiosClient
       .post(
         url,
@@ -40,7 +40,28 @@ class StudentApi {
             "Content-Type":
               "multipart/form-data; boundary=<calculated when request is sent>",
           },
-        },
+        }
+        // params
+      )
+      .then((res) => res);
+    // return res, check res.status == 200 va check res.data co bang true thi la doi mk thanh cong
+    // new res.status == 400 (!= 200) thi loi
+  };
+
+  importExcelSvTt = (data, token) => {
+    // data la file excel
+    const url = "/api/student/import-excel-tt";
+    return axiosClient
+      .post(
+        url,
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + token, //the token is a variable which holds the token
+            "Content-Type":
+              "multipart/form-data; boundary=<calculated when request is sent>",
+          },
+        }
         // params
       )
       .then((res) => res);
@@ -77,6 +98,31 @@ class StudentApi {
       .then((res) => res);
     // return res, méo biết trả về j, file danh sách api ko thấy nói nên cứ check cả data với status code
   };
+
+  registerTimeDA = (params, token) => {
+
+    const url = "/api/registertime/save-da";
+    return axiosClient
+      .post(url, params, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
+
+  registerTimeTT = (params, token) => {
+
+    const url = "/api/registertime/save-tt";
+    return axiosClient
+      .post(url, params, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
+
 }
 
 const studentApi = new StudentApi();

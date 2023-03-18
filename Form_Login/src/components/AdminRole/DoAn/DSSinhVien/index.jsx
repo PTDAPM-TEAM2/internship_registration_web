@@ -17,10 +17,11 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
-import Variables from '../../../../utils/variables';
+import IconButton from '@mui/material/IconButton';
+import userApi from "../../../../api/studentApi";
+// import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
 // import { getStudents } from '../../../../axios';
-import userApi from "../../../../api/studentApi";
 
 
 const columns = [
@@ -57,6 +58,8 @@ const columns = [
     }
 ];
 
+
+
 function DSSV() {
     const navigate = useNavigate();
 
@@ -72,36 +75,34 @@ function DSSV() {
     function handleGoClick(item) {
         navigate('/ChiTietSV-da', { state: { item } });
     }
-    // const context = useContext(ThemeContext);
-
-    // console.log(context.token);
-    // rows = await studentApi.getAll(context.token);
-    // console.log((await studentApi.getAll(context.token))[0]);
-    const [students, setStudent] = React.useState([]);
     
+    const [students, setStudent] = React.useState([]);
+
     const context = useContext(ThemeContext);
-    console.log(context.token);
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
                 const response = await userApi.getAllSvDa(null, context.token);
-                console.log(await userApi.getAllSvDa(null, context.token));
-                setStudent(response.data);
+                setStudent(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
-    }, []);
+    }, [context.token]);
 
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
                 <div className={styles.header}>
-                    <div className={styles.search}>
-                        <input type="text" placeholder="Nhập tìm kiếm: " />
-                        <SearchIcon />
-                    </div>
+                    <form>
+                        <div className={styles.search} >
+                            <input type="text" placeholder="Nhập tìm kiếm: " />
+                            <IconButton variant="contained" type='submit'>
+                                <SearchIcon sx={{ cursor: 'pointer' }} />
+                            </IconButton>
+                        </div>
+                    </form>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <div style={{ marginBottom: '22px' }}>
                             <FormControl sx={{ m: 1, width: 350, mt: 3, height: 50 }}>
@@ -142,17 +143,19 @@ function DSSV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {students.map((row, index) => {
-                                        return (
-                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.hoTen}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Lop}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.DoAn}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+                                    {
+                                        // students === Object &&
+                                        students.map((row, index) => {
+                                            return (
+                                                <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                                    <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                    <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
+                                                    <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
+                                                    <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell>
+                                                    <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
                                 </TableBody>
                             </Table>
                         </TableContainer>

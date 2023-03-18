@@ -28,6 +28,7 @@ import DLGVTT from './components/AdminRole/ThucTap/DLGVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
 import DSGVTT from './components/AdminRole/ThucTap/DSGiaoVien';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
 import './App.css';
 import Layout from './components/Layout/Layout';
 import TCGV from './components/TeacherRole/TrangChuGiangVien';
@@ -42,76 +43,92 @@ import SInformationDetails from './components/TeacherRole/DanhSachSV/DanhSachSVC
 import PInformationDetails from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet';
 import ProcessEvaluation from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
 import PasswordChanging from './components/TeacherRole/ThongTinCaNhan/DoiMatKhau';
-
+import Loading from './components/Loading/Loading.js'
+import { useContext } from 'react';
+import { ThemeContext } from './components/Theme/Theme.jsx';
+import { PrivateWrapper } from './Route/route.js';
 function App() {
+  // const [loading, setLoading] = React.useState(false);
+
+  // React.useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1500);
+  // }, []);
+
+  const context = useContext(ThemeContext);
   return (
     <div className="App">
-      { 
-      // Toán tử 3 ngôi
-      Variables.userRole === 'admin' ? 
-      // admin role
-      (<Router>
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
-          <Route path='/dang-nhap' element={<Login />} />
-          <Route path='/' element={<Layout />}>
-            <Route path='quan-ly-do-an-sinh-vien' element={<QLDASV />} />
-            <Route path='quan-ly-sinh-vien-thuc-tap' element={<QLTTSV />} />
-            <Route path='quan-ly-do-an' element={<QLDA />} />
-            <Route path='quan-ly-giao-vien-da' element={<QLGV />} />
-            <Route path='quan-ly-sinh-vien-da' element={<QLSV />} />
-            <Route path='quan-ly-cong-ty' element={<QLCT />} />
-            <Route path='quan-ly-sinh-vien-tt' element={<QLSVTT />} />
-            <Route path='quan-ly-giao-vien-tt' element={<QLGVTT />} />
-            <Route path='quan-ly-do-an/xet-duyet-do-an' element={<XDDA />} />
-            <Route path='quan-ly-do-an/danh-sach-do-an' element={<DSDA />} />
-            <Route path='quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' element={<DSSVDA />} />
-            <Route path='quan-ly-giao-vien-da/danh-sach-giao-vien-da' element={<DSGVDA />} />
-            <Route path='quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' element={<DLSVDA />} />
-            <Route path='quan-ly-giao-vien-da/du-lieu-giao-vien-da' element={<DLGVDA />} />
-            <Route path='quan-ly-do-an/danh-sach-do-an/nhap-diem-sv' element={<NDSV />} />
-            <Route path='quan-ly-cong-ty/du-lieu-cong-ty' element={<DLCT />} />
-            <Route path='quan-ly-cong-ty/danh-sach-cong-ty' element={<DSCT />} />
-            <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
-            <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
-            <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
-            <Route path='trang-chu-giang-vien' element={<TCGV/>}></Route>
-          </Route>
-          <Route path='/ThemGV-da' element={<ThemGV />} />
-          <Route path='/ThemSV-da' element={<ThemSV />} />
-          <Route path='/ChiTietSV-da' element={<CTSV />} />
-          <Route path='/ChiTietGV-da' element={<CTGV />} />
-          <Route path='/ChiTietCT-tt' element={<CTCT />} />
-          <Route path='/ChiTietXD' element={<CTXD />} />
-        </Routes> 
-      </Router>) 
-      : 
-      // nếu không phải admin role thì trả vè teachers rol
-      // teachers role
-      Variables.userRole === 'teachers' ? (
-        <Router>
-          <Routes>
-            <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
-            <Route path='/dang-nhap' element={<Login />} />
-            <Route path='/' element={<Layout />}>
-              {/* Main screen */}
-              <Route path='trang-chu-giang-vien' element={<TCGV/>}></Route>
-              <Route path='thong-tin-ca-nhan' element={<TTCN/>}></Route>
-              <Route path='danh-sach-sinh-vien-yeu-cau' element={<DSSVYC/>}></Route>
-              <Route path='danh-sach-sinh-vien' element={<DSSV/>}></Route>
-              <Route path='danh-sach-do-an-sinh-vien' element={<ProjectListStudents/>}></Route>
-              {/* Navigate another screen */}
-              <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails/>}></Route>
-              <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails/>}></Route>
-              <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails/>}></Route>
-              <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' element={<ProcessEvaluation/>}></Route>
-              <Route path='thong-tin-ca-nhan/doi-mat-khau' element={<PasswordChanging/>}></Route>
-            </Route>
-          </Routes>
-        </Router>
-        ) :
-        // students role
-        <Router></Router>
+      {/* {loading && <Loading />} */}
+      {
+        // Toán tử 3 ngôi
+        Variables.userRole === 'admin' ?
+          // admin role
+          (<Router>
+            <Routes>
+              <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
+              <Route path='/dang-nhap' element={<Login />} />
+              <Route element={<PrivateWrapper auth={{ isAuthenticated: context.auth }} />}>
+                <Route path='/' element={<Layout />}>
+                  <Route path='quan-ly-do-an-sinh-vien' element={<QLDASV />} />
+                  <Route path='quan-ly-sinh-vien-thuc-tap' element={<QLTTSV />} />
+                  <Route path='quan-ly-do-an' element={<QLDA />} />
+                  <Route path='quan-ly-giao-vien-da' element={<QLGV />} />
+                  <Route path='quan-ly-sinh-vien-da' element={<QLSV />} />
+                  <Route path='quan-ly-cong-ty' element={<QLCT />} />
+                  <Route path='quan-ly-sinh-vien-tt' element={<QLSVTT />} />
+                  <Route path='quan-ly-giao-vien-tt' element={<QLGVTT />} />
+                  <Route path='quan-ly-do-an/xet-duyet-do-an' element={<XDDA />} />
+                  <Route path='quan-ly-do-an/danh-sach-do-an' element={<DSDA />} />
+                  <Route path='quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' element={<DSSVDA />} />
+                  <Route path='quan-ly-giao-vien-da/danh-sach-giao-vien-da' element={<DSGVDA />} />
+                  <Route path='quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' element={<DLSVDA />} />
+                  <Route path='quan-ly-giao-vien-da/du-lieu-giao-vien-da' element={<DLGVDA />} />
+                  <Route path='quan-ly-do-an/danh-sach-do-an/nhap-diem-sv' element={<NDSV />} />
+                  <Route path='quan-ly-cong-ty/du-lieu-cong-ty' element={<DLCT />} />
+                  <Route path='quan-ly-cong-ty/danh-sach-cong-ty' element={<DSCT />} />
+                  <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
+                  <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
+                  <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
+                  <Route path='trang-chu-giang-vien' element={<TCGV />}></Route >
+                </Route >
+              </Route>
+              <Route path='/ThemGV-da' element={<ThemGV />} />
+              <Route path='/ThemSV-da' element={<ThemSV />} />
+              <Route path='/ChiTietSV-da' element={<CTSV />} />
+              <Route path='/ChiTietGV-da' element={<CTGV />} />
+              <Route path='/ChiTietCT-tt' element={<CTCT />} />
+              <Route path='/ChiTietXD' element={<CTXD />} />
+            </Routes>
+          </Router>)
+          :
+          // nếu không phải admin role thì trả vè teachers rol
+          // teachers role
+          Variables.userRole === 'teachers' ? (
+            <Router>
+              <Routes>
+                <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
+                <Route path='/dang-nhap' element={<Login />} />
+                <Route path='/' element={<Layout />}>
+                  {/* Main screen */}
+                  <Route path='trang-chu-giang-vien' element={<TCGV />}></Route>
+                  <Route path='thong-tin-ca-nhan' element={<TTCN />}></Route>
+                  <Route path='danh-sach-sinh-vien-yeu-cau' element={<DSSVYC />}></Route>
+                  <Route path='danh-sach-sinh-vien' element={<DSSV />}></Route>
+                  <Route path='danh-sach-do-an-sinh-vien' element={<ProjectListStudents />}></Route>
+                  {/* Navigate another screen */}
+                  <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails />}></Route>
+                  <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails />}></Route>
+                  <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails />}></Route>
+                  <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' element={<ProcessEvaluation />}></Route>
+                  <Route path='thong-tin-ca-nhan/doi-mat-khau' element={<PasswordChanging />}></Route>
+                </Route>
+              </Routes>
+            </Router>
+          ) :
+            // students role
+            <Router></Router>
       }
     </div>
   );

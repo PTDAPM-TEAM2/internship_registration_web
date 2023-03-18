@@ -8,10 +8,12 @@ import com.group4.edu.repositories.*;
 import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +35,20 @@ public class SudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private GradeRepository gradeRepository;
+    @Autowired
+    private MailServiceImpl mailService;
 
     @Autowired
-    private UserRepository userRepository;
-
+    private GraduationThesisRepository thesisRepository;
     @Autowired
-    private UserService userService;
+    private IntershipRepository intershipRepository;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -112,13 +115,28 @@ public class SudentServiceImpl implements StudentService {
         }
         entity.setGrade(grade);
         account = entity.getAccount();
+        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
+            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
+        }
         Role roleDa = null;
         Role roleTT = null;
         if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
             roleDa = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
+            if(entity.getStudentType() == null){
+                entity.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+            }
+            else {
+                entity.setStudentType(EduConstants.StudentType.ALL.getValue());
+            }
         }
         if(EduConstants.StudentType.STUDENT_TT.getValue().equals(studentType)){
             roleTT = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_TT.getValue());
+            if(entity.getStudentType() == null){
+                entity.setStudentType(EduConstants.StudentType.STUDENT_TT.getValue());
+            }
+            else {
+                entity.setStudentType(EduConstants.StudentType.ALL.getValue());
+            }
         }
         if(account == null){
             account = new Account();
@@ -134,7 +152,7 @@ public class SudentServiceImpl implements StudentService {
                 roleSet.add(roleDa);
             }
             if(roleTT != null){
-                roleSet.add(roleDa);
+                roleSet.add(roleTT);
             }
             account.setRoles(roleSet);
         }
@@ -217,7 +235,6 @@ public class SudentServiceImpl implements StudentService {
         System.out.println(sheet.getRow(rowIndex).getCell(0).getRawValue());
         while ((getIndexData && rowIndex - startLine <totalLine) || (sheet.getRow(rowIndex)!= null &&!this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))){
             row = sheet.getRow(rowIndex++);
-            System.out.println(rowIndex);
             StudentDto studentDto = new StudentDto();
             studentDto.setStudentCode(getStringCellValue(row.getCell(1)));
             studentDto.setFullName(row.getCell(2).getStringCellValue());
@@ -241,7 +258,6 @@ public class SudentServiceImpl implements StudentService {
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
         for(StudentDto studentDto: studentDtos){
             executor.execute(new Runnable() {
-                private MailServiceImpl mailService = new MailServiceImpl();
                 @Override
                 public void run() {
                     String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
@@ -249,8 +265,9 @@ public class SudentServiceImpl implements StudentService {
                     mailDto.setMsgBody(msgBody);
                     mailDto.setRecipient(studentDto.getEmail());
                     mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
-                    mailService.sendSimpleMail(mailDto);
-                    System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
+                    Boolean result = mailService.sendSimpleMail(mailDto);
+                    if(result)
+                        System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
                 }
             });
         }
@@ -265,16 +282,50 @@ public class SudentServiceImpl implements StudentService {
             Account account = st.getAccount();
             for(Role role: account.getRoles()){
                 if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey()) && type == 1){
-                    studentDtos.add(new StudentDto(st));
+                    List<GraduationThesis> graduationThesiss = thesisRepository.getGraduationThesisByStId(st.getId());
+                    studentDtos.add(new StudentDto(st, graduationThesiss.size()>0?graduationThesiss.get(0):null));
                     break;
                 }
                 if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2){
-                    studentDtos.add(new StudentDto(st));
+                    List<Internship> internships = intershipRepository.getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(),st.getId());
+                    studentDtos.add(new StudentDto(st,internships.size()>0?internships.get(0):null));
                     break;
                 }
             }
         }
         return studentDtos;
+    }
+
+    @Override
+    public boolean deleteStTT(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())){
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+
+            studentRepository.deleteById(student.getId());
+            System.out.println(student.getId());
+            return true;
+        }
+        if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+            student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            if(account != null){
+                Set<Role> roleSet = account.getRoles();
+                for(Role role: roleSet){
+                    if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
+                        roleSet.remove(role);
+                    }
+                }
+            }
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            return true;
+        }
+        return false;
     }
 
     private String getStringCellValue(XSSFCell cell){

@@ -10,7 +10,9 @@ public class RegisterTimeDto extends BaseDto {
     private Date timeStart;
     private Date timeEnd;
     private Integer type;// 1 là đăng ký đồ án, 2 là đăng ký thực tập
-    private String semester;
+    private SemesterDto semester;
+    private Integer index;
+    private Boolean active;
 
     public RegisterTimeDto() {
     }
@@ -20,7 +22,7 @@ public class RegisterTimeDto extends BaseDto {
         this.timeStart = entity.getTimeStart();
         this.timeEnd = entity.getTimeEnd();
         this.type = entity.getType();
-        this.semester = entity.getSemester();
+        this.semester = new SemesterDto(entity.getSemester());
     }
 
     public Date getTimeStart() {
@@ -47,11 +49,27 @@ public class RegisterTimeDto extends BaseDto {
         this.type = type;
     }
 
-    public String getSemester() {
+    public SemesterDto getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(SemesterDto semester) {
         this.semester = semester;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

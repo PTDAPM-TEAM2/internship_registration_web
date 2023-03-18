@@ -69,22 +69,22 @@ const ChiTietSV = () => {
                             <div>
                                 <div className={styles.txt}>
                                     <div className={styles.image}>
-                                        <img src="" alt='avatar' style={{ maxWidth: '100%' }} />
+                                        <img src={state.item.urlImg} alt='avatar' style={{ maxWidth: '100%' }} />
                                     </div>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Giới tính: </p>
-                                    <TextField defaultValue={state.item.gt} required />
+                                    <TextField defaultValue={state.item.gender} required />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Họ tên: </p>
-                                    <TextField defaultValue={state.item.Hoten} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.fullName} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số căn cước: </p>
-                                    <TextField defaultValue={state.item.SoCC} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.idNumber} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Ngày sinh: </p>
@@ -99,15 +99,15 @@ const ChiTietSV = () => {
                                             defaultValue={dayjs()}
                                         />
                                     </LocalizationProvider> */}
-                                    <TextField defaultValue={state.item.NgaySinh} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.dateOfBirth} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Nơi sinh: </p>
-                                    <TextField defaultValue={state.item.NoiSinh} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.placeOfBirth} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField defaultValue={state.item.SDT} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.phoneNumber} className={styles.txtField} />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
@@ -118,27 +118,27 @@ const ChiTietSV = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField defaultValue={state.item.Ma} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.studentCode} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <TextField defaultValue={state.item.Lop} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.grade.name} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Kỳ: </p>
-                                <TextField defaultValue={state.item.Ky} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.internship} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField defaultValue={state.item.Mk} className={styles.txtFieldBot} />
+                                <TextField defaultValue='hello' className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Tên đề tài đồ án: </p>
-                                <TextField defaultValue={state.item.TenDoAn} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.graduationThesis.nameGraduationThesis} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={state.item.GiangVien} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.graduationThesis.lecturer.fullName} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>

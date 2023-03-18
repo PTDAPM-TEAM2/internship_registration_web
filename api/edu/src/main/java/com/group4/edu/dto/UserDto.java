@@ -165,30 +165,31 @@ public class UserDto extends BaseDto{
     }
 
     @JsonIgnore
-    public Boolean getAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
 
-    void setAdmin(Boolean admin) {
+    public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
 
     @JsonIgnore
-    public Boolean getLecturer() {
+    public Boolean isLecturer() {
         return isLecturer;
     }
 
-    void setLecturer(Boolean lecturer) {
+    public void setLecturer(Boolean lecturer) {
         isLecturer = lecturer;
     }
 
     @JsonIgnore
-    public Boolean getStudent() {
+    public Boolean isStudent() {
         return isStudent;
     }
 
-    void setStudent(Boolean student) {
+    public void setStudent(Boolean student) {
         isStudent = student;
     }
+
 
 }

@@ -8,13 +8,19 @@ import { Link } from 'react-router-dom'
 import styles from './QLDA.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import studentApi from "../../../../api/studentApi";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+
 function QLDA() {
     const [startDate, setStartDate] = React.useState(dayjs());
     const [dueDate, setDueDate] = React.useState(dayjs());
     const [errorMessage, setErrorMessage] = React.useState('');
     const [showAlert, setShowAlert] = React.useState(false);
     const getDate = dayjs();
-    const handleClick = () => {
+    const context = useContext(ThemeContext);
+
+    const handleClick = async () => {
         if (startDate < getDate) {
             setErrorMessage('Ngày không hợp lệ');
         }
@@ -22,13 +28,22 @@ function QLDA() {
             setErrorMessage('Ngày không hợp lệ');
         }
         else {
+            try {
+                const response = await studentApi.registerTimeDA({
+                    timeStart: startDate,
+                    timeEnd: dueDate,
+                }, context.token);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
             setErrorMessage('');
             setShowAlert(true);
             setTimeout(()=>{
                 setShowAlert(false);
             }, 2000)
         }
-
+        
     }
     return (
         <div>
@@ -58,8 +73,8 @@ function QLDA() {
                     </LocalizationProvider>
                 </div>
             </div>
-            <div style={{ backgroundColor: "none", height: 10 }}>
-                {errorMessage && <p style={{ color: 'red', marginTop: 20 }}>{errorMessage}</p>}
+            <div style={{ backgroundColor: "none", height: 20 }}>
+                {errorMessage && <p style={{ color: 'red'}}>{errorMessage}</p>}
             </div>
             <div>
                 <button className={`${styles.button} ${styles.btnSave}`} onClick={handleClick}>Cập nhập</button>
@@ -75,7 +90,7 @@ function QLDA() {
             {showAlert &&
                 <div>
                     <Alert severity="success" sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '40%',
                         bottom: '0',
                         right: '2%'

@@ -14,4 +14,6 @@ public interface StudentService {
     List<StudentDto> getAll();
     ResponseImportExcelStudentDto importExcel(MultipartFile file);
     List<StudentDto> getStDaBySearch(StudentSearchDto dto, int type);
+
+    boolean deleteStTT(Long id);
 }

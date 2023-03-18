@@ -21,6 +21,7 @@ import { Formik } from "formik";
 import userApi from "../../api/authApi";
 import Variables from "../../utils/variables";
 import { async } from "q";
+import studentApi from "../../api/studentApi";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -68,6 +69,7 @@ function Login() {
           if (tk !== "") {
             context.updateToken(tk);
             setShowAlert(true);
+            context.updateAuth(true);
             setErrorMessage("");
             setUsername("");
             setPassword("");
@@ -85,7 +87,16 @@ function Login() {
             );
           }
         } catch (error) {
-          setErrorMessage("Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!");
+          console.log(error);
+          if (error.response === undefined || error.response === null) {
+            setErrorMessage("Lỗi kết nối!");
+          } else {
+            if (error.response.status === 400) {
+              setErrorMessage(
+                "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
+              );
+            }
+          }
         }
       } else if (context.toggle === false) {
         try {
@@ -93,17 +104,18 @@ function Login() {
             username: username,
             password: password,
           });
-          // console.log(tk);
+          console.log(tk);
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
             var userInfo = await userApi.getInfo(tk);
-            if(userInfo.roles[0].id === 1){
-              Variables.userRole = 'admin'
-            } ;
-            console.log(Variables.userRole);            
-            context.token = tk;
+            if (userInfo.roles[0].id === 1) {
+              Variables.userRole = "admin";
+            }
+            // console.log(Variables.userRole);
+            context.updateToken(tk);
             setShowAlert(true);
+            context.updateAuth(true);
             setErrorMessage("");
             setUsername("");
             setPassword("");
@@ -121,11 +133,15 @@ function Login() {
             );
           }
         } catch (error) {
-          if (error.response.status === 400) {
-            setErrorMessage("Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!");
-          }
-          else{
+          console.log(error);
+          if (error.response === undefined || error.response === null) {
             setErrorMessage("Lỗi kết nối!");
+          } else {
+            if (error.response.status === 400) {
+              setErrorMessage(
+                "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
+              );
+            }
           }
         }
       }
@@ -137,8 +153,6 @@ function Login() {
   const handleClickShowPassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
-
-
 
   return (
     <div className={styles.bg}>
@@ -220,7 +234,7 @@ function Login() {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
+                        // onMouseDown={handleMouseDownPassword}
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

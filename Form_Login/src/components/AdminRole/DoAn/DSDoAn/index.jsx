@@ -12,6 +12,7 @@ import styles from './DSDoAn.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import prjApi from "../../../../api/projectApi";
 const columns = [
     {
         id: 'STT',
@@ -45,19 +46,28 @@ const columns = [
     },
 ];
 
-function createData(STT, DoAn, SinhVien, GiaoVien, Ngay) {
-    return { STT, DoAn, SinhVien, GiaoVien, Ngay };
-}
-
-const rows = [
-    createData(1, 'Quản lý du học sinh Việt Nam', 'Nguyễn Đức Tâm', 'Cù Việt Dũng', '2023/03/08'),
-];
 function DSDA() {
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     function handleGoClick() {
         navigate('/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv');
     }
+
+    const [prj, setPrj] = React.useState([]);
+    
+    React.useEffect(() => {
+        const getAllDoAn = async () => {
+            try {
+                const response = await prjApi.getAllDa(null, context.token);
+                console.log(context.token);
+                console.log(response);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        getAllDoAn();
+    }, [])
 
     return (
         <div style={{ display: 'flex' }}>
@@ -86,7 +96,7 @@ function DSDA() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row) => {
+                                    {/* {rows.map((row) => {
                                         return (
                                             <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }}>
                                                 {columns.map((column) => (
@@ -94,7 +104,7 @@ function DSDA() {
                                                 ))}
                                             </TableRow>
                                         );
-                                    })}
+                                    })} */}
                                 </TableBody>
                             </Table>
                         </TableContainer>

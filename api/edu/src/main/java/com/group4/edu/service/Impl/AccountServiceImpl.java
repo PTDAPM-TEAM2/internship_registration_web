@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto saveOrUpdate(AccountDto accountDto, Long id, boolean changeUsername) throws Exception {
         UserDto userDto = (UserDto) userService.getCurrentUser();
-        if(!userDto.getAdmin()){
+        if(!userDto.isAdmin()){
             return null;
         }
         if (accountDto != null && accountDto.getUsername() != null && !accountDto.getUsername().trim().isEmpty() && accountDto.getPassword() != null && !accountDto.getPassword().isEmpty()) {

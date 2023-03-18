@@ -54,9 +54,11 @@ public class LoginController {
             } else {
                 result.setMessenger("Username hoặc password bị sai, đăng nhập không thành công. ");
                 httpStatus = HttpStatus.BAD_REQUEST;
-                result.setStatusCode(httpStatus.toString());
+                System.out.println(httpStatus.value());
+                result.setStatusCode(String.valueOf(httpStatus.value()));
             }
         } catch (Exception e) {
+            System.out.println(httpStatus.value());
             result.setMessenger(e.getMessage());
             httpStatus = HttpStatus.BAD_REQUEST;
             result.setStatusCode(httpStatus.toString());
@@ -88,7 +90,7 @@ public class LoginController {
         }
         return new ResponseEntity<ResponseToken>(result, httpStatus);
     }
-    @GetMapping("/logou")
+    @GetMapping("/logout")
     public void logout(){
         accountService.logout();
     }

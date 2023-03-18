@@ -14,7 +14,7 @@ public class MailController {
     @Autowired
     private MailService mailService;
     @PostMapping("/send-simple-mail")
-    public String sendSimpleMail(@RequestBody MailDto mailDto){
+    public Boolean sendSimpleMail(@RequestBody MailDto mailDto){
         return mailService.sendSimpleMail(mailDto);
     }
 }
