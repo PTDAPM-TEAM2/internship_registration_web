@@ -9,6 +9,7 @@ form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
+    column-gap: 30px;
 }
 .title {
     width: 100%;
@@ -99,13 +100,16 @@ form {
     display: block;
 }
 
-.txtField{
-    width: 100%;
-
-}
-
 .txtGender{
     width: 100px;
+}
+
+.txtField{
+    width: 300px;
+}
+
+.txtTextBottom{
+    width: 250px;
 }
 
 .image{
@@ -145,16 +149,22 @@ form {
     width: 400px;
     margin: 0 10px;
 }
+/* 
+@media (min-width: 1024px) {
+        
+    .txtField{
+        width: 440px;
+    }
+
+    .txtTextBottom{
+        width: 338px;
+    }
+} */
 
 @media (min-width: 1366px) and (max-width: 1600px) {
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
-        
-    }
     .txtField{
-        width: 100%;
+        width: 300px;
+        margin-right: 50px ;
     }
 
     .infoAccount {
@@ -175,14 +185,6 @@ form {
         overflow: hidden;
         margin-bottom: 20px;
     }
-    
-    
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
-        
-    }
 
     .txt{
         width: auto;
@@ -190,11 +192,11 @@ form {
     }
 
     .txtGender{
-        width: 100px;
+        width: 50%;
     }
 
     .txtField{
-        width: 100%;
+        width: 500px;
     }
 
     .infoAccount {
@@ -224,7 +226,8 @@ form {
     }
 
     .txtField{
-        width: 100%;
+        width: 500px;
+        
     }
 
     .infoAccount {

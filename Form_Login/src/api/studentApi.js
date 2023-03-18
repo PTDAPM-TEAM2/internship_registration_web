@@ -1,4 +1,4 @@
-import axiosClient from "../axiosClient";
+import axiosClient from "./axiosClient";
 class StudentApi {
   // lay tat ca sinh vien lam do an
   getAllSvDa = (params, token) => {
