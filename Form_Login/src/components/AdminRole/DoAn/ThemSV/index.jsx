@@ -13,31 +13,23 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Variables from '../../../../utils/variables';
+import Menu from '@mui/material/MenuItem';
 import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+// import Menu from '@mui/material/Menu';
 import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 
 
-const currencies = [
-    {
-        value: '62PM2',
-    },
-    {
-        value: '62PM1',
-    },
-    {
-        value: '61TH1',
-    },
-    {
-        value: '60HT',
-    },
-];
 
 const grade = {
-    name: '',
-    students: null,
+    "id": 0,
+    "name": '',
+    "students": [
+        null
+    ],
 }
 
 
@@ -51,7 +43,7 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade,
+    grade: grade,
     semester: '',
     password: '',
 
@@ -84,6 +76,14 @@ const ThemSV = () => {
         setImageUrl(imageUrl);
     };
 
+    
+    const currencies = [
+        '62PM2',
+        '62PM1',
+        '61TH1',
+        '60HT'
+    ];
+
     // const [submitting, setSubmitting] = useState(false);
 
     const formik = useFormik({
@@ -104,10 +104,7 @@ const ThemSV = () => {
         },
     })
     
-    const [value, setValue] = React.useState('');
-    const handleMenu = (e, newValue) => {
-        setValue(newValue);
-    }
+    const [value, setValue] = React.useState(currencies[0]);
     console.log(value);
 
     return (
@@ -322,28 +319,20 @@ const ThemSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <Menu
-                                    className={styles.txtFieldBot}
-                                    id="grade"
-                                    // name="grade"
-                                    select
+                                <Autocomplete
                                     value={value}
-            
-                                    // onChange={(value) => {
-                                    //     formik.handleChange(grade.name, value)
-                                    //     console.log(grade.name);
-                                    // }}
-                                    // error={formik.touched.grade && Boolean(formik.errors.grade)}
-                                >
-                                    {currencies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}
-                                            onClick = {(e) => {handleMenu(e, option.value)}}
-                                        >
-                                            {option.value}
-
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
+                                    onChange={(event, newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                    inputValue={value}
+                                    onInputChange={(event, newInputValue) => {
+                                        setValue(newInputValue);
+                                    }}
+                                    id="controllable-states-demo"
+                                    options={currencies}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params}/>}
+                                    />
                             </div>
                             <div className={styles.txt}>
                                 <p>Kỳ: </p>
