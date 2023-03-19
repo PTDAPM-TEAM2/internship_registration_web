@@ -14,6 +14,9 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import SearchIcon from '@mui/icons-material/Search';
+import lecturerApi from '../../../../api/lecturerApi';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 
 const columns = [
     {
@@ -25,12 +28,6 @@ const columns = [
     {
         id: 'TenGiangVien',
         label: 'Tên giảng viên',
-        minWidth: 170,
-        align: 'center',
-    },
-    {
-        id: 'Khoa',
-        label: 'Khoa',
         minWidth: 170,
         align: 'center',
     },
@@ -48,15 +45,6 @@ const columns = [
     },
 ];
 
-function createData(STT, TenGiangVien, Khoa, SLSV, SĐT, SoCC, NgaySinh, NoiSinh, email, gt, MaGV, Mk) {
-    return { STT, TenGiangVien, Khoa, SLSV, SĐT, SoCC, NgaySinh, NoiSinh, email, gt, MaGV, Mk };
-}
-
-const rows = [
-    createData(1, 'Cù Việt Dũng', 'Công nghệ thông tin', '20', '0927548193', '034324423233', '01/04/1988', 'Hà Nội', 'dung@gmail.com', 'Nam', '100045298', '*******'),
-    createData(2, 'Đoàn Thị Quế', 'Công nghệ thông tin', '30', '0325598619', '052345433454', '01/02/1988', 'Hà Nội', 'que@gmail.com', 'Nữ', '1000532452', '*******'),
-    createData(3, 'Nguyễn Ngọc Châu', 'Công nghệ thông tin', '25', '0977211480', '04234294234', '01/07/1989', 'Hà Nội', 'chau@gmail.com', 'Nữ', '100056354', '*******'),
-];
 function DSGV() {
     const navigate = useNavigate();
 
@@ -69,8 +57,23 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/ChiTietGV-da', {state: {item}});
+        navigate('/ChiTietGV-da', { state: { item } });
     }
+
+    const context = useContext(ThemeContext);
+    const [lecturers, setLecturer] = React.useState([]);
+    React.useEffect(() => {
+        const getAllItem = async () => {
+            try {
+                const response = await lecturerApi.getAllGV(null, context.token);
+                setLecturer(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getAllItem()
+    }, [context.token]);
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -119,14 +122,13 @@ function DSGV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row) => {
+                                    {lecturers.map((row, index) => {
                                         return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.STT}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.TenGiangVien}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Khoa}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.SĐT}</TableCell>
+                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
+                                                {/* <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell> */}
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
                                             </TableRow>
                                         );
                                     })}

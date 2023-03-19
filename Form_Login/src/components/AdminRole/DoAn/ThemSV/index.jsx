@@ -13,30 +13,21 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Variables from '../../../../utils/variables';
+import Menu from '@mui/material/MenuItem';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+// import Menu from '@mui/material/Menu';
 import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 
 
-const currencies = [
-    {
-        value: '62PM2',
-    },
-    {
-        value: '62PM1',
-    },
-    {
-        value: '61TH1',
-    },
-    {
-        value: '60HT',
-    },
-];
 
 const grade = {
-    name: '',
-    students: null,
+    // "id": null,
+    "name": '',
+    "students": null,
 }
 
 
@@ -50,7 +41,7 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade,
+    grade: grade,
     semester: '',
     password: '',
 
@@ -64,7 +55,7 @@ const validationSchema = Yup.object({
     placeOfBirth: Yup.string().required(),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
     studentCode: Yup.string().required(),
-    grade: Yup.string().required(),
+    grade: Yup.object().required(),
     semester: Yup.string().required(),
     password: Yup.string().required(),
 });
@@ -92,18 +83,18 @@ const ThemSV = () => {
             try {
                 // values = JSON.stringify(values);
                 console.log(JSON.stringify(values));
-                const response = await studentApi.addSVDA(JSON.stringify(values) , context.token);
-                console.log(response);
+                const response = await studentApi.addSVDA(JSON.stringify(values), context.token);
+                setTimeout(() => {
+                    navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+                }, 2000)
             } catch (error) {
                 console.error(error);
             }
-            // setTimeout(() => {
-            //     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
-            // }, 2000)
         },
     })
-    // console.log(formik.errors);
-    // console.log(showAlert);
+
+    console.log(grade.name);
+
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -304,7 +295,7 @@ const ThemSV = () => {
 
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã sinh viên: </p>
+                                <label htmlFor='studentCode'>Mã sinh viên: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     id="studentCode"
@@ -315,25 +306,19 @@ const ThemSV = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <p>Lớp: </p>
+                                <label htmlFor='grade.name'>Lớp: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     id="grade"
                                     name="grade.name"
-                                    select
                                     value={formik.values.grade.name}
-                                    onChange={(value) => {formik.handleChange({ target: { name: 'grade.name', value } })}}
+                                    onChange={formik.handleChange}
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
-                                    {currencies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.value}
-                                        </MenuItem>
-                                    ))}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <p>Kỳ: </p>
+                                <label htmlFor='semester'>Kỳ: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     id="semester"
@@ -344,7 +329,7 @@ const ThemSV = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
+                                <label htmlFor='password'>Mật khẩu: </label>
                                 <TextField className={styles.txtFieldBot}
                                     id="password"
                                     name="password"
@@ -352,12 +337,12 @@ const ThemSV = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     type='password'
-                                    // disabled
+                                // disabled
                                 />
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit" onClick={() => {console.log(formik.values)}}>Thêm</button>
+                            <button className={styles.button} type="submit" onClick={() => { console.log(formik.values) }}>Thêm</button>
                         </div>
                     </form>
                 </div>

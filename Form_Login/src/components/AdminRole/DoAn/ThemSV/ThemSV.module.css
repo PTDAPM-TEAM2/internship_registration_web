@@ -73,6 +73,8 @@ form {
 .txt{
     width: auto;
     text-align: left;
+    display: flex;
+    flex-direction: column;
 }
 .txtField{
     width: 400px;

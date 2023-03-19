@@ -8,8 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './DSGiaoVien.module.css';
-import { useContext } from 'react';
-import { ThemeContext } from '../../../Theme/Theme.jsx';
+
 import { useNavigate } from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -17,6 +16,8 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
+
+
 const columns = [
     {
         id: 'STT',
@@ -50,15 +51,6 @@ const columns = [
     }
 ];
 
-function createData( Hoten, Khoa, SLSV, Ky) {
-    return { Hoten, Khoa, SLSV, Ky };
-}
-
-const rows = [
-    createData('Cù Việt Dũng', 'Công nghệ thông tin', '20', '01/2022-2023'),
-    createData('Đoàn Thị Quế', 'Công nghệ thông tin', '30', '01/2022-2023'),
-    createData('Nguyễn Ngọc Châu', 'Công nghệ thông tin', '25', '01/2022-2023'),
-];
 function DSSV() {
     const navigate = useNavigate();
 
@@ -73,7 +65,9 @@ function DSSV() {
     function handleGoClick() {
         navigate('/ChiTietGV-tt');
     }
-    const context = useContext(ThemeContext);
+   
+
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -122,17 +116,6 @@ function DSSV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row, index) => {
-                                        return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Hoten}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Khoa}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>

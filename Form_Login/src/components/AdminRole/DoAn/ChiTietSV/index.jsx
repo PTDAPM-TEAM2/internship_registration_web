@@ -91,18 +91,17 @@ const ChiTietSV = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Ngày sinh: </p>
-                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
                                             renderInput={(props) => <TextField {...props} style={{ width: 400 }} />}
-                                            value={date}
+                                            value={state.item.dateOfBirth}
                                             onChange={(newValue) => {
                                                 setDate(newValue);
                                             }}
                                             format="YYYY/MM/DD"
                                             defaultValue={dayjs()}
                                         />
-                                    </LocalizationProvider> */}
-                                    <TextField defaultValue={state.item.dateOfBirth} className={styles.txtField} />
+                                    </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Nơi sinh: </p>
@@ -133,7 +132,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField defaultValue='hello' className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.password} className={styles.txtFieldBot} type='password'/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Tên đề tài đồ án: </p>

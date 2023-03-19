@@ -1,9 +1,9 @@
 import axiosClient from "./axiosClient";
-class lecturerApi {
+class LecturerApi {
   // lay tat ca giang vien huong dan do an
-  getAllSvDa = (params, token) => {
+  getAllGV = (params, token) => {
     // param co the de trong, neu can tim hoac loc sinh se truyen param
-    const url = "api/lecturer/get-st-da-by-search";
+    const url = "api/lecturer/getLecturersBySearch";
     return axiosClient
       .post(url, params, {
         headers: {
@@ -16,5 +16,5 @@ class lecturerApi {
 
 }
 
-const lecturerApi = new lecturerApi();
+const lecturerApi = new LecturerApi();
 export default lecturerApi;

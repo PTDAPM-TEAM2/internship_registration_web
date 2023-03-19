@@ -18,7 +18,7 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import IconButton from '@mui/material/IconButton';
-import userApi from "../../../../api/studentApi";
+import studentApi from "../../../../api/studentApi";
 // import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
 // import { getStudents } from '../../../../axios';
@@ -82,7 +82,7 @@ function DSSV() {
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await userApi.getAllSvDa(null, context.token);
+                const response = await studentApi.getAllSvDa(null, context.token);
                 setStudent(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
