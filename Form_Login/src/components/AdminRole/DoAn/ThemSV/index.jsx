@@ -14,7 +14,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Variables from '../../../../utils/variables';
 import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
@@ -103,13 +102,8 @@ const ThemSV = () => {
             // }, 2000)
         },
     })
-    
-    const [value, setValue] = React.useState('');
-    const handleMenu = (e, newValue) => {
-        setValue(newValue);
-    }
-    console.log(value);
-
+    // console.log(formik.errors);
+    // console.log(showAlert);
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -322,28 +316,21 @@ const ThemSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <Menu
+                                <TextField
                                     className={styles.txtFieldBot}
                                     id="grade"
-                                    // name="grade"
+                                    name="grade.name"
                                     select
-                                    value={value}
-            
-                                    // onChange={(value) => {
-                                    //     formik.handleChange(grade.name, value)
-                                    //     console.log(grade.name);
-                                    // }}
-                                    // error={formik.touched.grade && Boolean(formik.errors.grade)}
+                                    value={formik.values.grade.name}
+                                    onChange={(value) => {formik.handleChange({ target: { name: 'grade.name', value } })}}
+                                    error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
                                     {currencies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}
-                                            onClick = {(e) => {handleMenu(e, option.value)}}
-                                        >
+                                        <MenuItem key={option.value} value={option.value}>
                                             {option.value}
-
                                         </MenuItem>
                                     ))}
-                                </Menu>
+                                </TextField>
                             </div>
                             <div className={styles.txt}>
                                 <p>Kỳ: </p>
