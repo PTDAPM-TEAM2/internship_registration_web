@@ -123,11 +123,34 @@ class StudentApi {
       .then((res) => res);
   };
 
-  addSVDA = (data, token) => {
+  getGrade = (token) => {
+    const url = "api/grade/getAll";
+    return axiosClient
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
 
+  addSVDA = (data, token) => {
     const url = "api/student/save/da";
     return axiosClient
       .post(url, data, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+  };
+
+  updateSVDA = (data, id, token) => {
+
+    const url = `api/student/update/da/${id}`;
+    return axiosClient
+      .post(url, data, id, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           'Content-Type': 'application/json'

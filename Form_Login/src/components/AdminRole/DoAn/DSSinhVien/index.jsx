@@ -91,6 +91,8 @@ function DSSV() {
         getAllItem()
     }, [context.token]);
 
+    console.log(students);
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>

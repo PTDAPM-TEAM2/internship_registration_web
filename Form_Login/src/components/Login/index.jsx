@@ -22,6 +22,7 @@ import userApi from "../../api/authApi";
 import Variables from "../../utils/variables";
 import { async } from "q";
 import studentApi from "../../api/studentApi";
+import LoginImg from '../../images/login.png';
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -194,8 +195,7 @@ function Login() {
             {hide && width >= 1000 && (
               <div className={styles.image}>
                 <img
-                  src="https://scontent.fhan5-2.fna.fbcdn.net/v/t39.30808-6/334267397_525694706433267_7682866644021379812_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=nccYAae_r7gAX9xfdqO&_nc_ht=scontent.fhan5-2.fna&oh=00_AfCy2tWCVt7L4a97x90vJLP00_BqnS0DqmKVmGq6P5WDxQ&oe=641264EA"
-                  alt=""
+                  src={LoginImg} alt=""
                 />
               </div>
             )}
