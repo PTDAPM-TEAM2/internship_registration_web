@@ -29,7 +29,7 @@ class StudentApi {
   // import excel file do an
   importExcelSvDa = (data, token) => {
     // data la file excel
-    const url = "/api/student/import-excel-da";
+    const url = "api/student/import-excel-da";
     return axiosClient
       .post(
         url,
@@ -50,7 +50,7 @@ class StudentApi {
 
   importExcelSvTt = (data, token) => {
     // data la file excel
-    const url = "/api/student/import-excel-tt";
+    const url = "api/student/import-excel-tt";
     return axiosClient
       .post(
         url,
@@ -73,7 +73,7 @@ class StudentApi {
   internshipRegisterByAd = (params, token) => {
     // params =  {"studentCode":"SV002","studentId" :null,"code": null,"internshipPosition":"be dev","nameCompany":"facebook","email":"facebook@gmail.com","phoneNumber":"01234567899","address":"Hà Nội","taxCode":null,"description":null}
 
-    const url = "/api/internship/register-internship";
+    const url = "api/internship/register-internship";
     return axiosClient
       .post(url, params, {
         headers: {
@@ -88,7 +88,7 @@ class StudentApi {
   internshipRegisterBySv = (params, token) => {
     // params =  {"studentId" :null,"code": null,"internshipPosition":"be dev","nameCompany":"facebook","email":"facebook@gmail.com","phoneNumber":"01234567899","address":"Hà Nội","taxCode":null,"description":null}
 
-    const url = "/api/internship/register-internship";
+    const url = "api/internship/register-internship";
     return axiosClient
       .post(url, params, {
         headers: {
@@ -99,11 +99,11 @@ class StudentApi {
     // return res, méo biết trả về j, file danh sách api ko thấy nói nên cứ check cả data với status code
   };
 
-  registerTimeDA = (params, token) => {
+  registerTimeDA = (data, token) => {
 
-    const url = "/api/registertime/save-da";
+    const url = "api/registertime/save-da";
     return axiosClient
-      .post(url, params, {
+      .post(url, data, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
         },
@@ -111,13 +111,26 @@ class StudentApi {
       .then((res) => res);
   };
 
-  registerTimeTT = (params, token) => {
+  registerTimeTT = (data, token) => {
 
-    const url = "/api/registertime/save-tt";
+    const url = "api/registertime/save-tt";
     return axiosClient
-      .post(url, params, {
+      .post(url, data, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
+
+  addSVDA = (data, token) => {
+
+    const url = "api/student/save/da";
+    return axiosClient
+      .post(url, data, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          'Content-Type': 'application/json'
         },
       })
       .then((res) => res);

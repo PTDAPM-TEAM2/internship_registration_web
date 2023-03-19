@@ -4,20 +4,29 @@ const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
 
-  function cellValidate (e){
-    if(e === null){
+  function cellValidate(e) {
+    if (e === null) {
       return '';
     }
     else {
       return e;
     }
   }
-  function cellValidateName (e){
-    if(e === null){
+  function cellValidateName(e) {
+    if (e === null) {
       return '';
     }
     else {
       return e.nameGraduationThesis;
+    }
+  }
+
+  function cellValidateLecture(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.lecturer.fullName;
     }
   }
 
@@ -26,6 +35,9 @@ function ThemeProvider({ children }) {
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
 
+  const updateAuth = (newValue) => {
+    setAuth(newValue);
+  }
   const updateToggle = (newValue) => {
     setToggle(newValue);
   };
@@ -36,6 +48,9 @@ function ThemeProvider({ children }) {
     setToken(newValue);
   };
   const value = {
+    cellValidateLecture,
+    auth,
+    updateAuth,
     cellValidateName,
     cellValidate,
     activeButton,

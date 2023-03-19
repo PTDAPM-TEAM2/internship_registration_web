@@ -134,7 +134,7 @@ export default function Dashboard() {
                                             <div className={styles.date}>{formatDate(time)}</div>
                                         </div>
                                         <div className={styles.bgDB3}>
-                                            <AccessTimeIcon style={{ fontSize: 130 }} />
+                                            <AccessTimeIcon style={{ fontSize: 120 }} />
                                         </div>
                                     </div> :
                                         <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >

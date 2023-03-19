@@ -59,7 +59,6 @@ function DSDA() {
         const getAllDoAn = async () => {
             try {
                 const response = await prjApi.getAllDa(null, context.token);
-                console.log(context.token);
                 console.log(response);
             }
             catch (err) {

@@ -101,6 +101,11 @@ function Sidebar() {
     function toComponent (path) {
         navigate(path);
     }
+    
+    const handleLogout = () => {
+        navigate('/dang-nhap');
+        context.updateAuth(false);
+    }
 
 
     return (
@@ -137,7 +142,7 @@ function Sidebar() {
                                         <div style={{ width: "35px", height: "35px", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                             {/* <PersonIcon ></PersonIcon>
                                             <ExpandMoreIcon /> */}
-                                            <PowerSettingsNewIcon onClick={() => window.location.href = "/dang-nhap"} />
+                                            <PowerSettingsNewIcon onClick={handleLogout} />
 
                                         </div>
                                     </IconButton>

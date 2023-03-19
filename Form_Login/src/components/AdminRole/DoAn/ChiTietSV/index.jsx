@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useLocation } from 'react-router-dom';
 import Variables from '../../../../utils/variables';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -29,6 +31,7 @@ const style = {
 };
 
 const ChiTietSV = () => {
+    const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -134,11 +137,11 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Tên đề tài đồ án: </p>
-                                <TextField defaultValue={state.item.graduationThesis.nameGraduationThesis} className={styles.txtFieldBot} />
+                                <TextField defaultValue={context.cellValidateName(state.item.graduationThesis)} className={styles.txtFieldBot} />
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={state.item.graduationThesis.lecturer.fullName} className={styles.txtFieldBot} />
+                                <TextField defaultValue={context.cellValidateLecture(state.item.graduationThesis)} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>
