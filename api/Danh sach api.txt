@@ -1,5 +1,5 @@
 1.Tạo tài khoản admin có ten tk là admin, mk: admin. Copy link paste vào trình duyệt là được 
-  Method Get http://localhost:8080/crate-user-admin
+  Method Get http://localhost:8080/create-user-admin
 
 2. Method Post http://localhost:8080/login
 	body: {
