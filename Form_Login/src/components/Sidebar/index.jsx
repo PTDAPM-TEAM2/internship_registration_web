@@ -30,6 +30,7 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Variables from '../../utils/variables';
 import { bool } from 'yup';
 import {useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { ThemeContext } from '../Theme/Theme.jsx';
 const drawerWidth = 300;
@@ -107,7 +108,8 @@ function Sidebar() {
         context.updateAuth(false);
     }
 
-
+    const {id} = useParams()
+    console.log(id);
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -238,9 +240,9 @@ function Sidebar() {
                             location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
                             location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
                             location.pathname === '/ChiTietXD' ||
-                            location.pathname === '/ThemSV-da' ||
+                            location.pathname === '/them-sinh-vien-da' ||
                             location.pathname === '/ThemGV-da' ||
-                            location.pathname === '/ChiTietSV-da' ||
+                            location.pathname === `/chi-tiet-sinh-vien-da/${id}` ||
                             location.pathname === '/ChiTietGV-da' ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||

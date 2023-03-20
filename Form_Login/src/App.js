@@ -95,8 +95,8 @@ function App() {
                 </Route >
               </Route>
               <Route path='/ThemGV-da' element={<ThemGV />} />
-              <Route path='/ThemSV-da' element={<ThemSV />} />
-              <Route path='/ChiTietSV-da' element={<CTSV />} />
+              <Route path='/them-sinh-vien-da' element={<ThemSV />} />
+              <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
               <Route path='/ChiTietGV-da' element={<CTGV />} />
               <Route path='/ChiTietCT-tt' element={<CTCT />} />
               <Route path='/ChiTietXD' element={<CTXD />} />

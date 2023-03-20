@@ -65,7 +65,7 @@ function DSSV() {
 
 
     function handleMoveAdd() {
-        navigate('/ThemSV-da');
+        navigate('/them-sinh-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -73,7 +73,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/ChiTietSV-da', { state: { item } });
+        navigate(`/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
     }
     
     const [students, setStudent] = React.useState([]);
