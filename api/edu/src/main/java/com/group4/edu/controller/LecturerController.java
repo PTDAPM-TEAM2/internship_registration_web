@@ -6,6 +6,7 @@ import com.group4.edu.service.LecturersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -43,5 +44,11 @@ public class LecturerController {
     @GetMapping("/get-all")
     public ResponseEntity<List<LecturerDto>> getAll(){
         return new ResponseEntity<>(lecturersService.getAll(),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteStTT(@PathVariable Long id){
+        return new ResponseEntity<>(lecturersService.deleteLt(id),HttpStatus.OK);
     }
 }

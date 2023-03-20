@@ -137,6 +137,17 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
     public GraduationThesisDto getByStudentId(Long id){
         return graduationThesisRepository.getByStudentIdDto(id);
     }
+
+    @Override
+    public boolean delete(Long id) {
+        try {
+            graduationThesisRepository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
     // cái này để lấy được danh sách đồ án và sinh viên
     public List<GraduationThesisDto> getGraduationThesis(SearchObjectDto dto){
         String whereClause = " where true = true and (entity.status = 1 or entity.status = 0 or entity.status is null)";

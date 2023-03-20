@@ -16,17 +16,17 @@ public class Internship extends BaseObject {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Company company;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Student student;
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Semester semester;
 
     @ManyToOne

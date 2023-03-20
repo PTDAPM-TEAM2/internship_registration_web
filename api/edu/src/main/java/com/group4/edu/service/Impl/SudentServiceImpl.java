@@ -305,21 +305,33 @@ public class SudentServiceImpl implements StudentService {
         if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
             accountRepository.delete(account);
+
             List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
             intershipRepository.deleteAll(internships);
             if (studentRepository.existsById(student.getId()))
                 studentRepository.deleteById(student.getId());
             return true;
-        }
-        if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
-            student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
+        }else  if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue())) {
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
-            if(account != null){
-                Set<Role> roleSet = account.getRoles();
-                roleSet.removeIf(role -> role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()));
-            }
+            accountRepository.delete(account);
+            System.out.println("a");
+            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByStId(student.getId());
+            thesisRepository.deleteAll(graduationThesises);
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
+            return true;
+        } else if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+
             List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
             intershipRepository.deleteAll(internships);
+
+            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByStId(student.getId());
+            thesisRepository.deleteAll(graduationThesises);
+
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
             return true;
         }
         return false;

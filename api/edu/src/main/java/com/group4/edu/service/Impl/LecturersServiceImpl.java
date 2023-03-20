@@ -1,14 +1,10 @@
 package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
-import com.group4.edu.domain.Account;
-import com.group4.edu.domain.Lecturer;
-import com.group4.edu.domain.Role;
+import com.group4.edu.domain.*;
 import com.group4.edu.dto.LecturerDto;
 import com.group4.edu.dto.SearchObjectDto;
-import com.group4.edu.repositories.AccountRepository;
-import com.group4.edu.repositories.LecturerRepository;
-import com.group4.edu.repositories.RoleRepository;
+import com.group4.edu.repositories.*;
 import com.group4.edu.service.LecturersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +22,13 @@ public class LecturersServiceImpl implements LecturersService {
     EntityManager manager;
     @Autowired
     private LecturerRepository lecturerRepository;
+
+    @Autowired
+    private IntershipRepository intershipRepository;
+
+    @Autowired
+    private GraduationThesisRepository thesisRepository;
+
     @Autowired
     private RoleRepository roleRepository;
 
@@ -125,5 +128,29 @@ public class LecturersServiceImpl implements LecturersService {
 
         List<LecturerDto> entities = query.getResultList();
         return entities;
+    }
+
+    @Override
+    public boolean deleteLt(Long id) {
+        Lecturer lecturer = lecturerRepository.findById(id).orElse(null);
+        if (lecturer == null){
+            return false;
+        }
+        try {
+            Account account = accountRepository.getAccountByUserId(lecturer.getId()).orElse(null);
+            accountRepository.delete(account);
+
+            List<Internship> internships = intershipRepository.getInternshipByLecturerId(lecturer.getId());
+            intershipRepository.deleteAll(internships);
+
+            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByLecturerId(lecturer.getId());
+            thesisRepository.deleteAll(graduationThesises);
+
+            if (lecturerRepository.existsById(lecturer.getId()))
+                lecturerRepository.deleteById(lecturer.getId());
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }

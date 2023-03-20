@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +38,11 @@ public class CompanyController {
     @PostMapping("/import-excel")
     public List<CompanyDto> importExcel(@RequestPart MultipartFile file){
         return companyService.importExcel(file);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        return new ResponseEntity<>(companyService.delete(id), HttpStatus.OK);
     }
 }

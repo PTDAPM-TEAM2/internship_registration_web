@@ -18,4 +18,10 @@ public interface IntershipRepository extends JpaRepository<Internship,Long> {
 
     @Query("select e from Internship e where e.student.id = ?1")
     List<Internship> getInternshipByStudentId(Long studentId);
+
+    @Query("select e from Internship e where e.lecturer.id = ?1")
+    List<Internship> getInternshipByLecturerId(Long lecturerId);
+
+    @Query("select e from Internship e where e.company.id = ?1")
+    List<Internship> getInternshipByCompanyId(Long lecturerId);
 }

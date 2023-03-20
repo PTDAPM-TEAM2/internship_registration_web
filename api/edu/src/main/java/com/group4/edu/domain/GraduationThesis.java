@@ -24,17 +24,17 @@ public class GraduationThesis extends BaseObject {
                       // nhận
     @ManyToOne
     @JoinColumn(name = "student_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Student student;
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Semester semester;
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Lecturer lecturer;
 
     public String getUrlOutline() {
