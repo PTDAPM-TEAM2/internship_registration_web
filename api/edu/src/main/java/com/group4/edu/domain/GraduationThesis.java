@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "tbl_graduation_thesis")
 public class GraduationThesis extends BaseObject {
@@ -36,6 +38,8 @@ public class GraduationThesis extends BaseObject {
     @JoinColumn(name = "lecturer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     Lecturer lecturer;
+
+    Date submitDay; // ngày nộp đồ án
 
     public String getUrlOutline() {
         return urlOutline;
@@ -123,5 +127,13 @@ public class GraduationThesis extends BaseObject {
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+    }
+
+    public Date getSubmitDay() {
+        return submitDay;
+    }
+
+    public void setSubmitDay(Date submitDay) {
+        this.submitDay = submitDay;
     }
 }

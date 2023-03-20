@@ -54,6 +54,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         if(entity == null){
             entity = new GraduationThesis();
+            entity.setSubmitDay(new Date(System.currentTimeMillis()));
             if(dto.getStudent() != null && dto.getStudent().getId() != null
                     && dto.getSemester() != null && dto.getSemester().getId() != null ){
                 List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllByStIdAndSemesterId(dto.getStudent().getId(), dto.getSemester().getId());
