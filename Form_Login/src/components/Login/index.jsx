@@ -78,6 +78,7 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
               } else if (Variables.userRole === "students") {
+                navigate("/sinh-vien-do-an");
               } else if (Variables.userRole === "teachers") {
                 navigate("/trang-chu-giang-vien");
               }
@@ -124,6 +125,7 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "students") {
+                navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
                 navigate("/trang-chu-giang-vien");
               }
