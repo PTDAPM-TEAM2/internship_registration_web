@@ -98,13 +98,13 @@ export default function Dashboard() {
                             location.pathname === '/quan-ly-giao-vien-da' ||
                             location.pathname === '/quan-ly-sinh-vien-da') :
                         // students role
-                        (location.pathname === '')
+                        (location.pathname === '/sinh-vien-do-an')
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : ""}</p>
+                                    <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : "Thông Tin Cá Nhân"}</p>
                                 </div>
                                 <div className={styles.bgDB}>
                                     <MenuBookIcon style={{ fontSize: 130 }} />
@@ -112,7 +112,7 @@ export default function Dashboard() {
                             </div>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === 'admin' ? "Sinh viên" : Variables.userRole === 'teachers' ? "Xác Nhận Yêu Cầu Sinh Viên" : ""}</p>
+                                    <p>{Variables.userRole === 'admin' ? "Sinh viên" : Variables.userRole === 'teachers' ? "Xác Nhận Yêu Cầu Sinh Viên" : "Đăng ký đồ án "}</p>
                                 </div>
                                 <div className={styles.bgDB1}>
                                     <PeopleIcon style={{ fontSize: 130 }} />
@@ -120,7 +120,7 @@ export default function Dashboard() {
                             </div>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === 'admin' ? "Giáo viên" : Variables.userRole === 'teachers' ? "Danh Sách Sinh Viên" : ""}</p>
+                                    <p>{Variables.userRole === 'admin' ? "Giáo viên" : Variables.userRole === 'teachers' ? "Danh Sách Sinh Viên" : "Nộp đề cương"}</p>
                                 </div>
                                 <div className={styles.bgDB2}>
                                     <PeopleIcon style={{ fontSize: 130 }} />
@@ -136,10 +136,18 @@ export default function Dashboard() {
                                         <div className={styles.bgDB3}>
                                             <AccessTimeIcon style={{ fontSize: 120 }} />
                                         </div>
-                                    </div> :
+                                    </div> :Variables.userRole === 'teachers'?
                                         <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
                                             <div className={styles.infoTag}>
                                                 <p>Danh Sách Đồ Án</p>
+                                            </div>
+                                            <div className={styles.bgDB2}>
+                                                <PeopleIcon style={{ fontSize: 130 }} />
+                                            </div>
+                                        </div>:
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                                            <div className={styles.infoTag}>
+                                                <p>Thông tin đồ án</p>
                                             </div>
                                             <div className={styles.bgDB2}>
                                                 <PeopleIcon style={{ fontSize: 130 }} />
@@ -166,13 +174,13 @@ export default function Dashboard() {
                         : Variables.userRole === 'teachers' ?
                             (location.pathname === '/trang-chu-giang-vien') :
                             // students role
-                            (location.pathname === '/trang-chu-giang-vien')
+                            (location.pathname === '/sinh-vien-thuc-tap')
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === "admin" ? "Thực tập" : Variables.userRole === "teachers" ? "Thông Tin Cá Nhân" : ""}</p>
+                                    <p>{Variables.userRole === "admin" ? "Thực tập" : Variables.userRole === "teachers" ? "Thông Tin Cá Nhân" : "Thông Tin Cá Nhân"}</p>
                                 </div>
                                 <div className={styles.bgDB}>
                                     <MenuBookIcon style={{ fontSize: 130 }} />
@@ -180,7 +188,7 @@ export default function Dashboard() {
                             </div>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === "admin" ? "Sinh viên" : Variables.userRole === "teachers" ? "Xác Nhận Yêu Cầu Sinh Viên" : ""}</p>
+                                    <p>{Variables.userRole === "admin" ? "Sinh viên" : Variables.userRole === "teachers" ? "Xác Nhận Yêu Cầu Sinh Viên" : "Đăng ký thực tập"}</p>
                                 </div>
                                 <div className={styles.bgDB1}>
                                     <PeopleIcon style={{ fontSize: 130 }} />
@@ -188,7 +196,7 @@ export default function Dashboard() {
                             </div>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === "admin" ? "Giáo viên" : Variables.userRole === "teachers" ? "Danh sách sinh viên" : ""}</p>
+                                    <p>{Variables.userRole === "admin" ? "Giáo viên" : Variables.userRole === "teachers" ? "Danh sách sinh viên" : "Thông tin thực tập"}</p>
                                 </div>
                                 <div className={styles.bgDB2}>
                                     <PeopleIcon style={{ fontSize: 130 }} />
