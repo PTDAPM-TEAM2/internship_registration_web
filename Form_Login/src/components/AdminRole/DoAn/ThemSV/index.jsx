@@ -80,6 +80,11 @@ const ThemSV = () => {
         getGrade()
     }, [context.token]);
 
+    const [selectedOption, setSelectedOption] = React.useState(grades[0]);
+
+    const handleChangingEvent = (event) => {
+        setSelectedOption(event.target.id)
+    }
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -234,6 +239,17 @@ const ThemSV = () => {
                             <div className={styles.txt}>
                                 <label htmlFor='grade'>Lớp: </label>
                                 <TextField
+                                    select
+                                    value={selectedOption}
+                                    onChange={handleChangingEvent}
+                                    >
+                                    {grades.map((option) => (
+                                        <MenuItem key={option.id} value={option}>
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                {/* <TextField
                                     className={styles.txtFieldBot}
                                     id="grade"
                                     name="grade"
@@ -249,7 +265,7 @@ const ThemSV = () => {
                                             </MenuItem>
                                         ))}
                                     </div>
-                                </TextField>
+                                </TextField> */}
                             </div>
                             <div className={styles.txt}>
                                 <label htmlFor='semester'>Kỳ: </label>
@@ -295,7 +311,7 @@ const ThemSV = () => {
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                        <AlertTitle>{formik.errors === null ? 'Thêm thông tin sinh viên thành công !' : 'Vui lòng điền đầy đủ thông tin!'}</AlertTitle>
                     </Alert>
                 </div>
 
