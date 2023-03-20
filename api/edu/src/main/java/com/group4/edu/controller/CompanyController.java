@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,5 +30,12 @@ public class CompanyController {
     @GetMapping("/getAll")
     public List<CompanyDto> getAll() {
         return companyService.getAll();
+    }
+
+    @ApiOperation(value = "Import file Excel danh sách công ty")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/import-excel")
+    public List<CompanyDto> importExcel(@RequestPart MultipartFile file){
+        return companyService.importExcel(file);
     }
 }
