@@ -115,8 +115,8 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={10}>Sinh viên chưa có công ty thực tập</MenuItem>
+                                    <MenuItem value={20}>Sinh viên đã có công ty thực tập</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -160,6 +160,10 @@ function DSSV() {
                             </Table>
                         </TableContainer>
                     </Paper>
+                </div>
+                <div style={{ display: 'flex', justifyContent:'space-between' }}>
+                    <Button className='button' >Nhập điểm</Button>
+                    <Button className='button' >Xuất dữ liệu</Button>
                 </div>
             </div>
         </div>

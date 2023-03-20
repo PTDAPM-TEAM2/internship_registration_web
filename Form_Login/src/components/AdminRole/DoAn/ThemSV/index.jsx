@@ -21,7 +21,9 @@ import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 
-
+const grade = {
+    name: '',
+}
 
 const initialValues = {
     urlImg: '',
@@ -33,7 +35,7 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade: '',
+    grade: grade.name,
     semester: '',
     password: '',
 
@@ -86,7 +88,6 @@ const ThemSV = () => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                // values = JSON.stringify(values);
                 console.log(JSON.stringify(values));
                 const response = await studentApi.addSVDA(JSON.stringify(values), context.token);
                 setTimeout(() => {
@@ -141,6 +142,7 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
+                                        helperText={formik.touched.gender && formik.errors.gender}
                                     />
                                 </div>
                             </div>
@@ -154,6 +156,7 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -165,6 +168,7 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.identityCard}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -179,6 +183,7 @@ const ThemSV = () => {
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
                                             error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -191,7 +196,7 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBirth}
                                         error={formik.touched.placeOfBirth && Boolean(formik.errors.placeOfBirth)}
-
+                                        helperText={formik.touched.placeOfBirth && formik.errors.placeOfBirth}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -203,6 +208,7 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumberNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -214,6 +220,7 @@ const ThemSV = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
                                     />
                                 </div>
                             </div>
@@ -229,20 +236,22 @@ const ThemSV = () => {
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
+                                    helperText={formik.touched.studentCode && formik.errors.studentCode}
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='grade'>Lớp: </label>
+                                <label htmlFor='grade.name'>Lớp: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     id="grade"
-                                    name="grade"
+                                    name="grade.name"
                                     select
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
+                                    helperText={formik.touched.grade && formik.errors.grade}
                                 >
-                                    <div style={{ height: 200 }}>
+                                    <div style={{ maxHeight: 200 }}>
                                         {grades.map((grade) => (
                                             <MenuItem key={grade.id} value={grade.id} >
                                                 {grade.name}
@@ -260,6 +269,7 @@ const ThemSV = () => {
                                     value={formik.values.semester}
                                     onChange={formik.handleChange}
                                     error={formik.touched.semester && Boolean(formik.errors.semester)}
+                                    helperText={formik.touched.semester && formik.errors.semester}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -270,6 +280,7 @@ const ThemSV = () => {
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
                                     type='password'
                                 // disabled
                                 />
@@ -295,7 +306,7 @@ const ThemSV = () => {
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                        <AlertTitle>{formik.errors === null ? 'Thêm thông tin sinh viên thành công' : 'Nhập thiếu thông tin hoặc nhập sai định dạng! Vui lòng nhập lại'}</AlertTitle>
                     </Alert>
                 </div>
 

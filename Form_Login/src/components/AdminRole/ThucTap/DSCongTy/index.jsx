@@ -45,15 +45,6 @@ const columns = [
         align: 'center',
     },
 ];
-
-function createData(Ma, Ten, SĐT, Email, Diachi, tax_code, mota) {
-    return { Ma, Ten, SĐT, Email, Diachi, tax_code, mota};
-}
-
-var rows = [
-    createData('001', 'Du học sinh Việt Nam', '0647583693', 'Duhoc@gmail.com', 'Ba Đình, Hà Nội', '1111111', 'Môi trường năng động'),
-    createData('002', 'Thú Cưng Yiyi', '0123456789', 'Thucung@gmail.com',  'Hoàn Kiếm, Hà Nội', '32322222', 'Môi trường năng động'),
-];
 function DSCT() {
     // rows = companyApi.getAll;
     const context = useContext(ThemeContext);
@@ -62,20 +53,18 @@ function DSCT() {
     const [companies, setCompanies] = React.useState([]);
 
     React.useEffect(() => {
-        const getAllCompanies = async () => {
-            try{
-                const response = await companyApi.getCompanies(context.token)
+        const getCompany = async () => {
+            try {
+                const response = await companyApi.getCompanies(context.token);
                 setCompanies(response);
-            }catch(err){
-                console.log('Error fetching data', err);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
         }
-        getAllCompanies();
+        getCompany()
     }, [context.token]);
 
-    // companyApi.getAll();
-
-    console.log(`company: ${companies}`);
 
     const handleGoClick = (item) => {
         navigate('/ChiTietCT-tt', {state: {item}})
