@@ -2,6 +2,8 @@ package com.group4.edu.dto;
 
 import com.group4.edu.domain.GraduationThesis;
 
+import java.util.Date;
+
 
 public class GraduationThesisDto extends BaseDto {
     String urlOutline;
@@ -16,6 +18,7 @@ public class GraduationThesisDto extends BaseDto {
     SemesterDto semester;
     LecturerDto lecturer;
 
+    Date submitDay;
     public GraduationThesisDto() {
     }
 
@@ -29,6 +32,7 @@ public class GraduationThesisDto extends BaseDto {
             this.mark3 = entity.getMark3();
             this.avgMark = entity.getAvgMark();
             this.status = entity.getStatus();
+            this.submitDay = entity.getSubmitDay();
             if (entity.getIsAccept() != null)
                 this.isAccept = entity.getIsAccept();
             if (entity.getStudent() != null)
@@ -51,6 +55,7 @@ public class GraduationThesisDto extends BaseDto {
             this.mark3 = entity.getMark3();
             this.avgMark = entity.getAvgMark();
             this.status = entity.getStatus();
+            this.submitDay = entity.getSubmitDay();
             if (entity.getIsAccept() != null)
                 this.isAccept = entity.getIsAccept();
             if (entity.getSemester() != null)
@@ -147,5 +152,13 @@ public class GraduationThesisDto extends BaseDto {
 
     public void setLecturer(LecturerDto lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Date getSubmitDay() {
+        return submitDay;
+    }
+
+    public void setSubmitDay(Date submitDay) {
+        this.submitDay = submitDay;
     }
 }
