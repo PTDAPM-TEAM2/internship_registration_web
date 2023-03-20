@@ -252,13 +252,19 @@ function Sidebar() {
                             location.pathname === '/thong-tin-ca-nhan'
                         ) :
                             // students role
-                            (location.pathname === '/trang-chu-giang-vien'))
+                            (location.pathname === '/sinh-vien-do-an' ||
+                                location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien' || 
+                                location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' ||
+                                location.pathname === '/sinh-vien-do-an/dang-ky-do-an' ||
+                                location.pathname === '/sinh-vien-do-an/nop-de-cuong' ||
+                                location.pathname === '/sinh-vien-do-an/thong-tin-do-an'
+                            ))
                     &&
                     <List>
                         {check === 'admin' ?
                             <ListItem disablePadding>
                                 <Link
-                                    to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : ""}
+                                    to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : "/sinh-vien-do-an"}
                                     style={{ width: '100%', textDecoration: 'none' }}
                                     onClick={() => {
                                         handleItemClick('trang-chu')
@@ -277,7 +283,7 @@ function Sidebar() {
                             check === 'admin' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : ""}
+                                        to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : "/sinh-vien-do-an/thong-tin-sinh-vien"}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLDA')
@@ -296,7 +302,7 @@ function Sidebar() {
                             check === 'admin' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-sinh-vien-da" : check === 'teachers' ? '' : ''}
+                                        to={check === 'admin' ? "/quan-ly-sinh-vien-da" : check === 'teachers' ? '' : '/sinh-vien-do-an/dang-ky-do-an'}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLSV')
@@ -306,7 +312,7 @@ function Sidebar() {
                                             <ListItemIcon>
                                                 <GroupRoundedIcon className={styles.icon} />
                                             </ListItemIcon>
-                                            <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : 'Xác nhận yêu cầu sinh viên'} />
+                                            <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : check === 'teachers' ?'Xác nhận yêu cầu sinh viên':'Đăng ký đồ án'} />
                                         </ListItemButton>
                                     </Link>
                                 </ListItem> : (null)
@@ -315,7 +321,7 @@ function Sidebar() {
                             check === 'admin' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : check === 'teachers' ? '' : ''}
+                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : check === 'teachers' ? '' : '/sinh-vien-do-an/nop-de-cuong'}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLGV')
@@ -366,7 +372,12 @@ function Sidebar() {
                             location.pathname === '/thong-tin-ca-nhan/doi-mat-khau'
                         ) :
                         // students role
-                        (location.pathname === '/trang-chu-giang-vien'))
+                        (location.pathname === '/sinh-vien-thuc-tap' ||
+                            location.pathname === '/sinh-vien-thuc-tap/thong-tin-sinh-vien' ||
+                            location.pathname === '/sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' ||
+                            location.pathname === '/sinh-vien-thuc-tap/dang-ky-thuc-tap' ||
+                            location.pathname === '/sinh-vien-thuc-tap/thong-tin-thuc-tap'
+                        ))
                     &&
                     <List>
                         <ListItem disablePadding>
@@ -379,7 +390,7 @@ function Sidebar() {
                                     }else if(check === 'teachers'){
                                         toComponent("/trang-chu-giang-vien")
                                     }else{
-
+                                        toComponent("/sinh-vien-thuc-tap")
                                     }
                                 }}
                                 className={context.activeButton === 'trang-chu' ? styles.active : {}}

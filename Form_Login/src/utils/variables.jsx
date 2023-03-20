@@ -7,7 +7,7 @@ function createData(Hoten, Lop, TenDoAn, Ky, SoCC, NgaySinh, NoiSinh, SDT, email
 class Variables extends React.Component {
 
 
-    static userRole = "admin";
+    static userRole = "students";
 
     static studentList = [
         createData('Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023', '064202222242', '21/04/2002', 'Gia Lai', '0358074833', 'tam@gmail.com', '2051066666', '********', 'Cù Việt Dũng', 'Công nghệ thông tin', 'Nam'),

@@ -47,6 +47,16 @@ import Loading from './components/Loading/Loading.js'
 import { useContext } from 'react';
 import { ThemeContext } from './components/Theme/Theme.jsx';
 import { PrivateWrapper } from './Route/route.js';
+import SVDA from './components/StudentRole/SVDA';
+import SVTT from './components/StudentRole/SVTT';
+import TTSV from './components/StudentRole/SVDA/DoAnSV/ThongTinCN';
+import DC from './components/StudentRole/SVDA/DoAnSV/DeCuong';
+import TTDA from './components/StudentRole/SVDA/DoAnSV/ThongTinDA';
+import TDMK from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
+import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
+import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
+import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
+import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
 function App() {
   // const [loading, setLoading] = React.useState(false);
 
@@ -128,7 +138,28 @@ function App() {
             </Router>
           ) :
             // students role
-            <Router></Router>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
+                <Route path='/dang-nhap' element={<Login />} />
+                <Route path='/' element={<Layout />}>
+                  {/* Main screen */}
+                    <Route path='sinh-vien-do-an' element={<SVDA />}></Route>
+                    <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
+                  {/* Chuyen huong do an sinh vien */}
+                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
+                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
+                    <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DSDA />}></Route>
+                    <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
+                    <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
+                  {/* Chuyen huong thuc tap sinh vien */}
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMKTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
+                  </ Route>
+              </ Routes>
+            </Router>
       }
     </div>
   );
