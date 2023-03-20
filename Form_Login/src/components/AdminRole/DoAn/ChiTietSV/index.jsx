@@ -132,7 +132,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField defaultValue={state.item.password} className={styles.txtFieldBot} type='password'/>
+                                <TextField defaultValue='********' className={styles.txtFieldBot} type='password'/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Tên đề tài đồ án: </p>

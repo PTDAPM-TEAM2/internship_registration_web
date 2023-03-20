@@ -10,13 +10,13 @@ import Store from './stores/Store';
 const myStore = new Store();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider myStore={myStore}>
       <ThemeProvider>
         <App />
       </ThemeProvider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

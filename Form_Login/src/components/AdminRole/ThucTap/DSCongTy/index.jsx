@@ -12,6 +12,7 @@ import styles from './DSCT.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import companyApi from '../../../../api/companyApi.js';
 const columns = [
     {
         id: 'STT',
@@ -57,6 +58,25 @@ function DSCT() {
     // rows = companyApi.getAll;
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
+
+    const [companies, setCompanies] = React.useState([]);
+
+    React.useEffect(() => {
+        const getAllCompanies = async () => {
+            try{
+                const response = await companyApi.getCompanies(context.token)
+                setCompanies(response);
+            }catch(err){
+                console.log('Error fetching data', err);
+            }
+        }
+        getAllCompanies();
+    }, [context.token]);
+
+    // companyApi.getAll();
+
+    console.log(`company: ${companies}`);
+
     const handleGoClick = (item) => {
         navigate('/ChiTietCT-tt', {state: {item}})
     }
@@ -84,14 +104,14 @@ function DSCT() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row, index) => {
+                                    {companies.map((row, index) => {
                                         return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                            <TableRow key={row.id} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
                                                 <TableCell sx={{ textAlign: 'center' }}>{index+1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ma}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ten}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.SĐT}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Email}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.id}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.nameCompany}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.email}</TableCell>
                                             </TableRow>
                                         );
                                     })}

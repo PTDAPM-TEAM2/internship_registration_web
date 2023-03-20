@@ -15,20 +15,12 @@ import * as Yup from 'yup';
 import Variables from '../../../../utils/variables';
 import Menu from '@mui/material/MenuItem';
 import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 // import Menu from '@mui/material/Menu';
 import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 
-
-
-const grade = {
-    // "id": null,
-    "name": '',
-    "students": null,
-}
 
 
 const initialValues = {
@@ -41,7 +33,7 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade: grade,
+    grade: '',
     semester: '',
     password: '',
 
@@ -74,7 +66,25 @@ const ThemSV = () => {
         setImageUrl(imageUrl);
     };
 
-    // const [submitting, setSubmitting] = useState(false);
+    const [grades, setGrade] = React.useState([]);
+    React.useEffect(() => {
+        const getGrade = async () => {
+            try {
+                const response = await studentApi.getGrade(context.token);
+                setGrade(response);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getGrade()
+    }, [context.token]);
+
+    const [selectedOption, setSelectedOption] = React.useState(grades[0]);
+
+    const handleChangingEvent = (event) => {
+        setSelectedOption(event.target.id)
+    }
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -93,7 +103,6 @@ const ThemSV = () => {
         },
     })
 
-    console.log(grade.name);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -215,84 +224,6 @@ const ThemSV = () => {
                             </div>
                         </div>
 
-                        {/* <Grid container columns={12} spacing={2}>
-                            <Grid item lg={2} xs={12}>
-                                <div className={styles.txt}>
-                                    {(imageFile === null) &&
-                                        <div>
-                                            <label htmlFor="file" className={styles.upload} >
-                                                <FileUploadIcon />
-                                                <span>Tải lên</span>
-                                            </label>
-                                            <input className={styles.fileInput} name='file' id='file' type="file" accept=".jpg, .jpeg, .png" onChange={handleImageFileChange} />
-                                        </div>
-                                    }
-                                    {
-                                        imageFile &&
-                                        <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
-                                        </div>
-                                    }
-                                </div>
-                                <div className={styles.txt}>
-                                    <p>Giới tính: </p>
-                                    <TextField />
-                                </div>
-                            </Grid>
-                            <Grid item lg={5} xs={12}>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Họ tên: </p>
-                                        <TextField className={styles.txtField} fullWidth />
-                                    </div>
-                                </Grid>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Ngày sinh: </p>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                            <DatePicker
-                                                renderInput={(props) => <TextField {...props} className={styles.txtDate} />}
-                                                value={date}
-                                                onChange={(newValue) => {
-                                                    setDate(newValue);
-                                                }}
-                                                format="YYYY/MM/DD"
-                                                defaultValue={dayjs()}
-                                            />
-                                        </LocalizationProvider>
-                                    </div>
-                                </Grid>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Số điện thoại: </p>
-                                        <TextField className={styles.txtField} />
-                                    </div>
-                                </Grid>
-                            </Grid>
-
-
-                            <Grid item lg={5} xs={12}>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Số căn cước: </p>
-                                        <TextField className={styles.txtField} />
-                                    </div>
-                                </Grid>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Nơi sinh: </p>
-                                        <TextField className={styles.txtField} />
-                                    </div>
-                                </Grid>
-                                <Grid>
-                                    <div className={styles.txt}>
-                                        <p>Email: </p>
-                                        <TextField className={styles.txtField} />
-                                    </div>
-                                </Grid>
-                            </Grid>
-                        </Grid> */}
-
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <label htmlFor='studentCode'>Mã sinh viên: </label>
@@ -306,16 +237,35 @@ const ThemSV = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='grade.name'>Lớp: </label>
+                                <label htmlFor='grade'>Lớp: </label>
                                 <TextField
+                                    select
+                                    value={selectedOption}
+                                    onChange={handleChangingEvent}
+                                    >
+                                    {grades.map((option) => (
+                                        <MenuItem key={option.id} value={option}>
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                {/* <TextField
                                     className={styles.txtFieldBot}
                                     id="grade"
-                                    name="grade.name"
+                                    name="grade"
+                                    select
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
-                                </TextField>
+                                    <div style={{ height: 200 }}>
+                                        {grades.map((grade) => (
+                                            <MenuItem key={grade.id} value={grade.id} >
+                                                {grade.name}
+                                            </MenuItem>
+                                        ))}
+                                    </div>
+                                </TextField> */}
                             </div>
                             <div className={styles.txt}>
                                 <label htmlFor='semester'>Kỳ: </label>
@@ -342,75 +292,31 @@ const ThemSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit" onClick={() => { console.log(formik.values) }}>Thêm</button>
+                            <button className={styles.button} type="submit" onClick={() => {
+                                setShowAlert(true);
+                                setTimeout(() => {
+                                    showAlert(false);
+                                }, 2000)
+                            }}>Thêm</button>
                         </div>
                     </form>
                 </div>
 
             </div>
-            {
-                // formik.errors !== null ?
-                //     (showAlert &&
-                //         < div >
-                //             < Alert severity="error" sx={{
-                //                 position: 'fixed',
-                //                 width: '40%',
-                //                 bottom: '0',
-                //                 right: '2%'
-                //             }}>
-                //                 <AlertTitle>Nhập thiếu thông tin vui lòng nhập lại !</AlertTitle>
-                //             </Alert>
-                //         </div>)
-                //     : (showAlert &&
-                //         < div >
-                //             < Alert severity="success" sx={{
-                //                 position: 'fixed',
-                //                 width: '40%',
-                //                 bottom: '0',
-                //                 right: '2%'
-                //             }}>
-                //                 <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
-                //             </Alert>
-                //         </div>)
-                // formik.errors == {} ?
-                // showAlert &&
-                // < div >
-                //     < Alert severity="error" sx={{
-                //         position: 'fixed',
-                //         width: '40%',
-                //         bottom: '0',
-                //         right: '2%'
-                //     }}>
-                //         <AlertTitle>True</AlertTitle>
-                //     </Alert>
-                // </div>
-                // : showAlert &&
-                // < div >
-                //     < Alert severity="success" sx={{
-                //         position: 'fixed',
-                //         width: '40%',
-                //         bottom: '0',
-                //         right: '2%'
-                //     }}>
-                //         <AlertTitle>false</AlertTitle>
-                //     </Alert>
-                // </div>
-
-            }
-            {/* {showAlert && formik.errors === {} &&
+            {showAlert &&
                 <div>
-                    <Alert severity="success" sx={{
+                    <Alert severity={formik.errors === null ? 'success' : 'error'} sx={{
                         position: 'absolute',
                         width: '40%',
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>Thêm thông tin sinh viên thành công !</AlertTitle>
+                        <AlertTitle>{formik.errors === null ? 'Thêm thông tin sinh viên thành công !' : 'Vui lòng điền đầy đủ thông tin!'}</AlertTitle>
                     </Alert>
                 </div>
 
 
-            } */}
+            }
         </div >
     );
 };
