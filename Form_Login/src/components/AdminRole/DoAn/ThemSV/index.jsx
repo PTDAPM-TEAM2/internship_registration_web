@@ -57,7 +57,7 @@ const ThemSV = () => {
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
     const context = useContext(ThemeContext);
-
+    const token = localStorage.getItem('token');
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -69,7 +69,7 @@ const ThemSV = () => {
     React.useEffect(() => {
         const getGrade = async () => {
             try {
-                const response = await studentApi.getGrade(context.token);
+                const response = await studentApi.getGrade(token);
                 setGrade(response);
                 console.log(response);
             } catch (error) {
@@ -85,7 +85,7 @@ const ThemSV = () => {
         onSubmit: async (values) => {
             try {
                 console.log(JSON.stringify(values));
-                const response = await studentApi.addSVDA(JSON.stringify(values), context.token);
+                const response = await studentApi.addSVDA(JSON.stringify(values), token);
                 setTimeout(() => {
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)

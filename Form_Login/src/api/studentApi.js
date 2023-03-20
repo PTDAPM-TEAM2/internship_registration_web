@@ -146,13 +146,14 @@ class StudentApi {
       .then((res) => res);
   };
 
-  updateSVDA = (params, id, token) => {
+  updateSVDA = (params, id) => {
     const url = `api/student/update/da/${id}`;
+    const token = localStorage.getItem('token');
     return axiosClient
       .post(url, params, id, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
-          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/json'
         },
       })
       .then((res) => res);

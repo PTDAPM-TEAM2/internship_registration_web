@@ -32,6 +32,7 @@ function ThemeProvider({ children }) {
 
   const [auth, setAuth] = useState(false);
   const [token, setToken] = useState("");
+  localStorage.setItem('token', token);
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
 

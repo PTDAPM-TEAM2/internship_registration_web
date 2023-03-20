@@ -19,7 +19,7 @@ function QLDA() {
     const [showAlert, setShowAlert] = React.useState(false);
     const getDate = dayjs();
     const context = useContext(ThemeContext);
-
+    const token = localStorage.getItem('token');
     const handleClick = async () => {
         if (startDate < getDate) {
             setErrorMessage('Ngày không hợp lệ');
@@ -32,7 +32,7 @@ function QLDA() {
                 const response = await studentApi.registerTimeDA({
                     timeStart: startDate,
                     timeEnd: dueDate,
-                }, context.token);
+                }, token);
                 console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);

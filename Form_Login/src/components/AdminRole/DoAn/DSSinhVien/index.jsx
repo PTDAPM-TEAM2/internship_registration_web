@@ -62,7 +62,7 @@ const columns = [
 
 function DSSV() {
     const navigate = useNavigate();
-
+    const token = localStorage.getItem('token');
 
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
@@ -82,16 +82,14 @@ function DSSV() {
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await studentApi.getAllSvDa(null, context.token);
+                const response = await studentApi.getAllSvDa(null, token);
                 setStudent(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
-    }, [context.token]);
-
-    console.log(students);
+    }, []);
 
     return (
         <div style={{ display: 'flex' }}>

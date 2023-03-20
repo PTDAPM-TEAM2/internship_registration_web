@@ -62,7 +62,6 @@ const ChiTietSV = () => {
     const location = useLocation();
     const state = location.state;
     const {id} = useParams()
-    console.log(id);
 
     const handleSubmit = () => {
         setShowAlert(true);
@@ -108,12 +107,12 @@ const ChiTietSV = () => {
 
     console.log(state.item.grade.name);
 
-
+    const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
         const getGrade = async () => {
             try {
-                const response = await studentApi.getGrade(context.token);
+                const response = await studentApi.getGrade(token);
                 setGrade(response);
                 console.log(response);
             } catch (error) {
@@ -121,7 +120,7 @@ const ChiTietSV = () => {
             }
         }
         getGrade()
-    }, [context.token]);
+    }, []);
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -131,7 +130,7 @@ const ChiTietSV = () => {
             try {
                 // values.dateOfBirth = new Date(values.dateOfBirth);
                 // console.log( values.dateOfBirth);
-                const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id, context.token);
+                const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
                 setTimeout(() => {
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
