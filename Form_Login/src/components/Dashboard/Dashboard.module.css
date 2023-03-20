@@ -1,0 +1,97 @@
+.icon {
+    color: white;
+    margin: 10px;
+}
+
+.dashBoard {
+    color: rgb(255, 255, 255);
+    position: relative;
+    border-radius: 10px;
+    height: 150px;
+    background-color: #007c4d;
+}
+
+/* .dashBoard1{
+    color: rgb(255, 255, 255);
+    position: relative;
+    border-radius: 10px;
+    height: 150px;
+    background-color: #0094d0;
+}
+.dashBoard2{
+    color: rgb(255, 255, 255);
+    position: relative;
+    border-radius: 10px;
+    height: 150px;
+    background-color: #d88609;
+} */
+.bgDB {
+    color: #0094d0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.bgDB1 {
+    color: #007c4d;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.bgDB2 {
+    color: #d88609;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.bgDB3 {
+    color: #c74a2e;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+.db {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    padding-top: 80px;
+}
+
+.infoTag {
+    position: absolute;
+    left: 30px;
+}
+.infoTime {
+    position: absolute;
+    left: 15px;
+}
+
+.time{
+    font-size:25px;
+}
+@media (max-width: 1400px) {
+    .db {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 50px;
+    }
+}
+@media (max-width: 900px) {
+    .db {
+        display: flex;
+        flex-direction: column;
+    }
+}
+.dashBoard .infoTag h1{
+    font-size: 50px;
+}
+.dashBoard .infoTag p{
+    font-size: 20px;
+}
+.dashBoard {
+    display: flex;
+    align-items: center
+}

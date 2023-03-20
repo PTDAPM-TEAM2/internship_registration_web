@@ -1,7 +1,7 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.Account;
-import com.group4.edu.domain.AccountRole;
+import com.group4.edu.domain.Role;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,10 +14,10 @@ public class AccountDto extends BaseDto {
     public AccountDto(Account entity){
         this.setId(entity.getId());
         this.username = entity.getUsername();
-        if(entity.getAccountRoleSet() != null && entity.getAccountRoleSet().size()>0){
+        if(entity.getRoles() != null && entity.getRoles().size()>0){
             this.roles = new HashSet<>();
-            for(AccountRole accountRole: entity.getAccountRoleSet()){
-                this.roles.add(new RoleDto(accountRole.getRole()));
+            for(Role role: entity.getRoles()){
+                this.roles.add(new RoleDto(role));
             }
         }
     }

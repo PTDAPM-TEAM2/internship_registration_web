@@ -4,6 +4,7 @@ import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
 import com.group4.edu.domain.Role;
 import com.group4.edu.domain.User;
+import com.group4.edu.dto.AccloginDto;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.ResponseToken;
 import com.group4.edu.dto.RoleDto;
@@ -12,9 +13,11 @@ import com.group4.edu.repositories.RoleRepository;
 import com.group4.edu.repositories.UserRepository;
 import com.group4.edu.service.AccountService;
 import com.group4.edu.service.JwtService;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -36,83 +39,73 @@ public class LoginController {
 
     @Autowired
     private RoleRepository roleRepository;
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(HttpServletRequest request, @RequestBody AccountDto accountDto) {
+
+    @RequestMapping(value = "/login-da", method = RequestMethod.POST)
+    public ResponseEntity<?> loginDa(HttpServletRequest request, @RequestBody AccloginDto accountDto1) {
         ResponseToken result = new ResponseToken();
         HttpStatus httpStatus = null;
         try {
-            if (accountService.checkLogin(accountDto)) {
+            AccountDto accountDto = new AccountDto();
+            accountDto.setUsername(accountDto1.getUsername());
+            accountDto.setPassword(accountDto1.getPassword());
+            if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_DA.getKey())) {
                 String token = jwtService.generateTokenLogin(accountDto.getUsername());
-                if(accountService.saveTokenByUsername(token,accountDto.getUsername())){
+                if (accountService.saveTokenByUsername(token, accountDto.getUsername())) {
                     result.setAccess_Token(token);
                     result.setStatusCode(HttpStatus.OK.toString());
                     httpStatus = HttpStatus.OK;
                 }
             } else {
-                result.setMessenger("Wrong userId and password");
+                result.setMessenger("Username hoặc password bị sai, đăng nhập không thành công. ");
                 httpStatus = HttpStatus.BAD_REQUEST;
-                result.setStatusCode(httpStatus.toString());
+                System.out.println(httpStatus.value());
+                result.setStatusCode(String.valueOf(httpStatus.value()));
             }
-        } catch (Exception ex) {
-            result.setMessenger("Server Error");
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } catch (Exception e) {
+            System.out.println(httpStatus.value());
+            result.setMessenger(e.getMessage());
+            httpStatus = HttpStatus.BAD_REQUEST;
             result.setStatusCode(httpStatus.toString());
         }
         return new ResponseEntity<ResponseToken>(result, httpStatus);
     }
 
-    @Transactional
-    @GetMapping ("/create-user-admin")
-    public ResponseEntity<?> createAccountAdmin(){
-        Role role = roleRepository.findByRole(EduConstants.Role.ROLEADMIN.getValue());
-        if(role != null){
-            return new ResponseEntity<String>("Chạy 1 lần thôi cha :33", HttpStatus.OK);
-        }
-        Set<Role> roleSet = new HashSet<>();
-        Role role1 = new Role();
-        Role role2 = new Role();
-        Role role3 = new Role();
-        role1.setCode(EduConstants.UserType.ADMIN.getValue());
-        role1.setRole(EduConstants.Role.ROLEADMIN.getValue());
-        role2.setCode(EduConstants.UserType.LECTURERS.getValue());
-        role2.setRole(EduConstants.Role.ROLELECTURERS.getValue());
-        role3.setCode(EduConstants.UserType.STUDENT.getValue());
-        role3.setRole(EduConstants.Role.ROLESTUDENT.getValue());
-        roleSet.add(role1);
-        roleSet.add(role2);
-        roleSet.add(role3);
-        List<Role> roleList = null;
-        try {
-            roleList = roleRepository.saveAll(roleSet);
-        }
-        catch (Exception e){
-            return new ResponseEntity<String>("Chạy 1 lần thôi cha :33", HttpStatus.OK);
-        }
+    @RequestMapping(value = "/login-tt", method = RequestMethod.POST)
+    public ResponseEntity<?> loginTt(HttpServletRequest request, @RequestBody AccloginDto accountDto1) {
+        ResponseToken result = new ResponseToken();
+        HttpStatus httpStatus = null;
         AccountDto accountDto = new AccountDto();
-        accountDto.setPassword("admin");
-        accountDto.setUsername("admin");
-        RoleDto roleDto = new RoleDto(roleRepository.findByCode(EduConstants.UserType.ADMIN.getValue()).orElse(null));
-        accountDto.setRoles(new HashSet<>());
-        accountDto.getRoles().add(roleDto);
+        accountDto.setUsername(accountDto1.getUsername());
+        accountDto.setPassword(accountDto1.getPassword());
         try {
-            accountDto = accountService.saveOrUpdate(accountDto,null,false);
+            if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_TT.getKey())) {
+                String token = jwtService.generateTokenLogin(accountDto.getUsername());
+                if (accountService.saveTokenByUsername(token, accountDto.getUsername())) {
+                    result.setAccess_Token(token);
+                    result.setStatusCode(HttpStatus.OK.toString());
+                    httpStatus = HttpStatus.OK;
+                }
+            } else {
+                result.setMessenger("Username hoặc password bị sai, đăng nhập không thành công. ");
+                httpStatus = HttpStatus.BAD_REQUEST;
+                result.setStatusCode(httpStatus.toString());
+            }
         } catch (Exception e) {
-            Map<String, String > response = new HashMap<>();
-            response.put("code","400");
-            response.put("messenger",e.getMessage());
-            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+            result.setMessenger(e.getMessage());
+            httpStatus = HttpStatus.BAD_REQUEST;
+            result.setStatusCode(httpStatus.toString());
         }
-        Account account  = accountRepository.findById(accountDto.getId()).orElse(null);
-        User user = new User();
-        user.setFullName("Admin");
-        user.setAccount(account);
-        account.setUser(user);
-        user.setUserType(EduConstants.UserType.ADMIN.getValue());
-        userRepository.save(user);
-        Map<String, Object> response = new HashMap<>();
-        response.put("role",roleList);
-        response.put("AdminAccount",account);
-        return new ResponseEntity<>(accountDto,HttpStatus.OK);
+        return new ResponseEntity<ResponseToken>(result, httpStatus);
+    }
+    @GetMapping("/logout")
+    public void logout(){
+        accountService.logout();
+    }
+
+    @Transactional
+    @GetMapping("/create-user-admin")
+    public ResponseEntity<?> createAccountAdmin() {
+        return new ResponseEntity<>("Chức năng đã được rebuild!", HttpStatus.OK);
     }
 
 }

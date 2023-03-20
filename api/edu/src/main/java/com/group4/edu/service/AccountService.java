@@ -2,11 +2,12 @@ package com.group4.edu.service;
 
 import com.group4.edu.domain.Account;
 import com.group4.edu.dto.AccountDto;
+import com.group4.edu.dto.ChangePasswordDto;
 
 import java.util.List;
 
 public interface AccountService {
-    public Boolean checkLogin(AccountDto accountDto);
+    public Boolean checkLogin(AccountDto accountDto,Integer type) throws Exception;
 
     Account loadUserByUsername(String username);
 
@@ -17,4 +18,7 @@ public interface AccountService {
     List<AccountDto> getAll();
 
     String getTokenByUsername(String username);
+
+    boolean changePassword(ChangePasswordDto passwordDto) throws Exception;
+    void logout();
 }

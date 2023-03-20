@@ -95,6 +95,7 @@ public class JwtService {
             return false;
         }
         if (username == null || username.isEmpty() || !token.equals(accountService.getTokenByUsername(username))) {
+            System.out.println("false");
             return false;
         }
         if (!isTokenExpired(token)) {

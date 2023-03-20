@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto extends BaseDto{
+    private String IdNumber;
+    private String placeOfBitrh;
     private String fullName;
     private String email;
     private Date dateOfBirth;
@@ -28,7 +30,9 @@ public class UserDto extends BaseDto{
     private Set<RoleDto> roles;
 
     public UserDto(User entity){
+        this.IdNumber = entity.getIdNumber();
         this.fullName = entity.getFullName();
+        this.placeOfBitrh = entity.getPlaceOfBirth();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
         this.address = entity.getAddress();
@@ -41,6 +45,8 @@ public class UserDto extends BaseDto{
     }
 
     public UserDto(User entity, boolean getAccount){
+        this.placeOfBitrh = entity.getPlaceOfBirth();
+        this.IdNumber = entity.getIdNumber();
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
@@ -54,6 +60,8 @@ public class UserDto extends BaseDto{
     }
 
     public UserDto(User entity, Set<Role> roles){
+        this.IdNumber = entity.getIdNumber();
+        this.setId(entity.getId());
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
@@ -64,19 +72,11 @@ public class UserDto extends BaseDto{
         this.gender = entity.getGender();
         this.phoneNumber = entity.getPhoneNumber();
         this.urlImg = entity.getUrlImg();
-        if(roles != null){
+        this.placeOfBitrh = entity.getPlaceOfBirth();
+        if(entity.getAccount() != null && entity.getAccount().getRoles() != null){
             this.roles = new HashSet<>();
-            for(Role role: roles){
+            for(Role role: entity.getAccount().getRoles()){
                 this.roles.add(new RoleDto(role));
-                if(role.getCode().equals(EduConstants.UserType.ADMIN.getValue())){
-                    this.isAdmin = true;
-                }
-                if(role.getCode().equals(EduConstants.UserType.LECTURERS.getValue())){
-                    this.isLecturer = true;
-                }
-                if(role.getCode().equals(EduConstants.UserType.STUDENT.getValue())){
-                    this.isStudent = true;
-                }
             }
         }
     }
@@ -173,30 +173,45 @@ public class UserDto extends BaseDto{
     }
 
     @JsonIgnore
-    public Boolean getAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
 
-    void setAdmin(Boolean admin) {
+    public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
 
     @JsonIgnore
-    public Boolean getLecturer() {
+    public Boolean isLecturer() {
         return isLecturer;
     }
 
-    void setLecturer(Boolean lecturer) {
+    public void setLecturer(Boolean lecturer) {
         isLecturer = lecturer;
     }
 
     @JsonIgnore
-    public Boolean getStudent() {
+    public Boolean isStudent() {
         return isStudent;
     }
 
-    void setStudent(Boolean student) {
+    public void setStudent(Boolean student) {
         isStudent = student;
     }
 
+    public String getIdNumber() {
+        return IdNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        IdNumber = idNumber;
+    }
+
+    public String getPlaceOfBitrh() {
+        return placeOfBitrh;
+    }
+
+    public void setPlaceOfBitrh(String placeOfBitrh) {
+        this.placeOfBitrh = placeOfBitrh;
+    }
 }
