@@ -4,6 +4,9 @@ import com.group4.edu.domain.core.BaseObject;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "tbl_intern_ship")
 public class Internship extends BaseObject {
@@ -11,16 +14,19 @@ public class Internship extends BaseObject {
     private Double mark;
     private String evaluate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn (name = "company_id")
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Company company;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Student student;
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Semester semester;
 
     @ManyToOne

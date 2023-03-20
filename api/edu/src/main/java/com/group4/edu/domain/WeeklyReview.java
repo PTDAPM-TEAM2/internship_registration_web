@@ -7,6 +7,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "tbl_weekly_review")
 public class WeeklyReview extends BaseObject {
@@ -14,6 +17,7 @@ public class WeeklyReview extends BaseObject {
     String content;
     @ManyToOne
     @JoinColumn(name = "graduationThesis_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     GraduationThesis graduationThesis;
 
     public String getTitle() {

@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
-//    UserDto saveOrUpdate(UserDto userDto);
+    // UserDto saveOrUpdate(UserDto userDto);
     List<UserDto> getAll();
 
     Object getCurrentUser();
+
+    boolean delete(Long id);
 }

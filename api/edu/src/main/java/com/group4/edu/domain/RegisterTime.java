@@ -4,6 +4,10 @@ import com.group4.edu.domain.core.BaseObject;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Date;
 
 @Entity
@@ -15,7 +19,9 @@ public class RegisterTime extends BaseObject {
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Semester semester;
+
     public Date getTimeStart() {
         return timeStart;
     }
@@ -48,4 +54,3 @@ public class RegisterTime extends BaseObject {
         this.semester = semester;
     }
 }
-

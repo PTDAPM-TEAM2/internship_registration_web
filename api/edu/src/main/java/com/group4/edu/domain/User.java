@@ -7,9 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tbl_user")
-@Inheritance(
-        strategy = InheritanceType.JOINED
-)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseObject {
     private String IdNumber;
 
@@ -25,7 +23,7 @@ public class User extends BaseObject {
     private Integer userType;
     private String urlImg;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Account account;
 
     public String getFullName() {
