@@ -72,9 +72,9 @@ function Login() {
             console.log(userInfo);
             if (userInfo.id === 1) {
               Variables.userRole = "admin";
-            } else if(userInfo.id === 2) {
+            } else if(userInfo.roles[0].id === 2) {
               Variables.userRole = "teachers";
-            } else if(userInfo.id === 3) {
+            } else {
               Variables.userRole = "students";
             }
             context.updateToken(tk);
@@ -86,10 +86,10 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-do-an");
               } else if (Variables.userRole === "teachers") {
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-do-an");
               }
             }, 500);
           } else {
@@ -119,12 +119,12 @@ function Login() {
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
-            var userInfo = await userApi.getInfo(tk);
-            if (userInfo.roles[0].id === 1) {
+            var userInfoTT = await userApi.getInfo(tk);
+            if (userInfoTT.roles[0].id === 1) {
               Variables.userRole = "admin";
-            } else if(userInfo.roles[0].id === 2) {
+            } else if(userInfoTT.roles[0].id === 2) {
               Variables.userRole = "teachers";
-            } else if(userInfo.roles[0].id === 3) {
+            } else {
               Variables.userRole = "students";
             }
             // console.log(Variables.userRole);
@@ -137,9 +137,9 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
+                navigate("/sinh-vien-thuc-tap");
+              } else {
                 navigate("/trang-chu-giang-vien");
               }
             }, 500);
