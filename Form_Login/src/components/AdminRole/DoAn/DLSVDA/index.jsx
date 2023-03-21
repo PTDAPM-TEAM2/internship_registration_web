@@ -18,7 +18,7 @@ function DLSVDA() {
     const formData = new FormData();
     formData.append('file', excelFile);
     const context = useContext(ThemeContext);
-
+    const token = localStorage.getItem('token');
     const handleSubmit = async () => {
         {
             setHideImport(false);
@@ -28,7 +28,7 @@ function DLSVDA() {
             }, 2000);
         }
         try {
-            const response = await userApi.importExcelSvDa(formData, context.token);
+            const response = await userApi.importExcelSvDa(formData, token);
             console.log(response);
         } catch (error) {
             console.error('Error fetching data:', error);

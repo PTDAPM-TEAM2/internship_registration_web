@@ -9,6 +9,7 @@ import { ThemeContext } from '../../../Theme/Theme.jsx';
 function DLSVTT() {
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
+    const [hideImport, setHideImport] = React.useState(true);
     const handleExcelFileChange = (event) => {
         const file = event.target.files[0];
         setExcelFile(file);
@@ -20,13 +21,14 @@ function DLSVTT() {
 
     const handleSubmit = async () => {
         {
+            setHideImport(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
             }, 2000);
         }
         try {
-            const response = await userApi.importExcelSvDa(formData, context.token);
+            const response = await userApi.importExcelSvTt(formData, context.token);
             console.log(response);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -62,8 +64,12 @@ function DLSVTT() {
                             </div>
 
                         }
-                        <label htmlFor="file" className={styles.label}>+ Nhập dữ liệu sinh viên từ Excel</label>
-                        <input className={styles.customFileInput} id="file" type="file" accept=".xlsx, .xls" onChange={handleExcelFileChange} />
+                        {hideImport &&
+                            <div>
+                                <label htmlFor="file" className={styles.label}>+ Nhập dữ liệu sinh viên từ Excel</label>
+                                <input className={styles.customFileInput} id="file" type="file" accept=".xlsx, .xls" onChange={handleExcelFileChange} />
+                            </div>
+                        }
                         <button className={styles.btn} onClick={handleSubmit}>Lưu</button>
                     </div>
                 </div>

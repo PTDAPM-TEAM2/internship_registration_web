@@ -68,16 +68,9 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
-            var userInfo = await userApi.getInfo(tk);
-            console.log(userInfo);
-            if (userInfo.id === 1) {
-              Variables.userRole = "admin";
-            } else if(userInfo.roles[0].id === 2) {
-              Variables.userRole = "teachers";
-            } else {
-              Variables.userRole = "students";
-            }
-            context.updateToken(tk);
+            // context.updateToken(tk);
+            localStorage.setItem("token", tk);
+            // toi tinh luu token len storage o day luon bo cai dong 72 di
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -116,6 +109,7 @@ function Login() {
             password: password,
           });
           console.log(tk);
+          localStorage.setItem('token', tk);
           // try {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
@@ -128,7 +122,6 @@ function Login() {
               Variables.userRole = "students";
             }
             // console.log(Variables.userRole);
-            context.updateToken(tk);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");

@@ -60,12 +60,14 @@ function DSGV() {
         navigate('/ChiTietGV-da', { state: { item } });
     }
 
+    const token = localStorage.getItem('token');
+
     const context = useContext(ThemeContext);
     const [lecturers, setLecturer] = React.useState([]);
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await lecturerApi.getAllGV(null, context.token);
+                const response = await lecturerApi.getAllGV(null, token);
                 setLecturer(response);
             } catch (error) {
                 console.error('Error fetching data:', error);

@@ -30,8 +30,11 @@ function ThemeProvider({ children }) {
     }
   }
 
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(true);
   const [token, setToken] = useState("");
+  //luu token thi day
+
+  // 
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
 
@@ -45,6 +48,7 @@ function ThemeProvider({ children }) {
     setActiveButton(newValue);
   };
   const updateToken = (newValue) => {
+    localStorage.setItem('token', token);
     setToken(newValue);
   };
   const value = {
@@ -58,7 +62,7 @@ function ThemeProvider({ children }) {
     toggle,
     updateToggle,
     token,
-    updateToken,
+    //cho nay thoi
   };
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

@@ -5,7 +5,7 @@ form {
 .inputValue{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 10px;
 }
 .title {
     width: 100%;
@@ -66,7 +66,7 @@ form {
 .infoAccount {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    gap: 10px;
     border: 1px solid black;
     padding: 15px 30px;
 }
@@ -75,6 +75,7 @@ form {
     text-align: left;
     display: flex;
     flex-direction: column;
+    height: 90px;
 }
 .txtField{
     width: 400px;
@@ -83,10 +84,11 @@ form {
 .txtFieldBot{
     width: 300px;
     padding: 10px 0;
+    
 }
 .image{
-    width: 160px;
-    height: 190px;
+    width: 150px;
+    height: 180px;
     border: 1px solid black;
     object-fit: cover;
     overflow: hidden;
@@ -96,8 +98,8 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 160px;
-    height: 190px;
+    width: 150px;
+    height: 180px;
     text-shadow: 1px 1px #fff;
     font-size: 20pt;
     background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
@@ -110,7 +112,6 @@ form {
 }
 .formAccount{
     display: flex;
-    justify-content: space-between;
     padding: 15px 30px;
     border-left: 1px solid black;
     border-right: 1px solid black;
@@ -118,6 +119,20 @@ form {
 .txtDate{
     width: 400px;
     margin: 0 10px;
+}
+
+.infoImg{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 200px;
+}
+
+.gender{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 150px;
 }
 
 /* @media (max-width: 1450px) {

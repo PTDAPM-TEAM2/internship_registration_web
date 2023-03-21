@@ -62,10 +62,10 @@ const columns = [
 
 function DSSV() {
     const navigate = useNavigate();
-
-
+    const token = localStorage.getItem('token');
+    console.log(token);
     function handleMoveAdd() {
-        navigate('/ThemSV-da');
+        navigate('/them-sinh-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -73,25 +73,23 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/ChiTietSV-da', { state: { item } });
+        navigate(`/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
     }
     
     const [students, setStudent] = React.useState([]);
 
-    const context = useContext(ThemeContext);
+    // const context = useContext(ThemeContext);
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await studentApi.getAllSvDa(null, context.token);
+                const response = await studentApi.getAllSvDa(null, token);
                 setStudent(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
-    }, [context.token]);
-
-    console.log(students);
+    }, []);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -153,7 +151,7 @@ function DSSV() {
                                                     <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell>
+                                                    {/* <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell> */}
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
                                                 </TableRow>
                                             );

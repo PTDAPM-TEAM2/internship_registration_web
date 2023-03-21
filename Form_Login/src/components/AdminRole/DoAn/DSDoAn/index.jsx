@@ -54,11 +54,11 @@ function DSDA() {
     }
 
     const [prj, setPrj] = React.useState([]);
-    
+    const token = localStorage.getItem('token');
     React.useEffect(() => {
         const getAllDoAn = async () => {
             try {
-                const response = await prjApi.getAllDa(null, context.token);
+                const response = await prjApi.getAllDa(null, token);
                 console.log(response);
             }
             catch (err) {

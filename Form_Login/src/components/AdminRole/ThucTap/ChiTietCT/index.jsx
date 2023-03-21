@@ -97,36 +97,36 @@ const ChiTietCT = () => {
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
                                     <p>Mã công ty: </p>
-                                    <TextField defaultValue={state.item.Ma} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.code} className={styles.txtField} disabled />
                                 </div>
 
                                 <div className={styles.txt}>
                                     <p>Số điện thoại: </p>
-                                    <TextField defaultValue={state.item.SĐT} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.phoneNumber} className={styles.txtField} disabled />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Địa chỉ: </p>
-                                    <TextField defaultValue={state.item.Diachi} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.address} className={styles.txtField} disabled />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Tên công ty: </p>
-                                    <TextField defaultValue={state.item.Ten} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.nameCompany} className={styles.txtField} disabled />
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Email: </p>
-                                    <TextField defaultValue={state.item.Email} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.email} className={styles.txtField} disabled />
                                 </div>
 
                                 <div className={styles.txt}>
                                     <p>Tax_Code: </p>
-                                    <TextField defaultValue={state.item.tax_code} className={styles.txtField} />
+                                    <TextField defaultValue={state.item.taxCode} className={styles.txtField} disabled />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mô tả về công ty: </p>
-                                <TextField defaultValue={state.item.mota} className={styles.txtFieldBot} multiline rows={8} />
+                                <TextField defaultValue={state.item.description} className={styles.txtFieldBot} multiline rows={8} disabled/>
                             </div>
                         </div>
                         <div className={styles.btn}>

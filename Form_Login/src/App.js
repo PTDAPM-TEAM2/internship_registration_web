@@ -31,18 +31,18 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import './App.css';
 import Layout from './components/Layout/Layout';
-import TCGV from './components/TeacherRole/TrangChuGiangVien';
+import TCGV from './components/TeacherRole/pages/TrangChuGiangVien';
 import Variables from './utils/variables';
-import TTCN from './components/TeacherRole/ThongTinCaNhan';
+import TTCN from './components/TeacherRole/pages/ThongTinCaNhan';
 import Sidebar from './components/Sidebar'
-import DSSVYC from './components/TeacherRole/DanhSachSVYeuCau';
-import DSSV from './components/TeacherRole/DanhSachSV';
-import ProjectListStudents from './components/TeacherRole/DanhSachDoAn';
-import SRequirementDetails from './components/TeacherRole/DanhSachSVYeuCau/DanhSachYCChiTiet';
-import SInformationDetails from './components/TeacherRole/DanhSachSV/DanhSachSVChiTiet';
-import PInformationDetails from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet';
-import ProcessEvaluation from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
-import PasswordChanging from './components/TeacherRole/ThongTinCaNhan/DoiMatKhau';
+import DSSVYC from './components/TeacherRole/pages/DanhSachSVYeuCau';
+import DSSV from './components/TeacherRole/pages/DanhSachSV';
+import ProjectListStudents from './components/TeacherRole/pages/DanhSachDoAn';
+import SRequirementDetails from './components/TeacherRole/pages/DanhSachSVYeuCau/DanhSachYCChiTiet';
+import SInformationDetails from './components/TeacherRole/pages/DanhSachSV/DanhSachSVChiTiet';
+import PInformationDetails from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet';
+import ProcessEvaluation from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
+import PasswordChanging from './components/TeacherRole/pages/ThongTinCaNhan/DoiMatKhau';
 import Loading from './components/Loading/Loading.js'
 import { useContext } from 'react';
 import { ThemeContext } from './components/Theme/Theme.jsx';
@@ -106,8 +106,8 @@ function App() {
                 </Route >
               </Route>
               <Route path='/ThemGV-da' element={<ThemGV />} />
-              <Route path='/ThemSV-da' element={<ThemSV />} />
-              <Route path='/ChiTietSV-da' element={<CTSV />} />
+              <Route path='/them-sinh-vien-da' element={<ThemSV />} />
+              <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
               <Route path='/ChiTietGV-da' element={<CTGV />} />
               <Route path='/ChiTietCT-tt' element={<CTCT />} />
               <Route path='/ChiTietXD' element={<CTXD />} />

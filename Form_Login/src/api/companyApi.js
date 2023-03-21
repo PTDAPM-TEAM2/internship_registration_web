@@ -2,11 +2,11 @@ import axiosClient from "./axiosClient";
 class CompanyApi {
   // lay tat ca cong ty
   getCompanies = (token) => {
-    const url = "/api/company/getAll";
+    const url = "api/company/getAll";
     return axiosClient
-    .get(url, {
+      .get(url, {
         headers: {
-          Authorization: 'Bearer' + token,
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
         },
       })
       .then((res) => res);

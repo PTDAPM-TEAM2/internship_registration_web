@@ -16,6 +16,12 @@ import { useLocation } from 'react-router-dom';
 import Variables from '../../../../utils/variables';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import studentApi from "../../../../api/studentApi";
+import MenuItem from '@mui/material/MenuItem';
+import { useParams } from 'react-router-dom';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -30,9 +36,25 @@ const style = {
 
 };
 
+
+const validationSchema = Yup.object({
+    fullName: Yup.string().required(),
+    email: Yup.string().email().required(),
+    gender: Yup.string().required(),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
+    dateOfBirth: Yup.date().max(new Date()).required(),
+    // placeOfBitrh: Yup.string().required(),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
+    studentCode: Yup.string().required(),
+    grade: Yup.object().required(),
+    // semester: Yup.string().required(),
+    password: Yup.string().required(),
+});
+
 const ChiTietSV = () => {
     const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const [date, setDate] = React.useState(dayjs());
@@ -40,99 +62,228 @@ const ChiTietSV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const handleSubmit = () => {
-        setShowAlert(true);
-        setTimeout(() => {
-            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-            setShowAlert(false);
-        }, 1000)
-    }
+    const { id } = useParams()
 
-    function handleGo() {
-        setOpen(false);
-        setTimeout(() => {
-            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-        }, 500)
-    }
+    const initialValues = {
+        urlImg: state.item.urlImg || '',
+        fullName: state.item.fullName || '',
+        gender: state.item.gender || '',
+        idNumber: state.item.idNumber || '',
+        dateOfBirth: new Date(state.item.dateOfBirth) || '',
+        placeOfBitrh: state.item.placeOfBitrh || '',
+        phoneNumber: state.item.phoneNumber || '',
+        email: state.item.email || '',
+        studentCode: state.item.studentCode || '',
+        grade: {
+            id: state.item.grade.id,
+            name: state.item.grade.name,
+            students: state.item.grade.students
+        },
+        semester: state.item.semester || '',
+        //van de quan trong
+        password: '********',
+    };
 
-    const handleDelete = (item) => {
-        Variables.studentList = Variables.studentList.filter(i => (i.Hoten !== item.Hoten));
-        // console.log(item.Hoten);
-        // setShowAlert(true);
-        navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-    }
+
+    const token = localStorage.getItem('token');
+    const [grades, setGrade] = React.useState([]);
+    React.useEffect(() => {
+        const getGrade = async () => {
+            try {
+                const response = await studentApi.getGrade(token);
+                setGrade(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getGrade()
+    }, []);
+
+
+
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            try {
+                const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
+                setShowAlert(true);
+                setTimeout(() => {
+                    setShowAlert(false);
+                    navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+                }, 2000)
+            } catch (error) {
+                console.error(error);
+            }
+        },
+    })
+
+    const handleDelete = async () => {
+        try {
+            const response = await studentApi.deleteSVDA(state.item.id);
+            setOpen(false);
+            setShowAlertD(true);
+            setTimeout(() => {
+                setShowAlertD(false);
+                navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+            }, 1000)
+        }
+        catch (error) {
+            console.error('Error deleting data: ', error);
+        };
+    };
+
+
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết sinh viên</p>
-                    <form>
+                    <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount}>
-                            <div>
-                                <div className={styles.txt}>
+                            <div className={styles.infoImg}>
+                                <div >
                                     <div className={styles.image}>
                                         <img src={state.item.urlImg} alt='avatar' style={{ maxWidth: '100%' }} />
                                     </div>
                                 </div>
-                                <div className={styles.txt}>
-                                    <p>Giới tính: </p>
-                                    <TextField defaultValue={state.item.gender} required />
+                                <div className={styles.gender}>
+                                    <label htmlFor="gender">Giới tính: </label>
+                                    <TextField
+                                        id="gender"
+                                        name="gender"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.gender}
+                                        error={formik.touched.gender && Boolean(formik.errors.gender)}
+                                    />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
-                                    <p>Họ tên: </p>
-                                    <TextField defaultValue={state.item.fullName} className={styles.txtField} />
+                                    <label htmlFor='fullName'>Họ tên: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id='fullName'
+                                        name='fullName'
+                                        onChange={formik.handleChange}
+                                        value={formik.values.fullName}
+                                        error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Số căn cước: </p>
-                                    <TextField defaultValue={state.item.idNumber} className={styles.txtField} />
+                                    <label htmlFor='idNumber'>Số căn cước: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="idNumber"
+                                        name="idNumber"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.idNumber}
+                                        error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Ngày sinh: </p>
+                                    <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} />}
-                                            value={state.item.dateOfBirth}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
+                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} value={new Date(formik.values.dateOfBirth)} />}
+                                            value={formik.values.dateOfBirth}
+                                            onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs()}
+                                            maxDate={new Date()}
+                                            error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                         />
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Nơi sinh: </p>
-                                    <TextField defaultValue={state.item.placeOfBirth} className={styles.txtField} />
+                                    <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="placeOfBitrh"
+                                        name="placeOfBitrh"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.placeOfBitrh}
+                                        error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Số điện thoại: </p>
-                                    <TextField defaultValue={state.item.phoneNumber} className={styles.txtField} />
+                                    <label htmlFor='phoneNumber'>Số điện thoại: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.phoneNumber}
+                                        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Email: </p>
-                                    <TextField defaultValue={state.item.email} className={styles.txtField} />
+                                    <label htmlFor='email'>Email: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="email"
+                                        name="email"
+                                        value={formik.values.email}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.email && Boolean(formik.errors.email)}
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã sinh viên: </p>
-                                <TextField defaultValue={state.item.studentCode} className={styles.txtFieldBot} />
+                                <label htmlFor='studentCode'>Mã sinh viên: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="studentCode"
+                                    name="studentCode"
+                                    value={formik.values.studentCode}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
+                                    disabled
+                                />
                             </div>
                             <div className={styles.txt}>
-                                <p>Lớp: </p>
-                                <TextField defaultValue={state.item.grade.name} className={styles.txtFieldBot} />
+                                <label htmlFor='grade'>Lớp: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    select
+                                    id='grade'
+                                    name='grade'
+                                    value={formik.values.grade.name}
+                                    onChange={formik.handleChange}
+                                >
+                                    {grades.map((grade) => (
+                                        <MenuItem key={grade.id} value={grade.name}>
+                                            {grade.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <p>Kỳ: </p>
-                                <TextField defaultValue={state.item.internship} className={styles.txtFieldBot} />
+                                <label htmlFor='semester'>Kỳ: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="semester"
+                                    name="semester"
+                                    value={formik.values.semester}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.semester && Boolean(formik.errors.semester)}
+                                />
                             </div>
                             <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField defaultValue='********' className={styles.txtFieldBot} type='password'/>
+                                <label htmlFor='password'>Mật khẩu: </label>
+                                <TextField
+                                    defaultValue='********'
+                                    className={styles.txtFieldBot}
+                                    id="password"
+                                    name="password"
+                                    // value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.password && Boolean(formik.errors.password)}
+                                    type='password'
+                                // disabled
+                                />
                             </div>
                             <div className={styles.txt}>
                                 <p>Tên đề tài đồ án: </p>
@@ -144,8 +295,8 @@ const ChiTietSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <Button className={styles.button} onClick={handleSubmit}>Sửa</Button>
-                            <Button className={styles.button} onClick={() => { handleDelete(state.item)}}>Xóa</Button>
+                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
                 </div>
@@ -161,7 +312,7 @@ const ChiTietSV = () => {
                         Có muốn xóa không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleGo}>Có</button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleDelete}>Có</button>
                         <button className={styles.button} sx={{ color: 'white' }} onClick={handleClose}>Không</button>
                     </div>
                 </Box>
@@ -175,6 +326,18 @@ const ChiTietSV = () => {
                         right: '2%'
                     }}>
                         <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
+                    </Alert>
+                </div>}
+
+            {showAlertD &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xóa thông tin sinh viên thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>
