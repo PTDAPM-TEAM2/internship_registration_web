@@ -1,7 +1,8 @@
-import axiosClient from "../axiosClient";
+import axiosClient from "./axiosClient";
+
 class GraduationThesis {
   // dang ky do an
-  addGraduation = (params, token) => {
+  addOrRemoveGraduation = (params, token) => {
     // params = {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
     const url = "/api/graduationthesis/save";
     return axiosClient
@@ -55,6 +56,25 @@ class GraduationThesis {
       .then((res) => res);
     // return res, méo biết trả về j, file danh sách api ko thấy nói nên cứ check cả data với status code
   };
+
+  weeklyTeacherSaving = (params, token) => {
+    const url = '/api/weeklyreview/save'
+    return axiosClient
+      .post(url, params, {
+        headers: {
+          Authorization: "Bearer " + token,
+        }
+      }).then((res) => res);
+  }
+
+  weeklyTeacherReview = (id, token) => {
+    const url = `/api/weeklyreview/getAllByGraduationThesisId/`;
+    return axiosClient.get(url + id, {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }).then((res) => res);
+  }
 }
 
 const graduationThesis = new GraduationThesis();

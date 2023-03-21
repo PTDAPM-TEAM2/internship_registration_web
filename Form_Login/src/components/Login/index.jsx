@@ -118,7 +118,6 @@ function Login() {
               Variables.userRole = "admin";
             }
             // console.log(Variables.userRole);
-            context.updateToken(tk);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
