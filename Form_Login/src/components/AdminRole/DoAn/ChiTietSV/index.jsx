@@ -43,17 +43,18 @@ const validationSchema = Yup.object({
     gender: Yup.string().required(),
     idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
     dateOfBirth: Yup.date().max(new Date()).required(),
-    placeOfBirth: Yup.string().required(),
+    // placeOfBitrh: Yup.string().required(),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
     studentCode: Yup.string().required(),
     grade: Yup.object().required(),
-    semester: Yup.string().required(),
+    // semester: Yup.string().required(),
     password: Yup.string().required(),
 });
 
 const ChiTietSV = () => {
     const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const [date, setDate] = React.useState(dayjs());
@@ -61,29 +62,7 @@ const ChiTietSV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const {id} = useParams()
-
-    const handleSubmit = () => {
-        setShowAlert(true);
-        setTimeout(() => {
-            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-            setShowAlert(false);
-        }, 1000)
-    }
-
-    function handleGo() {
-        setOpen(false);
-        setTimeout(() => {
-            navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-        }, 500)
-    }
-
-    const handleDelete = (item) => {
-        Variables.studentList = Variables.studentList.filter(i => (i.Hoten !== item.Hoten));
-        // console.log(item.Hoten);
-        // setShowAlert(true);
-        navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-    }
+    const { id } = useParams()
 
     const initialValues = {
         urlImg: state.item.urlImg || '',
@@ -91,7 +70,7 @@ const ChiTietSV = () => {
         gender: state.item.gender || '',
         idNumber: state.item.idNumber || '',
         dateOfBirth: new Date(state.item.dateOfBirth) || '',
-        placeOfBirth: state.item.placeOfBirth || '',
+        placeOfBitrh: state.item.placeOfBitrh || '',
         phoneNumber: state.item.phoneNumber || '',
         email: state.item.email || '',
         studentCode: state.item.studentCode || '',
@@ -99,13 +78,12 @@ const ChiTietSV = () => {
             id: state.item.grade.id,
             name: state.item.grade.name,
             students: state.item.grade.students
-        } ,
+        },
         semester: state.item.semester || '',
         //van de quan trong
         password: '********',
     };
 
-    console.log(state.item.grade.name);
 
     const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
@@ -114,7 +92,6 @@ const ChiTietSV = () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
-                console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -122,16 +99,17 @@ const ChiTietSV = () => {
         getGrade()
     }, []);
 
+
+
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-
             try {
-                // values.dateOfBirth = new Date(values.dateOfBirth);
-                // console.log( values.dateOfBirth);
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
+                setShowAlert(true);
                 setTimeout(() => {
+                    setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
@@ -139,6 +117,21 @@ const ChiTietSV = () => {
             }
         },
     })
+
+    const handleDelete = async () => {
+        try {
+            const response = await studentApi.deleteSVDA(state.item.id);
+            setOpen(false);
+            setShowAlertD(true);
+            setTimeout(() => {
+                setShowAlertD(false);
+                navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+            }, 1000)
+        }
+        catch (error) {
+            console.error('Error deleting data: ', error);
+        };
+    };
 
 
     return (
@@ -203,14 +196,14 @@ const ChiTietSV = () => {
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
-                                    <label htmlFor='placeOfBirth'>Nơi sinh: </label>
+                                    <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
                                     <TextField
                                         className={styles.txtField}
-                                        id="placeOfBirth"
-                                        name="placeOfBirth"
+                                        id="placeOfBitrh"
+                                        name="placeOfBitrh"
                                         onChange={formik.handleChange}
-                                        value={formik.values.placeOfBirth}
-                                        error={formik.touched.placeOfBirth && Boolean(formik.errors.placeOfBirth)}
+                                        value={formik.values.placeOfBitrh}
+                                        error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -302,8 +295,8 @@ const ChiTietSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit' onClick={() => console.log(formik.values, formik.errors)}>Sửa</button>
-                            <Button className={styles.button} onClick={() => { handleDelete(state.item) }}>Xóa</Button>
+                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
                 </div>
@@ -319,7 +312,7 @@ const ChiTietSV = () => {
                         Có muốn xóa không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleGo}>Có</button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleDelete}>Có</button>
                         <button className={styles.button} sx={{ color: 'white' }} onClick={handleClose}>Không</button>
                     </div>
                 </Box>
@@ -333,6 +326,18 @@ const ChiTietSV = () => {
                         right: '2%'
                     }}>
                         <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
+                    </Alert>
+                </div>}
+
+            {showAlertD &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xóa thông tin sinh viên thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>

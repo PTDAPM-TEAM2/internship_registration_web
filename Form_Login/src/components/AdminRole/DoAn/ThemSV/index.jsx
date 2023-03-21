@@ -28,7 +28,7 @@ const initialValues = {
     gender: '',
     idNumber: '',
     dateOfBirth: new Date(),
-    placeOfBirth: '',
+    placeOfBitrh: '',
     phoneNumber: '',
     email: '',
     studentCode: '',
@@ -43,7 +43,7 @@ const validationSchema = Yup.object({
     gender: Yup.string().required(),
     idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
     dateOfBirth: Yup.date().max(new Date()).required(),
-    placeOfBirth: Yup.string().required(),
+    placeOfBitrh: Yup.string().required(),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
     studentCode: Yup.string().required(),
     grade: Yup.object().required(),
@@ -133,7 +133,6 @@ const ThemSV = () => {
                                 <div className={styles.gender}>
                                     <label htmlFor="gender">Giới tính: </label>
                                     <TextField
-
                                         id="gender"
                                         name="gender"
                                         onChange={formik.handleChange}
@@ -187,15 +186,15 @@ const ThemSV = () => {
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
-                                    <label htmlFor='placeOfBirth'>Nơi sinh: </label>
+                                    <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
                                     <TextField
 
                                         className={styles.txtField}
-                                        id="placeOfBirth"
-                                        name="placeOfBirth"
+                                        id="placeOfBitrh"
+                                        name="placeOfBitrh"
                                         onChange={formik.handleChange}
-                                        value={formik.values.placeOfBirth}
-                                        error={formik.touched.placeOfBirth && Boolean(formik.errors.placeOfBirth)}
+                                        value={formik.values.placeOfBitrh}
+                                        error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -299,7 +298,7 @@ const ThemSV = () => {
                         <div className={styles.btn}>
                             <button className={styles.button} type="submit" onClick={() => {
                                 setShowAlert(true);
-                                console.log(formik.values);
+                                console.log(typeof(formik.errors));
                                 setTimeout(() => {
                                     setShowAlert(false);
                                 }, 2000)
@@ -312,13 +311,13 @@ const ThemSV = () => {
             </div>
             {showAlert &&
                 <div>
-                    <Alert severity={formik.errors === null ? 'success' : 'error'} sx={{
+                    <Alert severity={formik.values === {} ? 'success' : 'error'} sx={{
                         position: 'absolute',
                         width: '40%',
                         bottom: '0',
                         right: '2%'
                     }}>
-                        <AlertTitle>{formik.errors === null ? 'Thêm thông tin sinh viên thành công !' : 'Vui lòng điền đầy đủ thông tin!'}</AlertTitle>
+                        <AlertTitle>{formik.errors === {} ? 'Thêm thông tin sinh viên thành công !' : 'Vui lòng điền đầy đủ thông tin!'}</AlertTitle>
                     </Alert>
                 </div>
 

@@ -109,7 +109,6 @@ function Sidebar() {
     }
 
     const {id} = useParams()
-    console.log(id);
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
