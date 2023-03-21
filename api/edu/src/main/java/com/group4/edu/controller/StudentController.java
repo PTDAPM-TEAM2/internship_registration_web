@@ -78,22 +78,23 @@ public class StudentController {
 
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @RequestMapping(value = "/import-excel-da", method = RequestMethod.POST)
-    public ResponseEntity<?> addEmpByExcel(@RequestBody MultipartFile file) throws IOException {
+    @PostMapping(value = "/import-excel-da")
+    public ResponseEntity<?> addEmpByExcel(@RequestPart MultipartFile file) throws IOException {
         ResponseImportExcelStudentDto result = studentService.importExcel(file);
         return new ResponseEntity<>(result, result == null? HttpStatus.BAD_REQUEST:HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/get-st-da-by-search")
+    @PostMapping(value = "/get-st-da-by-search")
     public List<StudentDto> GetStDa(@RequestBody(required = false) StudentSearchDto studentSearchDto){
         return studentService.getStDaBySearch(studentSearchDto,1);
     }
 
-    @RequestMapping(value = "/get-st-tt-by-search")
+    @PostMapping(value = "/get-st-tt-by-search")
     public List<StudentDto> GetStTT(@RequestBody(required = false) StudentSearchDto studentSearchDto){
         return studentService.getStDaBySearch(studentSearchDto,2);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/tt/{id}")
     public ResponseEntity<?> deleteStTT(@PathVariable Long id){
         return new ResponseEntity<>(studentService.deleteStTT(id),HttpStatus.OK);

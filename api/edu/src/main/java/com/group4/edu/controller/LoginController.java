@@ -4,6 +4,7 @@ import com.group4.edu.EduConstants;
 import com.group4.edu.domain.Account;
 import com.group4.edu.domain.Role;
 import com.group4.edu.domain.User;
+import com.group4.edu.dto.AccloginDto;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.ResponseToken;
 import com.group4.edu.dto.RoleDto;
@@ -40,10 +41,13 @@ public class LoginController {
     private RoleRepository roleRepository;
 
     @RequestMapping(value = "/login-da", method = RequestMethod.POST)
-    public ResponseEntity<?> loginDa(HttpServletRequest request, @RequestBody AccountDto accountDto) {
+    public ResponseEntity<?> loginDa(HttpServletRequest request, @RequestBody AccloginDto accountDto1) {
         ResponseToken result = new ResponseToken();
         HttpStatus httpStatus = null;
         try {
+            AccountDto accountDto = new AccountDto();
+            accountDto.setUsername(accountDto1.getUsername());
+            accountDto.setPassword(accountDto1.getPassword());
             if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_DA.getKey())) {
                 String token = jwtService.generateTokenLogin(accountDto.getUsername());
                 if (accountService.saveTokenByUsername(token, accountDto.getUsername())) {
@@ -67,9 +71,12 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login-tt", method = RequestMethod.POST)
-    public ResponseEntity<?> loginTt(HttpServletRequest request, @RequestBody AccountDto accountDto) {
+    public ResponseEntity<?> loginTt(HttpServletRequest request, @RequestBody AccloginDto accountDto1) {
         ResponseToken result = new ResponseToken();
         HttpStatus httpStatus = null;
+        AccountDto accountDto = new AccountDto();
+        accountDto.setUsername(accountDto1.getUsername());
+        accountDto.setPassword(accountDto1.getPassword());
         try {
             if (accountService.checkLogin(accountDto,EduConstants.Role.ROLESTUDENT_TT.getKey())) {
                 String token = jwtService.generateTokenLogin(accountDto.getUsername());

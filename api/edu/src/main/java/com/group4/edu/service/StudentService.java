@@ -16,4 +16,5 @@ public interface StudentService {
     List<StudentDto> getStDaBySearch(StudentSearchDto dto, int type);
 
     boolean deleteStTT(Long id);
+    boolean deleteStDa(Long id);
 }

@@ -21,6 +21,10 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
             " where e.student.id = ?1 and e.semester.active = true")
     List<GraduationThesis> getGraduationThesisByStId(Long stId);
 
+    @Query("select e from GraduationThesis e" +
+            " where e.lecturer.id = ?1 and e.semester.active = true")
+    List<GraduationThesis> getGraduationThesisByLecturerId(Long ltId);
+
     @Query("select count(gr.id) from GraduationThesis gr inner join Lecturer le on gr.lecturer.id = le.id " +
             " where (gr.status = 1 or gr.status = 2) and le.id = :lecturerId" +
             " group by le.id")

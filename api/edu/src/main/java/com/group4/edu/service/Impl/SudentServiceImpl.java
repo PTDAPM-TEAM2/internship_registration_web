@@ -23,10 +23,7 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -90,6 +87,8 @@ public class SudentServiceImpl implements StudentService {
                 throw new Exception("Trùng mã sinh vieen: "+studentDto.getStudentCode());
             }
         }
+        entity.setIdNumber(studentDto.getIdNumber());
+        entity.setPlaceOfBirth(studentDto.getPlaceOfBitrh());
         entity.setStudentCode(studentDto.getStudentCode());
         entity.setUserType(EduConstants.UserType.STUDENT.getValue());
         entity.setFullName(studentDto.getFullName());
@@ -296,18 +295,61 @@ public class SudentServiceImpl implements StudentService {
         return studentDtos;
     }
 
+    @Transactional
     @Override
     public boolean deleteStTT(Long id) {
         Student student = studentRepository.findById(id).orElse(null);
-        if(student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())){
+        if(student == null){
+            return false;
+        }
+        if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
+            return true;
+        }else  if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue())) {
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+            System.out.println("a");
+            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByStId(student.getId());
+            thesisRepository.deleteAll(graduationThesises);
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
+            return true;
+        } else if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
             accountRepository.delete(account);
 
             List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
             intershipRepository.deleteAll(internships);
 
-            studentRepository.deleteById(student.getId());
-            System.out.println(student.getId());
+            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByStId(student.getId());
+            thesisRepository.deleteAll(graduationThesises);
+
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteStDa(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student == null){
+            return false;
+        }
+        if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
+            Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
+            accountRepository.delete(account);
+            List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
+            intershipRepository.deleteAll(internships);
+            if (studentRepository.existsById(student.getId()))
+                studentRepository.deleteById(student.getId());
             return true;
         }
         if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
@@ -315,11 +357,7 @@ public class SudentServiceImpl implements StudentService {
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
             if(account != null){
                 Set<Role> roleSet = account.getRoles();
-                for(Role role: roleSet){
-                    if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
-                        roleSet.remove(role);
-                    }
-                }
+                roleSet.removeIf(role -> role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()));
             }
             List<Internship> internships = intershipRepository.getInternshipByStudentId(student.getId());
             intershipRepository.deleteAll(internships);

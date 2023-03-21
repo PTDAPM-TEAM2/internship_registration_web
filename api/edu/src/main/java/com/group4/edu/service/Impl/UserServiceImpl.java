@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private GraduationThesisRepository thesisRepository;
     @Autowired
     private IntershipRepository intershipRepository;
+
     @Override
     public List<UserDto> getAll() {
         return null;
@@ -47,32 +48,46 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getUserByUsernamefromAccount(username).orElse(null);
         Set<Role> roles = new HashSet<>();
         Account account = accountRepository.findByUsername(username);
-//        if(account.getAccountRoleSet() != null){
-//            for(AccountRole accountRole: account.getAccountRoleSet()){
-//                roles.add(accountRole.getRole());
-//            }
-//        }
-        if(user != null && user.getUserType() != null && user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())){
-            UserDto userDto = new UserDto(user,roles);
+        // if(account.getAccountRoleSet() != null){
+        // for(AccountRole accountRole: account.getAccountRoleSet()){
+        // roles.add(accountRole.getRole());
+        // }
+        // }
+        if (user != null && user.getUserType() != null
+                && user.getUserType().equals(EduConstants.UserType.ADMIN.getValue())) {
+            UserDto userDto = new UserDto(user, roles);
             userDto.setAdmin(true);
             return userDto;
         }
-        if(user.getUserType().equals(EduConstants.UserType.LECTURERS.getValue())){
+        if (user.getUserType().equals(EduConstants.UserType.LECTURERS.getValue())) {
             Lecturer lecturer = lecturerRepository.findById(user.getId()).orElse(null);
-            LecturerDto lecturerDto = new  LecturerDto(lecturer,roles);
+            LecturerDto lecturerDto = new LecturerDto(lecturer, roles);
             lecturerDto.setLecturer(true);
             return lecturerDto;
         }
-        if(user.getUserType().equals(EduConstants.UserType.STUDENT.getValue())){
+        if (user.getUserType().equals(EduConstants.UserType.STUDENT.getValue())) {
             Student student = studentRepository.findById(user.getId()).orElse(null);
             StudentDto studentDto = new StudentDto(student, roles);
             studentDto.setStudent(true);
             List<GraduationThesis> graduationThesiss = thesisRepository.getGraduationThesisByStId(student.getId());
-            studentDto.setGraduationThesis(graduationThesiss.size()>0?new GraduationThesisDto(graduationThesiss.get(0),true):null);
-            List<Internship> internships = intershipRepository.getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(),student.getId());
-            studentDto.setInternship(internships.size()>0?new InternshipDto(internships.get(0), true):null);
+            studentDto.setGraduationThesis(
+                    graduationThesiss.size() > 0 ? new GraduationThesisDto(graduationThesiss.get(0), true) : null);
+            List<Internship> internships = intershipRepository
+                    .getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(), student.getId());
+            studentDto.setInternship(internships.size() > 0 ? new InternshipDto(internships.get(0), true) : null);
             return studentDto;
         }
         return null;
     }
+
+    @Override
+    public boolean delete(Long id) {
+        try {
+            userRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

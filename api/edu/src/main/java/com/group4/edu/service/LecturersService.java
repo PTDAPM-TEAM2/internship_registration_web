@@ -9,4 +9,5 @@ public interface LecturersService {
     LecturerDto saveOrUpdate(LecturerDto dto, Long id) throws Exception;
     List<LecturerDto> getAll();
     List<LecturerDto> getGraduationThesis(SearchObjectDto dto);
+   boolean deleteLt(Long id);
 }

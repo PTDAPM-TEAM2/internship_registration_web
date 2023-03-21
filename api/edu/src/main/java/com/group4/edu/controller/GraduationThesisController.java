@@ -9,6 +9,7 @@ import com.group4.edu.service.RegisterTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,5 +71,11 @@ public class GraduationThesisController {
     @PostMapping("/setLecturerToStudent")
     public List<GraduationThesisDto> setLecturerToStudent(@RequestBody LecturerStudentsDto dto){
         return graduationThesisService.setLecturerToStudent(dto);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        return new ResponseEntity<>(graduationThesisService.delete(id),HttpStatus.OK);
     }
 }

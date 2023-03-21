@@ -17,4 +17,6 @@ public interface GraduationThesisService {
 
     GraduationThesisDto getByStudentId(Long id);
 
+    boolean delete(Long id);
+
 }

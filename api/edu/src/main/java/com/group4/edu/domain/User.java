@@ -7,22 +7,23 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tbl_user")
-@Inheritance(
-        strategy = InheritanceType.JOINED
-)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseObject {
+    private String IdNumber;
+
     private String firstName;
     private String lastName;
     private String fullName;
     private String email;
     private Date dateOfBirth;
+    private String placeOfBirth;
     private String address;
     private String gender;
     private String phoneNumber;
     private Integer userType;
     private String urlImg;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Account account;
 
     public String getFullName() {
@@ -111,5 +112,21 @@ public class User extends BaseObject {
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
+    }
+
+    public String getIdNumber() {
+        return IdNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        IdNumber = idNumber;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 }
