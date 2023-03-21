@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 // import styles from 'Information.module.css';
-import styles from '../ThongTinCaNhan/Information.module.css';
-import Sidebar from '../../Sidebar';
+import styles from './Information.module.css';
+import Sidebar from '../../../Sidebar';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -11,35 +11,36 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import userApi from '../../../../api/authApi';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 const TTCN = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
-    const [date, setDate] = React.useState(dayjs());
+    // const [date, setDate] = React.useState(dayjs());
       // Declare a state variable for data
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const context = useContext(ThemeContext);
+
+    // const [loading, setLoading] = useState(true);
 
     // Use useEffect hook to fetch data when the component mounts
     useEffect(() => {
       // Define an async function that calls the API
-    async function fetchData() {
-      try {
-        // Make a GET request with Axios
-        const response = await axios.get("https://641028d1864814e5b648f368.mockapi.io/students");
-        // Store the response data in the state variable
-        setTimeout(() => {
-          setData(response.data);
-          setLoading(false)
-        }, 200);
-      } catch (error) {
-        // Handle error
-        console.error(error);
+      const fetchData = async () => {
+        try {
+          // Make a GET request with Axios
+          const response = await userApi.getInfo(context.token);
+          // Store the response data in the state variable
+          setData(response);
+        } catch (error) {
+          // Handle error
+          console.error(error);
+        }
       }
-    }
-    // Invoke the async function
-    fetchData();
+      // Invoke the async function
+      fetchData();
   }, []); // Pass an empty dependency array to run only once
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
@@ -86,14 +87,7 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
-    
-
-    const teacherProfile = [];
-    data.map((value) => {
-        if(value !== null){
-            teacherProfile.push(value);
-        }
-    })
+    console.log(`tvv-data: ${data.placeOfBitrh}`);
 
     const navigate = useNavigate();
 
@@ -112,7 +106,7 @@ const TTCN = () => {
                                 <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src={teacherProfile.length === 0 ? '' : teacherProfile[29]['profileImage']} alt="" />
+                                            <img className={styles.userProfile} src={data.urlImg} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -137,7 +131,7 @@ const TTCN = () => {
                                         className={styles.txtGender}
                                         id="gender"
                                         name="gender"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['gender']}
+                                        defaultValue={data.gender}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -152,7 +146,7 @@ const TTCN = () => {
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['name']}
+                                        defaultValue={data.fullName}
                                     />
                                 </div>
                                 {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
@@ -162,7 +156,7 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['passport']}
+                                        defaultValue={'82734183289'}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -173,7 +167,7 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['dateOfBirth'].substr(0,5)}
+                                        defaultValue={data.dateOfBirth}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -184,7 +178,7 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="pob"
                                         name="pob"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['address']}
+                                        defaultValue={data.placeOfBitrh}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -195,7 +189,7 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="phone"
                                         name="phone"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['numberPhone']}
+                                        defaultValue={data.phoneNumber}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -209,7 +203,7 @@ const TTCN = () => {
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['email']}
+                                        defaultValue={data.email}
                                     />
                                 </div>
                             </div>
@@ -217,19 +211,19 @@ const TTCN = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã giáo viên: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['id']}/>
+                                <TextField className={styles.txtField} defaultValue={data.idNumber}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['major']}/>
+                                <TextField className={styles.txtField} defaultValue={'CNTT'}/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['password']}/>
+                                <TextField className={styles.txtField} defaultValue={'************'}/>
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting} onClick= {() => {toComponent(teacherProfile[29]['password'])}}>Đổi mật khẩu</button>
+                            <button className={styles.button} disabled={formik.isSubmitting} onClick= {() => {toComponent(data)}}>Đổi mật khẩu</button>
                         </div>
                     </form>
                 </div>

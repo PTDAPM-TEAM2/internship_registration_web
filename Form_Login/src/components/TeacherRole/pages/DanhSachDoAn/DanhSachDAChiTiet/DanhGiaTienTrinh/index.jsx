@@ -8,17 +8,38 @@ import AlertTitle from '@mui/material/AlertTitle';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useLocation } from 'react-router-dom';
+import teacherRoleController from '../../../../controller/TeacherRoleController';
+import { ThemeContext } from '../../../../../Theme/Theme.jsx'; 
+import { useContext } from 'react';
+
+const body = {
+
+}
+
 const ProcessEvaluation = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const location = useLocation()
     const navigate = useNavigate()
+    const [date, setDate] = React.useState(new Date());
     const state = location.state;
-    console.log(`aaa ${state.item.name}`);
+    const context = useContext(ThemeContext);
+    console.log(`aaa ${state.data1.student.fullName}`);
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
-        setSubmitting(false);
-    }
+    // const handleSubmit = (values, { setSubmitting }) => {
+    //     console.log(values);
+    //     setSubmitting(false);
+    // }
+
+    // React.useEffect(() => {
+    //     const addWeeklyTeacherReview = async () => {
+    //         try{
+    //             
+    //         }catch(err){
+    //             console.log(err);
+    //         }
+    //     }
+    //     teacherRoleController.getWeeklyTeacherReview(body, context.token);    
+    // }, [])
 
     function handleGo() {
         setShowAlert(true);
@@ -28,15 +49,14 @@ const ProcessEvaluation = () => {
         }, 1000)
     }
 
+    // body.title = 
+
     const initialValues = {
-        image: '',
-        name: '',
-        gender: '',
-        idCard: '',
-        dob: '',
-        pob: '',
-        phone: '',
-        email: '',
+        title: null,
+        content: null,
+        graduationThesis:{
+            id: 2
+        }
     };
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
@@ -55,15 +75,22 @@ const ProcessEvaluation = () => {
 
     });
 
+    initialValues.title = date.toLocaleDateString();
+
     const formik = useFormik({
         initialValues,
         validation,
-        onSubmit: handleSubmit,
+        onSubmit: async (values) => {
+            try{
+                await teacherRoleController.addWeeklyTeacherReview(values, context.token)
+            }catch(err){
+                console.log(err);
+            }
+        },
     })
-
-    // const {item} = props.location.state;
-    // console.log(item);
-
+    initialValues.content = formik.values.content;
+    console.log(`date: ${initialValues.title}`);
+    console.log(`values: ${initialValues.content}`);
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
@@ -74,12 +101,12 @@ const ProcessEvaluation = () => {
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.formtitle}>
                                 <div className={styles.titleLeft}>
-                                    <p><b>Đề tài: </b>{state.item.topic}</p>
-                                    <p><b>Kỳ: </b>12/2022 - {state.item.period.substr(0, 4)}</p>
+                                    <p><b>Đề tài: </b>{state.data1.nameGraduationThesis}</p>
+                                    <p><b>Kỳ: </b>{state.data1.semester.code}</p>
                                 </div>
                                 <div className={styles.titleRight}>
-                                    <p><b>Tên sinh viên: </b>{state.item.name}</p>
-                                    <p><b>Mã sinh viên: </b>{state.item.idsv}</p>
+                                    <p><b>Tên sinh viên: </b>{state.data1.student.fullName}</p>
+                                    <p><b>Mã sinh viên: </b>{state.data1.student.studentCode}</p>
                                 </div>
                                 
                             </div>
@@ -88,11 +115,10 @@ const ProcessEvaluation = () => {
                                 <textarea
                                     className={styles.txtContent}
                                     id="content"
-                                    defaultValue={state.item.content}
                                     name="content"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                        // value={formik.values.gender}
+                                    value={formik.values.content}
                                 />
                             </div>
                         </div>

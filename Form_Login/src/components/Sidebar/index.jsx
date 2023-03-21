@@ -23,6 +23,7 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import styles from './Sidebar.module.css';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import Home from '@mui/icons-material/Home';
@@ -32,6 +33,7 @@ import { bool } from 'yup';
 import {useNavigate} from 'react-router-dom';
 
 import { ThemeContext } from '../Theme/Theme.jsx';
+import userApi from '../../api/authApi';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -106,6 +108,24 @@ function Sidebar() {
         navigate('/dang-nhap');
         context.updateAuth(false);
     }
+
+
+    const [data, setData] = React.useState([]);
+        // Use useEffect hook to fetch data when the component mounts
+    React.useEffect(() => {
+
+        const currentUser = async () => {
+            try{
+                const response = await userApi.getInfo(context.token);
+                setData(response);
+            }catch(err){
+                console.error(err);
+            }
+        }
+        currentUser();
+    }, []); // Pass an empty dependency array to run only once
+
+    console.log(`tvv-data: ${data}`);
 
 
     return (
@@ -212,7 +232,7 @@ function Sidebar() {
                     }}
                 >
                     <Avatar
-                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                        src={data.urlImg}
                         sx={{
                             width: 150,
                             height: 150,
@@ -220,8 +240,7 @@ function Sidebar() {
                         }}
                     />
                     <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>{
-                        check === 'admin' ?
-                            "ADMIN" : Variables.userRole === 'teachers' ? 'GIANG VIEN' : 'SINH VIEN'
+                        data.fullName
                     }</h1>
 
                 </Stack>

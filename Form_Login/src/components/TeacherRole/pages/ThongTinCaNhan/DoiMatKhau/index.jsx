@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 import { TextField } from '@mui/material';
-import imageLock from '../../../../images/lock.png';
+import imageLock from '../../../../../images/lock.png';
 
 import axios from 'axios';
 const PasswordChanging = () => {

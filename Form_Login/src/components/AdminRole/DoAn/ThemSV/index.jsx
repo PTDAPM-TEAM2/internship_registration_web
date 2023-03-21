@@ -294,8 +294,9 @@ const ThemSV = () => {
                         <div className={styles.btn}>
                             <button className={styles.button} type="submit" onClick={() => {
                                 setShowAlert(true);
+                                console.log(formik.values);
                                 setTimeout(() => {
-                                    showAlert(false);
+                                    setShowAlert(false);
                                 }, 2000)
                             }}>Thêm</button>
                         </div>
