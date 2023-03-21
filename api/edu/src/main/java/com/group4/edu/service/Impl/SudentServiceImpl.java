@@ -80,7 +80,7 @@ public class SudentServiceImpl implements StudentService {
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
             isNewAccount = false;
         }
-        if(isNewAccount){
+        if(entity == null){
             if(studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(),studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(),studentType)){
                 throw new Exception("Đã có sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
             }
