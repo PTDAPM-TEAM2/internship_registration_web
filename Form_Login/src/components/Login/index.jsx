@@ -68,6 +68,15 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
+            var userInfo = await userApi.getInfo(tk);
+            console.log(userInfo);
+            if (userInfo.id === 1) {
+              Variables.userRole = "admin";
+            } else if(userInfo.id === 2) {
+              Variables.userRole = "teachers";
+            } else if(userInfo.id === 3) {
+              Variables.userRole = "students";
+            }
             context.updateToken(tk);
             setShowAlert(true);
             context.updateAuth(true);
@@ -113,6 +122,10 @@ function Login() {
             var userInfo = await userApi.getInfo(tk);
             if (userInfo.roles[0].id === 1) {
               Variables.userRole = "admin";
+            } else if(userInfo.roles[0].id === 2) {
+              Variables.userRole = "teachers";
+            } else if(userInfo.roles[0].id === 3) {
+              Variables.userRole = "students";
             }
             // console.log(Variables.userRole);
             context.updateToken(tk);

@@ -57,6 +57,7 @@ import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
 import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
+import DKDA from './components/StudentRole/SVDA/DoAnSV/DangKyDA';
 function App() {
   // const [loading, setLoading] = React.useState(false);
 
@@ -149,7 +150,7 @@ function App() {
                   {/* Chuyen huong do an sinh vien */}
                     <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
                     <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
-                    <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DSDA />}></Route>
+                    <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
                     <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
                     <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
                   {/* Chuyen huong thuc tap sinh vien */}

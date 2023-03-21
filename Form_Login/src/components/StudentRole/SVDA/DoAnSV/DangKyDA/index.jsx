@@ -10,12 +10,16 @@ const DKDA = () => {
                         <h1>Đăng ký đồ án</h1>
                     </div>
                     <div style={{ height: '95%', }}>
-                        <div style={{ border: '2px dashed', margin: 70, height: '83%' }}>
+                        <div style={{height:'13%',display:'flex',justifyContent:'end',flexFlow:'column',alignItems:"end",marginRight:300}}>
+                            <h4>Ngày bắt đầu:</h4>
+                            <h4>Ngày kết thúc</h4>
+                        </div>
+                        <div style={{ border: '2px dashed',marginTop:5,marginLeft:70,marginRight:70, height: '77%' }}>
                             <div style={{ float: 'left', width: '50%' }}>
                                 <img src="../../../Vector.png" alt="" />
                             </div>
                             <div style={{ float: 'left', width: '50%' }}>
-                                <div style={{ height: '90%', marginTop: 20, marginBottom: 100, textAlign: 'left ', marginLeft: 50 }}>
+                                <div style={{ height: '90%', marginTop: 20, marginBottom: 80, textAlign: 'left ', marginLeft: 50 }}>
                                     <h4>Đề tài:</h4>
                                     <TextField id="outlined-basic" variant="outlined" sx={{ width: '80%', marginBottom: 5 }} />
                                     <h4>Giáo viên hướng dẫn:</h4>

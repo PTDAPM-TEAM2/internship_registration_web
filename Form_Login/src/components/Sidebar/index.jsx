@@ -322,14 +322,33 @@ function Sidebar() {
                                             handleItemClick('QLGV')
                                         }}
                                         className={context.activeButton === 'QLGV' ? styles.active : {}}
-                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
+                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', }}  >
                                             <ListItemIcon>
                                                 <GroupRoundedIcon className={styles.icon} />
                                             </ListItemIcon>
-                                            <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
+                                            <ListItemText primary={check==='admin' ? 'Quản lý giáo viên' : 'Nộp đề cương'} />
                                         </ListItemButton>
                                     </Link >
                                 </ListItem> : (null)
+                        }
+                        {
+                            check === 'students' ?
+                            <ListItem disablePadding>
+                            <Link
+                                to={'/sinh-vien-do-an/thong-tin-do-an'}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('TTDA')
+                                }}
+                                className={context.activeButton === 'TTDA' ? styles.active : {}}
+                            >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
+                                    <ListItemIcon>
+                                        <GroupRoundedIcon className={styles.icon} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Thông tin đồ án'} />
+                                </ListItemButton>
+                            </Link >
+                        </ListItem> : (null)
                         }
                     </List>
                 }

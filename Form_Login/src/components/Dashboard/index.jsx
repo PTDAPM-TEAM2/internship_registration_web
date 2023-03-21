@@ -145,11 +145,11 @@ export default function Dashboard() {
                                                 <PeopleIcon style={{ fontSize: 130 }} />
                                             </div>
                                         </div>:
-                                        <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
                                             <div className={styles.infoTag}>
                                                 <p>Thông tin đồ án</p>
                                             </div>
-                                            <div className={styles.bgDB2}>
+                                            <div className={styles.bgDB3}>
                                                 <PeopleIcon style={{ fontSize: 130 }} />
                                             </div>
                                         </div>
