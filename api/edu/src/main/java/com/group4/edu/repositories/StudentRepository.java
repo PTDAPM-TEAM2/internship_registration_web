@@ -22,8 +22,14 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Query(value = "SELECT e FROM Student e where e.studentCode =?1")
     Optional<Student> findByStudentCode(String studentCode);
+    @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Student e where  e.IdNumber =?1")
+    Boolean existsByIdNumber(String idNumber);
 
     @Query("SELECT new com.group4.edu.dto.StudentDto(s) FROM Student s WHERE s.fullName LIKE %:keyword% and (s.studentType = 2 or s.studentType=3)")
     List<StudentDto> findStudentTTByName(@Param("keyword") String keyword);
+    @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Student e where e.studentCode =?1 and e.studentType = ?2")
+    Boolean existsByStudentCodeAndStudentType(String code, Integer type);
 
+    @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Student e where e.IdNumber =?1 and e.studentType = ?2")
+    Boolean existsByIdNumberAndStudentType(String idNumber, Integer type);
 }

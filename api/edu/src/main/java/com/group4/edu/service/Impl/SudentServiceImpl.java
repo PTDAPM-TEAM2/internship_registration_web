@@ -66,25 +66,34 @@ public class SudentServiceImpl implements StudentService {
         if(studentDto.getGrade()== null|| studentDto.getGrade().getName() == null || studentDto.getGrade().getName().trim().equals("")){
             throw new Exception("Lớp sinh viên không đúng");
         }
+        if(studentDto.getIdNumber() == null){
+            throw  new Exception("CCCD hoặc SCMND bị trống");
+        }
         Student entity = null;
         Account account = null;
-        boolean isNewAccount = false;
+        boolean isNewAccount = true;
         if(id != null){
             entity = studentRepository.findById(id).orElse(null);
+            isNewAccount = false;
         }
         if(entity ==  null && studentDto.getId() != null){
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
+            isNewAccount = false;
         }
-        if(entity == null){
-            entity = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(null);
-            if(entity == null){
-                entity = new Student();
-                isNewAccount = true;
+        if(isNewAccount){
+            if(studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(),studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(),studentType)){
+                throw new Exception("Đã có sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
+            }
+            else {
+                entity = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(new Student());
+                if(EduConstants.StudentType.ALL.getValue().equals(entity.getStudentType())){
+                    throw new Exception("Đã có mã sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
+                }
             }
         }
         else {
-            if(!studentDto.getStudentCode().equals(entity.getStudentCode()) && studentRepository.existsByStudentCode(studentDto.getStudentCode())){
-                throw new Exception("Trùng mã sinh vieen: "+studentDto.getStudentCode());
+            if(studentRepository.existsByStudentCode(studentDto.getStudentCode()) || studentRepository.existsByIdNumber(studentDto.getIdNumber())){
+                throw new Exception("Đã có mã sinh viên này trong hệ thống ");
             }
         }
         entity.setIdNumber(studentDto.getIdNumber());

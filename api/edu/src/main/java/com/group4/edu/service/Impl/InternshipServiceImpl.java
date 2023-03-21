@@ -116,6 +116,7 @@ public class InternshipServiceImpl implements InternshipService {
         company.setPhoneNumber(dto.getPhoneNumber());
         company.setDescription(dto.getDescription());
         company.setCode(dto.getCode());
+        company = companyRepository.save(company);
         entity.setCompany(company);
 //        company = companyRepository.findByEmail(dto.getEmail()).orElse(null);
 //        if(company == null){
