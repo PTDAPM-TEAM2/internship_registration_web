@@ -346,17 +346,16 @@ function Sidebar() {
                     (
                         location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
                         location.pathname === '/quan-ly-cong-ty' ||
-                        location.pathname === '/quan-ly-giao-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt' ||
                         location.pathname === '/danh-sach-cong-ty' ||
                         location.pathname === '/danh-sach-sinh-vien-tt' ||
-                        location.pathname === '/danh-sach-giao-vien-tt' ||
                         location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
                         location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
                         location.pathname === '/ChiTietCT-tt' ||
+                        location.pathname === '/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
-                        location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
+                        
                     ) :
                     // teachers role
                     check === "teachers" ?

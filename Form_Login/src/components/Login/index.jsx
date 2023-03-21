@@ -68,9 +68,7 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
-            // context.updateToken(tk);
             localStorage.setItem("token", tk);
-            // toi tinh luu token len storage o day luon bo cai dong 72 di
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -108,17 +106,13 @@ function Login() {
             username: username,
             password: password,
           });
-          console.log(tk);
           localStorage.setItem('token', tk);
-          // try {
-          //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
             var userInfo = await userApi.getInfo(tk);
             if (userInfo.roles[0].id === 1) {
               Variables.userRole = "admin";
             }
-            // console.log(Variables.userRole);
-            context.updateToken(tk);
+            localStorage.setItem("token", tk);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");

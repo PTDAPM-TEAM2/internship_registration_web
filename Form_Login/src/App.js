@@ -24,9 +24,8 @@ import DLCT from './components/AdminRole/ThucTap/DLCT';
 import DSCT from './components/AdminRole/ThucTap/DSCongTy';
 import CTCT from './components/AdminRole/ThucTap/ChiTietCT';
 import DLSVTT from './components/AdminRole/ThucTap/DLSVTT';
-import DLGVTT from './components/AdminRole/ThucTap/DLGVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
-import DSGVTT from './components/AdminRole/ThucTap/DSGiaoVien';
+import ThemSVTT from './components/AdminRole/ThucTap/ThemSVTT';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
@@ -99,13 +98,13 @@ function App() {
                   <Route path='quan-ly-cong-ty/du-lieu-cong-ty' element={<DLCT />} />
                   <Route path='quan-ly-cong-ty/danh-sach-cong-ty' element={<DSCT />} />
                   <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
-                  <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
                   <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
                   <Route path='trang-chu-giang-vien' element={<TCGV />}></Route >
                 </Route >
               </Route>
               <Route path='/ThemGV-da' element={<ThemGV />} />
               <Route path='/them-sinh-vien-da' element={<ThemSV />} />
+              <Route path='/them-sinh-vien-tt' element={<ThemSVTT />} />
               <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
               <Route path='/ChiTietGV-da' element={<CTGV />} />
               <Route path='/ChiTietCT-tt' element={<CTCT />} />

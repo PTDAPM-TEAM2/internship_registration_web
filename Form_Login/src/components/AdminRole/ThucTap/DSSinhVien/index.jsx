@@ -57,20 +57,11 @@ const columns = [
     }
 ];
 
-function createData(MaSV, Hoten, Lop, TenCT, Ky) {
-    return { MaSV, Hoten, Lop, TenCT, Ky };
-}
-
-const rows = [
-    createData('2051063478', 'Nguyễn Đức Tâm', '62PM02', 'Quản lý du học sinh Việt Nam', '01/2022-2023'),
-    createData('2051063472', 'Nguyễn Thị Bích Ngọc', '62PM02', 'Quản lý cửa hàng thú cưng', '01/2022-2023'),
-    createData('2051063471', 'Nguyễn Đức Đức Phong', '62PM02', 'Quản lý nhân sự công ty ABC', '01/2022-2023'),
-];
 function DSSV() {
     const navigate = useNavigate();
 
     function handleMoveAdd() {
-        navigate('/ThemSV-tt');
+        navigate('/them-sinh-vien-tt');
     }
     const [value, setValue] = React.useState('');
 
@@ -82,11 +73,11 @@ function DSSV() {
     }
     const [students, setStudent] = React.useState([]);
 
-    const context = useContext(ThemeContext);
+    const token = localStorage.getItem('token');
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
-                const response = await userApi.getAllSvTt(null, context.token);
+                const response = await userApi.getAllSvTt(null, token);
                 setStudent(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -97,7 +88,7 @@ function DSSV() {
 
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', height:'90vh', position:'relative' }}>
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <div className={styles.search}>
@@ -127,7 +118,7 @@ function DSSV() {
                     <p>Danh sách sinh viên</p>
                 </div>
                 <div className={styles.table}>
-                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                    <Paper sx={{ width: '100%', overflow: 'hidden' , height:'400px'}}>
                         <TableContainer sx={{ maxHeight: 480 }}>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
@@ -161,9 +152,9 @@ function DSSV() {
                         </TableContainer>
                     </Paper>
                 </div>
-                <div style={{ display: 'flex', justifyContent:'space-between' }}>
-                    <Button className='button' >Nhập điểm</Button>
-                    <Button className='button' >Xuất dữ liệu</Button>
+                <div style={{ marginTop: '30px', display: 'flex', justifyContent:'flex-end' }}>
+                    <Button className='button' sx={{ marginRight: 2 }}>Nhập điểm</Button>
+                    <Button className='button' >Xuất dữ liệu</Button> 
                 </div>
             </div>
         </div>
