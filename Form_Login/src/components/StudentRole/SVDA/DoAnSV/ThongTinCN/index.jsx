@@ -23,9 +23,10 @@ function TTSV() {
     React.useEffect(() => {
         const getDataSV = async () => {
             try{
-                const response = userApi.getInfo(token).then((response) => {
-                    setSV(response);
-                });
+                const response = userApi.getInfo(token);
+                console.log(response);
+                setSV(response);
+              
             }catch(err){
                 console.log('Error fetching data', err);
             }
@@ -75,14 +76,14 @@ function TTSV() {
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Lớp:</h4>
-                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.grade.name}/>
+                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Khoa:</h4>
-                                    {SV.grade.map((info)=>{
+                                    {/* {SV.grade.map((info)=>{
                                         return (<TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={info.name}/>);
-                                    })}
-                                    {/* <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/> */}
+                                    })} */}
+                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
                                 </div>
                             </div>
                         </div>
