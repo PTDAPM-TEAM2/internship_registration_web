@@ -13,7 +13,7 @@ import userApi from '../../../../api/authApi';
 import teacherRoleController from '../../controller/TeacherRoleController';
 
 const body = {
-  'isAccept' : 0,
+  'isAccept' : 1,
   'lecturerId' : null
 }
 
@@ -49,8 +49,6 @@ const DSSVYC = () => {
       fetchData();
     }, []); // Pass an empty dependency array to run only once
 
-    console.log(`data: ${data.map((item) => console.log(item.student))}`);
-
     const navigate = useNavigate();
     function toComponent (item) {
       navigate('chi-tiet-yeu-cau', {state: {item}})
@@ -60,21 +58,25 @@ const DSSVYC = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
-                    { (loading === true || data === undefined) ? (
+                    { (loading === true) ? (
                       <CircularProgress color="success" className={styles.circularProgressIndicator}/>
-                    ) : (data.map((item, key) => ( 
-                      <div className={styles.card} key = {key}> 
-                          <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
-                              <img src={item.student.urlImg} alt='' className={styles.itemImage}/> 
-                              <div className={styles.body}> 
-                                  <a><b>Họ và tên: </b>{item.student.fullName}</a> 
-                                  <p><b>Mã sinh viên: </b>{item.student.id}</p> 
-                                  <p><b>Lớp: </b>{item.student.grade.name}</p> 
-                                  <p><b>Khoa: </b>{item.major}</p> 
-                              </div> 
-                          </div>
+                    ) : (data.map((item, key) =>  
+                      <div>
+                          {item.isAccept === 1 ? (<div className={styles.card} key = {key}> 
+                            <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
+                                <img src={item.student.urlImg} alt='' className={styles.itemImage}/> 
+                                <div className={styles.body}> 
+                                    <a><b>Họ và tên: </b>{item.student.fullName}</a> 
+                                    <p><b>Mã sinh viên: </b>{item.student.id}</p> 
+                                    <p><b>Lớp: </b>{item.student.grade.name}</p> 
+                                    <p><b>Khoa: </b>{item.major}</p> 
+                                </div> 
+                            </div>
+                        </div>) : (null)}
                       </div>
-                    )))} 
+                    )
+                    )
+                    } 
                 </div> 
             </div>
         </div>

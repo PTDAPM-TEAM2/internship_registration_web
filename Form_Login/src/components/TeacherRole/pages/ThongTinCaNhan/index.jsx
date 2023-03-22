@@ -22,7 +22,7 @@ const TTCN = () => {
       // Declare a state variable for data
     const token = localStorage.getItem('token');
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState('');
     const context = useContext(ThemeContext);
 
     // const [loading, setLoading] = useState(true);
@@ -89,7 +89,7 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
-    console.log(`tvv-data: ${data.placeOfBitrh}`);
+    console.log(`tvv-data: ${data.fullName}`);
 
     const navigate = useNavigate();
 
@@ -134,8 +134,8 @@ const TTCN = () => {
                                         id="gender"
                                         name="gender"
                                         defaultValue={data.gender}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
+                                        // onChange={formik.handleChange}
+                                        // onBlur={formik.handleBlur}
                                     />
                                 </div>
                             </div>
@@ -146,8 +146,8 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id='name'
                                         name='name'
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
+                                        // onChange={formik.handleChange}
+                                        // onBlur={formik.handleBlur}
                                         defaultValue={data.fullName}
                                     />
                                 </div>
@@ -225,25 +225,11 @@ const TTCN = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting} onClick= {() => {toComponent(data)}}>Đổi mật khẩu</button>
+                            <button className={styles.button} onClick= {() => {toComponent(data)}}>Đổi mật khẩu</button>
                         </div>
                     </form>
                 </div>
-
             </div>
-            {
-                showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Đổi mật khẩu thành công</AlertTitle>
-                    </Alert>
-                </div>
-            }
         </div >
     );
 };

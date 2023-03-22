@@ -52,19 +52,24 @@ const ProjectListStudents = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách đồ án</b></p>
                 <div className={styles.container}> 
-                    { (loading === true || data === undefined) ? (
+                    { (loading === true) ? (
                       <CircularProgress color="success" className={styles.circularProgressIndicator}/>
-                    ) : (data.map((item) => ( 
-                    <div className={styles.card}> 
-                        <a className={styles.cardItem} onClick={() => {toComponent(item)}}>
-                            <div className={styles.body}> 
-                                <a><b>Đề tài: {item.nameGraduationThesis}</b></a><br></br>
-                                <a><b>Tên sinh viên: </b>{item.student.fullName}</a> 
-                                <p><b>Mã sinh viên: </b>{item.student.studentCode}</p> 
-                                <p><b>Ngày nộp: </b>{item.dateSubmitted}</p> 
-                            </div> 
-                        </a>
-                    </div> 
+                    ) : (data.map((item, key) => ( 
+                      <div>
+                       {
+                        item.status !== 2 ?
+                          (<div className={styles.card} key={key}> 
+                            <a className={styles.cardItem} onClick={() => {toComponent(item)}}>
+                                <div className={styles.body}> 
+                                    <a><b>Đề tài: {item.nameGraduationThesis}</b></a><br></br>
+                                    <a><b>Tên sinh viên: </b>{item.student.fullName}</a> 
+                                    <p><b>Mã sinh viên: </b>{item.student.studentCode}</p> 
+                                    <p><b>Ngày nộp: </b>{item.dateSubmitted}</p> 
+                                </div> 
+                            </a>
+                          </div>) : (null)
+                      }
+                      </div>
                     )))} 
                 </div> 
             </div>

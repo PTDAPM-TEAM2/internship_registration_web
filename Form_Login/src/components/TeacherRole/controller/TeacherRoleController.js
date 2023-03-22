@@ -30,6 +30,22 @@ class TeacherRoleController{
         }
     }
 
+    forceToStopResearch = async (body, token) => {
+        try{
+            await graduationThesis.addOrRemoveGraduation(body, token);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    changePassword = async (body, token) => {
+        try{
+            await userApi.setChangingPassword(body, token);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
 }
 
 const teacherRoleController = new TeacherRoleController();

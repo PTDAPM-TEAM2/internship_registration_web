@@ -129,6 +129,7 @@ function Login() {
               } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
+                Variables.pw = password;
                 navigate("/trang-chu-giang-vien");
               }
             }, 500);
