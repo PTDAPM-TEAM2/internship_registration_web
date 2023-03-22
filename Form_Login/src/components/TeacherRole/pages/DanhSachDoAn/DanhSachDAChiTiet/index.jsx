@@ -47,7 +47,7 @@ const PInformationDetails = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    console.log(`aaa ${state.item.student.id}`);
+    console.log(`aaa ${state.item.id}`);
 
     // const handleSubmit = (values, { setSubmitting }) => {
     //     console.log(values);
@@ -68,20 +68,11 @@ const PInformationDetails = () => {
 
     useEffect(() => {
 
-        // const currentUser = async () => {
-        //     try{
-        //       const response = await userApi.getInfo(context.token);
-        //       body.lecturerId = response.lecturersCode;
-        //     }catch(err){
-        //       console.error(err);
-        //     }
-        // }
-
-        console.log(`tvv-graduation: ${state.item.student.graduationThesis}`);
+        console.log(`tvv-graduation: ${state.item.student.id}`);
 
         const getAllWeeklyReview = async () => {
             try{
-                const response = await graduationThesis.weeklyTeacherReview(2, token);
+                const response = await graduationThesis.weeklyTeacherReview(state.item.id, token);
                 setReviewList(response)
             }catch(err){
                 console.log(err);
@@ -107,7 +98,7 @@ const PInformationDetails = () => {
 
 
     const initialValues = {
-        id: null,
+        id: state.item.id,
         status: 2
     };
 
@@ -115,14 +106,14 @@ const PInformationDetails = () => {
         initialValues,
         onSubmit: async (values) => {
             try{
-                await teacherRoleController.addOrRemoveGraduation(values, token)
+                await teacherRoleController.forceToStopResearch(values, token)
             }catch(err){
                 console.log(err);
             }
         },
     })
 
-    initialValues.id = state.item.id;
+    // initialValues.id = state.item.id;
 
 
 

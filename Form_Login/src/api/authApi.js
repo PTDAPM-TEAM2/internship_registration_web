@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosClient from "./axiosClient";
 class UserApi {
   // url = 'http://localhost:3000'
@@ -48,7 +49,16 @@ class UserApi {
       .then((res) => res);
   };
 
-  changePassword = (params, token) => {
+  setChangingPassword = (params, token) => {
+    const url = "/api/account/change-password";
+    return axiosClient.post(url, params, {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }).then((res) => res);
+  }
+
+  getCurrentUser = (params, token) => {
     // params = { "oldPassword":"SV002", "newPassword":"123456789", "reNewPassword":"123456789"}
     const url = "/api/user/get-current-user";
     return axiosClient

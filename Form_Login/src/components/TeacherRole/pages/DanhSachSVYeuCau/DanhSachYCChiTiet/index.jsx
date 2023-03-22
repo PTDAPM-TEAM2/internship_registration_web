@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import teacherRoleController from '../../../controller/TeacherRoleController';
 
 const style = {
     position: 'absolute',
@@ -35,8 +36,9 @@ const SRequirementDetails = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation()
     const state = location.state;
+    const token = localStorage.getItem('token');
 
-    console.log(`tvv-item: ${state.item.student.placeOfBitrh}`);
+    console.log(`tvv-item: ${state.item.id}`);
 
     const [password, setPassword] = React.useState("");
 
@@ -61,14 +63,8 @@ const SRequirementDetails = () => {
     }
 
     const initialValues = {
-        image: '',
-        name: '',
-        gender: '',
-        idCard: '',
-        dob: '',
-        pob: '',
-        phone: '',
-        email: '',
+        id: state.item.id,
+        isAccept: 2
     };
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
@@ -90,7 +86,13 @@ const SRequirementDetails = () => {
     const formik = useFormik({
         initialValues,
         validation,
-        onSubmit: handleSubmit,
+        onSubmit: async (values) => {
+            try{
+                await teacherRoleController.forceToStopResearch(values, token)
+            }catch(err){
+                console.log(err);
+            }
+        },
     })
 
     function handleGo() {
@@ -269,6 +271,17 @@ const SRequirementDetails = () => {
                     </div>
                 </Box>
             </Modal>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xác nhận yêu cầu thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div>
     );
 };

@@ -5,6 +5,7 @@ class Variables extends React.Component {
 
     static userRole = "admin";
 
+    static pw = "";
 }
 
 export default Variables
