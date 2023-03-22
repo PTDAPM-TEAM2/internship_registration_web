@@ -2,6 +2,8 @@ package com.group4.edu.dto;
 
 import com.group4.edu.domain.*;
 
+import java.util.Date;
+
 public class InternshipDto extends BaseDto{
     private String internshipPosition;
     private Double mark;
@@ -13,9 +15,13 @@ public class InternshipDto extends BaseDto{
     SemesterDto semester;
 
     LecturerDto lecturer;
+    private Date start;
+    private Date end;
 
     public InternshipDto(Internship entity){
         if(entity != null){
+            this.start = entity.getStart();
+            this.end = entity.getEnd();
             this.setId(entity.getId());
             this.internshipPosition = entity.getInternshipPosition();
             this.mark = entity.getMark();
@@ -105,5 +111,21 @@ public class InternshipDto extends BaseDto{
 
     public void setLecturer(LecturerDto lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }

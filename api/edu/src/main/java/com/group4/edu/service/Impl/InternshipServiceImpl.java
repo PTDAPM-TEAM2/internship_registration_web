@@ -122,6 +122,8 @@ public class InternshipServiceImpl implements InternshipService {
 //        if(company == null){
 //            company = company
 //        }
+        entity.setStart(dto.getStart());
+        entity.setEnd(dto.getEnd());
         entity.setStudent(student);
         entity.setInternshipPosition(dto.getInternshipPosition());
         entity.setSemester(semester);

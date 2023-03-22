@@ -7,12 +7,16 @@ import javax.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "tbl_intern_ship")
 public class Internship extends BaseObject {
     private String internshipPosition;
     private Double mark;
     private String evaluate;
+    private Date start;
+    private Date end;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -87,5 +91,21 @@ public class Internship extends BaseObject {
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }

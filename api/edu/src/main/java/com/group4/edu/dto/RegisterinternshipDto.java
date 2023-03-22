@@ -1,6 +1,10 @@
 package com.group4.edu.dto;
 
+import java.util.Date;
+
 public class RegisterinternshipDto {
+    private Date start;
+    private Date end;
     private Long internshipId;
     private String studentCode;
     private Long studentId;
@@ -99,5 +103,21 @@ public class RegisterinternshipDto {
 
     public void setInternshipId(Long internshipId) {
         this.internshipId = internshipId;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }
