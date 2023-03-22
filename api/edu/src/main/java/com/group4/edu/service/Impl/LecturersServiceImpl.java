@@ -107,8 +107,9 @@ public class LecturersServiceImpl implements LecturersService {
     }
 
     @Override
-    public List<LecturerDto> getGraduationThesis(SearchObjectDto dto){
+    public List<LecturerDto> getLecturerByFilter(SearchObjectDto dto){
         String whereClause = " where true = true ";
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
         String sql = "SELECT new com.group4.edu.dto.LecturerDto(tbl_lecturer) FROM Lecturer as tbl_lecturer";
 
 
@@ -118,7 +119,7 @@ public class LecturersServiceImpl implements LecturersService {
 
         if(dto.getNumberOfStudentsInLecturer() != null){
             sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
-            whereClause += " and (entity.status = 1 or entity.status = 2)";
+            whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
             if(dto.getNumberOfStudentsInLecturer() == 0)
                 whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
             if(dto.getNumberOfStudentsInLecturer() == 1)
@@ -130,6 +131,9 @@ public class LecturersServiceImpl implements LecturersService {
 
         sql += whereClause;
         Query query = manager.createQuery(sql, LecturerDto.class);
+        if(dto.getNumberOfStudentsInLecturer() != null){
+            query.setParameter("semesterCode", semesterCode);
+        }
 
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             query.setParameter("fullName", '%'+dto.getFullName()+'%');

@@ -173,9 +173,6 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             whereClause += " AND (entity.student.fullName like :fullName)";
         }
-        if(dto.getStatus() != null){
-            whereClause += " AND (entity.status =:status)";
-        }
         sql += whereClause;
         Query query = manager.createQuery(sql, GraduationThesisDto.class);
 
@@ -190,9 +187,6 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             query.setParameter("fullName", '%'+dto.getFullName()+'%');
-        }
-        if(dto.getStatus() != null){
-            query.setParameter("status", dto.getStatus());
         }
 
         List<GraduationThesisDto> entities = query.getResultList();
