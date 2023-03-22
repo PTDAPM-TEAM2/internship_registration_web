@@ -2,15 +2,13 @@ package com.group4.edu.domain;
 
 import com.group4.edu.domain.core.BaseObject;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_graduation_thesis")
@@ -40,6 +38,8 @@ public class GraduationThesis extends BaseObject {
     Lecturer lecturer;
 
     Date submitDay; // ngày nộp đồ án
+    @OneToMany(mappedBy = "graduationThesis", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<WeeklyReview> reviews;
 
     public String getUrlOutline() {
         return urlOutline;
@@ -135,5 +135,13 @@ public class GraduationThesis extends BaseObject {
 
     public void setSubmitDay(Date submitDay) {
         this.submitDay = submitDay;
+    }
+
+    public Set<WeeklyReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<WeeklyReview> reviews) {
+        this.reviews = reviews;
     }
 }
