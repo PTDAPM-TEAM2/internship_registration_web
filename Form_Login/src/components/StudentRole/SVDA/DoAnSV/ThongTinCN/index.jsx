@@ -19,20 +19,20 @@ function TTSV() {
     }
     // var studentInfo = await userApi.getInfo();
     const token = localStorage.getItem('token');
-    const [SV, setSV] = React.useState({});
+    const [SV, setSV] = React.useState([]);
     React.useEffect(() => {
         const getDataSV = async () => {
             try{
-                const response = userApi.getInfo(token);
-                console.log(response);
+                const response = await userApi.getInfo(token);
                 setSV(response);
+                console.log(SV)
               
             }catch(err){
                 console.log('Error fetching data', err);
             }
         }
         getDataSV();
-    });
+    },[]);
     return (
         <>
             <Box sx={{ display: 'flex' }}>
@@ -45,23 +45,23 @@ function TTSV() {
                             <div style={{ float: 'left', width: '20%', height: '100%' }}>
                                 <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" sx={{ width: 161, height: 161, marginBottom: 0.3 }}></Avatar>
                                 <h4 style={{ marginBottom: 2 }}>Giới tính:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} defaultValue={SV.gender}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} value={SV.gender}/>
                             </div>
                             <div style={{ float: 'left', width: '40%', height: '100%' }}>
                                 <h4 style={{ marginBottom: 10 }}>Họ và tên:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.fullName}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.fullName}/>
                                 <h4 style={{ marginBottom: 10 }}>Ngày sinh:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.dateOfBirth}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.dateOfBirth}/>
                                 <h4 style={{ marginBottom: 10 }}>Số điện thoại:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.phoneNumber}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.phoneNumber}/>
                             </div>
                             <div style={{ float: 'left', width: '40%', height: '100%' }}>
                                 <h4 style={{ marginBottom: 10 }}>Căn cước:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.idNumber}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.idNumber}/>
                                 <h4 style={{ marginBottom: 10 }}>Nơi sinh:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.placeOfBirth}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.placeOfBirth}/>
                                 <h4 style={{ marginBottom: 10 }}>Email:</h4>
-                                <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.email}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.email}/>
                             </div>
                         </div>
                     </div>
@@ -70,20 +70,17 @@ function TTSV() {
                             <div style={{ width: "100%", height: '100%', textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Mã sinh viên:</h4>
-                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={SV.studentCode}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.studentCode}/>
                                     <h4 style={{ marginBottom: 10 }}>Mật khẩu:</h4>
-                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Lớp:</h4>
-                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.grade?.name || ""}/>
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Khoa:</h4>
-                                    {/* {SV.grade.map((info)=>{
-                                        return (<TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue={info.name}/>);
-                                    })} */}
-                                    <TextField id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.grade?.name || ""}/>
                                 </div>
                             </div>
                         </div>

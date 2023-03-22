@@ -131,9 +131,9 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
-                navigate("/sinh-vien-thuc-tap");
-              } else {
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-thuc-tap");
               }
             }, 500);
           } else {
