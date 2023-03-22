@@ -35,4 +35,7 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
 
     @Query("select new com.group4.edu.dto.GraduationThesisDto(gr) from GraduationThesis gr where gr.student.id = ?1")
     GraduationThesisDto getByStudentIdDto (Long studentId);
+
+    @Query("SELECT COUNT(e) FROM GraduationThesis e WHERE e.lecturer.id=?1 and e.semester.code = ?2")
+    Integer countGraduationByLecturerIdandSemesterCode(Long lecturerId, String semesterCOde);
 }

@@ -6,6 +6,7 @@ import com.group4.edu.dto.LecturerDto;
 import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.LecturersService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,7 +95,15 @@ public class LecturersServiceImpl implements LecturersService {
 
     @Override
     public List<LecturerDto> getAll() {
-        return lecturerRepository.getAll();
+        List<LecturerDto> lecturerDtos= lecturerRepository.getAll();
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        for(LecturerDto lecturerDto: lecturerDtos){
+            Integer numGraTh = thesisRepository.countGraduationByLecturerIdandSemesterCode(lecturerDto.getId(),semesterCode);
+            if(numGraTh != null){
+                lecturerDto.setNumGrTh(numGraTh);
+            }
+        }
+        return lecturerDtos;
     }
 
     @Override
@@ -140,11 +149,11 @@ public class LecturersServiceImpl implements LecturersService {
             Account account = accountRepository.getAccountByUserId(lecturer.getId()).orElse(null);
             accountRepository.delete(account);
 
-            List<Internship> internships = intershipRepository.getInternshipByLecturerId(lecturer.getId());
-            intershipRepository.deleteAll(internships);
-
-            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByLecturerId(lecturer.getId());
-            thesisRepository.deleteAll(graduationThesises);
+//            List<Internship> internships = intershipRepository.getInternshipByLecturerId(lecturer.getId());
+//            intershipRepository.deleteAll(internships);
+//
+//            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByLecturerId(lecturer.getId());
+//            thesisRepository.deleteAll(graduationThesises);
 
             if (lecturerRepository.existsById(lecturer.getId()))
                 lecturerRepository.deleteById(lecturer.getId());
