@@ -13,7 +13,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useLocation } from 'react-router-dom';
-import Variables from '../../../../utils/variables';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import * as Yup from 'yup';

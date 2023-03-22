@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
-
+import AlertMessage from './Alert.js';
 
 // const grade = {
 //     name: '',
@@ -52,9 +52,9 @@ const validationSchema = Yup.object({
 });
 
 const ThemSV = () => {
-    const [successMessage, setSuccessMessage] = React.useState('');
-    const [errorMessages, setErrorMessages] = React.useState([]);
-    const [showAlert, setShowAlert] = React.useState(false);
+    // const [message, setMessage] = React.useState('');
+    // const [errorMessages, setErrorMessages] = React.useState('');
+    const [showAlert, setShowAlert] = React.useState(null);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
@@ -73,8 +73,7 @@ const ThemSV = () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
-                console.log(response);
-            } catch (error) {
+            } catch (error) {      
                 console.error('Error fetching data:', error);
             }
         }
@@ -85,30 +84,20 @@ const ThemSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const errors = [];
-            if (values.fullName === '') {
-                errors.push('Nhập thiếu thông tin! Vui lòng nhập lại');
-            }
-            if (values.email === '') {
-                errors.push('Nhập thiếu thông tin! Vui lòng nhập lại');
-            } else if (!Yup.string().email().isValidSync(values.email)) {
-                errors.push('Thông tin sai định dạng! Vui lòng nhập lại');
-            }
-            if (errors.length === 0) {
-                setSuccessMessage('Thêm thông tin sinh viên thành công!');
-                setErrorMessages([]);
-            } else {
-                setSuccessMessage('');
-                setErrorMessages(errors);
-            }
             try {
-                console.log(JSON.stringify(values));
                 const response = await studentApi.addSVDA(JSON.stringify(values), token);
+                setShowAlert({type: 'success', text: "Thêm sinh viên thành công"});
                 setTimeout(() => {
+                    setShowAlert(null);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
-                console.error(error);
+                if(error.response.data.messgae) {
+                    setShowAlert({type: 'error', text: error.response.data.messgae});
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
             }
         },
     })
@@ -118,6 +107,7 @@ const ThemSV = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className={styles.form}>
+                <AlertMessage message={showAlert}/>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thêm Sinh Viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -314,25 +304,12 @@ const ThemSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit" onClick={() => {
-                                setShowAlert(true);
-                                console.log(formik.touched);
-                                setTimeout(() => {
-                                    setShowAlert(false);
-                                }, 2000)
-
-                            }}>Thêm</button>
+                            <button className={styles.button} type="submit">Thêm</button>
                         </div>
                     </form>
                 </div>
 
             </div>
-            {successMessage && <Alert severity="success">{successMessage}</Alert>}
-            {errorMessages.map((error, index) => (
-                <Alert key={index} severity="error">
-                    {error}
-                </Alert>
-            ))}
         </div >
     );
 };

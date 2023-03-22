@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Variables from '../../../../utils/variables';
 
 const style = {
     position: 'absolute',
@@ -36,6 +35,9 @@ const SRequirementDetails = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation()
     const state = location.state;
+
+    console.log(`tvv-item: ${state.item.student.placeOfBitrh}`);
+
     const [password, setPassword] = React.useState("");
 
     const handlePasswordChange = (event) => {
@@ -112,7 +114,7 @@ const SRequirementDetails = () => {
                                     {state && <div className={styles.txt}>
                                         {(imageFile === null) &&
                                             <div>
-                                                <img className={styles.userProfile} src={state.item.profileImage} alt="" />
+                                                <img className={styles.userProfile} src={state.item.student.urlImg} alt="" />
                                                 <input
                                                     className={styles.fileInput}
                                                     name='image'
@@ -136,7 +138,7 @@ const SRequirementDetails = () => {
                                         <TextField
                                             className={styles.txtGender}
                                             id="gender"
-                                            defaultValue={state.item.gender}
+                                            defaultValue={state.item.student.gender}
                                             name="gender"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
@@ -150,7 +152,7 @@ const SRequirementDetails = () => {
                                         <TextField
                                             className={styles.txtField}
                                             id='name'
-                                            defaultValue={state.item.name}
+                                            defaultValue={state.item.student.fullName}
                                             name='name'
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
@@ -164,7 +166,7 @@ const SRequirementDetails = () => {
                                             className={styles.txtField}
                                             id="idCard"
                                             name="idCard"
-                                            defaultValue={state.item.passport}
+                                            defaultValue={'901237914214'}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             // value={formik.values.identityCard}
@@ -176,7 +178,7 @@ const SRequirementDetails = () => {
                                             className={styles.txtField}
                                             id="idCard"
                                             name="idCard"
-                                            defaultValue={state.item.dateOfBirth.substr(0,10)}
+                                            defaultValue={state.item.student.dateOfBirth}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             // value={formik.values.identityCard}
@@ -188,7 +190,7 @@ const SRequirementDetails = () => {
                                             className={styles.txtField}
                                             id="pob"
                                             name="pob"
-                                            defaultValue={state.item.address}
+                                            defaultValue={state.item.student.placeOfBitrh}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             value={formik.values.placeOfBirth}
@@ -199,7 +201,7 @@ const SRequirementDetails = () => {
                                         <TextField
                                             className={styles.txtField}
                                             id="phone"
-                                            defaultValue={state.item.numberPhone}
+                                            defaultValue={state.item.student.phoneNumber}
                                             name="phone"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
@@ -212,7 +214,7 @@ const SRequirementDetails = () => {
                                             className={styles.txtField}
                                             id="email"
                                             name="email"
-                                            defaultValue={state.item.email}
+                                            defaultValue={state.item.student.email}
                                             type="email"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
@@ -224,11 +226,11 @@ const SRequirementDetails = () => {
                             <div className={styles.infoAccount}>
                                 <div className={styles.txt}>
                                     <p>Mã giáo viên: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.idMonitor}/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.lecturer.fullName}/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Lớp: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.sClass}/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.student.grade.name}/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Khoa: </p>
@@ -236,7 +238,7 @@ const SRequirementDetails = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Đề tài: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.topic}/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.nameGraduationThesis}/>
                                 </div>
                             </div>
                             <div className={styles.btnForm}>
@@ -257,6 +259,7 @@ const SRequirementDetails = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
+                    {/* Kiểu chữ */}
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Bạn có chắc chắn với lựa chọn này không?
                     </Typography>

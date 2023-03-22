@@ -54,7 +54,7 @@ export default function Dashboard() {
 
     const formatDate = (date) => {
         const day = date.getDate();
-        const month = date.getMonth();
+        const month = 1+date.getMonth();
         const year = date.getFullYear();
         const formattedDay = day < 10 ? `0${day}` : day;
         const formattedMonth = month < 10 ? `0${month}` : month;

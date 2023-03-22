@@ -45,7 +45,10 @@ const columns = [
         align: 'center',
     },
 ];
-
+const body = {
+    'isAccept': 2,
+    'lecturerId': null
+}
 function DSDA() {
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
@@ -53,13 +56,14 @@ function DSDA() {
         navigate('/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv');
     }
 
-    const [prj, setPrj] = React.useState([]);
+    const [projects, setProject] = React.useState([]);
     const token = localStorage.getItem('token');
     React.useEffect(() => {
         const getAllDoAn = async () => {
             try {
-                const response = await prjApi.getAllDa(null, token);
+                const response = await prjApi.getAllDa(body, token);
                 console.log(response);
+                setProject(response);
             }
             catch (err) {
                 console.log(err);
@@ -95,15 +99,20 @@ function DSDA() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {/* {rows.map((row) => {
+                                    {projects.map((project, index) => {
+                                        const dateObj = new Date(project.submitDay);
+                                        const options = {  month: 'numeric',day: 'numeric', year: 'numeric'  };
+                                        const dateString = dateObj.toLocaleDateString('en-US', options);
                                         return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }}>
-                                                {columns.map((column) => (
-                                                    <TableCell key={column.id} sx={{ textAlign: 'center' }}>{row[column.id]}</TableCell>
-                                                ))}
+                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }}>
+                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{project.nameGraduationThesis}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{project.student.fullName}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{project.lecturer.fullName}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{dateString}</TableCell>
                                             </TableRow>
                                         );
-                                    })} */}
+                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>
