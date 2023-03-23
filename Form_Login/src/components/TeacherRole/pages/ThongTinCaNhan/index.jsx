@@ -103,125 +103,134 @@ const TTCN = () => {
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}><b>Thông tin cá nhân</b></p>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className={styles.formAccount} columns={{ lg: 4 }} >
-                            <div className={styles.infoImg} >
-                                <div className={styles.txt}>
-                                    {(imageFile === null) &&
-                                        <div>
-                                            <img className={styles.userProfile} src={data.urlImg} alt="" />
-                                            <input
-                                                className={styles.fileInput}
-                                                name='image'
-                                                id='image'
-                                                type="file"
-                                                accept=".jpg, .jpeg, .png"
-                                                onChange={handleImageFileChange}
-                                                value={formik.values.image}
-                                            />
-                                        </div>
-                                    }
-                                    {
-                                        imageFile &&
-                                        <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
-                                        </div>
-                                    }
+                        <div>
+                            <div className={styles.formAccount} columns={{ lg: 4 }} >
+                                <div className={styles.infoImg} >
+                                    <div className={styles.txt}>
+                                        {(imageFile === null) &&
+                                            <div>
+                                                <img className={styles.userProfile} src={data.urlImg} alt="" />
+                                                <input
+                                                    className={styles.fileInput}
+                                                    name='image'
+                                                    id='image'
+                                                    type="file"
+                                                    accept=".jpg, .jpeg, .png"
+                                                    onChange={handleImageFileChange}
+                                                    value={formik.values.image}
+                                                />
+                                            </div>
+                                        }
+                                        {
+                                            imageFile &&
+                                            <div className={styles.image}>
+                                                <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className={styles.txt}>
+                                        <label htmlFor="gender">Giới tính: </label>
+                                        <TextField
+                                            className={styles.txtGender}
+                                            id="gender"
+                                            name="gender"
+                                            defaultValue={data.gender}
+                                            disabled
+                                            // onChange={formik.handleChange}
+                                            // onBlur={formik.handleBlur}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={styles.txt}>
-                                    <label htmlFor="gender">Giới tính: </label>
-                                    <TextField
-                                        className={styles.txtGender}
-                                        id="gender"
-                                        name="gender"
-                                        defaultValue={data.gender}
-                                        // onChange={formik.handleChange}
-                                        // onBlur={formik.handleBlur}
-                                    />
+                                <div className={styles.inputValue}>
+                                    <div className={styles.txt} >
+                                        <label htmlFor='name'>Họ tên: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id='name'
+                                            name='name'
+                                            disabled
+                                            // onChange={formik.handleChange}
+                                            // onBlur={formik.handleBlur}
+                                            defaultValue={data.fullName}
+                                        />
+                                    </div>
+                                    {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
+                                    <div className={styles.txt} >
+                                        <label htmlFor='idCard'>Căn cước: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id="idCard"
+                                            name="idCard"
+                                            disabled
+                                            defaultValue={'82734183289'}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                    </div>
+                                    <div className={styles.txt}>
+                                        <label htmlFor='dob'>Ngày sinh: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id="idCard"
+                                            name="idCard"
+                                            disabled
+                                            defaultValue={data.dateOfBirth}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                    </div>
+                                    <div className={styles.txt}>
+                                        <label htmlFor='pob'>Nơi sinh: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id="pob"
+                                            name="pob"
+                                            disabled
+                                            defaultValue={data.placeOfBitrh}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                    </div>
+                                    <div className={styles.txt}>
+                                        <label htmlFor='phone'>Số điện thoại: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id="phone"
+                                            name="phone"
+                                            disabled
+                                            defaultValue={data.phoneNumber}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                    </div>
+                                    <div className={styles.txt}>
+                                        <label htmlFor='email'>Email: </label>
+                                        <TextField
+                                            className={styles.txtField}
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            disabled
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            defaultValue={data.email}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className={styles.inputValue}>
-                                <div className={styles.txt} >
-                                    <label htmlFor='name'>Họ tên: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id='name'
-                                        name='name'
-                                        // onChange={formik.handleChange}
-                                        // onBlur={formik.handleBlur}
-                                        defaultValue={data.fullName}
-                                    />
-                                </div>
-                                {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
-                                <div className={styles.txt} >
-                                    <label htmlFor='idCard'>Căn cước: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id="idCard"
-                                        name="idCard"
-                                        defaultValue={'82734183289'}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
+                            <div className={styles.infoAccount}>
+                                <div className={styles.txt}>
+                                    <p>Mã giáo viên: </p>
+                                    <TextField className={styles.txtField} defaultValue={data.idNumber} disabled/>
                                 </div>
                                 <div className={styles.txt}>
-                                    <label htmlFor='dob'>Ngày sinh: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id="idCard"
-                                        name="idCard"
-                                        defaultValue={data.dateOfBirth}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
+                                    <p>Khoa: </p>
+                                    <TextField className={styles.txtField} defaultValue={'CNTT'} disabled/>
                                 </div>
                                 <div className={styles.txt}>
-                                    <label htmlFor='pob'>Nơi sinh: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id="pob"
-                                        name="pob"
-                                        defaultValue={data.placeOfBitrh}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
+                                    <p>Mật khẩu: </p>
+                                    <TextField className={styles.txtField} defaultValue={'************'} disabled/>
                                 </div>
-                                <div className={styles.txt}>
-                                    <label htmlFor='phone'>Số điện thoại: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id="phone"
-                                        name="phone"
-                                        defaultValue={data.phoneNumber}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                </div>
-                                <div className={styles.txt}>
-                                    <label htmlFor='email'>Email: </label>
-                                    <TextField
-                                        className={styles.txtField}
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        defaultValue={data.email}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.infoAccount}>
-                            <div className={styles.txt}>
-                                <p>Mã giáo viên: </p>
-                                <TextField className={styles.txtField} defaultValue={data.idNumber}/>
-                            </div>
-                            <div className={styles.txt}>
-                                <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={'CNTT'}/>
-                            </div>
-                            <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} defaultValue={'************'}/>
                             </div>
                         </div>
                         <div className={styles.btn}>

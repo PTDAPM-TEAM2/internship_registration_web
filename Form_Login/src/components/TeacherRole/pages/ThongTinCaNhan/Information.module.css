@@ -163,9 +163,15 @@ form {
 }
 
 @media (min-width: 1920px) and (max-width: 2560px){
+
+    .txtField{
+        width: 300px;
+        margin-right: 50px ;
+    }
+
     .userProfile{
-        width: 110%;
-        height: 110%;
+        width: 200px;
+        height: 100%;
         border: 1px solid black;
         object-fit: cover;
         overflow: hidden;
@@ -189,10 +195,6 @@ form {
         width: 100px;
     }
 
-    .txtField{
-        width: 100%;
-    }
-
     .infoAccount {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -207,7 +209,6 @@ form {
         padding-left: 100px;
         width: 80%;
         padding-top: 70px;
-        
     }
 
     .txt{
@@ -220,7 +221,8 @@ form {
     }
 
     .txtField{
-        width: 100%;
+        width: 400px;
+        margin-right: 50px ;
     }
 
     .infoAccount {

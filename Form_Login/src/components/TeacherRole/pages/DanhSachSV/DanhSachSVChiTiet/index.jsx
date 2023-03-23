@@ -108,6 +108,7 @@ const SInformationDetails = () => {
                                         name="gender"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.gender}
                                     />
                                 </div>
@@ -122,6 +123,7 @@ const SInformationDetails = () => {
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.name}
                                     />
                                 </div>
@@ -135,6 +137,7 @@ const SInformationDetails = () => {
                                         defaultValue={state.item.passport}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.identityCard}
                                     />
                                 </div>
@@ -147,6 +150,7 @@ const SInformationDetails = () => {
                                         defaultValue={state.item.student.dateOfBirth}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.identityCard}
                                     />
                                 </div>
@@ -159,6 +163,7 @@ const SInformationDetails = () => {
                                         defaultValue={state.item.student.placeOfBitrh}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.placeOfBirth}
                                     />
                                 </div>
@@ -171,6 +176,7 @@ const SInformationDetails = () => {
                                         name="phone"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.phoneNumber}
                                     />
                                 </div>
@@ -184,6 +190,7 @@ const SInformationDetails = () => {
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
                                         // value={formik.values.email}
                                     />
                                 </div>
@@ -192,15 +199,15 @@ const SInformationDetails = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.student.studentCode}/>
+                                <TextField className={styles.txtField} defaultValue={state.item.student.studentCode} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.student.grade.name}/>
+                                <TextField className={styles.txtField} defaultValue={state.item.student.grade.name} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={'CNTT'}/>
+                                <TextField className={styles.txtField} defaultValue={'CNTT'} disabled/>
                             </div>
                         </div>
                     </form>
