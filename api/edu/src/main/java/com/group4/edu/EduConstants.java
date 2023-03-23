@@ -3,7 +3,7 @@ package com.group4.edu;
 import com.group4.edu.domain.Role;
 
 public class EduConstants {
-    public static final String dateInString = "12-03-2023";
+    public static final String dateDefaultSemster = "12-03-2023";
     public static String hederAuthorization = "authorization";
     public static final String PATH_FOLDER_PUBLIC = System.getProperty("user.dir")+"\\src\\public\\";
     public static final String PATH_UPLOAD_OUTLINE = PATH_FOLDER_PUBLIC+"outline\\";

@@ -31,7 +31,7 @@ public class SemesterDateTimeUntil {
         int secondYear = firstYear+1;
         return toStringSemester(semester,firstYear,secondYear);
     }
-    private static String  toStringSemester(int semester, int firstYear, int secondYear){
+    private static String toStringSemester(int semester, int firstYear, int secondYear){
         return "0"+String.valueOf(semester)+"/"+String.valueOf(firstYear)+"-"+String.valueOf(secondYear);
     }
 
@@ -65,7 +65,7 @@ public class SemesterDateTimeUntil {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
-            date = formatter.parse(EduConstants.dateInString);
+            date = formatter.parse(EduConstants.dateDefaultSemster);
         } catch (ParseException e) {
             System.out.println(e.getMessage());;
         }

@@ -1,17 +1,14 @@
 package com.group4.edu.controller;
 
-import com.group4.edu.domain.Student;
+
 import com.group4.edu.dto.ResponseImportExcelStudentDto;
 import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.dto.StudentDto;
-import com.group4.edu.dto.UserDto;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -98,5 +95,10 @@ public class StudentController {
     @DeleteMapping("/delete/tt/{id}")
     public ResponseEntity<?> deleteStTT(@PathVariable Long id){
         return new ResponseEntity<>(studentService.deleteStTT(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/get-st-by-filter")
+    public List<StudentDto> getByFilter(@RequestParam(name = "type") int type){
+        return studentService.getByFilter(type);
     }
 }

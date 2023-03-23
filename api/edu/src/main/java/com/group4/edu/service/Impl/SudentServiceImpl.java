@@ -375,6 +375,23 @@ public class SudentServiceImpl implements StudentService {
         return false;
     }
 
+    @Override
+    public List<StudentDto> getByFilter(int type) {
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        if(type==1){
+            return studentRepository.getStHasLecturerInstructorWithSemesterCode(semesterCode);
+        }
+        if(type == 2){
+            return studentRepository.getStnotHasInstructorWithSemesterCode(semesterCode);
+        }
+        if(type == 3){
+            return studentRepository.getStNotHasCompanyInternship();
+        }
+        if(type == 4){
+            return studentRepository.getStNotregister();
+        }
+        return null;
+    }
     private String getStringCellValue(XSSFCell cell){
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);

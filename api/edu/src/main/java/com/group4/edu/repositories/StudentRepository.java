@@ -32,4 +32,16 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Student e where e.IdNumber =?1 and e.studentType = ?2")
     Boolean existsByIdNumberAndStudentType(String idNumber, Integer type);
+
+    @Query(value = "select new com.group4.edu.dto.StudentDto(e.student,e) from GraduationThesis e where e.isAccept = 2 and e.lecturer is not null and e.semester.code = ?1")
+    List<StudentDto> getStHasLecturerInstructorWithSemesterCode(String semesterCode);
+
+    @Query(value = "select new com.group4.edu.dto.StudentDto(e.student,e) from GraduationThesis e where(e.isAccept = 1 or e.isAccept =0 or e.lecturer is null) and e.semester.code = ?1")
+    List<StudentDto> getStnotHasInstructorWithSemesterCode(String semesterCode);
+
+    @Query(value = "select new com.group4.edu.dto.StudentDto(e) from Student e left join GraduationThesis g on e.id = g.student.id where g.id is null or (e.studentType =1 or e.studentType = 3)")
+    List<StudentDto> getStNotregister();
+
+    @Query(value = "select new com.group4.edu.dto.StudentDto(e) from Student e left join Internship g on e.id = g.student.id where g.id is null and (e.studentType =2 or e.studentType = 3)")
+    List<StudentDto> getStNotHasCompanyInternship();
 }

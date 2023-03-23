@@ -17,4 +17,5 @@ public interface StudentService {
 
     boolean deleteStTT(Long id);
     boolean deleteStDa(Long id);
+    List<StudentDto> getByFilter(int type);
 }
