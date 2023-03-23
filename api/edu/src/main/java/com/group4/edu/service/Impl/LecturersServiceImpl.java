@@ -74,6 +74,7 @@ public class LecturersServiceImpl implements LecturersService {
             entity.setAddress(dto.getAddress());
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setUserType(EduConstants.UserType.LECTURERS.getValue());
+            entity.setPhoneNumber(dto.getPhoneNumber());
             if(isNewAccount){
                 account = new Account();
                 account.setUsername(dto.getLecturersCode());
