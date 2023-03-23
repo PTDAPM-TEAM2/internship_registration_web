@@ -107,16 +107,13 @@ public class InternshipServiceImpl implements InternshipService {
 
         }
 
-        // Đoạn công ty này ba chấm quá @@
-        Company company = new Company();
-        company.setAddress(dto.getAddress());
-        company.setCode(dto.getCode());
-        company.setNameCompany(dto.getNameCompany());
-        company.setEmail(dto.getEmail());
-        company.setPhoneNumber(dto.getPhoneNumber());
-        company.setDescription(dto.getDescription());
-        company.setCode(dto.getCode());
-        company = companyRepository.save(company);
+        Company company = null;
+        if(dto.getCompanyId() != null){
+            company = companyRepository.findById(dto.getCompanyId()).orElse(null);
+            if(company == null){
+                throw  new Exception("Không tìm thấy công ty");
+            }
+        }
         entity.setCompany(company);
 //        company = companyRepository.findByEmail(dto.getEmail()).orElse(null);
 //        if(company == null){
@@ -175,8 +172,7 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     private void validateRegisterInternShip(RegisterinternshipDto dto) throws Exception {
-        if(dto.getAddress() == null || dto.getEmail() == null || dto.getInternshipPosition() == null
-            || dto.getNameCompany() == null || dto.getPhoneNumber() == null){
+        if(dto.getInternshipPosition() == null){
             throw new Exception("Thiếu thông tin. Vui lòng nhập đủ thông tin");
         }
     }
