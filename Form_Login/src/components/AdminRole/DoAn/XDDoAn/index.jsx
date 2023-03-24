@@ -69,6 +69,8 @@ function DSDA() {
             }
             catch (err) {
                 console.log(err);
+                context.updateLoading(false);
+
             }
         }
         getAllDoAn();

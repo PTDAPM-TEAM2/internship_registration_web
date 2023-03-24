@@ -32,6 +32,7 @@ function DLSVDA() {
                 setShowAlert(false);
             }, 2000);
         } catch (error) {
+            context.updateLoading(false);
             console.error('Error fetching data:', error);
         }
     }

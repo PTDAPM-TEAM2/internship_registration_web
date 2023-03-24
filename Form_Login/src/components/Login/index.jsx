@@ -62,6 +62,7 @@ function Login() {
       setErrorMessage("Nhập thiếu thông tin! Vui lòng nhập lại!");
     } else {
       if (context.toggle === true) {
+        context.updateLoading(true);
         try {
           var tk = await userApi.loginDA({
             username: username,
@@ -69,6 +70,7 @@ function Login() {
           });
           if (tk !== "") {
             localStorage.setItem("token", tk);
+            context.updateLoading(false);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -87,20 +89,24 @@ function Login() {
             setErrorMessage(
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
+            context.updateLoading(false);
           }
         } catch (error) {
           console.log(error);
           if (error.response === undefined || error.response === null) {
+            context.updateLoading(false);
             setErrorMessage("Lỗi kết nối!");
           } else {
             if (error.response.status === 400) {
               setErrorMessage(
                 "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
               );
+              context.updateLoading(false);
             }
           }
         }
       } else if (context.toggle === false) {
+        context.updateLoading(true);
         try {
           var tk = await userApi.loginTT({
             username: username,
@@ -113,6 +119,7 @@ function Login() {
               Variables.userRole = "admin";
             }
             localStorage.setItem("token", tk);
+            context.updateLoading(false);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -132,16 +139,19 @@ function Login() {
             setErrorMessage(
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
+            context.updateLoading(false);
           }
         } catch (error) {
           console.log(error);
           if (error.response === undefined || error.response === null) {
             setErrorMessage("Lỗi kết nối!");
+            context.updateLoading(false);
           } else {
             if (error.response.status === 400) {
               setErrorMessage(
                 "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
               );
+              context.updateLoading(false);
             }
           }
         }
@@ -233,7 +243,7 @@ function Login() {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        // onMouseDown={handleMouseDownPassword}
+                      // onMouseDown={handleMouseDownPassword}
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

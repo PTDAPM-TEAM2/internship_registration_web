@@ -88,6 +88,7 @@ function DSDA() {
                 context.updateLoading(false);
             }
             catch (err) {
+                context.updateLoading(false);
                 console.log(err);
             }
         }

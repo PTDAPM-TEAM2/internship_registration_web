@@ -19,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import IconButton from '@mui/material/IconButton';
 import studentApi from "../../../../api/studentApi";
+import AlertMessage from '../ThemSV/Alert';
 // import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
 // import { getStudents } from '../../../../axios';
@@ -64,7 +65,7 @@ function DSSV() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const context = useContext(ThemeContext);
-
+    const [showAlert, setShowAlert] = React.useState(null);
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
@@ -88,7 +89,16 @@ function DSSV() {
                 setStudent(response);
                 context.updateLoading(false);
             } catch (error) {
+                if (error.response.data.status === 403) {
+                    context.updateLoading(false);
+                    setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getAllItem()
@@ -104,6 +114,8 @@ function DSSV() {
         }
         catch (err) {
             console.log(err);
+            context.updateLoading(false);
+
         }
     }
 
@@ -116,11 +128,14 @@ function DSSV() {
         }
         catch (err) {
             console.log(err);
+            context.updateLoading(false);
+
         }
     }
 
     return (
         <div style={{ display: 'flex' }}>
+            {showAlert && <AlertMessage />}
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <form>

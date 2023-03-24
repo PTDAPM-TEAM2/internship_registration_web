@@ -75,30 +75,43 @@ const ThemSV = () => {
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
         const getGrade = async () => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
             }
         }
         getGrade()
-    }, [context.token]);
+    }, []);
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.addSVDA(JSON.stringify(values), token);
                 setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(null);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
                 if (error.response.data.messgae) {
+                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: error.response.data.messgae });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
+                if (error.response.data.status === 403) {
+                    context.updateLoading(false);
+                    setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)

@@ -58,6 +58,7 @@ const ChiTietXD = () => {
             const response = await prjApi.addOrRemoveGraduation(body, token);
         }
         catch (err) {
+            context.updateLoading(false);
             console.log(err);
         }
     };

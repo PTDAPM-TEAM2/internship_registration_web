@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
 import Sidebar from '../../../Sidebar';
-import { useNavigate, useParams,useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -97,12 +97,15 @@ const ChiTietSV = () => {
     const [companies, setCompanies] = React.useState([]);
     React.useEffect(() => {
         const getCompany = async () => {
+            context.updateLoading(true);
             try {
                 const response = await companyApi.getCompanies(token);
                 setCompanies(response);
-                console.log(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getCompany()
@@ -110,12 +113,16 @@ const ChiTietSV = () => {
 
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getGrade = async () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getGrade()
@@ -127,23 +134,29 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVTT(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
                 }, 2000)
             } catch (error) {
                 console.error(error);
+                context.updateLoading(false);
+
             }
         },
     })
 
     const handleDelete = async () => {
+        context.updateLoading(true);
         try {
             const response = await studentApi.deleteSVDA(state.item.id);
             setOpen(false);
+            context.updateLoading(false);
             setShowAlertD(true);
             setTimeout(() => {
                 setShowAlertD(false);
@@ -152,6 +165,8 @@ const ChiTietSV = () => {
         }
         catch (error) {
             console.error('Error deleting data: ', error);
+            context.updateLoading(false);
+
         };
     };
 

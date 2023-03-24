@@ -70,11 +70,45 @@ function DSGV() {
                 setLecturer(response);
                 context.updateLoading(false);
             } catch (error) {
+                context.updateLoading(false);
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
     }, []);
+    
+    // const [numOfSinL, setNumOfSinL] = React.useState(0);
+    // const body = {
+    //     numberOfStudentsInLecturer: numOfSinL,
+    // }
+    // const handleFilterGV = async (newValue) => {
+    //     setNumOfSinL(newValue);
+    //     context.updateLoading(true);
+    //     try {
+    //         const response = await lecturerApi.filter(body);
+    //         setLecturer(response);
+    //         context.updateLoading(false);
+    //         console.log(body);
+    //     }
+    //     catch (err) {
+    //         context.updateLoading(false);
+    //         console.log(err);
+    //     }
+    // }
+
+    // const handleGetAll = async () => {
+    //     context.updateLoading(true);
+    //     try {
+    //         const response = await lecturerApi.getAllGV();
+    //         setLecturer(response);
+    //         context.updateLoading(false);
+    //     } catch (error) {
+    //         context.updateLoading(false);
+    //         console.error('Error fetching data:', error);
+    //     }
+    // }
+
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -95,8 +129,9 @@ function DSGV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10}>Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={20}>Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={10} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={20} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={30} >Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>

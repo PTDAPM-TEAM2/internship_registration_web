@@ -17,7 +17,7 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
-import userApi from "../../../../api/studentApi";
+import studentApi from "../../../../api/studentApi";
 const columns = [
     {
         id: 'STT',
@@ -76,19 +76,52 @@ function DSSV() {
     const token = localStorage.getItem('token');
     React.useEffect(() => {
         const getAllItem = async () => {
+            context.updateLoading(true);
             try {
-                const response = await userApi.getAllSvTt(null, token);
+                const response = await studentApi.getAllSvTt(null, token);
                 setStudent(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getAllItem()
     }, []);
 
 
+    const handleFilterGV = async (type) => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.filter(type);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+
+        }
+    }
+
+    const handleGetAll = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.getAllSvTT(null, token);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+
+        }
+    }
+
+
     return (
-        <div style={{ display: 'flex', height:'90vh', position:'relative' }}>
+        <div style={{ display: 'flex', height: '90vh', position: 'relative' }}>
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <div className={styles.search}>
@@ -106,8 +139,9 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10}>Sinh viên chưa có công ty thực tập</MenuItem>
-                                    <MenuItem value={20}>Sinh viên đã có công ty thực tập</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleFilterGV(3)}>Sinh viên chưa có công ty thực tập</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleFilterGV(4)}>Sinh viên đã có công ty thực tập</MenuItem>
+                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -119,7 +153,7 @@ function DSSV() {
                 </div>
                 <div className={styles.table}>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                        <TableContainer sx={{ maxHeight: 400}}>
+                        <TableContainer sx={{ maxHeight: 400 }}>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
@@ -152,9 +186,9 @@ function DSSV() {
                         </TableContainer>
                     </Paper>
                 </div>
-                <div style={{ marginTop: '30px', display: 'flex', justifyContent:'flex-end' }}>
+                <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-end' }}>
                     <Button className='button' sx={{ marginRight: 2 }}>Nhập điểm</Button>
-                    <Button className='button' >Xuất dữ liệu</Button> 
+                    <Button className='button' >Xuất dữ liệu</Button>
                 </div>
             </div>
         </div>

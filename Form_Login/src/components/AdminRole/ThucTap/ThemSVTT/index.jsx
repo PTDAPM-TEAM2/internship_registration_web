@@ -78,12 +78,15 @@ const ThemSVTT = () => {
     const [companies, setCompanies] = React.useState([]);
     React.useEffect(() => {
         const getCompany = async () => {
+            context.updateLoading(true);
             try {
                 const response = await companyApi.getCompanies(token);
                 setCompanies(response);
-                console.log(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getCompany()
@@ -91,12 +94,16 @@ const ThemSVTT = () => {
 
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getGrade = async () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getGrade()
@@ -108,16 +115,17 @@ const ThemSVTT = () => {
         initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.addSVTT(JSON.stringify(values), token);
-                console.log(response);
-                console.log(JSON.stringify(values));
+                context.updateLoading(false);
                 setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
                     navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
                 }, 2000)
             } catch (error) {
+                context.updateLoading(false);
                 if (error.response.data.messgae) {
                     setShowAlert({ type: 'error', text: error.response.data.messgae });
                     setTimeout(() => {
@@ -241,7 +249,7 @@ const ThemSVTT = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        
+
                                     />
                                 </div>
                                 <div className={styles.txt}>

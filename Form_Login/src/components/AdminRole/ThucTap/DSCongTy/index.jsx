@@ -53,11 +53,15 @@ function DSCT() {
     const [companies, setCompanies] = React.useState([]);
     React.useEffect(() => {
         const getCompany = async () => {
+            context.updateLoading(true);
             try {
                 const response = await companyApi.getCompanies(token);
                 setCompanies(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getCompany()
@@ -65,7 +69,7 @@ function DSCT() {
 
 
     const handleGoClick = (item) => {
-        navigate(`/chi-tiet-cong-ty/${item.id}`, {state: {item}})
+        navigate(`/chi-tiet-cong-ty/${item.id}`, { state: { item } })
     }
     return (
         <div style={{ display: 'flex' }}>
@@ -94,7 +98,7 @@ function DSCT() {
                                     {companies.map((row, index) => {
                                         return (
                                             <TableRow key={row.id} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index+1}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.id}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.nameCompany}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
