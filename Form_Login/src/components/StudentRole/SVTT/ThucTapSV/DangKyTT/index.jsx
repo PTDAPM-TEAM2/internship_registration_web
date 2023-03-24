@@ -17,7 +17,7 @@ const validationSchema = yup.object({
     emailCompany: yup.string().email("email không hợp lệ").required("Vui lòng nhập email"),
     position: yup.string().required("Vui lòng nhập chức vụ"),
     phoneCompany: yup.string().required("Vui lòng nhập số điện thoại"),
-    companyCode: yup.string().required("Vui lòng nhập mã công ty"),
+    taxCode: yup.string().required("Vui lòng nhập mã công ty"),
 });
 
 const initialValues = {
@@ -26,7 +26,7 @@ const initialValues = {
     emailCompany: "",
     position: "",
     phoneCompany: "",
-    companyCode: "",
+    taxCode: "",
 };
 
 function DKTT() {
@@ -66,7 +66,7 @@ function DKTT() {
                 "email": values.emailCompany,
                 "internshipPosition": values.position,
                 "phoneNumber": values.phoneCompany,
-                "taxCode": values.companyCode,
+                "taxCode": values.taxCode,
                 "description": null,
             },token);
             console.log(response);
@@ -197,18 +197,18 @@ function DKTT() {
                                             onBlur={formik.handleBlur} 
                                             error={formik.touched.phoneCompany && Boolean(formik.errors.phoneCompany)} 
                                             helperText={formik.touched.phoneCompany && formik.errors.phoneCompany}/>
-                                        <h4 style={{ marginBottom: 10 }}>Mã công ty:</h4>
+                                        <h4 style={{ marginBottom: 10 }}>Mã số thuế:</h4>
                                         <TextField 
                                             id="outlined-basic" 
                                             variant="outlined" 
                                             size="small" 
                                             sx={{ width: '80%', marginBottom: 5 }} 
-                                            name="companyCode"
-                                            value={formik.values.companyCode} 
+                                            name="taxCode"
+                                            value={formik.values.taxCode} 
                                             onChange={formik.handleChange} 
                                             onBlur={formik.handleBlur} 
-                                            error={formik.touched.companyCode && Boolean(formik.errors.companyCode)} 
-                                            helperText={formik.touched.companyCode && formik.errors.companyCode}/>
+                                            error={formik.touched.taxCode && Boolean(formik.errors.taxCode)} 
+                                            helperText={formik.touched.taxCode && formik.errors.taxCode}/>
                                     </div>
                             </div>
                         </div>
