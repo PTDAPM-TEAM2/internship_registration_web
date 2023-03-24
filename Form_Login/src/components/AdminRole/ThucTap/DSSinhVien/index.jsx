@@ -79,7 +79,6 @@ function DSSV() {
             try {
                 const response = await userApi.getAllSvTt(null, token);
                 setStudent(response);
-                console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

@@ -67,7 +67,6 @@ function DSGV() {
             try {
                 const response = await lecturerApi.getAllGV();
                 setLecturer(response);
-                console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
