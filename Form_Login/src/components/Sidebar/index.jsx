@@ -490,7 +490,7 @@ function Sidebar() {
                                         handleItemClick('QLGV')
                                         if(check === 'teachers'){
                                             toComponent("/danh-sach-sinh-vien")
-                                        } else if(check === 'studeents'){
+                                        } else if(check === 'students'){
                                             toComponent("/sinh-vien-thuc-tap/thong-tin-thuc-tap")
                                         }
                                         

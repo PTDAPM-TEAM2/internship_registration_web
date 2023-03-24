@@ -24,7 +24,7 @@ function TTDA() {
             }
         }
         getTTDASV();
-    });
+    },[]);
 
     return (
         <>
@@ -36,8 +36,7 @@ function TTDA() {
                     <div style={{ height: '95%', }}>
                         <div style={{ margin: 20, height: '83%' }}>
                             <div>
-                                <h2 style={{}}>Đồ án:</h2>
-                                <h2>{TTDA?.graduationThesis?.nameGraduationThesis}</h2>
+                                <h2 style={{}}>Đồ án: {TTDA?.graduationThesis?.nameGraduationThesis}</h2>
                             </div>
                             <div style={{ marginTop: 20, marginLeft: 120, textAlign: "left" }}>
                                 <div style={{ float: 'left', width: '50%', }}>

@@ -115,11 +115,9 @@ function Login() {
           localStorage.setItem('token', tk);
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
-            if (userInfoTT.roles[0].id === 1) {
+            if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
-            } else if(userInfoTT.roles[0].id === 2) {
-              Variables.userRole = "teachers";
-            } else {
+            }else{
               Variables.userRole = "students";
             }
             localStorage.setItem("token", tk);
