@@ -22,14 +22,13 @@ const DSSVYC = () => {
   
     // Declare a state variable for data
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
     const location = useLocation()
     const token = localStorage.getItem('token');
 
     const context = useContext(ThemeContext);
     useEffect(() => {
       body.lecturerId = teacherRoleController.getCurrentUser(token).lecturersCode;
-        // Define an async function that calls the API
+      context.updateLoading(true)
       const fetchData = async () => {
         try {
           // Make a GET request with Axios
@@ -37,7 +36,7 @@ const DSSVYC = () => {
           // Store the response data in the state variable
           setTimeout(() => {
             setData(response);
-            setLoading(false);
+            context.updateLoading(false)
           }, 1000);
         } catch (error) {
           // Handle error
@@ -57,23 +56,18 @@ const DSSVYC = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
-                    { (loading === true) ? (
-                      <CircularProgress color="success" className={styles.circularProgressIndicator}/>
-                    ) : (data.map((item, key) =>  
-                      <div>
-                          {item.isAccept === 1 ? (<div className={styles.card} key = {key}> 
+                    { data?.map((item, key) =>  
+                          <div className={styles.card} key = {key}> 
                             <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
                                 <img src={item.student?.urlImg} alt='' className={styles.itemImage}/> 
                                 <div className={styles.body}> 
-                                    <a><b>Họ và tên: </b>{item.student.fullName}</a> 
-                                    <p><b>Mã sinh viên: </b>{item.student.id}</p> 
-                                    <p><b>Lớp: </b>{item.student.grade.name}</p> 
-                                    <p><b>Khoa: </b>{item.major}</p> 
+                                    <a><b>Họ và tên: </b>{item.student?.fullName}</a> 
+                                    <p><b>Mã sinh viên: </b>{item.student?.id}</p> 
+                                    <p><b>Lớp: </b>{item.student?.grade?.name}</p> 
+                                    <p><b>Khoa: </b>CNTT</p> 
                                 </div> 
                             </div>
-                        </div>) : (null)}
-                      </div>
-                    )
+                        </div>
                     )
                     } 
                 </div> 

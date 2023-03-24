@@ -5,7 +5,9 @@ import PeopleIcon from '@mui/icons-material/People';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Variables from '../../utils/variables';
 import styles from './Dashboard.module.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { ThemeContext } from '@emotion/react';
 const drawerWidth = 300;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -61,6 +63,12 @@ export default function Dashboard() {
         return `${formattedDay}/${formattedMonth}/${year}`;
     };
 
+    const context = React.useContext(ThemeContext);
+
+
+    const handleItemClick = (value) => {
+        context.updateButton(value);
+    }
 
 
 
@@ -87,6 +95,12 @@ export default function Dashboard() {
     //     setChildrenOfChild(newChildren);
     // }
 
+    const navigate = useNavigate();
+    function toComponent (path) {
+        navigate(path);
+    }
+
+
     return (
         <div className={styles.contain}>
             <Main open={open}>
@@ -102,7 +116,15 @@ export default function Dashboard() {
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }} onClick = {
+                                    () => {
+                                        if(Variables.userRole === "admin"){
+
+                                        }else{
+
+                                        }
+                                    }
+                                }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : ""}</p>
                                 </div>
@@ -170,7 +192,15 @@ export default function Dashboard() {
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}  onClick={() => {
+                                    if(Variables.userRole === 'admin'){
+                                        toComponent("/quan-ly-sinh-vien-thuc-tap")
+                                    }else if(Variables.userRole === 'teachers'){
+                                        toComponent("/trang-chu-giang-vien")
+                                    }else{
+                                        toComponent("/sinh-vien-thuc-tap")
+                                    }
+                                }}>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === "admin" ? "Thực tập" : Variables.userRole === "teachers" ? "Thông Tin Cá Nhân" : ""}</p>
                                 </div>
@@ -178,7 +208,17 @@ export default function Dashboard() {
                                     <MenuBookIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }} onClick = {
+                                    () => {
+                                        if(Variables.userRole === "admin"){
+
+                                        }else if(Variables.userRole === "teachers"){
+                                            navigate('/danh-sach-sinh-vien-yeu-cau')
+                                        }else{
+
+                                        }
+                                    }
+                                }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === "admin" ? "Sinh viên" : Variables.userRole === "teachers" ? "Xác Nhận Yêu Cầu Sinh Viên" : ""}</p>
                                 </div>
@@ -186,7 +226,17 @@ export default function Dashboard() {
                                     <PeopleIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} onClick = {
+                                    () => {
+                                        if(Variables.userRole === "admin"){
+
+                                        }else if(Variables.userRole === "teachers"){
+                                            navigate('/danh-sach-sinh-vien')
+                                        }else{
+
+                                        }
+                                    }
+                                }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === "admin" ? "Giáo viên" : Variables.userRole === "teachers" ? "Danh sách sinh viên" : ""}</p>
                                 </div>
@@ -208,7 +258,11 @@ export default function Dashboard() {
                                     </div> :
                                     // teacher role
                                     Variables.userRole === "teachers" ?
-                                        <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }} >
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }}  onClick = {
+                                            () => {
+                                                navigate('/danh-sach-do-an-sinh-vien')
+                                            }
+                                        }>
                                             <div className={styles.infoTag}>
                                                 <p>Danh sách đồ án</p>
                                             </div>

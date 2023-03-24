@@ -69,7 +69,7 @@ const PInformationDetails = () => {
 
         const getAllWeeklyReview = async () => {
             try{
-                const response = await graduationThesis.weeklyTeacherReview(state.item.id, token);
+                const response = await graduationThesis.weeklyTeacherReview(state.item?.id, token);
                 setReviewList(response)
             }catch(err){
                 console.log(err);

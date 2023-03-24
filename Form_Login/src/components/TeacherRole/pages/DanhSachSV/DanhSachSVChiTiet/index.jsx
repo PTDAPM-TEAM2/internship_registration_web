@@ -76,7 +76,7 @@ const SInformationDetails = () => {
                                 {state && <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src={state.item.student.urlImg} alt="" />
+                                            <img className={styles.userProfile} src={state.item?.student?.urlImg} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -100,7 +100,7 @@ const SInformationDetails = () => {
                                     <TextField
                                         className={styles.txtGender}
                                         id="gender"
-                                        defaultValue={state.item.student.gender}
+                                        defaultValue={state.item?.student?.gender}
                                         name="gender"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -115,7 +115,7 @@ const SInformationDetails = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id='name'
-                                        defaultValue={state.item.student.fullName}
+                                        defaultValue={state.item?.student?.fullName}
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -130,7 +130,7 @@ const SInformationDetails = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={state.item.passport}
+                                        defaultValue={state.item?.passport}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         disabled
@@ -143,7 +143,7 @@ const SInformationDetails = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={state.item.student.dateOfBirth}
+                                        defaultValue={state.item?.student?.dateOfBirth}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         disabled
@@ -156,7 +156,7 @@ const SInformationDetails = () => {
                                         className={styles.txtField}
                                         id="pob"
                                         name="pob"
-                                        defaultValue={state.item.student.placeOfBitrh}
+                                        defaultValue={state.item?.student?.placeOfBitrh}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         disabled
@@ -168,7 +168,7 @@ const SInformationDetails = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id="phone"
-                                        defaultValue={state.item.student.phoneNumber}
+                                        defaultValue={state.item?.student?.phoneNumber}
                                         name="phone"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -182,7 +182,7 @@ const SInformationDetails = () => {
                                         className={styles.txtField}
                                         id="email"
                                         name="email"
-                                        defaultValue={state.item.student.email}
+                                        defaultValue={state.item?.student?.email}
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -195,11 +195,11 @@ const SInformationDetails = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.student.studentCode} disabled/>
+                                <TextField className={styles.txtField} defaultValue={state.item?.student?.studentCode} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item.student.grade.name} disabled/>
+                                <TextField className={styles.txtField} defaultValue={state.item?.student?.grade?.name} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>

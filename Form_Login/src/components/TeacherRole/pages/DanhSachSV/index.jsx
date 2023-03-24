@@ -14,21 +14,22 @@ const body = {
 const DSSV = () => {
     // Declare a state variable for data
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('token');
   const context = useContext(ThemeContext);
+  
     // Use useEffect hook to fetch data when the component mounts
     useEffect(() => {
       body.lecturerId = teacherRoleController.getCurrentUser(token).lecturersCode;
         // Define an async function that calls the API
       const fetchData = async () => {
+        context.updateLoading(true)
         try {
           // Make a GET request with Axios
           const response = await teacherRoleController.getAllResearch(body, token);
           // Store the response data in the state variable
           setTimeout(() => {
             setData(response);
-            setLoading(false);
+            context.updateLoading(false);
           }, 1000);
         } catch (error) {
           // Handle error
@@ -48,22 +49,21 @@ const DSSV = () => {
             <div style={{ width: '100%' }}>
                 <p className={styles.title}><b>Danh sách sinh viên</b></p>
                 <div className={styles.container}> 
-                    { (loading !== true) ? (
-                      data?.map((item, key) => ( 
-                          <div className={styles.card} key = {key}> 
-                            <div className={styles.cardItem} onClick={() => toComponent(item)}>
-                                <img src={item.student.urlImg} className={styles.itemImage}/> 
-                                <div className={styles.body}> 
-                                    <a><b>Họ và tên: </b>{item.student.fullName}</a> 
-                                    <p><b>Mã sinh viên: </b>{item.student.studentCode}</p> 
-                                    <p><b>Lớp: </b>{item.student.grade.name}</p> 
-                                    <p><b>Khoa: </b>{'CNTT'}</p> 
-                                </div> 
-                            </div>
-                      </div>
+                    {
+                        data?.map((item, key) => ( 
+                            <div className={styles.card} key = {key}> 
+                              <div className={styles.cardItem} onClick={() => toComponent(item)}>
+                                  <img src={item.student?.urlImg} className={styles.itemImage}/> 
+                                  <div className={styles.body}> 
+                                      <a><b>Họ và tên: </b>{item.student?.fullName}</a> 
+                                      <p><b>Mã sinh viên: </b>{item.student?.studentCode}</p> 
+                                      <p><b>Lớp: </b>{item.student?.grade?.name}</p> 
+                                      <p><b>Khoa: </b>{'CNTT'}</p> 
+                                  </div> 
+                              </div>
+                        </div>
+                      )
                     )
-                    )
-                   ) : (<CircularProgress color="success" className={styles.circularProgressIndicator}/>) 
                   } 
                 </div> 
             </div>
