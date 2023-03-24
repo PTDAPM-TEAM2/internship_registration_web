@@ -387,7 +387,10 @@ public class SudentServiceImpl implements StudentService {
         if(type == 3){
             return studentRepository.getStNotHasCompanyInternship();
         }
-        if(type == 4){
+        if(type ==4){
+            return studentRepository.getStHasCompanyInternshipBySemesterCode(semesterCode);
+        }
+        if(type == 5){
             return studentRepository.getStNotregister();
         }
         return null;

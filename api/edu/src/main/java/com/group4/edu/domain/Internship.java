@@ -15,7 +15,9 @@ public class Internship extends BaseObject {
     private String internshipPosition;
     private Double mark;
     private String evaluate;
+    @Column(name = "startDate")
     private Date start;
+    @Column(name = "endDate")
     private Date end;
 
     @ManyToOne

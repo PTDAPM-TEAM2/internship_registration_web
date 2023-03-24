@@ -53,4 +53,14 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
         entity = registerTimeRepository.save(entity);
         return new RegisterTimeDto(entity);
     }
+
+    @Override
+    public RegisterTimeDto getLast() {
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        List<RegisterTime> registerTimeDtos = registerTimeRepository.getBySemesterCodeAndType(semesterCode,2);
+        if(registerTimeDtos != null && registerTimeDtos.size()>0){
+            return new RegisterTimeDto(registerTimeDtos.get(registerTimeDtos.size()-1));
+        }
+        return null;
+    }
 }

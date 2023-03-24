@@ -44,4 +44,7 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Query(value = "select new com.group4.edu.dto.StudentDto(e) from Student e left join Internship g on e.id = g.student.id where g.id is null and (e.studentType =2 or e.studentType = 3)")
     List<StudentDto> getStNotHasCompanyInternship();
+
+    @Query(value = "select new com.group4.edu.dto.StudentDto(e.student,e) from Internship e where e.semester.code = ?1")
+    List<StudentDto> getStHasCompanyInternshipBySemesterCode(String code);
 }
