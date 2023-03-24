@@ -68,7 +68,7 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
-            context.updateToken(tk);
+            localStorage.setItem("token", tk);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -106,16 +106,13 @@ function Login() {
             username: username,
             password: password,
           });
-          console.log(tk);
-          // try {
-          //   var tk = await userApi.loginTT({ username: username, password: password });
+          localStorage.setItem('token', tk);
           if (tk !== "") {
             var userInfo = await userApi.getInfo(tk);
             if (userInfo.roles[0].id === 1) {
               Variables.userRole = "admin";
             }
-            // console.log(Variables.userRole);
-            context.updateToken(tk);
+            localStorage.setItem("token", tk);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -127,6 +124,7 @@ function Login() {
               } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
+                Variables.pw = password;
                 navigate("/trang-chu-giang-vien");
               }
             }, 500);
@@ -156,7 +154,6 @@ function Login() {
   const handleClickShowPassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
-
   return (
     <div className={styles.bg}>
       {showAlert && (

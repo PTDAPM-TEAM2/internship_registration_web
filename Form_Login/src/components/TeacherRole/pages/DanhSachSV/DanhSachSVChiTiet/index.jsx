@@ -1,53 +1,32 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 // import styles from 'Information.module.css';
-import styles from '../ThongTinCaNhan/Information.module.css';
-import Sidebar from '../../Sidebar';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import styles from '../DanhSachSVChiTiet/StudentInfDetails.module.css';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import {Link, useNavigate} from 'react-router-dom';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
-const TTCN = () => {
+import { useLocation } from 'react-router-dom';
+const SInformationDetails = () => {
+    const location = useLocation()
+    const state = location.state;
     const [showAlert, setShowAlert] = React.useState(false);
+    const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
     const [date, setDate] = React.useState(dayjs());
-      // Declare a state variable for data
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    // Use useEffect hook to fetch data when the component mounts
-    useEffect(() => {
-      // Define an async function that calls the API
-    async function fetchData() {
-      try {
-        // Make a GET request with Axios
-        const response = await axios.get("https://641028d1864814e5b648f368.mockapi.io/students");
-        // Store the response data in the state variable
-        setTimeout(() => {
-          setData(response.data);
-          setLoading(false)
-        }, 200);
-      } catch (error) {
-        // Handle error
-        console.error(error);
-      }
-    }
-    // Invoke the async function
-    fetchData();
-  }, []); // Pass an empty dependency array to run only once
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
     };
-    
+
+
     const handleSubmit = (values, { setSubmitting }) => {
         console.log(values);
         setSubmitting(false);
@@ -86,33 +65,22 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
-    
+    // const {item} = props.location.state;
+    // console.log(item);
 
-    const teacherProfile = [];
-    data.map((value) => {
-        if(value !== null){
-            teacherProfile.push(value);
-        }
-    })
-
-    const navigate = useNavigate();
-
-    function toComponent(item) {
-        navigate('doi-mat-khau', {state: {item}})
-    }
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}><b>Thông tin cá nhân</b></p>
-                    <form onSubmit={formik.handleSubmit}>
+                    <p className={styles.title}><b>Thông tin sinh viên</b></p>
+                    <form onSubmit={formik.handleSubmit} className={styles.formInfor}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >
-                                <div className={styles.txt}>
+                                {state && <div className={styles.txt}>
                                     {(imageFile === null) &&
                                         <div>
-                                            <img className={styles.userProfile} src={teacherProfile.length === 0 ? '' : teacherProfile[29]['profileImage']} alt="" />
+                                            <img className={styles.userProfile} src={state.item.student.urlImg} alt="" />
                                             <input
                                                 className={styles.fileInput}
                                                 name='image'
@@ -130,16 +98,18 @@ const TTCN = () => {
                                             <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
                                         </div>
                                     }
-                                </div>
+                                </div>}
                                 <div className={styles.txt}>
                                     <label htmlFor="gender">Giới tính: </label>
                                     <TextField
                                         className={styles.txtGender}
                                         id="gender"
+                                        defaultValue={state.item.student.gender}
                                         name="gender"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['gender']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
+                                        // value={formik.values.gender}
                                     />
                                 </div>
                             </div>
@@ -149,22 +119,26 @@ const TTCN = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id='name'
+                                        defaultValue={state.item.student.fullName}
                                         name='name'
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['name']}
+                                        disabled
+                                        // value={formik.values.name}
                                     />
                                 </div>
-                                {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
+                                {formik.touched.name && formik.errors.idsv && <div>{formik.errors.name}</div>}
                                 <div className={styles.txt} >
                                     <label htmlFor='idCard'>Căn cước: </label>
                                     <TextField
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['passport']}
+                                        defaultValue={state.item.passport}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
+                                        // value={formik.values.identityCard}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -173,9 +147,11 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['dateOfBirth'].substr(0,5)}
+                                        defaultValue={state.item.student.dateOfBirth}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
+                                        // value={formik.values.identityCard}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -184,9 +160,11 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="pob"
                                         name="pob"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['address']}
+                                        defaultValue={state.item.student.placeOfBitrh}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
+                                        // value={formik.values.placeOfBirth}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -194,10 +172,12 @@ const TTCN = () => {
                                     <TextField
                                         className={styles.txtField}
                                         id="phone"
+                                        defaultValue={state.item.student.phoneNumber}
                                         name="phone"
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['numberPhone']}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        disabled
+                                        // value={formik.values.phoneNumber}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -206,50 +186,36 @@ const TTCN = () => {
                                         className={styles.txtField}
                                         id="email"
                                         name="email"
+                                        defaultValue={state.item.student.email}
                                         type="email"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['email']}
+                                        disabled
+                                        // value={formik.values.email}
                                     />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã giáo viên: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['id']}/>
+                                <p>Mã sinh viên: </p>
+                                <TextField className={styles.txtField} defaultValue={state.item.student.studentCode} disabled/>
+                            </div>
+                            <div className={styles.txt}>
+                                <p>Lớp: </p>
+                                <TextField className={styles.txtField} defaultValue={state.item.student.grade.name} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['major']}/>
+                                <TextField className={styles.txtField} defaultValue={'CNTT'} disabled/>
                             </div>
-                            <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField className={styles.txtField} defaultValue={teacherProfile.length === 0 ? '' : teacherProfile[29]['password']}/>
-                            </div>
-                        </div>
-                        <div className={styles.btn}>
-                            <button className={styles.button} disabled={formik.isSubmitting} onClick= {() => {toComponent(teacherProfile[29]['password'])}}>Đổi mật khẩu</button>
                         </div>
                     </form>
                 </div>
 
             </div>
-            {
-                showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Đổi mật khẩu thành công</AlertTitle>
-                    </Alert>
-                </div>
-            }
         </div >
     );
 };
 
-export default TTCN;
+export default SInformationDetails;

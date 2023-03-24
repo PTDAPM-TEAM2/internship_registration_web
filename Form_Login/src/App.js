@@ -24,25 +24,25 @@ import DLCT from './components/AdminRole/ThucTap/DLCT';
 import DSCT from './components/AdminRole/ThucTap/DSCongTy';
 import CTCT from './components/AdminRole/ThucTap/ChiTietCT';
 import DLSVTT from './components/AdminRole/ThucTap/DLSVTT';
-import DLGVTT from './components/AdminRole/ThucTap/DLGVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
-import DSGVTT from './components/AdminRole/ThucTap/DSGiaoVien';
+import ThemSVTT from './components/AdminRole/ThucTap/ThemSVTT';
+import CTSVTT from './components/AdminRole/ThucTap/ChiTietSV';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
-import TCGV from './components/TeacherRole/TrangChuGiangVien';
+import TCGV from './components/TeacherRole/pages/TrangChuGiangVien';
 import Variables from './utils/variables';
-import TTCN from './components/TeacherRole/ThongTinCaNhan';
+import TTCN from './components/TeacherRole/pages/ThongTinCaNhan';
 import Sidebar from './components/Sidebar'
-import DSSVYC from './components/TeacherRole/DanhSachSVYeuCau';
-import DSSV from './components/TeacherRole/DanhSachSV';
-import ProjectListStudents from './components/TeacherRole/DanhSachDoAn';
-import SRequirementDetails from './components/TeacherRole/DanhSachSVYeuCau/DanhSachYCChiTiet';
-import SInformationDetails from './components/TeacherRole/DanhSachSV/DanhSachSVChiTiet';
-import PInformationDetails from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet';
-import ProcessEvaluation from './components/TeacherRole/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
-import PasswordChanging from './components/TeacherRole/ThongTinCaNhan/DoiMatKhau';
+import DSSVYC from './components/TeacherRole/pages/DanhSachSVYeuCau';
+import DSSV from './components/TeacherRole/pages/DanhSachSV';
+import ProjectListStudents from './components/TeacherRole/pages/DanhSachDoAn';
+import SRequirementDetails from './components/TeacherRole/pages/DanhSachSVYeuCau/DanhSachYCChiTiet';
+import SInformationDetails from './components/TeacherRole/pages/DanhSachSV/DanhSachSVChiTiet';
+import PInformationDetails from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet';
+import ProcessEvaluation from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
+import PasswordChanging from './components/TeacherRole/pages/ThongTinCaNhan/DoiMatKhau';
 import Loading from './components/Loading/Loading.js'
 import { useContext } from 'react';
 import { ThemeContext } from './components/Theme/Theme.jsx';
@@ -57,20 +57,13 @@ import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
 import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
-function App() {
-  // const [loading, setLoading] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 1500);
-  // }, []);
+function App() {
+  
 
   const context = useContext(ThemeContext);
   return (
     <div className="App">
-      {/* {loading && <Loading />} */}
       {
         // Toán tử 3 ngôi
         Variables.userRole === 'admin' ?
@@ -99,17 +92,18 @@ function App() {
                   <Route path='quan-ly-cong-ty/du-lieu-cong-ty' element={<DLCT />} />
                   <Route path='quan-ly-cong-ty/danh-sach-cong-ty' element={<DSCT />} />
                   <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
-                  <Route path='quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' element={<DLGVTT />} />
                   <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
                   <Route path='trang-chu-giang-vien' element={<TCGV />}></Route >
                 </Route >
               </Route>
-              <Route path='/ThemGV-da' element={<ThemGV />} />
+              <Route path='/them-giang-vien-da' element={<ThemGV />} />
               <Route path='/them-sinh-vien-da' element={<ThemSV />} />
+              <Route path='/them-sinh-vien-tt' element={<ThemSVTT />} />
               <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
-              <Route path='/ChiTietGV-da' element={<CTGV />} />
-              <Route path='/ChiTietCT-tt' element={<CTCT />} />
-              <Route path='/ChiTietXD' element={<CTXD />} />
+              <Route path='/chi-tiet-sinh-vien-tt/:id' element={<CTSVTT />} />
+              <Route path='/chi-tiet-giang-vien/:id' element={<CTGV />} />
+              <Route path='/chi-tiet-cong-ty/:id' element={<CTCT />} />
+              <Route path='/chi-tiet-do-an' element={<CTXD />} />
             </Routes>
           </Router>)
           :

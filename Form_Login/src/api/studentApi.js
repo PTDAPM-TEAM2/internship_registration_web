@@ -150,16 +150,56 @@ class StudentApi {
     const url = `api/student/update/da/${id}`;
     const token = localStorage.getItem('token');
     return axiosClient
-      .post(url, params, id, {
+      .post(url, params, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           // 'Content-Type': 'application/json'
         },
       })
       .then((res) => res);
+    // day la ham update
   };
 
 
+  deleteSVDA = (id) => {
+    const url = `api/student/delete/tt/${id}`;
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .delete(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          // 'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+    // day la ham update
+  };
+
+  addSVTT = (data, token) => {
+    const url = "api/student/save/tt";
+    return axiosClient
+      .post(url, data, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+  };
+
+  updateSVTT = (params, id) => {
+    const url = `api/student/update/tt/${id}`;
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .post(url, params, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          // 'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+    // day la ham update
+  };
 
 }
 

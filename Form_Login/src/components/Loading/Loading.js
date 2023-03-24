@@ -1,12 +1,13 @@
-// import React from "react";
-// import { SyncLoader } from "npm i react-spinners";
+import React from "react";
+import { FadeLoader} from "react-spinners";
+import styles from "./loading.module.css"
 
-// const Loading = ({ loading }) => {
-//   return (
-//     <div className="spinner">
-//       <SyncLoader color={"#6f6af8"} margin={10} loading={loading} size={25} />
-//     </div>
-//   );
-// };
+const Loading = ({ loading }) => {
+  return (
+    <div className={styles.spinner}>
+      <FadeLoader color={"#6f6af8"} margin={10} loading={loading} size={25} />
+    </div>
+  );
+};
 
-// export default Loading;
+export default Loading;

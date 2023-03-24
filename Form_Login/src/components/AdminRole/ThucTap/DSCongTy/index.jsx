@@ -49,25 +49,23 @@ function DSCT() {
     // rows = companyApi.getAll;
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
-
+    const token = localStorage.getItem('token');
     const [companies, setCompanies] = React.useState([]);
-
     React.useEffect(() => {
         const getCompany = async () => {
             try {
-                const response = await companyApi.getCompanies(context.token);
+                const response = await companyApi.getCompanies(token);
                 setCompanies(response);
-                console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getCompany()
-    }, [context.token]);
+    }, []);
 
 
     const handleGoClick = (item) => {
-        navigate('/ChiTietCT-tt', {state: {item}})
+        navigate(`/chi-tiet-cong-ty/${item.id}`, {state: {item}})
     }
     return (
         <div style={{ display: 'flex' }}>

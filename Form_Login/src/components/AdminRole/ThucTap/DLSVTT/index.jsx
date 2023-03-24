@@ -17,7 +17,7 @@ function DLSVTT() {
     };
     const formData = new FormData();
     formData.append('file', excelFile);
-    const context = useContext(ThemeContext);
+    const token = localStorage.getItem('token');
 
     const handleSubmit = async () => {
         {
@@ -28,8 +28,7 @@ function DLSVTT() {
             }, 2000);
         }
         try {
-            const response = await userApi.importExcelSvTt(formData, context.token);
-            console.log(response);
+            const response = await userApi.importExcelSvTt(formData, token);
         } catch (error) {
             console.error('Error fetching data:', error);
         }

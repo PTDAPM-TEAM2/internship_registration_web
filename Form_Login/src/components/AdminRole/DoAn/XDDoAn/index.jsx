@@ -13,6 +13,7 @@ import { ThemeContext } from '../../../Theme/Theme.jsx';
 import styles from './XDDoAn.module.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import prjApi from "../../../../api/projectApi";
 const columns = [
     {
         id: 'STT',
@@ -40,28 +41,36 @@ const columns = [
     },
     {
         id: 'Ky',
-        label: 'Ngày',
+        label: 'Kỳ',
         minWidth: 170,
         align: 'center',
     },
 ];
-
-function createData(STT, DoAn, SinhVien, GiaoVien, Ky, MaSV, Lop, File) {
-    return { STT, DoAn, SinhVien, GiaoVien, Ky,  MaSV, Lop, File };
+const body = {
+    'status': 0,
 }
-
-var rows = [
-    createData(1, 'Quản lý nhân sự công ty ABC', 'Trung Thị Linh', 'Cù Việt Dũng', '01/2022-2023', '2051063000', '62PM02', 'TrungThiLinh.pdf'),
-    createData(2, 'Quản lý cửa hàng thú cưng', 'Nguyễn Thị Bích Ngọc', 'Cù Việt Dũng', '01/2022-2023', '2051063111', '62PM02', 'NguyenThiBichNgoc.pdf'),
-];
 function DSDA() {
     // rows = projectApi.getAll();
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     function handleGoClick(item) {
-        navigate('/ChiTietXD', { state: { item } });
+        navigate('/chi-tiet-do-an', { state: { item } });
         console.log(item);
     }
+    const [projects, setProject] = React.useState([]);
+    const token = localStorage.getItem('token');
+    React.useEffect(() => {
+        const getAllDoAn = async () => {
+            try {
+                const response = await prjApi.getAllDa(body, token);
+                setProject(response);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        getAllDoAn();
+    }, [])
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -86,14 +95,17 @@ function DSDA() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row) => {
+                                    {projects.map((project, index) => {
+                                        // const dateObj = new Date(project.submitDay);
+                                        // const options = { month: 'numeric', day: 'numeric', year: 'numeric' };
+                                        // const dateString = dateObj.toLocaleDateString('en-US', options);
                                         return (
-                                            <TableRow key={row.STT} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.STT}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.DoAn}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.SinhVien}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.GiaoVien}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.Ky}</TableCell>
+                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(project) }}>
+                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{project.nameGraduationThesis}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateStudent(project.student)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateLecturer(project.lecturer)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{project.semester.code}</TableCell>
                                             </TableRow>
                                         );
                                     })}

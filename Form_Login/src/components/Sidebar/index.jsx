@@ -23,6 +23,7 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import styles from './Sidebar.module.css';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import Home from '@mui/icons-material/Home';
@@ -33,6 +34,7 @@ import {useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import { ThemeContext } from '../Theme/Theme.jsx';
+import userApi from '../../api/authApi';
 const drawerWidth = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -69,6 +71,8 @@ function Sidebar() {
     const [Width, setWidth] = React.useState(drawerWidth);
     const location = useLocation();
     const context = React.useContext(ThemeContext);
+    const token = localStorage.getItem('token');
+
     // const [activeButton, setActiveButton] = React.useState('button1');
 
     // const [pathname, setPathname] = React.useState("/quan-ly-do-an");
@@ -109,7 +113,25 @@ function Sidebar() {
     }
 
     const {id} = useParams()
-    console.log(id);
+
+    const [data, setData] = React.useState([]);
+        // Use useEffect hook to fetch data when the component mounts
+    React.useEffect(() => {
+
+        const currentUser = async () => {
+            try{
+                const response = await userApi.getInfo(token);
+                setData(response);
+            }catch(err){
+                console.error(err);
+            }
+        }
+        currentUser();
+    }, []); // Pass an empty dependency array to run only once
+
+    // console.log(`tvv-data: ${data}`);
+
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -214,7 +236,7 @@ function Sidebar() {
                     }}
                 >
                     <Avatar
-                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                        src={data.urlImg}
                         sx={{
                             width: 150,
                             height: 150,
@@ -222,8 +244,7 @@ function Sidebar() {
                         }}
                     />
                     <h1 style={{ fontSize: '40px', paddingTop: '20px' }}>{
-                        check === 'admin' ?
-                            "ADMIN" : Variables.userRole === 'teachers' ? 'GIANG VIEN' : 'SINH VIEN'
+                        data.fullName
                     }</h1>
 
                 </Stack>
@@ -239,11 +260,11 @@ function Sidebar() {
                             location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
                             location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
-                            location.pathname === '/ChiTietXD' ||
+                            location.pathname === '/chi-tiet-do-an' ||
                             location.pathname === '/them-sinh-vien-da' ||
-                            location.pathname === '/ThemGV-da' ||
+                            location.pathname === '/them-giang-vien-da' ||
                             location.pathname === `/chi-tiet-sinh-vien-da/${id}` ||
-                            location.pathname === '/ChiTietGV-da' ||
+                            location.pathname === `/chi-tiet-giang-vien/${id}` ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
@@ -347,17 +368,17 @@ function Sidebar() {
                     (
                         location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
                         location.pathname === '/quan-ly-cong-ty' ||
-                        location.pathname === '/quan-ly-giao-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt' ||
                         location.pathname === '/danh-sach-cong-ty' ||
                         location.pathname === '/danh-sach-sinh-vien-tt' ||
-                        location.pathname === '/danh-sach-giao-vien-tt' ||
                         location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
                         location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
-                        location.pathname === '/ChiTietCT-tt' ||
+                        location.pathname === `/chi-tiet-cong-ty/${id}` ||
+                        location.pathname === '/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
-                        location.pathname === '/quan-ly-giao-vien-tt/du-lieu-giao-vien-tt' ||
-                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
+                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'||
+                        location.pathname === `/chi-tiet-sinh-vien-tt/${id}`
+                        
                     ) :
                     // teachers role
                     check === "teachers" ?

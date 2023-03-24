@@ -1,15 +1,11 @@
 form {
     display: flex;
-
     flex-direction: column;
 }
-
-
 .inputValue{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
-    column-gap: 30px;
 }
 .title {
     width: 100%;
@@ -19,37 +15,43 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid black;
+    border: 2px solid black;
 }
 .form {
     padding: 0 40px;
     width: 100%;
     padding-top: 70px;
 }
+
+.infoImg{
+    padding-right: 50px;
+}
 .btn{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
     padding: 10px;
 }
 
-.btnForm{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    text-align: center;
-}
-
 .button {
+    align-items: center;
     appearance: none;
     /* background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%); */
     border: 0;
     border-radius: 6px;
     box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-sizing: border-box;
     cursor: pointer;
+    display: inline-flex;
     height: 48px;
+    justify-content: center;
+    line-height: 1;
     list-style: none;
     overflow: hidden;
     padding-left: 16px;
     padding-right: 16px;
-    text-align: center;
+    position: relative;
+    text-align: left;
     text-decoration: none;
     transition: box-shadow .15s, transform .15s;
     user-select: none;
@@ -88,7 +90,7 @@ form {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
-    border: 1px solid black;
+    border: 2px solid black;
     padding: 15px 30px;
 }
 .txt{
@@ -99,17 +101,12 @@ form {
 .txt label{
     display: block;
 }
+.txtField{
+    width: 100%;
+}
 
 .txtGender{
     width: 100px;
-}
-
-.txtField{
-    width: 300px;
-}
-
-.txtTextBottom{
-    width: 250px;
 }
 
 .image{
@@ -131,40 +128,29 @@ form {
     border-radius: 10px;
     object-fit: cover;
 }
-
 .formAccount{
     display: flex;
     justify-content: start;
     padding: 15px 30px;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
 }
-
-.infoImg{
-    padding-right: 50px;
-}
-
 
 .txtDate{
     width: 400px;
     margin: 0 10px;
 }
-/* 
-@media (min-width: 1024px) {
-        
-    .txtField{
-        width: 440px;
-    }
 
-    .txtTextBottom{
-        width: 338px;
-    }
-} */
 
 @media (min-width: 1366px) and (max-width: 1600px) {
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+        
+    }
     .txtField{
-        width: 300px;
-        margin-right: 50px ;
+        width: 100%;
     }
 
     .infoAccount {
@@ -177,38 +163,22 @@ form {
 }
 
 @media (min-width: 1920px) and (max-width: 2560px){
+
+    .txtField{
+        width: 300px;
+        margin-right: 50px ;
+    }
+
     .userProfile{
-        width: 110%;
-        height: 110%;
+        width: 200px;
+        height: 100%;
         border: 1px solid black;
         object-fit: cover;
         overflow: hidden;
         margin-bottom: 20px;
     }
-
-    .txt{
-        width: auto;
-        text-align: left;
-    }
-
-    .txtGender{
-        width: 50%;
-    }
-
-    .txtField{
-        width: 500px;
-    }
-
-    .infoAccount {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 20px;
-        border: 1px solid black;
-        padding: 15px 30px;
-    }
-}
-
-@media (min-width: 2560px){
+    
+    
     .form {
         padding-left: 100px;
         width: 80%;
@@ -225,9 +195,34 @@ form {
         width: 100px;
     }
 
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 2560px){
+    .form {
+        padding-left: 100px;
+        width: 80%;
+        padding-top: 70px;
+    }
+
+    .txt{
+        width: auto;
+        text-align: left;
+    }
+
+    .txtGender{
+        width: 100px;
+    }
+
     .txtField{
-        width: 500px;
-        
+        width: 400px;
+        margin-right: 50px ;
     }
 
     .infoAccount {

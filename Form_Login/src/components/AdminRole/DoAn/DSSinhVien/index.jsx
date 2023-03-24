@@ -63,7 +63,6 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
