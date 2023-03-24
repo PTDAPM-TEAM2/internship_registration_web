@@ -32,23 +32,14 @@ const style = {
 const SRequirementDetails = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const location = useLocation()
     const state = location.state;
+    const [status, setStatus] = React.useState(0);
     const token = localStorage.getItem('token');
-
-    console.log(`tvv-item: ${state.item.id}`);
-
-    const [password, setPassword] = React.useState("");
-
-    const handlePasswordChange = (event) => {
-      setPassword(event.target.value);
-    };
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
-
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -56,44 +47,18 @@ const SRequirementDetails = () => {
         setImageUrl(imageUrl);
     };
 
-
-    const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
-        setSubmitting(false);
+    const handleOpen = (value) => {
+        setOpen(true);
+        setStatus(value);
     }
-
+    
     const initialValues = {
         id: state.item.id,
-        isAccept: 2
+        isAccept: status
     };
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
-    const validation = Yup.object().shape({
-        name: Yup.string().required('Required'),
-        email: Yup.string()
-            .matches(emailRegex, "Invalid email address")
-            .required("Required"),
-        gender: Yup.string().required('Required'),
-        idCard: Yup.string()
-            .matches(/^[A-Z]{2}\d{7}$/, "Invalid identity card format")
-            .required("Required"),
-        dob: Yup.string().required('Required'),
-        pob: Yup.string().required('Required'),
-        phone: Yup.string().matches(phoneRegex, "Invalid phone").required("Phone is required")
-
-    });
 
     const formik = useFormik({
         initialValues,
-        validation,
-        // onSubmit: async (values) => {
-        //     try{
-        //         console.log("aaaaa");
-        //         await teacherRoleController.forceToStopResearch(values, token)
-        //     }catch(err){
-        //         console.log(err);
-        //     }
-        // },
     })
 
     const handleGo = async () => {
@@ -125,7 +90,7 @@ const SRequirementDetails = () => {
                                         {state && <div className={styles.txt}>
                                             {(imageFile === null) &&
                                                 <div>
-                                                    <img className={styles.userProfile} src={state.item.student.urlImg} alt="" />
+                                                    <img className={styles.userProfile} src={state.item?.student?.urlImg} alt="" />
                                                     <input
                                                         className={styles.fileInput}
                                                         name='image'
@@ -149,7 +114,7 @@ const SRequirementDetails = () => {
                                             <TextField
                                                 className={styles.txtGender}
                                                 id="gender"
-                                                defaultValue={state.item.student.gender}
+                                                defaultValue={state.item?.student?.gender}
                                                 name="gender"
                                                 onChange={formik.handleChange}
                                                 disabled
@@ -164,7 +129,7 @@ const SRequirementDetails = () => {
                                             <TextField
                                                 className={styles.txtField}
                                                 id='name'
-                                                defaultValue={state.item.student.fullName}
+                                                defaultValue={state.item?.student?.fullName}
                                                 name='name'
                                                 disabled
                                                 onChange={formik.handleChange}
@@ -193,7 +158,7 @@ const SRequirementDetails = () => {
                                                 id="idCard"
                                                 name="idCard"
                                                 disabled
-                                                defaultValue={state.item.student.dateOfBirth}
+                                                defaultValue={state.item?.student?.dateOfBirth}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                                 // value={formik.values.identityCard}
@@ -206,7 +171,7 @@ const SRequirementDetails = () => {
                                                 id="pob"
                                                 name="pob"
                                                 disabled
-                                                defaultValue={state.item.student.placeOfBitrh}
+                                                defaultValue={state.item?.student?.placeOfBitrh}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                                 value={formik.values.placeOfBirth}
@@ -217,7 +182,7 @@ const SRequirementDetails = () => {
                                             <TextField
                                                 className={styles.txtField}
                                                 id="phone"
-                                                defaultValue={state.item.student.phoneNumber}
+                                                defaultValue={state.item?.student?.phoneNumber}
                                                 name="phone"
                                                 disabled
                                                 onChange={formik.handleChange}
@@ -232,7 +197,7 @@ const SRequirementDetails = () => {
                                                 id="email"
                                                 name="email"
                                                 disabled
-                                                defaultValue={state.item.student.email}
+                                                defaultValue={state.item?.student?.email}
                                                 type="email"
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -245,11 +210,11 @@ const SRequirementDetails = () => {
                             <div className={styles.infoAccount}>
                                 <div className={styles.txt}>
                                     <p>Mã giáo viên: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.lecturer.fullName} disabled/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item?.lecturer?.fullName} disabled/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Lớp: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.student.grade.name} disabled/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item?.student?.grade?.name} disabled/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Khoa: </p>
@@ -257,15 +222,15 @@ const SRequirementDetails = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Đề tài: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={state.item.nameGraduationThesis} disabled/>
+                                    <TextField className={styles.txtTextBottom} defaultValue={state.item?.nameGraduationThesis} disabled/>
                                 </div>
                             </div>
                             <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Đồng ý</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={() => handleOpen(2)}>Đồng ý</button>
                                 </div>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Từ chối</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={() => handleOpen(0)}>Từ chối</button>
                                 </div>
                             </div>
                         </form>

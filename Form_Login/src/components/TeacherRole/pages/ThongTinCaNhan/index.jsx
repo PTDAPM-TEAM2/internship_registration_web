@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import userApi from '../../../../api/authApi';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
+import Variables from '../../../../utils/variables';
 const TTCN = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [imageFile, setImageFile] = React.useState(null);
@@ -22,7 +23,7 @@ const TTCN = () => {
       // Declare a state variable for data
     const token = localStorage.getItem('token');
 
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const context = useContext(ThemeContext);
 
     // const [loading, setLoading] = useState(true);
@@ -52,7 +53,6 @@ const TTCN = () => {
     };
     
     const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
         setSubmitting(false);
     }
 
@@ -89,7 +89,7 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
-    console.log(`tvv-data: ${data.fullName}`);
+    console.log(data);
 
     const navigate = useNavigate();
 
@@ -109,7 +109,7 @@ const TTCN = () => {
                                     <div className={styles.txt}>
                                         {(imageFile === null) &&
                                             <div>
-                                                <img className={styles.userProfile} src={data.urlImg} alt="" />
+                                                <img className={styles.userProfile} src={data?.urlImg} alt="" />
                                                 <input
                                                     className={styles.fileInput}
                                                     name='image'
@@ -124,7 +124,7 @@ const TTCN = () => {
                                         {
                                             imageFile &&
                                             <div className={styles.image}>
-                                                <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
+                                                <img src={data?.urlImg} alt='avatar' style={{ maxWidth: '100%' }} />
                                             </div>
                                         }
                                     </div>
@@ -134,10 +134,8 @@ const TTCN = () => {
                                             className={styles.txtGender}
                                             id="gender"
                                             name="gender"
-                                            defaultValue={data.gender}
+                                            defaultValue={data?.gender}
                                             disabled
-                                            // onChange={formik.handleChange}
-                                            // onBlur={formik.handleBlur}
                                         />
                                     </div>
                                 </div>
@@ -149,9 +147,7 @@ const TTCN = () => {
                                             id='name'
                                             name='name'
                                             disabled
-                                            // onChange={formik.handleChange}
-                                            // onBlur={formik.handleBlur}
-                                            defaultValue={data.fullName}
+                                            defaultValue={data?.fullName}
                                         />
                                     </div>
                                     {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
@@ -163,8 +159,6 @@ const TTCN = () => {
                                             name="idCard"
                                             disabled
                                             defaultValue={'82734183289'}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
                                         />
                                     </div>
                                     <div className={styles.txt}>
@@ -174,9 +168,7 @@ const TTCN = () => {
                                             id="idCard"
                                             name="idCard"
                                             disabled
-                                            defaultValue={data.dateOfBirth}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
+                                            defaultValue={data?.dateOfBirth}
                                         />
                                     </div>
                                     <div className={styles.txt}>
@@ -186,9 +178,7 @@ const TTCN = () => {
                                             id="pob"
                                             name="pob"
                                             disabled
-                                            defaultValue={data.placeOfBitrh}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
+                                            defaultValue={data?.placeOfBitrh}
                                         />
                                     </div>
                                     <div className={styles.txt}>
@@ -198,9 +188,7 @@ const TTCN = () => {
                                             id="phone"
                                             name="phone"
                                             disabled
-                                            defaultValue={data.phoneNumber}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
+                                            defaultValue={data?.phoneNumber}
                                         />
                                     </div>
                                     <div className={styles.txt}>
@@ -211,9 +199,7 @@ const TTCN = () => {
                                             name="email"
                                             type="email"
                                             disabled
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            defaultValue={data.email}
+                                            defaultValue={data?.email}
                                         />
                                     </div>
                                 </div>
@@ -221,7 +207,7 @@ const TTCN = () => {
                             <div className={styles.infoAccount}>
                                 <div className={styles.txt}>
                                     <p>Mã giáo viên: </p>
-                                    <TextField className={styles.txtField} defaultValue={data.idNumber} disabled/>
+                                    <TextField className={styles.txtField} defaultValue={data?.idNumber} disabled/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Khoa: </p>
@@ -229,7 +215,7 @@ const TTCN = () => {
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Mật khẩu: </p>
-                                    <TextField className={styles.txtField} defaultValue={'************'} disabled/>
+                                    <TextField className={styles.txtField} type = "password" defaultValue={Variables.pw} disabled/>
                                 </div>
                             </div>
                         </div>

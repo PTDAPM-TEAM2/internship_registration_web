@@ -12,13 +12,14 @@ import { useFormik } from 'formik';
 
 import { TextField } from '@mui/material';
 import imageLock from '../../../../../images/lock.png';
-
+import warningImage from '../../../../../images/warning.png';
 import axios from 'axios';
 import teacherRoleController from '../../../controller/TeacherRoleController';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Variables from '../../../../../utils/variables';
 
 const style = {
     position: 'absolute',
@@ -73,17 +74,19 @@ const PasswordChanging = () => {
         },
     })
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
         setOpen(true);
-    
-        if (formik.values.newPassword.length < 8 || formik.values.reNewPassword.length < 8){
-            console.log(formik.values.newPassword.length);
+        if(Variables.pw === "" || formik.values.newPassword === "" || formik.values.oldPassword === "" || formik.values.reNewPassword === ""){
+            setErrorMessages("Trường mật khẩu không được bỏ trống!")
+
+        }if ((formik.values.newPassword.trim().length < 8 && formik.values.newPassword.trim().length > 0) || (formik.values.reNewPassword.trim().length < 8 && formik.values.reNewPassword.trim().length > 0)){
             setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
-        }
-        else if (formik.values.oldPassword === "" && formik.values.newPassword === "" && formik.values.reNewPassword === "") {
-            setErrorMessages("Trường mật khẩu không được bỏ trống");
         }else if (formik.values.newPassword !== formik.values.reNewPassword) {
-            setErrorMessages("Mật khẩu không trùng khớp");
+            setErrorMessages("Mật khẩu không trùng khớp!");
+        }
+        else if(formik.values.oldPassword !== Variables.pw){
+            setErrorMessages("Mật khẩu cũ không chính xác!");
         }else{
             setOpen(false);
             setErrorMessages(null);
@@ -175,11 +178,11 @@ const PasswordChanging = () => {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {errorMessages}
+                        <Typography id="modal-modal-title" variant="h6" component="h3" style={{color: 'red', textAlign: 'center', display: 'flex', justifyContent:'center', alignItems: 'center'}}>
+                            <img src={warningImage} alt="" style={{width: '25px', height: '25px', objectFit: 'cover', marginRight: '20px'}}/>{errorMessages}
                         </Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                            <Button onClick={handleClose}>OK</Button>
+                            <Button onClick={handleClose} className = {styles.button}>OK</Button>
                         </div>
                     </Box>
                 </Modal>

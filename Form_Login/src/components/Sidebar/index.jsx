@@ -129,9 +129,6 @@ function Sidebar() {
         currentUser();
     }, []); // Pass an empty dependency array to run only once
 
-    // console.log(`tvv-data: ${data}`);
-
-
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
