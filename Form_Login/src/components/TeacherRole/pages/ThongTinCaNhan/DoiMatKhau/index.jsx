@@ -77,7 +77,6 @@ const PasswordChanging = () => {
         setOpen(true);
     
         if (formik.values.newPassword.length < 8 || formik.values.reNewPassword.length < 8){
-            console.log(formik.values.newPassword.length);
             setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
         }
         else if (formik.values.oldPassword === "" && formik.values.newPassword === "" && formik.values.reNewPassword === "") {

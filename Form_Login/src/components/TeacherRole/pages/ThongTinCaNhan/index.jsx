@@ -52,7 +52,6 @@ const TTCN = () => {
     };
     
     const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
         setSubmitting(false);
     }
 
@@ -88,8 +87,6 @@ const TTCN = () => {
         validation,
         onSubmit: handleSubmit,
     })
-
-    console.log(`tvv-data: ${data.fullName}`);
 
     const navigate = useNavigate();
 

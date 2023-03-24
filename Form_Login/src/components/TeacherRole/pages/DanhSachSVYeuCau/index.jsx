@@ -39,7 +39,6 @@ const DSSVYC = () => {
             setData(response);
             setLoading(false);
           }, 1000);
-          console.log(`response-data: ${response}`);
         } catch (error) {
           // Handle error
           console.error(error);
@@ -64,7 +63,7 @@ const DSSVYC = () => {
                       <div>
                           {item.isAccept === 1 ? (<div className={styles.card} key = {key}> 
                             <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
-                                <img src={item.student.urlImg} alt='' className={styles.itemImage}/> 
+                                <img src={item.student?.urlImg} alt='' className={styles.itemImage}/> 
                                 <div className={styles.body}> 
                                     <a><b>Họ và tên: </b>{item.student.fullName}</a> 
                                     <p><b>Mã sinh viên: </b>{item.student.id}</p> 

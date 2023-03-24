@@ -24,7 +24,6 @@ const ProcessEvaluation = () => {
     const state = location.state;
     const token = localStorage.getItem('token');
     const context = useContext(ThemeContext);
-    console.log(`aaa ${state.data1.id}`);
 
     function handleGo() {
         setShowAlert(true);
@@ -74,8 +73,6 @@ const ProcessEvaluation = () => {
         },
     })
     initialValues.content = formik.values.content;
-    console.log(`date: ${initialValues.title}`);
-    console.log(`values: ${initialValues.content}`);
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}

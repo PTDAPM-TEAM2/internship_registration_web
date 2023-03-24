@@ -39,7 +39,6 @@ const DSSV = () => {
       fetchData();
     }, []); // Pass an empty dependency array to run only once
 
-  console.log(`current-data: ${data}`);
   const navigate = useNavigate();
   function toComponent(item) {
     navigate('chi-tiet-sinh-vien', {state:{item}})

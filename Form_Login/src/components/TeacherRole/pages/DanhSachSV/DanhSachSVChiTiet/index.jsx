@@ -28,7 +28,6 @@ const SInformationDetails = () => {
 
 
     const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
         setSubmitting(false);
     }
 
@@ -65,9 +64,6 @@ const SInformationDetails = () => {
         onSubmit: handleSubmit,
     })
 
-    // const {item} = props.location.state;
-    // console.log(item);
-
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
@@ -95,7 +91,7 @@ const SInformationDetails = () => {
                                     {
                                         imageFile &&
                                         <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
+                                            <img src={imageUrl} className={styles.profileImg} alt='avatar'/>
                                         </div>
                                     }
                                 </div>}

@@ -32,23 +32,14 @@ const style = {
 const SRequirementDetails = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const location = useLocation()
     const state = location.state;
+    const [status, setStatus] = React.useState(0);
     const token = localStorage.getItem('token');
-
-    console.log(`tvv-item: ${state.item.id}`);
-
-    const [password, setPassword] = React.useState("");
-
-    const handlePasswordChange = (event) => {
-      setPassword(event.target.value);
-    };
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
-
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -56,44 +47,18 @@ const SRequirementDetails = () => {
         setImageUrl(imageUrl);
     };
 
-
-    const handleSubmit = (values, { setSubmitting }) => {
-        console.log(values);
-        setSubmitting(false);
+    const handleOpen = (value) => {
+        setOpen(true);
+        setStatus(value);
     }
-
+    
     const initialValues = {
         id: state.item.id,
-        isAccept: 2
+        isAccept: status
     };
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
-    const validation = Yup.object().shape({
-        name: Yup.string().required('Required'),
-        email: Yup.string()
-            .matches(emailRegex, "Invalid email address")
-            .required("Required"),
-        gender: Yup.string().required('Required'),
-        idCard: Yup.string()
-            .matches(/^[A-Z]{2}\d{7}$/, "Invalid identity card format")
-            .required("Required"),
-        dob: Yup.string().required('Required'),
-        pob: Yup.string().required('Required'),
-        phone: Yup.string().matches(phoneRegex, "Invalid phone").required("Phone is required")
-
-    });
 
     const formik = useFormik({
         initialValues,
-        validation,
-        // onSubmit: async (values) => {
-        //     try{
-        //         console.log("aaaaa");
-        //         await teacherRoleController.forceToStopResearch(values, token)
-        //     }catch(err){
-        //         console.log(err);
-        //     }
-        // },
     })
 
     const handleGo = async () => {
@@ -262,10 +227,10 @@ const SRequirementDetails = () => {
                             </div>
                             <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Đồng ý</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={() => handleOpen(1)}>Đồng ý</button>
                                 </div>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={handleOpen}>Từ chối</button>
+                                    <button className={styles.button} disabled={formik.isSubmitting} onClick={() => handleOpen(2)}>Từ chối</button>
                                 </div>
                             </div>
                         </form>
