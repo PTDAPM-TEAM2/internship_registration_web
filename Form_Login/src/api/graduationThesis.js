@@ -28,8 +28,8 @@ class GraduationThesis {
   };
 
   // Thong tin cho tiet cua do an thuc tap theo id sinh vien
-  importExcelSvDa = (id, token) => {
-    const url = "/api/user/get-current-user/" + id;
+  importExcelSvDa = (token) => {
+    const url = "/api/user/get-current-user/";
     return axiosClient
       .get(url, {
         headers: {
@@ -70,6 +70,14 @@ class GraduationThesis {
   weeklyTeacherReview = (id, token) => {
     const url = `/api/weeklyreview/getAllByGraduationThesisId/`;
     return axiosClient.get(url + id, {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }).then((res) => res);
+  }
+  insertPDF = (data, token) => {
+    const url = `/api/graduationthesis/add-outline`;
+    return axiosClient.post(url,data, {
       headers: {
         Authorization: "Bearer " + token,
       }

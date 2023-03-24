@@ -74,14 +74,14 @@ function ThemeProvider({ children }) {
   }
 
   const [auth, setAuth] = useState(true);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(false); 
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 4500)
-  })
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 4500)
+  // })
   const updateAuth = (newValue) => {
     setAuth(newValue);
   }

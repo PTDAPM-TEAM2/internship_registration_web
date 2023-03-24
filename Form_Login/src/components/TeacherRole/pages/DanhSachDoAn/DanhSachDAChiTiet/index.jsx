@@ -47,7 +47,6 @@ const PInformationDetails = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    console.log(`aaa ${state.item.id}`);
 
     // const handleSubmit = (values, { setSubmitting }) => {
     //     console.log(values);
@@ -68,13 +67,9 @@ const PInformationDetails = () => {
 
     useEffect(() => {
 
-        console.log(`tvv-graduation: ${state.item.student.id}`);
-
         const getAllWeeklyReview = async () => {
             try{
-                console.log(`id: ${state.item.id}`);
-                const response = await graduationThesis.weeklyTeacherReview(state.item.id, token);
-                console.log(`tvv-object: ${response}`);
+                const response = await graduationThesis.weeklyTeacherReview(state.item?.id, token);
                 setReviewList(response)
             }catch(err){
                 console.log(err);
@@ -93,8 +88,6 @@ const PInformationDetails = () => {
         getAllWeeklyReview();
         // currentUser();
     }, [])
-
-    console.log(`tvv-review: ${review.forEach((item) => console.log(item))})`);
 
     const initialValues = {
         id: state.item.id,

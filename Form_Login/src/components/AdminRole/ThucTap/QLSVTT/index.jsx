@@ -28,14 +28,16 @@ function QLSVTT() {
             setErrorMessage('Ngày không hợp lệ');
         }
         else {
+            context.updateLoading(true);
             try {
                 const response = await userApi.registerTimeDA({
                     timeStart: startDate,
                     timeEnd: dueDate,
                 }, context.token);
-                console.log(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
             }
             setErrorMessage('');
             setShowAlert(true);

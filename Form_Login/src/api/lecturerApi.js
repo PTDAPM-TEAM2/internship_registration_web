@@ -3,7 +3,6 @@ class LecturerApi {
   getAllGV = () => {
     const url = "api/lecturer/get-all";
     const token = localStorage.getItem("token");
-    console.log(token);
     return axiosClient
       .get(url, {
         headers: {
@@ -51,6 +50,20 @@ class LecturerApi {
       })
       .then((res) => res);
       // day la ham update
+  };
+
+  filter = (params) => {
+    const url = 'api/lecturer/getLecturersByFilter';
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .get(url, params , {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          // 'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+    // day la ham update
   };
 
 }

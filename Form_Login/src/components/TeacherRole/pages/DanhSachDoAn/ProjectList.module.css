@@ -32,6 +32,10 @@
     border-radius: 20px;
 }
 
+.card:hover{
+    border-color: grey;
+}
+
 .cardItem {
     padding: 10px;
     padding-left: 60px;

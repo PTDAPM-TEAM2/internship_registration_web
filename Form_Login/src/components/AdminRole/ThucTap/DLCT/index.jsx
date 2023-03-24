@@ -2,8 +2,12 @@ import * as React from "react";
 import styles from './DLCT.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import companyApi from '../../../../api/companyApi'
+import companyApi from '../../../../api/companyApi';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+
 function DLCT() {
+    const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
     const [hideImport, setHideImport] = React.useState(true);
@@ -19,16 +23,19 @@ function DLCT() {
     const handleSubmit = async () => {
         {
             setHideImport(false);
+            context.updateLoading(true);
+        }
+        try {
+            const response = await companyApi.importExcel(formData, token);
+            context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
             }, 2000);
-        }
-        try {
-            const response = await companyApi.importExcel(formData, token);
-            console.log(response);
         } catch (error) {
             console.error('Error fetching data:', error);
+            context.updateLoading(false);
+
         }
     }
 

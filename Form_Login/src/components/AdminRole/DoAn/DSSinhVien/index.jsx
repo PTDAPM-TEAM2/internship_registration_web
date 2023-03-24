@@ -19,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import IconButton from '@mui/material/IconButton';
 import studentApi from "../../../../api/studentApi";
+import AlertMessage from '../ThemSV/Alert';
 // import Variables from '../../../../utils/variables';
 // import studentApi from '../../../../api/AdminRole/studentApi';
 // import { getStudents } from '../../../../axios';
@@ -63,6 +64,8 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const context = useContext(ThemeContext);
+    const [showAlert, setShowAlert] = React.useState(null);
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
@@ -74,24 +77,65 @@ function DSSV() {
     function handleGoClick(item) {
         navigate(`/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
     }
-    
+
     const [students, setStudent] = React.useState([]);
 
-    const context = useContext(ThemeContext);
+
     React.useEffect(() => {
+        context.updateLoading(true);
         const getAllItem = async () => {
             try {
                 const response = await studentApi.getAllSvDa(null, token);
                 setStudent(response);
+                context.updateLoading(false);
             } catch (error) {
+                if (error.response.data.status === 403) {
+                    context.updateLoading(false);
+                    setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
         }
         getAllItem()
     }, []);
 
+
+    const handleFilterGV = async (type) => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.filter(type);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+
+        }
+    }
+
+    const handleGetAll = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.getAllSvDa(null, token);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+
+        }
+    }
+
     return (
         <div style={{ display: 'flex' }}>
+            {showAlert && <AlertMessage />}
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <form>
@@ -113,8 +157,9 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleFilterGV(2)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleFilterGV(1)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -143,7 +188,7 @@ function DSSV() {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        // students === Object &&
+
                                         students.map((row, index) => {
                                             return (
                                                 <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>

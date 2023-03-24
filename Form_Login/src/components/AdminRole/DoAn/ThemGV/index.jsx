@@ -68,9 +68,11 @@ const ThemGV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 console.log(values);
                 const response = await lecturerApi.addGV(JSON.stringify(values), token);
+                context.updateLoading(false);
                 setShowAlert({ type: 'success', text: "Thêm giảng viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
@@ -78,6 +80,7 @@ const ThemGV = () => {
                 }, 2000)
             } catch (error) {
                 if (error.response.data.messgae) {
+                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: error.response.data.messgae });
                     setTimeout(() => {
                         setShowAlert(null);

@@ -94,12 +94,15 @@ const ChiTietSV = () => {
     const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getGrade = async () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
             }
         }
         getGrade()
@@ -111,23 +114,28 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
+                context.updateLoading(false);
                 console.error(error);
             }
         },
     })
 
     const handleDelete = async () => {
+        context.updateLoading(true);
         try {
             const response = await studentApi.deleteSVDA(state.item.id);
             setOpen(false);
+            context.updateLoading(false);
             setShowAlertD(true);
             setTimeout(() => {
                 setShowAlertD(false);
@@ -135,6 +143,7 @@ const ChiTietSV = () => {
             }, 1000)
         }
         catch (error) {
+            context.updateLoading(false);
             console.error('Error deleting data: ', error);
         };
     };

@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 
 function DLSVTT() {
+    const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
     const [hideImport, setHideImport] = React.useState(true);
@@ -20,17 +21,22 @@ function DLSVTT() {
     const token = localStorage.getItem('token');
 
     const handleSubmit = async () => {
+
         {
+            context.updateLoading(true);
             setHideImport(false);
+        }
+        try {
+            const response = await userApi.importExcelSvTt(formData, token);
+            context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
             }, 2000);
-        }
-        try {
-            const response = await userApi.importExcelSvTt(formData, token);
         } catch (error) {
             console.error('Error fetching data:', error);
+            context.updateLoading(false);
+
         }
     }
 

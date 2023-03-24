@@ -129,9 +129,6 @@ function Sidebar() {
         currentUser();
     }, []); // Pass an empty dependency array to run only once
 
-    // console.log(`tvv-data: ${data}`);
-
-
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -284,7 +281,6 @@ function Sidebar() {
                             ))
                     &&
                     <List>
-                        {check === 'admin' ?
                             <ListItem disablePadding>
                                 <Link
                                     to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : "/sinh-vien-do-an"}
@@ -300,10 +296,7 @@ function Sidebar() {
                                         <ListItemText primary='Trang chủ' />
                                     </ListItemButton>
                                 </Link >
-                            </ListItem> : (null)
-                        }
-                        {
-                            check === 'admin' ?
+                            </ListItem>
                                 <ListItem disablePadding>
                                     <Link
                                         to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : "/sinh-vien-do-an/thong-tin-sinh-vien"}
@@ -319,13 +312,12 @@ function Sidebar() {
                                             <ListItemText primary={check === 'admin' ? 'Quản lý đồ án' : 'Thông tin cá nhân'} />
                                         </ListItemButton>
                                     </Link >
-                                </ListItem> : (null)
-                        }
+                                </ListItem>
                         {
-                            check === 'admin' ?
+                            check !== 'teachers' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-sinh-vien-da" : check === 'teachers' ? '' : '/sinh-vien-do-an/dang-ky-do-an'}
+                                        to={check === 'admin' ? "/quan-ly-sinh-vien-da" : '/sinh-vien-do-an/dang-ky-do-an'}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLSV')
@@ -341,23 +333,42 @@ function Sidebar() {
                                 </ListItem> : (null)
                         }
                         {
-                            check === 'admin' ?
+                            check !== 'teachers' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : check === 'teachers' ? '' : '/sinh-vien-do-an/nop-de-cuong'}
+                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : '/sinh-vien-do-an/nop-de-cuong'}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLGV')
                                         }}
                                         className={context.activeButton === 'QLGV' ? styles.active : {}}
-                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
+                                    >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', }}  >
                                             <ListItemIcon>
                                                 <GroupRoundedIcon className={styles.icon} />
                                             </ListItemIcon>
-                                            <ListItemText primary={check ? 'Quản lý giáo viên' : 'Danh Sách Sinh Viên'} />
+                                            <ListItemText primary={check==='admin' ? 'Quản lý giáo viên' : 'Nộp đề cương'} />
                                         </ListItemButton>
                                     </Link >
                                 </ListItem> : (null)
+                        }
+                        {
+                            check === 'students' ?
+                            <ListItem disablePadding>
+                            <Link
+                                to={'/sinh-vien-do-an/thong-tin-do-an'}
+                                style={{ width: '100%', textDecoration: 'none' }}
+                                onClick={() => {
+                                    handleItemClick('TTDA')
+                                }}
+                                className={context.activeButton === 'TTDA' ? styles.active : {}}
+                            >   <ListItemButton style={{ color: 'white', borderTop: '1px solid white', borderBottom: '1px solid white' }}  >
+                                    <ListItemIcon>
+                                        <GroupRoundedIcon className={styles.icon} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Thông tin đồ án'} />
+                                </ListItemButton>
+                            </Link >
+                        </ListItem> : (null)
                         }
                     </List>
                 }
@@ -436,7 +447,7 @@ function Sidebar() {
                                     }else if(check === 'teachers'){
                                         toComponent("/thong-tin-ca-nhan")
                                     }else{
-
+                                        toComponent("/sinh-vien-thuc-tap/thong-tin-sinh-vien")
                                     }
                                 }}
                                 className={context.activeButton === 'QLCT' ? styles.active : {}}
@@ -445,7 +456,7 @@ function Sidebar() {
                                     <ListItemIcon>
                                         <MenuBookIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary={check === 'admin' ? 'Quản lý công ty' : check === 'teachers' ? 'Thông tin cá nhân' : ''} />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý công ty' : 'Thông tin cá nhân'} />
                                 </ListItemButton>
                             </div >
                         </ListItem>
@@ -459,7 +470,7 @@ function Sidebar() {
                                     }else if(check === 'teachers'){
                                         toComponent("/danh-sach-sinh-vien-yeu-cau")
                                     }else{
-
+                                        toComponent("/sinh-vien-thuc-tap/dang-ky-thuc-tap")
                                     }
                                 }}
                                 className={context.activeButton === 'QLSV' ? styles.active : {}}
@@ -468,18 +479,21 @@ function Sidebar() {
                                     <ListItemIcon>
                                         <GroupRoundedIcon className={styles.icon} />
                                     </ListItemIcon>
-                                    <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : check === 'teachers' ? 'Xác Nhận Yêu Cầu Sinh Viên' : ''} />
+                                    <ListItemText primary={check === 'admin' ? 'Quản lý sinh viên' : check === 'teachers' ? 'Xác Nhận Yêu Cầu Sinh Viên' : 'Đăng ký thực tập'} />
                                 </ListItemButton>
                             </div>
                         </ListItem>
-
-                        {check === 'teachers' ?
                             <ListItem disablePadding>
                                 <div
                                     style={{ width: '100%', textDecoration: 'none' }}
                                     onClick={() => {
                                         handleItemClick('QLGV')
-                                        toComponent("/danh-sach-sinh-vien")
+                                        if(check === 'teachers'){
+                                            toComponent("/danh-sach-sinh-vien")
+                                        } else if(check === 'students'){
+                                            toComponent("/sinh-vien-thuc-tap/thong-tin-thuc-tap")
+                                        }
+                                        
                                     }}
                                     className={context.activeButton === 'QLGV' ? styles.active : {}}
                                 >
@@ -487,12 +501,10 @@ function Sidebar() {
                                         <ListItemIcon>
                                             <GroupRoundedIcon className={styles.icon} />
                                         </ListItemIcon>
-                                        <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : ''} />
+                                        <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : check === 'teachers' ? 'Danh Sách Sinh Viên' : 'Thông tin thực tập'} />
                                     </ListItemButton>
                                 </div >
                             </ListItem>
-                            : ''
-                        }
                         {check === 'teachers' ? <ListItem disablePadding>
                             <div
                                 style={{ width: '100%', textDecoration: 'none' }}

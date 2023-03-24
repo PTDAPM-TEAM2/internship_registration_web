@@ -201,6 +201,20 @@ class StudentApi {
     // day la ham update
   };
 
+  filter = (type) => {
+    const url = `api/student/get-st-by-filter?type=${type}`;
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          // 'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res);
+    // day la ham update
+  };
+
 }
 
 const studentApi = new StudentApi();

@@ -61,12 +61,16 @@ function DSDA() {
     const token = localStorage.getItem('token');
     React.useEffect(() => {
         const getAllDoAn = async () => {
+            context.updateLoading(true);
             try {
                 const response = await prjApi.getAllDa(body, token);
                 setProject(response);
+                context.updateLoading(false);
             }
             catch (err) {
                 console.log(err);
+                context.updateLoading(false);
+
             }
         }
         getAllDoAn();

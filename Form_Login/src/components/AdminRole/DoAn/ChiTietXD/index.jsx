@@ -47,16 +47,18 @@ const ChiTietXD = () => {
     }
     const token = localStorage.getItem('token');
     const reviewGT = async () => {
+        context.updateLoading(true);
         try {
+            context.updateLoading(false);
             setOpen(false);
             setShowAlert(true);
             setTimeout(() => {
                 navigate('/quan-ly-do-an/danh-sach-do-an');
             }, 1000)
             const response = await prjApi.addOrRemoveGraduation(body, token);
-            console.log(response);
         }
         catch (err) {
+            context.updateLoading(false);
             console.log(err);
         }
     };

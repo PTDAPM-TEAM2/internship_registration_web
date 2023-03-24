@@ -62,6 +62,7 @@ function Login() {
       setErrorMessage("Nhập thiếu thông tin! Vui lòng nhập lại!");
     } else {
       if (context.toggle === true) {
+        context.updateLoading(true);
         try {
           var tk = await userApi.loginDA({
             username: username,
@@ -69,6 +70,7 @@ function Login() {
           });
           if (tk !== "") {
             localStorage.setItem("token", tk);
+            context.updateLoading(false);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -77,30 +79,34 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-do-an");
               } else if (Variables.userRole === "teachers") {
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-do-an");
               }
             }, 500);
           } else {
             setErrorMessage(
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
+            context.updateLoading(false);
           }
         } catch (error) {
           console.log(error);
           if (error.response === undefined || error.response === null) {
+            context.updateLoading(false);
             setErrorMessage("Lỗi kết nối!");
           } else {
             if (error.response.status === 400) {
               setErrorMessage(
                 "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
               );
+              context.updateLoading(false);
             }
           }
         }
       } else if (context.toggle === false) {
+        context.updateLoading(true);
         try {
           var tk = await userApi.loginTT({
             username: username,
@@ -108,11 +114,14 @@ function Login() {
           });
           localStorage.setItem('token', tk);
           if (tk !== "") {
-            var userInfo = await userApi.getInfo(tk);
-            if (userInfo.roles[0].id === 1) {
+            var userInfoTT = await userApi.getInfo(tk);
+            if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
+            }else{
+              Variables.userRole = "students";
             }
             localStorage.setItem("token", tk);
+            context.updateLoading(false);
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");
@@ -121,27 +130,30 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
                 Variables.pw = password;
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-thuc-tap");
               }
             }, 500);
           } else {
             setErrorMessage(
               "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
             );
+            context.updateLoading(false);
           }
         } catch (error) {
           console.log(error);
           if (error.response === undefined || error.response === null) {
             setErrorMessage("Lỗi kết nối!");
+            context.updateLoading(false);
           } else {
             if (error.response.status === 400) {
               setErrorMessage(
                 "Tên đăng nhập hoặc mật khẩu sai! Vui lòng nhập lại!"
               );
+              context.updateLoading(false);
             }
           }
         }
@@ -233,7 +245,7 @@ function Login() {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        // onMouseDown={handleMouseDownPassword}
+                      // onMouseDown={handleMouseDownPassword}
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

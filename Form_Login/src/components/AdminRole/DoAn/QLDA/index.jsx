@@ -28,22 +28,25 @@ function QLDA() {
             setErrorMessage('Ngày không hợp lệ');
         }
         else {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.registerTimeDA({
                     timeStart: startDate,
                     timeEnd: dueDate,
                 }, token);
-                console.log(response);
+                context.updateLoading(false);
+                setErrorMessage('');
+                setShowAlert(true);
+                setTimeout(() => {
+                    setShowAlert(false);
+                }, 2000)
             } catch (error) {
                 console.error('Error fetching data:', error);
+                context.updateLoading(false);
+
             }
-            setErrorMessage('');
-            setShowAlert(true);
-            setTimeout(()=>{
-                setShowAlert(false);
-            }, 2000)
         }
-        
+
     }
     return (
         <div>
@@ -74,7 +77,7 @@ function QLDA() {
                 </div>
             </div>
             <div style={{ backgroundColor: "none", height: 20 }}>
-                {errorMessage && <p style={{ color: 'red'}}>{errorMessage}</p>}
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             </div>
             <div>
                 <button className={`${styles.button} ${styles.btnSave}`} onClick={handleClick}>Cập nhập</button>

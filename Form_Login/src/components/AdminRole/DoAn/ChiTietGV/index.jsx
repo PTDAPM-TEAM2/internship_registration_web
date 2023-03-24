@@ -85,24 +85,29 @@ const ChiTietGV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await lecturerApi.updateGV(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
                 }, 2000)
             } catch (error) {
                 console.error(error);
+                context.updateLoading(false);
             }
         },
     })
 
     const handleDelete = async () => {
+        context.updateLoading(true);
         try {
             const response = await lecturerApi.deleteGV(state.item.id);
             setOpen(false);
             setShowAlertD(true);
+            context.updateLoading(false);
             setTimeout(() => {
                 setShowAlertD(false);
                 navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
@@ -110,6 +115,7 @@ const ChiTietGV = () => {
         }
         catch (error) {
             console.error('Error deleting data: ', error);
+            context.updateLoading(false);
         };
     };
 
