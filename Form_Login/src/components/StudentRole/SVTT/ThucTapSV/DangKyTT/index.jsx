@@ -11,24 +11,6 @@ const styleTextField = {
     width: '80%', marginBottom: 5
 };
 
-const validationSchema = yup.object({
-    nameCompany: yup.string().required("Vui lòng nhập tên công ty"),
-    addressCompany: yup.string().required("Vui lòng nhập địa chỉ"),
-    emailCompany: yup.string().email("email không hợp lệ").required("Vui lòng nhập email"),
-    position: yup.string().required("Vui lòng nhập chức vụ"),
-    phoneCompany: yup.string().required("Vui lòng nhập số điện thoại"),
-    companyCode: yup.string().required("Vui lòng nhập mã công ty"),
-});
-
-const initialValues = {
-    nameCompany: "",
-    addressCompany: "",
-    emailCompany: "",
-    position: "",
-    phoneCompany: "",
-    companyCode: "",
-};
-
 function DKTT() {
     const token = localStorage.getItem('token');
     const [user, setUser] = React.useState([]);
