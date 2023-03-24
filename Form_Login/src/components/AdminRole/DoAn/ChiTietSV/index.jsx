@@ -94,10 +94,12 @@ const ChiTietSV = () => {
     const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getGrade = async () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -111,9 +113,11 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')

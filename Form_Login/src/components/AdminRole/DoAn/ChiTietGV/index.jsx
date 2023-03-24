@@ -85,9 +85,11 @@ const ChiTietGV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await lecturerApi.updateGV(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')

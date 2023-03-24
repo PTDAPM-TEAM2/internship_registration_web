@@ -80,10 +80,12 @@ function DSDA() {
     const [projects, setProject] = React.useState([]);
     const token = localStorage.getItem('token');
     React.useEffect(() => {
+        context.updateLoading(true);
         const getAllDoAn = async () => {
             try {
                 const response = await prjApi.getAllDa(body, token);
                 setProject(response);
+                context.updateLoading(false);
             }
             catch (err) {
                 console.log(err);

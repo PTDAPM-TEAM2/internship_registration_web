@@ -47,6 +47,7 @@ const columns = [
 
 function DSGV() {
     const navigate = useNavigate();
+    const context = useContext(ThemeContext);
 
     function handleGo() {
         navigate('/them-giang-vien-da');
@@ -60,13 +61,14 @@ function DSGV() {
         navigate(`/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
-    // const token = localStorage.getItem('token');
     const [lecturers, setLecturer] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getAllItem = async () => {
             try {
                 const response = await lecturerApi.getAllGV();
                 setLecturer(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

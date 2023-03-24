@@ -21,15 +21,16 @@ function DLSVDA() {
     const token = localStorage.getItem('token');
     const handleSubmit = async () => {
         {
+            context.updateLoading(true);
             setHideImport(false);
+        }
+        try {
+            const response = await userApi.importExcelSvDa(formData, token);
+            context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
             }, 2000);
-        }
-        try {
-            const response = await userApi.importExcelSvDa(formData, token);
-            console.log(response);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
