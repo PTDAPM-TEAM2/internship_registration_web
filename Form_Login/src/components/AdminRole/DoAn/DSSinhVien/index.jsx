@@ -63,7 +63,8 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    console.log(token);
+    const context = useContext(ThemeContext);
+
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
@@ -75,21 +76,48 @@ function DSSV() {
     function handleGoClick(item) {
         navigate(`/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
     }
-    
+
     const [students, setStudent] = React.useState([]);
 
-    // const context = useContext(ThemeContext);
+
     React.useEffect(() => {
+        context.updateLoading(true);
         const getAllItem = async () => {
             try {
                 const response = await studentApi.getAllSvDa(null, token);
                 setStudent(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
     }, []);
+
+
+    const handleFilterGV = async (type) => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.filter(type);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleGetAll = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.getAllSvDa(null, token);
+            setStudent(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <div style={{ display: 'flex' }}>
@@ -114,8 +142,9 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleFilterGV(2)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleFilterGV(1)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -144,14 +173,14 @@ function DSSV() {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        // students === Object &&
+
                                         students.map((row, index) => {
                                             return (
                                                 <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
                                                     <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                    {/* <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell> */}
+                                                    <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
                                                 </TableRow>
                                             );

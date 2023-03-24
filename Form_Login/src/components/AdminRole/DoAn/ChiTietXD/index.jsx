@@ -10,6 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+import prjApi from "../../../../api/graduationThesis";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -25,18 +28,40 @@ const style = {
 const ChiTietXD = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [status, setStatus] = React.useState(0);
     const location = useLocation();
     const state = location.state;
     const navigate = useNavigate();
-    function handleGo() {
+    const context = useContext(ThemeContext);
+    const handleClose = () => {
         setOpen(false);
-        setShowAlert(true);
-        setTimeout(() => {
-            navigate('/quan-ly-do-an/danh-sach-do-an');
-        }, 1000)
+        setStatus(0);
+    };
+    const handleOpen = (value) => {
+        setOpen(true);
+        setStatus(value);
+    };
+    const body = {
+        id: state.item.id,
+        status: status
     }
+    const token = localStorage.getItem('token');
+    const reviewGT = async () => {
+        context.updateLoading(true);
+        try {
+            context.updateLoading(false);
+            setOpen(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                navigate('/quan-ly-do-an/danh-sach-do-an');
+            }, 1000)
+            const response = await prjApi.addOrRemoveGraduation(body, token);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
@@ -46,37 +71,37 @@ const ChiTietXD = () => {
                     <form className={styles.formInput}>
                         <div className={styles.txt}>
                             <p>Tên Sinh Viên: </p>
-                            <TextField label={state.item.SinhVien} className={styles.txtField} disabled />
+                            <TextField label={state.item.student.fullName} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Tên Đồ Án: </p>
-                            <TextField label={state.item.DoAn} className={styles.txtField} disabled />
+                            <TextField label={state.item.nameGraduationThesis} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Mã Sinh Viên: </p>
-                            <TextField label={state.item.MaSV} className={styles.txtField} disabled />
+                            <TextField label={state.item.student.studentCode} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Kỳ Đồ Án: </p>
-                            <TextField label={state.item.Ky} className={styles.txtField} disabled />
+                            <TextField label={state.item.semester.code} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Lớp: </p>
-                            <TextField label={state.item.Lop} className={styles.txtField} disabled />
+                            <TextField label={state.item.student.grade.name} className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>File đánh giá của giảng viên: </p>
-                            <TextField label={state.item.File} className={styles.txtField} disabled />
+                            <TextField label="File" className={styles.txtField} disabled />
                         </div>
                         <div className={styles.txt}>
                             <p>Tên giảng viên: </p>
-                            <TextField label={state.item.GiaoVien} className={styles.txtField} disabled />
+                            <TextField label={state.item.lecturer.fullName} className={styles.txtField} disabled />
                         </div>
                     </form>
                 </div>
                 <div className={styles.btn}>
-                    <Button className={styles.button} onClick={handleOpen} >Đồng ý</Button>
-                    <Button className={styles.button} onClick={handleOpen} >Từ chối</Button>
+                    <Button className={styles.button} onClick={() => handleOpen(1)} >Đồng ý</Button>
+                    <Button className={styles.button} onClick={() => handleOpen(2)} >Từ chối</Button>
                 </div>
             </div>
             <Modal
@@ -90,8 +115,8 @@ const ChiTietXD = () => {
                         Bạn có chắc chắn với sự lựa chọn này không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <Button className={styles.button} onClick={handleGo}>Có</Button>
-                        <Button className={styles.button} onClick={handleGo}>Không</Button>
+                        <Button className={styles.button} onClick={reviewGT}>Có</Button>
+                        <Button className={styles.button} onClick={handleClose}>Không</Button>
                     </div>
                 </Box>
             </Modal>

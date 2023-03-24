@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
 import Sidebar from '../../../Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -19,7 +19,6 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import studentApi from "../../../../api/studentApi";
 import MenuItem from '@mui/material/MenuItem';
-import { useParams } from 'react-router-dom';
 
 const style = {
     position: 'absolute',
@@ -37,17 +36,17 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    gender: Yup.string().required(),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
-    dateOfBirth: Yup.date().max(new Date()).required(),
-    // placeOfBitrh: Yup.string().required(),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
-    studentCode: Yup.string().required(),
-    grade: Yup.object().required(),
-    // semester: Yup.string().required(),
-    password: Yup.string().required(),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    semester: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietSV = () => {
@@ -63,6 +62,18 @@ const ChiTietSV = () => {
     const state = location.state;
     const { id } = useParams()
 
+    const grade = {
+        name: state.item.grade.name
+        // id: state.item.grade.id,
+        // students: state.item.grade.students
+    }
+
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
+
     const initialValues = {
         urlImg: state.item.urlImg || '',
         fullName: state.item.fullName || '',
@@ -73,24 +84,22 @@ const ChiTietSV = () => {
         phoneNumber: state.item.phoneNumber || '',
         email: state.item.email || '',
         studentCode: state.item.studentCode || '',
-        grade: {
-            id: state.item.grade.id,
-            name: state.item.grade.name,
-            students: state.item.grade.students
-        },
+        grade: grade,
         semester: state.item.semester || '',
         //van de quan trong
-        password: '********',
+        password: state.item.password || '',
     };
 
 
     const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getGrade = async () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -104,9 +113,11 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
                 setShowAlert(true);
+                context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
@@ -155,7 +166,16 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                    />
+                                        helperText={formik.touched.gender && formik.errors.gender}
+                                        select
+                                        sx={{ width: 150, textAlign: 'left' }}
+                                    >
+                                        {genders.map((gender) => (
+                                            <MenuItem key={gender.value} value={gender.value}>
+                                                {gender.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
@@ -168,6 +188,7 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -179,6 +200,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -191,6 +214,7 @@ const ChiTietSV = () => {
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
                                             error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -203,6 +227,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -214,6 +240,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -225,6 +253,8 @@ const ChiTietSV = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
+
                                     />
                                 </div>
                             </div>
@@ -237,20 +267,20 @@ const ChiTietSV = () => {
                                     id="studentCode"
                                     name="studentCode"
                                     value={formik.values.studentCode}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
+                                    onChange={formik.handleChange}                                    
                                     disabled
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='grade'>Lớp: </label>
+                                <label htmlFor='grade.name'>Lớp: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
                                     id='grade'
-                                    name='grade'
+                                    name='grade.name'
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
+                                    disabled
                                 >
                                     {grades.map((grade) => (
                                         <MenuItem key={grade.id} value={grade.name}>
@@ -268,6 +298,8 @@ const ChiTietSV = () => {
                                     value={formik.values.semester}
                                     onChange={formik.handleChange}
                                     error={formik.touched.semester && Boolean(formik.errors.semester)}
+                                    helperText={formik.touched.semester && formik.errors.semester}
+
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -279,7 +311,6 @@ const ChiTietSV = () => {
                                     name="password"
                                     // value={formik.values.password}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.password && Boolean(formik.errors.password)}
                                     type='password'
                                 // disabled
                                 />
@@ -290,7 +321,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={context.cellValidateLecture(state.item.graduationThesis)} className={styles.txtFieldBot} />
+                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis)} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>

@@ -59,7 +59,7 @@ const columns = [
 
 function DSSV() {
     const navigate = useNavigate();
-
+    const context = useContext(ThemeContext);
     function handleMoveAdd() {
         navigate('/them-sinh-vien-tt');
     }
@@ -68,8 +68,8 @@ function DSSV() {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-    function handleGoClick() {
-        navigate('/ChiTietSV-tt');
+    function handleGoClick(item) {
+        navigate(`/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
     }
     const [students, setStudent] = React.useState([]);
 
@@ -118,8 +118,8 @@ function DSSV() {
                     <p>Danh sách sinh viên</p>
                 </div>
                 <div className={styles.table}>
-                    <Paper sx={{ width: '100%', overflow: 'hidden' , height:'400px'}}>
-                        <TableContainer sx={{ maxHeight: 480 }}>
+                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                        <TableContainer sx={{ maxHeight: 400}}>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
@@ -142,8 +142,8 @@ function DSSV() {
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.studentCode}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.graduationThesis}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateCompany(row.internship)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateSemesterIntern(row.internship)}</TableCell>
                                             </TableRow>
                                         );
                                     })}

@@ -257,11 +257,11 @@ function Sidebar() {
                             location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
                             location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
-                            location.pathname === '/ChiTietXD' ||
+                            location.pathname === '/chi-tiet-do-an' ||
                             location.pathname === '/them-sinh-vien-da' ||
-                            location.pathname === '/ThemGV-da' ||
+                            location.pathname === '/them-giang-vien-da' ||
                             location.pathname === `/chi-tiet-sinh-vien-da/${id}` ||
-                            location.pathname === '/ChiTietGV-da' ||
+                            location.pathname === `/chi-tiet-giang-vien/${id}` ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
@@ -370,10 +370,11 @@ function Sidebar() {
                         location.pathname === '/danh-sach-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
                         location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
-                        location.pathname === '/ChiTietCT-tt' ||
+                        location.pathname === `/chi-tiet-cong-ty/${id}` ||
                         location.pathname === '/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
-                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'
+                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt'||
+                        location.pathname === `/chi-tiet-sinh-vien-tt/${id}`
                         
                     ) :
                     // teachers role

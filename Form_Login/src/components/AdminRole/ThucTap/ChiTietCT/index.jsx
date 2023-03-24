@@ -17,7 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import Sidebar from '../../../Sidebar';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -70,6 +70,7 @@ const ChiTietCT = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
+    const {idSV} = useParams();
     const handleAdd = () => {
         setOpen(false)
         setShowAlert(true);

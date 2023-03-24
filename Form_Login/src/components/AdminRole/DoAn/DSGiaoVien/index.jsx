@@ -47,9 +47,10 @@ const columns = [
 
 function DSGV() {
     const navigate = useNavigate();
+    const context = useContext(ThemeContext);
 
     function handleGo() {
-        navigate('/ThemGV-da');
+        navigate('/them-giang-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -57,24 +58,23 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/ChiTietGV-da', { state: { item } });
+        navigate(`/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
-    const token = localStorage.getItem('token');
-
-    const context = useContext(ThemeContext);
     const [lecturers, setLecturer] = React.useState([]);
     React.useEffect(() => {
+        context.updateLoading(true);
         const getAllItem = async () => {
             try {
-                const response = await lecturerApi.getAllGV(null, token);
+                const response = await lecturerApi.getAllGV();
                 setLecturer(response);
+                context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getAllItem()
-    }, [context.token]);
+    }, []);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -129,7 +129,7 @@ function DSGV() {
                                             <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
                                                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
-                                                {/* <TableCell sx={{ textAlign: 'center' }}>{row.SLSV}</TableCell> */}
+                                                <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
                                             </TableRow>
                                         );

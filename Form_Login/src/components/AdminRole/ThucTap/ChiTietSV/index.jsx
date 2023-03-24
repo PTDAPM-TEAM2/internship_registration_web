@@ -1,80 +1,99 @@
 import * as React from 'react';
-import { TextField } from '@mui/material';
-import styles from './ThemSVTT.module.css';
+import { Button, TextField } from '@mui/material';
+import styles from './ChiTietSV.module.css';
 import Sidebar from '../../../Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams,useLocation } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import MenuItem from '@mui/material/MenuItem';
-// import Menu from '@mui/material/Menu';
-import studentApi from "../../../../api/studentApi";
-import companyApi from "../../../../api/companyApi";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
-import AlertMessage from '../../DoAn/ThemSV/Alert';
-
-const internship = {
-    start: '',
-    end: '',
-    company: '',
-}
-const grade = {
-    name: ''
-}
-const genders = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-];
-const initVl = {
-    urlImg: '',
-    fullName: '',
-    gender: '',
-    idNumber: '',
-    dateOfBirth: new Date(),
-    placeOfBitrh: '',
-    phoneNumber: '',
-    email: '',
-    studentCode: '',
-    grade: grade,
-    password: '',
-    internship: internship
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import studentApi from "../../../../api/studentApi";
+import MenuItem from '@mui/material/MenuItem';
+import companyApi from "../../../../api/companyApi";
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center',
 
 };
+
+
 const validationSchema = Yup.object({
-    fullName: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    studentCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    password: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!').min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    fullName: Yup.string().required(),
+    email: Yup.string().email().required(),
+    gender: Yup.string().required(),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
+    dateOfBirth: Yup.date().max(new Date()).required(),
+    // placeOfBitrh: Yup.string().required(),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
+    studentCode: Yup.string().required(),
+    grade: Yup.object().required(),
+    // semester: Yup.string().required(),
+    password: Yup.string().required(),
 });
 
-const ThemSVTT = () => {
-    // const [message, setMessage] = React.useState('');
-    // const [errorMessages, setErrorMessages] = React.useState('');
-    const [showAlert, setShowAlert] = React.useState(null);
-    const navigate = useNavigate();
-    const [imageFile, setImageFile] = React.useState(null);
-    const [imageUrl, setImageUrl] = React.useState(null);
+const ChiTietSV = () => {
     const context = useContext(ThemeContext);
-    const token = localStorage.getItem('token');
-    const handleImageFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
+    const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlertD, setShowAlertD] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
+    const [date, setDate] = React.useState(dayjs());
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const location = useLocation();
+    const state = location.state;
+    const { id } = useParams();
 
+    const internship = {
+        start: context.cellValidateStart(state.item.internship),
+        end: context.cellValidateEnd(state.item.internship),
+        company: context.cellValidateCompany(state.item.internship),
+    }
+    const grade = {
+        name: state.item.grade.name || ''
+        // id: state.item.grade.id,
+        // students: state.item.grade.students
+    }
+
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
+
+    const initialValues = {
+        urlImg: state.item.urlImg || '',
+        fullName: state.item.fullName || '',
+        gender: state.item.gender || '',
+        idNumber: state.item.idNumber || '',
+        dateOfBirth: new Date(state.item.dateOfBirth) || '',
+        placeOfBitrh: state.item.placeOfBitrh || '',
+        phoneNumber: state.item.phoneNumber || '',
+        email: state.item.email || '',
+        studentCode: state.item.studentCode || '',
+        grade: grade,
+        internship: internship,
+        //van de quan trong
+        password: '********',
     };
-
+    const token = localStorage.getItem('token');
     const [companies, setCompanies] = React.useState([]);
     React.useEffect(() => {
         const getCompany = async () => {
@@ -105,64 +124,51 @@ const ThemSVTT = () => {
 
 
     const formik = useFormik({
-        initialValues: initVl,
+        initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const response = await studentApi.addSVTT(JSON.stringify(values), token);
-                console.log(response);
-                console.log(JSON.stringify(values));
-                setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
+                const response = await studentApi.updateSVTT(JSON.stringify(values), state.item.id);
+                setShowAlert(true);
                 setTimeout(() => {
-                    setShowAlert(null);
+                    setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
                 }, 2000)
             } catch (error) {
-                if (error.response.data.messgae) {
-                    setShowAlert({ type: 'error', text: error.response.data.messgae });
-                    setTimeout(() => {
-                        setShowAlert(null);
-                    }, 2000)
-                }
+                console.error(error);
             }
         },
     })
+
+    const handleDelete = async () => {
+        try {
+            const response = await studentApi.deleteSVDA(state.item.id);
+            setOpen(false);
+            setShowAlertD(true);
+            setTimeout(() => {
+                setShowAlertD(false);
+                navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
+            }, 1000)
+        }
+        catch (error) {
+            console.error('Error deleting data: ', error);
+        };
+    };
 
 
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className={styles.form}>
-                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thêm Sinh Viên</p>
+                    <p className={styles.title}>Thông tin chi tiết sinh viên</p>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className={styles.formAccount} columns={{ lg: 4 }} >
-                            <div className={styles.infoImg} >
+                        <div className={styles.formAccount}>
+                            <div className={styles.infoImg}>
                                 <div >
-                                    {(imageFile === null) &&
-                                        <div>
-                                            <label htmlFor="urlImg" className={styles.upload} >
-                                                <FileUploadIcon />
-                                                <span>Tải lên</span>
-                                            </label>
-                                            <input
-                                                className={styles.fileInput}
-                                                name='urlImg'
-                                                id='urlImg'
-                                                type="file"
-                                                accept=".jpg, .jpeg, .png"
-                                                onChange={handleImageFileChange}
-                                                value={formik.values.urlImg}
-                                            />
-                                        </div>
-                                    }
-                                    {
-                                        imageFile &&
-                                        <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
-                                        </div>
-                                    }
+                                    <div className={styles.image}>
+                                        <img src={state.item.urlImg} alt='avatar' style={{ maxWidth: '100%' }} />
+                                    </div>
                                 </div>
                                 <div className={styles.gender}>
                                     <label htmlFor="gender">Giới tính: </label>
@@ -172,7 +178,6 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                        helperText={formik.touched.gender && formik.errors.gender}
                                         select
                                         sx={{ width: 150, textAlign: 'left' }}
                                     >
@@ -185,7 +190,7 @@ const ThemSVTT = () => {
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
-                                <div className={styles.txt} >
+                                <div className={styles.txt}>
                                     <label htmlFor='fullName'>Họ tên: </label>
                                     <TextField
                                         className={styles.txtField}
@@ -194,11 +199,9 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-                                        helperText={formik.touched.fullName && formik.errors.fullName}
-
                                     />
                                 </div>
-                                <div className={styles.txt} >
+                                <div className={styles.txt}>
                                     <label htmlFor='idNumber'>Số căn cước: </label>
                                     <TextField
                                         className={styles.txtField}
@@ -207,74 +210,56 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
-                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
-
                                     />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField
-                                                {...props}
-                                                className={styles.txtDate}
-                                                error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
-                                            />}
+                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} value={new Date(formik.values.dateOfBirth)} />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            // onChange={formik.handleChange}
-                                            // name='dateOfBirth'
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
-
+                                            error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                         />
                                     </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id="placeOfBitrh"
                                         name="placeOfBitrh"
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
-                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        
                                     />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='phoneNumber'>Số điện thoại: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id="phoneNumber"
                                         name="phoneNumber"
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-
                                     />
                                 </div>
                                 <div className={styles.txt}>
                                     <label htmlFor='email'>Email: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id="email"
                                         name="email"
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
-                                        helperText={formik.touched.email && formik.errors.email}
-
                                     />
                                 </div>
                             </div>
                         </div>
-
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <label htmlFor='studentCode'>Mã sinh viên: </label>
@@ -285,20 +270,19 @@ const ThemSVTT = () => {
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
-                                    helperText={formik.touched.studentCode && formik.errors.studentCode}
-
+                                    disabled
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship'>Tên công ty thực tập: </label>
+                                <label htmlFor='internship.company'>Tên công ty thực tập: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
-                                    id='internship'
-                                    name='internship'
-                                    value={formik.values.internship}
+                                    id='company'
+                                    name='internship.company'
+                                    value={formik.values.internship.company}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                    error={formik.touched.company && Boolean(formik.errors.company)}
                                 >
                                     {companies.map((option) => (
                                         <MenuItem key={option.id} value={option}>
@@ -309,7 +293,7 @@ const ThemSVTT = () => {
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='start'>Bắt đầu: </label>
+                                <label htmlFor='internship.start'>Kết thúc: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
@@ -318,7 +302,7 @@ const ThemSVTT = () => {
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
                                         value={formik.values.internship.start}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value: value } })}
                                         // onChange={formik.handleChange}
                                         // name='internship.start'
                                         format="YYYY/MM/DD"
@@ -340,25 +324,24 @@ const ThemSVTT = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='grade'>Lớp: </label>
+                                <label htmlFor='grade.name'>Lớp: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
                                     id='grade'
-                                    name='grade'
-                                    value={formik.values.grade}
+                                    name='grade.name'
+                                    value={formik.values.grade.name}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
-                                    {grades.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.name}
+                                    {grades.map((grade) => (
+                                        <MenuItem key={grade.id} value={grade.name}>
+                                            {grade.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='end'>Kết thúc: </label>
+                                <label htmlFor='internship.end'>Kết thúc: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
@@ -376,17 +359,57 @@ const ThemSVTT = () => {
                                     />
                                 </LocalizationProvider>
                             </div>
+
+
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit">Thêm</button>
-                            {/* <button className={styles.button} type="submit" onClick={ handleSubmit(formik.initialValues)}>Thêm</button> */}
+                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
                 </div>
-
             </div>
-        </div >
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} >
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Có muốn xóa không ?
+                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleDelete}>Có</button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleClose}>Không</button>
+                    </div>
+                </Box>
+            </Modal>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
+                    </Alert>
+                </div>}
+
+            {showAlertD &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xóa thông tin sinh viên thành công !</AlertTitle>
+                    </Alert>
+                </div>}
+        </div>
     );
 };
 
-export default ThemSVTT;
+export default ChiTietSV;
