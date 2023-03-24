@@ -28,6 +28,15 @@ function TTSVTT() {
         }
         getDataSV();
     },[]);
+
+    const transferDate = (date) => {
+        var date = new Date(date);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        return day + "/" + month + "/" + year;
+    }
+
     return (
         <>
             <Box sx={{ display: 'flex' }}>
@@ -46,7 +55,7 @@ function TTSVTT() {
                                 <h4 style={{ marginBottom: 10 }}>Họ và tên:</h4>
                                 <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={styleTextField} value={SV?.fullName || ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Ngày sinh:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={styleTextField} value={SV?.dateOfBirth || ""}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={styleTextField} value={transferDate(SV?.dateOfBirth) || ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Số điện thoại:</h4>
                                 <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={styleTextField} value={SV?.phoneNumber || ""}/>
                             </div>

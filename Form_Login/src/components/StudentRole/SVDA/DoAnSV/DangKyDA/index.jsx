@@ -69,6 +69,7 @@ const DKDA = () => {
                         "id": user?.semester?.id
                     }
                 },token);
+                console.log(response);
                 isSuccess = true
                 setShowAlert(true);
                 setTimeout(() => {

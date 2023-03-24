@@ -33,6 +33,15 @@ function TTSV() {
         }
         getDataSV();
     },[]);
+
+    const transferDate = (date) => {
+        var date = new Date(date);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        return day + "/" + month + "/" + year;
+    }
+
     return (
         <>
             <Box sx={{ display: 'flex' }}>
@@ -45,23 +54,23 @@ function TTSV() {
                             <div style={{ float: 'left', width: '20%', height: '100%' }}>
                                 <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" sx={{ width: 161, height: 161, marginBottom: 0.3 }}></Avatar>
                                 <h4 style={{ marginBottom: 2 }}>Giới tính:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} value={SV.gender}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} value={SV?.gender || ""}/>
                             </div>
                             <div style={{ float: 'left', width: '40%', height: '100%' }}>
                                 <h4 style={{ marginBottom: 10 }}>Họ và tên:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.fullName}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.fullName || ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Ngày sinh:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.dateOfBirth}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={transferDate(SV?.dateOfBirth )|| ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Số điện thoại:</h4>
                                 <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.phoneNumber}/>
                             </div>
                             <div style={{ float: 'left', width: '40%', height: '100%' }}>
                                 <h4 style={{ marginBottom: 10 }}>Căn cước:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.idNumber}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.idNumber || ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Nơi sinh:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.placeOfBirth}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.placeOfBirth || ""}/>
                                 <h4 style={{ marginBottom: 10 }}>Email:</h4>
-                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.email}/>
+                                <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.email || ""}/>
                             </div>
                         </div>
                     </div>
@@ -70,7 +79,7 @@ function TTSV() {
                             <div style={{ width: "100%", height: '100%', textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Mã sinh viên:</h4>
-                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV.studentCode}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.studentCode || ""}/>
                                     <h4 style={{ marginBottom: 10 }}>Mật khẩu:</h4>
                                     <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
                                 </div>

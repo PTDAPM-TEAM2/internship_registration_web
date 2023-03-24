@@ -114,11 +114,9 @@ function Login() {
           //   var tk = await userApi.loginTT({ username: username, password: password });
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
-            if (userInfoTT.roles[0].id === 1) {
+            if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
-            } else if(userInfoTT.roles[0].id === 2) {
-              Variables.userRole = "teachers";
-            } else {
+            }else{
               Variables.userRole = "students";
             }
             // console.log(Variables.userRole);
