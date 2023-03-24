@@ -75,11 +75,23 @@ const PasswordChanging = () => {
 
     const handleSubmit = () => {
         setOpen(true);
-        if (formik.values.oldPassword === "" && formik.values.newPassword === "" && formik.values.reNewPassword === "") {
-            setErrorMessages("Trường mật khẩu không được bỏ trống");
+    
+        if (formik.values.newPassword.length < 8 || formik.values.reNewPassword.length < 8){
+            console.log(formik.values.newPassword.length);
+            setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
         }
-        else if (formik.values.newPassword !== formik.values.reNewPassword) {
+        else if (formik.values.oldPassword === "" && formik.values.newPassword === "" && formik.values.reNewPassword === "") {
+            setErrorMessages("Trường mật khẩu không được bỏ trống");
+        }else if (formik.values.newPassword !== formik.values.reNewPassword) {
             setErrorMessages("Mật khẩu không trùng khớp");
+        }else{
+            setOpen(false);
+            setErrorMessages(null);
+            setShowAlert(true);
+            setShowModal(false);
+            setTimeout(() => {
+                navigate('/thong-tin-ca-nhan');
+            }, 1000);
         }
     }
 

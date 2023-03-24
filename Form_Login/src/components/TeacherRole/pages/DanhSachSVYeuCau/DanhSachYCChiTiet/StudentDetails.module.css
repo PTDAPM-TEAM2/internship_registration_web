@@ -178,8 +178,8 @@ form {
 
 @media (min-width: 1920px) and (max-width: 2560px){
     .userProfile{
-        width: 110%;
-        height: 110%;
+        width: 200px;
+        height: 100%;
         border: 1px solid black;
         object-fit: cover;
         overflow: hidden;
@@ -194,6 +194,11 @@ form {
     .txtGender{
         width: 50%;
     }
+
+    .txtTextBottom{
+        width: 420px;
+    }
+    
 
     .txtField{
         width: 500px;

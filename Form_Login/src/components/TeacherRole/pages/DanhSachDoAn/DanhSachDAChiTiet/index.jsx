@@ -72,12 +72,15 @@ const PInformationDetails = () => {
 
         const getAllWeeklyReview = async () => {
             try{
+                console.log(`id: ${state.item.id}`);
                 const response = await graduationThesis.weeklyTeacherReview(state.item.id, token);
+                console.log(`tvv-object: ${response}`);
                 setReviewList(response)
             }catch(err){
                 console.log(err);
             }
         }
+
 
         // const getAllWeeklyReview = async () => {
         //     try{
@@ -91,11 +94,7 @@ const PInformationDetails = () => {
         // currentUser();
     }, [])
 
-    console.log(`tvv-review: ${review.map((item) => console.log(item))})`);
-
-    const listReview = [];
-    review.map((item) => listReview.push(item));
-
+    console.log(`tvv-review: ${review.forEach((item) => console.log(item))})`);
 
     const initialValues = {
         id: state.item.id,

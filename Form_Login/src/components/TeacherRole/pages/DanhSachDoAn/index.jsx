@@ -6,8 +6,6 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import userApi from '../../../../api/authApi';
-import projectApi from '../../../../api/projectApi';
 import teacherRoleController from '../../controller/TeacherRoleController';
 
 const body = {
@@ -54,11 +52,8 @@ const ProjectListStudents = () => {
                 <div className={styles.container}> 
                     { (loading === true) ? (
                       <CircularProgress color="success" className={styles.circularProgressIndicator}/>
-                    ) : (data.map((item, key) => ( 
-                      <div>
-                       {
-                        item.status !== 2 ?
-                          (<div className={styles.card} key={key}> 
+                    ) : (data?.map((item, key) => ( 
+                          <div className={styles.card} key={key}> 
                             <a className={styles.cardItem} onClick={() => {toComponent(item)}}>
                                 <div className={styles.body}> 
                                     <a><b>Đề tài: {item.nameGraduationThesis}</b></a><br></br>
@@ -67,9 +62,7 @@ const ProjectListStudents = () => {
                                     <p><b>Ngày nộp: </b>{item.dateSubmitted}</p> 
                                 </div> 
                             </a>
-                          </div>) : (null)
-                      }
-                      </div>
+                          </div>
                     )))} 
                 </div> 
             </div>

@@ -24,7 +24,7 @@ const ProcessEvaluation = () => {
     const state = location.state;
     const token = localStorage.getItem('token');
     const context = useContext(ThemeContext);
-    console.log(`aaa ${state.data1.student.fullName}`);
+    console.log(`aaa ${state.data1.id}`);
 
     function handleGo() {
         setShowAlert(true);
@@ -40,7 +40,7 @@ const ProcessEvaluation = () => {
         title: null,
         content: null,
         graduationThesis:{
-            id: 2
+            id: state.data1.id
         }
     };
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
