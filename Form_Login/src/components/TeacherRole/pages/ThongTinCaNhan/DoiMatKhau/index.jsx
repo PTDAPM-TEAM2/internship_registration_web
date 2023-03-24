@@ -56,9 +56,11 @@ const PasswordChanging = () => {
         reNewPassword: ''
     };
     const validationSchema = Yup.object().shape({
-        oldPassword: Yup.string().required('Required'),
+        oldPassword: Yup.string().required('Required').test('match', 'Mật khẩu cũ không chính xác!', function (value) {
+            return value === this.parent.newPassword;
+        }),
         newPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
-        reNewPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
+        reNewPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').oneOf([Yup.ref('newPassword'), null], 'Mật khẩu không trùng khớp!').required('Required'),
     });
 
     const formik = useFormik({
@@ -77,24 +79,28 @@ const PasswordChanging = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setOpen(true);
-        if(Variables.pw === "" || formik.values.newPassword === "" || formik.values.oldPassword === "" || formik.values.reNewPassword === ""){
-            setErrorMessages("Trường mật khẩu không được bỏ trống!")
-
-        }if ((formik.values.newPassword.trim().length < 8 && formik.values.newPassword.trim().length > 0) || (formik.values.reNewPassword.trim().length < 8 && formik.values.reNewPassword.trim().length > 0)){
-            setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
-        }else if (formik.values.newPassword !== formik.values.reNewPassword) {
-            setErrorMessages("Mật khẩu không trùng khớp!");
-        }
-        else if(formik.values.oldPassword !== Variables.pw){
-            setErrorMessages("Mật khẩu cũ không chính xác!");
+        if(Variables.pw !== ""){
+            if(formik.values.newPassword === "" || formik.values.oldPassword === "" || formik.values.reNewPassword === ""){
+                setErrorMessages("Trường mật khẩu không được bỏ trống!")
+    
+            }if ((formik.values.newPassword.trim().length < 8 && formik.values.newPassword.trim().length > 0) || (formik.values.reNewPassword.trim().length < 8 && formik.values.reNewPassword.trim().length > 0)){
+                setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
+            }else if (formik.values.newPassword !== formik.values.reNewPassword) {
+                setErrorMessages("Mật khẩu không trùng khớp!");
+            }
+            else if(formik.values.oldPassword !== Variables.pw){
+                setErrorMessages("Mật khẩu cũ không chính xác!");
+            }else{
+                setOpen(false);
+                setErrorMessages(null);
+                setShowAlert(true);
+                setShowModal(false);
+                setTimeout(() => {
+                    navigate('/thong-tin-ca-nhan');
+                }, 1000);
+            }
         }else{
-            setOpen(false);
-            setErrorMessages(null);
-            setShowAlert(true);
-            setShowModal(false);
-            setTimeout(() => {
-                navigate('/thong-tin-ca-nhan');
-            }, 1000);
+            setErrorMessages("Mật khẩu cũ không chính xác!");
         }
     }
 
