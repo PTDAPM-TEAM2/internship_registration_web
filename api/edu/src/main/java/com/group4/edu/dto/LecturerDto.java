@@ -10,6 +10,7 @@ import java.util.Set;
 public class LecturerDto extends UserDto {
     private String lecturersCode;
     private Set<RoleDto> roles;
+    private Integer numGrTh = 0;
 
     public LecturerDto(Lecturer entity){
         super(entity);
@@ -46,5 +47,14 @@ public class LecturerDto extends UserDto {
 
     public void setRoles(Set<RoleDto> roles) {
         this.roles = roles;
+    }
+
+
+    public Integer getNumGrTh() {
+        return numGrTh;
+    }
+
+    public void setNumGrTh(Integer numGrTh) {
+        this.numGrTh = numGrTh;
     }
 }

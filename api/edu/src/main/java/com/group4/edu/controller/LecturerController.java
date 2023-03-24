@@ -18,9 +18,9 @@ public class LecturerController {
     @Autowired
     LecturersService lecturersService;
 
-    @PostMapping("/getLecturersBySearch")
+    @PostMapping("/getLecturersByFilter")
     public ResponseEntity<List<LecturerDto>> getGraduationThesis(@RequestBody SearchObjectDto dto){
-        List<LecturerDto> re = lecturersService.getGraduationThesis(dto);
+        List<LecturerDto> re = lecturersService.getLecturerByFilter(dto);
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
     @PostMapping("/save")

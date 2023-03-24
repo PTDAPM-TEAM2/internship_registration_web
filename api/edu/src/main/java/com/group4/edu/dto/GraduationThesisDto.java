@@ -1,8 +1,11 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.GraduationThesis;
+import com.group4.edu.domain.WeeklyReview;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class GraduationThesisDto extends BaseDto {
@@ -17,6 +20,8 @@ public class GraduationThesisDto extends BaseDto {
     StudentDto student;
     SemesterDto semester;
     LecturerDto lecturer;
+
+    private Set<WeeklyReviewDto> reviews;
 
     Date submitDay;
     public GraduationThesisDto() {
@@ -41,6 +46,12 @@ public class GraduationThesisDto extends BaseDto {
                 this.semester = new SemesterDto(entity.getSemester());
             if (entity.getLecturer() != null) {
                 this.lecturer = new LecturerDto(entity.getLecturer());
+            }
+            if(entity.getReviews() != null && entity.getReviews().size()>0){
+                reviews = new HashSet<>();
+                for(WeeklyReview review: entity.getReviews()){
+                    reviews.add(new WeeklyReviewDto(review,true));
+                }
             }
         }
     }
@@ -160,5 +171,13 @@ public class GraduationThesisDto extends BaseDto {
 
     public void setSubmitDay(Date submitDay) {
         this.submitDay = submitDay;
+    }
+
+    public Set<WeeklyReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<WeeklyReviewDto> reviews) {
+        this.reviews = reviews;
     }
 }

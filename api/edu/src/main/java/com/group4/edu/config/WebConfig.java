@@ -33,10 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
         String password = "";
         String dbName = "";
         if(x == 1){
-            host = "sql12.freemysqlhosting.net";
-            username = "sql12607286";
-            dbName = "sql12607286";
-            password = "dJ8aB8bylp";
+            host = "s88d81.cloudnetwork.vn:3306";
+            username = "kin82682_group4Edu";
+            dbName = "kin82682_Education";
+            password = "nam689nam986";
         }
         if(x == 2){
             System.out.print("Nhap port: ");

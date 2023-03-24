@@ -6,6 +6,7 @@ import com.group4.edu.dto.LecturerDto;
 import com.group4.edu.dto.SearchObjectDto;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.LecturersService;
+import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,7 @@ public class LecturersServiceImpl implements LecturersService {
             entity.setAddress(dto.getAddress());
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setUserType(EduConstants.UserType.LECTURERS.getValue());
+            entity.setPhoneNumber(dto.getPhoneNumber());
             if(isNewAccount){
                 account = new Account();
                 account.setUsername(dto.getLecturersCode());
@@ -94,12 +96,21 @@ public class LecturersServiceImpl implements LecturersService {
 
     @Override
     public List<LecturerDto> getAll() {
-        return lecturerRepository.getAll();
+        List<LecturerDto> lecturerDtos= lecturerRepository.getAll();
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        for(LecturerDto lecturerDto: lecturerDtos){
+            Integer numGraTh = thesisRepository.countGraduationByLecturerIdandSemesterCode(lecturerDto.getId(),semesterCode);
+            if(numGraTh != null){
+                lecturerDto.setNumGrTh(numGraTh);
+            }
+        }
+        return lecturerDtos;
     }
 
     @Override
-    public List<LecturerDto> getGraduationThesis(SearchObjectDto dto){
+    public List<LecturerDto> getLecturerByFilter(SearchObjectDto dto){
         String whereClause = " where true = true ";
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
         String sql = "SELECT new com.group4.edu.dto.LecturerDto(tbl_lecturer) FROM Lecturer as tbl_lecturer";
 
 
@@ -109,7 +120,7 @@ public class LecturersServiceImpl implements LecturersService {
 
         if(dto.getNumberOfStudentsInLecturer() != null){
             sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
-            whereClause += " and (entity.status = 1 or entity.status = 2)";
+            whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
             if(dto.getNumberOfStudentsInLecturer() == 0)
                 whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
             if(dto.getNumberOfStudentsInLecturer() == 1)
@@ -121,6 +132,9 @@ public class LecturersServiceImpl implements LecturersService {
 
         sql += whereClause;
         Query query = manager.createQuery(sql, LecturerDto.class);
+        if(dto.getNumberOfStudentsInLecturer() != null){
+            query.setParameter("semesterCode", semesterCode);
+        }
 
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             query.setParameter("fullName", '%'+dto.getFullName()+'%');
@@ -140,11 +154,11 @@ public class LecturersServiceImpl implements LecturersService {
             Account account = accountRepository.getAccountByUserId(lecturer.getId()).orElse(null);
             accountRepository.delete(account);
 
-            List<Internship> internships = intershipRepository.getInternshipByLecturerId(lecturer.getId());
-            intershipRepository.deleteAll(internships);
-
-            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByLecturerId(lecturer.getId());
-            thesisRepository.deleteAll(graduationThesises);
+//            List<Internship> internships = intershipRepository.getInternshipByLecturerId(lecturer.getId());
+//            intershipRepository.deleteAll(internships);
+//
+//            List<GraduationThesis> graduationThesises = thesisRepository.getGraduationThesisByLecturerId(lecturer.getId());
+//            thesisRepository.deleteAll(graduationThesises);
 
             if (lecturerRepository.existsById(lecturer.getId()))
                 lecturerRepository.deleteById(lecturer.getId());

@@ -18,6 +18,12 @@ public class WeeklyReviewDto extends BaseDto{
         if(entity.getGraduationThesis() != null)
             this.graduationThesis = new GraduationThesisDto(entity.getGraduationThesis());
     }
+    public WeeklyReviewDto(WeeklyReview entity, boolean notGetGradua) {
+        super.setId(entity.getId());
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+    }
+
 
     public String getTitle() {
         return title;

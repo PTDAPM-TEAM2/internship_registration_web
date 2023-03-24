@@ -33,7 +33,7 @@ public class StudentDto extends UserDto{
             this.grade = new GradeDto(entity.getGrade());
         }
         if(thesis != null){
-            this.graduationThesis = new GraduationThesisDto(thesis);
+            this.graduationThesis = new GraduationThesisDto(thesis,true);
         }
     }
     public StudentDto(Student entity, Internship internship){
