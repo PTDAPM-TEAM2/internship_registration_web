@@ -49,7 +49,7 @@ function DSGV() {
     const navigate = useNavigate();
 
     function handleGo() {
-        navigate('/ThemGV-da');
+        navigate('/them-giang-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -57,7 +57,7 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/chi-tiet-giang-vien', { state: { item } });
+        navigate(`/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
     // const token = localStorage.getItem('token');

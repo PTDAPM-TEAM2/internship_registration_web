@@ -38,6 +38,22 @@ function ThemeProvider({ children }) {
       return e.semester.code;
     }
   }
+  function cellValidateStart(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.start;
+    }
+  }
+  function cellValidateEnd(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.end;
+    }
+  }
 
   function cellValidateLecturer(e) {
     if (e === null) {
@@ -79,6 +95,8 @@ function ThemeProvider({ children }) {
     setLoading(newValue);
   }
   const value = {
+    cellValidateStart,
+    cellValidateEnd,
     cellValidateLecturer,
     cellValidateStudent,
     auth,

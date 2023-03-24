@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
 import Sidebar from '../../../Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams,useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -12,14 +12,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import studentApi from "../../../../api/studentApi";
 import MenuItem from '@mui/material/MenuItem';
-import { useParams } from 'react-router-dom';
 import companyApi from "../../../../api/companyApi";
 const style = {
     position: 'absolute',
@@ -61,18 +59,24 @@ const ChiTietSV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const { id } = useParams()
+    const { id } = useParams();
 
     const internship = {
-        start: state.item.internship.start || null,
-        end: state.item.internship.end || null,
-        company: state.item.internship.company || '',
+        start: context.cellValidateStart(state.item.internship),
+        end: context.cellValidateEnd(state.item.internship),
+        company: context.cellValidateCompany(state.item.internship),
     }
     const grade = {
         name: state.item.grade.name || ''
         // id: state.item.grade.id,
         // students: state.item.grade.students
     }
+
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
 
     const initialValues = {
         urlImg: state.item.urlImg || '',
@@ -174,7 +178,15 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                    />
+                                        select
+                                        sx={{ width: 150, textAlign: 'left' }}
+                                    >
+                                        {genders.map((gender) => (
+                                            <MenuItem key={gender.value} value={gender.value}>
+                                                {gender.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
                             </div>
                             <div className={styles.inputValue}>

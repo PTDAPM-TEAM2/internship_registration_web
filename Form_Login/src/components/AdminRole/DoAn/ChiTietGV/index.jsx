@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
 import Sidebar from '../../../Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -19,7 +19,12 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import lecturerApi from "../../../../api/lecturerApi";
 import MenuItem from '@mui/material/MenuItem';
-import { useParams } from 'react-router-dom';
+
+const genders = [
+    { value: "male", label: "Nam" },
+    { value: "female", label: "Nữ" },
+    { value: "other", label: "Khác" },
+];
 
 const style = {
     position: 'absolute',
@@ -37,15 +42,15 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    gender: Yup.string().required(),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
-    dateOfBirth: Yup.date().max(new Date()).required(),
-    placeOfBitrh: Yup.string().required(),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
-    lecturersCode: Yup.string().required(),
-    password: Yup.string().required(),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    email: Yup.string().email().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietGV = () => {
@@ -59,7 +64,7 @@ const ChiTietGV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const { idGV } = useParams()
+    const { id } = useParams()
 
     const initialValues = {
         urlImg: state.item.urlImg || '',
@@ -75,7 +80,6 @@ const ChiTietGV = () => {
         //van de quan trong
         password: '********',
     };
-
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -132,7 +136,16 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                    />
+                                        helperText={formik.touched.gender && formik.errors.gender}
+                                        select
+                                        sx={{ width: 150, textAlign: 'left' }}
+                                    >
+                                        {genders.map((gender) => (
+                                            <MenuItem key={gender.value} value={gender.value}>
+                                                {gender.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
@@ -145,6 +158,8 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -156,6 +171,8 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -168,6 +185,8 @@ const ChiTietGV = () => {
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
                                             error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -180,6 +199,8 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -191,6 +212,8 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -202,6 +225,8 @@ const ChiTietGV = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
+
                                     />
                                 </div>
                             </div>
@@ -215,7 +240,6 @@ const ChiTietGV = () => {
                                     name="lecturersCode"
                                     value={formik.values.lecturersCode}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.lecturersCode && Boolean(formik.errors.lecturersCode)}
                                     disabled
                                 />
                             </div>
@@ -241,7 +265,6 @@ const ChiTietGV = () => {
                                     name="numGrTh"
                                     value={formik.values.numGrTh}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.numGrTh && Boolean(formik.errors.numGrTh)}
                                     disabled
                                 />
                             </div>

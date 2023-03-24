@@ -16,9 +16,12 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import AlertMessage from '../ThemSV/Alert';
 
-// const grade = {
-//     name: '',
-// }
+
+const genders = [
+    { value: "male", label: "Nam" },
+    { value: "female", label: "Nữ" },
+    { value: "other", label: "Khác" },
+];
 
 const initialValues = {
     urlImg: '',
@@ -34,15 +37,15 @@ const initialValues = {
 
 };
 const validationSchema = Yup.object({
-    fullName: Yup.string().trim().required(),
-    email: Yup.string().trim().email().required(),
-    gender: Yup.string().trim().required(),
-    idNumber: Yup.string().trim().matches(/^[0-9]{12}$/).required(),
-    dateOfBirth: Yup.date().max(new Date()).required(),
-    placeOfBitrh: Yup.string().trim().required(),
-    phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/).required(),
-    lecturersCode: Yup.string().trim().required(),
-    password: Yup.string().trim().required().min(8),
+    fullName: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    lecturersCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    password: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại').min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại'),
 });
 
 const ThemGV = () => {
@@ -68,14 +71,14 @@ const ThemGV = () => {
             try {
                 console.log(values);
                 const response = await lecturerApi.addGV(JSON.stringify(values), token);
-                setShowAlert({type: 'success', text: "Thêm giảng viên thành công"});
+                setShowAlert({ type: 'success', text: "Thêm giảng viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
                     navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
                 }, 2000)
             } catch (error) {
-                if(error.response.data.messgae) {
-                    setShowAlert({type: 'error', text: error.response.data.messgae});
+                if (error.response.data.messgae) {
+                    setShowAlert({ type: 'error', text: error.response.data.messgae });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
@@ -89,7 +92,7 @@ const ThemGV = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className={styles.form}>
-                <AlertMessage message={showAlert}/>
+                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thêm Giảng Viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -128,7 +131,16 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                    />
+                                        helperText={formik.touched.gender && formik.errors.gender}
+                                        select
+                                        sx={{ width: 150, textAlign: 'left' }}
+                                    >
+                                        {genders.map((gender) => (
+                                            <MenuItem key={gender.value} value={gender.value}>
+                                                {gender.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
@@ -142,6 +154,8 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
+
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -154,6 +168,8 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -185,6 +201,8 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -197,6 +215,8 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -209,6 +229,8 @@ const ThemGV = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
+
                                     />
                                 </div>
                             </div>
@@ -216,7 +238,7 @@ const ThemGV = () => {
 
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <label htmlFor='lecturersCode'>Mã sinh viên: </label>
+                                <label htmlFor='lecturersCode'>Mã giảng viên: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     id="lecturersCode"
@@ -224,6 +246,8 @@ const ThemGV = () => {
                                     value={formik.values.lecturersCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.lecturersCode && Boolean(formik.errors.lecturersCode)}
+                                    helperText={formik.touched.lecturersCode && formik.errors.lecturersCode}
+
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -234,6 +258,7 @@ const ThemGV = () => {
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
                                     type='password'
                                 // disabled
                                 />

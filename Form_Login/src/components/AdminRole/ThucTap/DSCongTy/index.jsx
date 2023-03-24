@@ -65,7 +65,7 @@ function DSCT() {
 
 
     const handleGoClick = (item) => {
-        navigate('/ChiTietCT-tt', {state: {item}})
+        navigate(`/chi-tiet-cong-ty/${item.id}`, {state: {item}})
     }
     return (
         <div style={{ display: 'flex' }}>

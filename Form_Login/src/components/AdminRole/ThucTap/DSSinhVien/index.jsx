@@ -69,7 +69,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate('/chi-tiet-sinh-vien-tt', { state: { item } });
+        navigate(`/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
     }
     const [students, setStudent] = React.useState([]);
 

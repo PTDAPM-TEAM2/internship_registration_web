@@ -25,7 +25,11 @@ const internship = {
 const grade = {
     name: ''
 }
-
+const genders = [
+    { value: "male", label: "Nam" },
+    { value: "female", label: "Nữ" },
+    { value: "other", label: "Khác" },
+];
 const initVl = {
     urlImg: '',
     fullName: '',
@@ -42,16 +46,16 @@ const initVl = {
 
 };
 const validationSchema = Yup.object({
-    fullName: Yup.string().trim().required(),
-    email: Yup.string().trim().email().required(),
-    gender: Yup.string().trim().required(),
-    idNumber: Yup.string().trim().matches(/^[0-9]{12}$/).required(),
-    dateOfBirth: Yup.date().max(new Date()).required(),
-    placeOfBitrh: Yup.string().trim().required(),
-    phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/).required(),
-    studentCode: Yup.string().trim().required(),
-    grade: Yup.object().required(),
-    password: Yup.string().trim().required().min(8),
+    fullName: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    studentCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!').min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ThemSVTT = () => {
@@ -68,7 +72,7 @@ const ThemSVTT = () => {
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
-   
+
     };
 
     const [companies, setCompanies] = React.useState([]);
@@ -99,7 +103,7 @@ const ThemSVTT = () => {
     }, []);
 
 
-    
+
     const formik = useFormik({
         initialValues: initVl,
         validationSchema: validationSchema,
@@ -168,7 +172,16 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
-                                    />
+                                        helperText={formik.touched.gender && formik.errors.gender}
+                                        select
+                                        sx={{ width: 150, textAlign: 'left' }}
+                                    >
+                                        {genders.map((gender) => (
+                                            <MenuItem key={gender.value} value={gender.value}>
+                                                {gender.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
@@ -181,6 +194,8 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
+
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -192,6 +207,8 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -223,6 +240,8 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+                                        
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -235,6 +254,8 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -247,6 +268,8 @@ const ThemSVTT = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
+
                                     />
                                 </div>
                             </div>
@@ -262,6 +285,8 @@ const ThemSVTT = () => {
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
+                                    helperText={formik.touched.studentCode && formik.errors.studentCode}
+
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -278,7 +303,7 @@ const ThemSVTT = () => {
                                     {companies.map((option) => (
                                         <MenuItem key={option.id} value={option}>
                                             {option.nameCompany}
-                                            { console.log(option.id)}
+                                            {console.log(option.id)}
                                         </MenuItem>
                                     ))}
                                 </TextField>

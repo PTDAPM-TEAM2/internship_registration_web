@@ -96,13 +96,13 @@ function App() {
                   <Route path='trang-chu-giang-vien' element={<TCGV />}></Route >
                 </Route >
               </Route>
-              <Route path='/ThemGV-da' element={<ThemGV />} />
+              <Route path='/them-giang-vien-da' element={<ThemGV />} />
               <Route path='/them-sinh-vien-da' element={<ThemSV />} />
               <Route path='/them-sinh-vien-tt' element={<ThemSVTT />} />
               <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
-              <Route path='/chi-tiet-sinh-vien-tt' element={<CTSVTT />} />
-              <Route path='/chi-tiet-giang-vien' element={<CTGV />} />
-              <Route path='/ChiTietCT-tt' element={<CTCT />} />
+              <Route path='/chi-tiet-sinh-vien-tt/:id' element={<CTSVTT />} />
+              <Route path='/chi-tiet-giang-vien/:id' element={<CTGV />} />
+              <Route path='/chi-tiet-cong-ty/:id' element={<CTCT />} />
               <Route path='/chi-tiet-do-an' element={<CTXD />} />
             </Routes>
           </Router>)
