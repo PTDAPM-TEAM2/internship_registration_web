@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/quang/Development/reactjs/internship_registration_web-1/api/edu"/>
 			<item value="D:\phát triển dự án phần mềm\API\internship_registration_web\api"/>
 			<item value="D:\phát triển dự án phần mềm\API\internship_registration_web\api\edu"/>
 		</list>

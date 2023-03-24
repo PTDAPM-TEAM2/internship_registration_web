@@ -79,10 +79,10 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-do-an");
               } else if (Variables.userRole === "teachers") {
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-do-an");
               }
             }, 500);
           } else {
@@ -114,9 +114,13 @@ function Login() {
           });
           localStorage.setItem('token', tk);
           if (tk !== "") {
-            var userInfo = await userApi.getInfo(tk);
-            if (userInfo.roles[0].id === 1) {
+            var userInfoTT = await userApi.getInfo(tk);
+            if (userInfoTT.roles[0].id === 1) {
               Variables.userRole = "admin";
+            } else if(userInfoTT.roles[0].id === 2) {
+              Variables.userRole = "teachers";
+            } else {
+              Variables.userRole = "students";
             }
             localStorage.setItem("token", tk);
             context.updateLoading(false);
@@ -128,11 +132,11 @@ function Login() {
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
-              } else if (Variables.userRole === "students") {
-                navigate("/sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
                 Variables.pw = password;
                 navigate("/trang-chu-giang-vien");
+              } else {
+                navigate("/sinh-vien-thuc-tap");
               }
             }, 500);
           } else {
