@@ -260,11 +260,11 @@ function Sidebar() {
                             location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
                             location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
-                            location.pathname === '/ChiTietXD' ||
+                            location.pathname === '/chi-tiet-do-an' ||
                             location.pathname === '/them-sinh-vien-da' ||
                             location.pathname === '/ThemGV-da' ||
                             location.pathname === `/chi-tiet-sinh-vien-da/${id}` ||
-                            location.pathname === '/ChiTietGV-da' ||
+                            location.pathname === '/chi-tiet-giang-vien' ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||

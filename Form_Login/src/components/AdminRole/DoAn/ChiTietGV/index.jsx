@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
+import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -11,8 +12,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Sidebar from '../../../Sidebar';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import lecturerApi from "../../../../api/lecturerApi";
+import MenuItem from '@mui/material/MenuItem';
+import { useParams } from 'react-router-dom';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -27,8 +35,23 @@ const style = {
 
 };
 
+
+const validationSchema = Yup.object({
+    fullName: Yup.string().required(),
+    email: Yup.string().email().required(),
+    gender: Yup.string().required(),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
+    dateOfBirth: Yup.date().max(new Date()).required(),
+    placeOfBitrh: Yup.string().required(),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
+    lecturersCode: Yup.string().required(),
+    password: Yup.string().required(),
+});
+
 const ChiTietGV = () => {
+    const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const [date, setDate] = React.useState(dayjs());
@@ -36,21 +59,56 @@ const ChiTietGV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const handleSubmit = () => {
-        setShowAlert(true);
-        setTimeout(() => {
-            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
-            setShowAlert(false);
-        }, 1000)
-        console.log('Sửa');
-    }
+    const { idGV } = useParams()
 
-    function handleGo() {
-        setOpen(false);
-        setTimeout(() => {
-            navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da');
-        }, 500)
-    }
+    const initialValues = {
+        urlImg: state.item.urlImg || '',
+        fullName: state.item.fullName || '',
+        gender: state.item.gender || '',
+        idNumber: state.item.idNumber || '',
+        dateOfBirth: new Date(state.item.dateOfBirth) || '',
+        placeOfBitrh: state.item.placeOfBitrh || '',
+        phoneNumber: state.item.phoneNumber || '',
+        email: state.item.email || '',
+        lecturersCode: state.item.lecturersCode || '',
+        numGrTh: state.item.numGrTh || '',
+        //van de quan trong
+        password: '********',
+    };
+
+
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            try {
+                const response = await lecturerApi.updateGV(JSON.stringify(values), state.item.id);
+                setShowAlert(true);
+                setTimeout(() => {
+                    setShowAlert(false);
+                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                }, 2000)
+            } catch (error) {
+                console.error(error);
+            }
+        },
+    })
+
+    const handleDelete = async () => {
+        try {
+            const response = await lecturerApi.deleteGV(state.item.id);
+            setOpen(false);
+            setShowAlertD(true);
+            setTimeout(() => {
+                setShowAlertD(false);
+                navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+            }, 1000)
+        }
+        catch (error) {
+            console.error('Error deleting data: ', error);
+        };
+    };
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -58,78 +116,139 @@ const ChiTietGV = () => {
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>
-                    <form>
+                    <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount}>
-                            <div>
-                                <div className={styles.txt}>
+                            <div className={styles.infoImg}>
+                                <div >
                                     <div className={styles.image}>
-                                        <img src="" alt='avatar' style={{ maxWidth: '100%' }} />
+                                        <img src={state.item.urlImg} alt='avatar' style={{ maxWidth: '100%' }} />
                                     </div>
                                 </div>
-                                <div className={styles.txt}>
-                                    <p>Giới tính: </p>
-                                    <TextField defaultValue='Nữ' required />
+                                <div className={styles.gender}>
+                                    <label htmlFor="gender">Giới tính: </label>
+                                    <TextField
+                                        id="gender"
+                                        name="gender"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.gender}
+                                        error={formik.touched.gender && Boolean(formik.errors.gender)}
+                                    />
                                 </div>
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt}>
-                                    <p>Họ tên: </p>
-                                    <TextField defaultValue={state.item.TenGiangVien} className={styles.txtField} />
+                                    <label htmlFor='fullName'>Họ tên: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id='fullName'
+                                        name='fullName'
+                                        onChange={formik.handleChange}
+                                        value={formik.values.fullName}
+                                        error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Số căn cước: </p>
-                                    <TextField defaultValue={state.item.SĐT}className={styles.txtField} />
+                                    <label htmlFor='idNumber'>Số căn cước: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="idNumber"
+                                        name="idNumber"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.idNumber}
+                                        error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Ngày sinh: </p>
-                                    <TextField defaultValue={state.item.NgaySinh}className={styles.txtField} />
-                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <label htmlFor='dateOfBirth'>Ngày sinh: </label>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} />}
-                                            value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
+                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} value={new Date(formik.values.dateOfBirth)} />}
+                                            value={formik.values.dateOfBirth}
+                                            onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             format="YYYY/MM/DD"
-                                            defaultValue={dayjs('01/02/1988')}
+                                            maxDate={new Date()}
+                                            error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                         />
-                                    </LocalizationProvider> */}
+                                    </LocalizationProvider>
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Nơi sinh: </p>
-                                    <TextField defaultValue={state.item.NoiSinh} className={styles.txtField} />
+                                    <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="placeOfBitrh"
+                                        name="placeOfBitrh"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.placeOfBitrh}
+                                        error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Số điện thoại: </p>
-                                    <TextField defaultValue={state.item.SĐT} className={styles.txtField} />
+                                    <label htmlFor='phoneNumber'>Số điện thoại: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.phoneNumber}
+                                        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                    />
                                 </div>
                                 <div className={styles.txt}>
-                                    <p>Email: </p>
-                                    <TextField defaultValue={state.item.email} className={styles.txtField} />
+                                    <label htmlFor='email'>Email: </label>
+                                    <TextField
+                                        className={styles.txtField}
+                                        id="email"
+                                        name="email"
+                                        value={formik.values.email}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.email && Boolean(formik.errors.email)}
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
-                                <p>Mã giảng viên: </p>
-                                <TextField defaultValue={state.item.MaGV} className={styles.txtFieldBot} />
+                                <label htmlFor='lecturersCode'>Mã giảng viên: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="lecturersCode"
+                                    name="lecturersCode"
+                                    value={formik.values.lecturersCode}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.lecturersCode && Boolean(formik.errors.lecturersCode)}
+                                    disabled
+                                />
                             </div>
                             <div className={styles.txt}>
-                                <p>Khoa: </p>
-                                <TextField defaultValue={state.item.Khoa} className={styles.txtFieldBot} />
+                                <label htmlFor='password'>Mật khẩu: </label>
+                                <TextField
+                                    defaultValue='********'
+                                    className={styles.txtFieldBot}
+                                    id="password"
+                                    name="password"
+                                    // value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.password && Boolean(formik.errors.password)}
+                                    type='password'
+                                // disabled
+                                />
                             </div>
                             <div className={styles.txt}>
-                                <p>Số lượng SV quản lý: </p>
-                                <TextField defaultValue={state.item.SLSV} className={styles.txtFieldBot} />
-                            </div>
-                            <div className={styles.txt}>
-                                <p>Mật khẩu: </p>
-                                <TextField defaultValue={state.item.Mk} className={styles.txtFieldBot} />
+                                <label htmlFor='numGrTh'>Số lượng sinh viên quản lý: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    id="numGrTh"
+                                    name="numGrTh"
+                                    value={formik.values.numGrTh}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.numGrTh && Boolean(formik.errors.numGrTh)}
+                                    disabled
+                                />
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <Button className={styles.button} onClick={handleSubmit}>Sửa</Button>
-                            <Button className={styles.button} onClick={handleOpen}>Xóa</Button>
+                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
                 </div>
@@ -145,8 +264,8 @@ const ChiTietGV = () => {
                         Có muốn xóa không ?
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <Button className={styles.button} onClick={handleGo}>Có</Button>
-                        <Button className={styles.button} onClick={handleClose}>Không</Button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleDelete}>Có</button>
+                        <button className={styles.button} sx={{ color: 'white' }} onClick={handleClose}>Không</button>
                     </div>
                 </Box>
             </Modal>
@@ -159,6 +278,18 @@ const ChiTietGV = () => {
                         right: '2%'
                     }}>
                         <AlertTitle>Sửa thông tin giảng viên thành công !</AlertTitle>
+                    </Alert>
+                </div>}
+
+            {showAlertD &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'absolute',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xóa thông tin giảng viên thành công !</AlertTitle>
                     </Alert>
                 </div>}
         </div>

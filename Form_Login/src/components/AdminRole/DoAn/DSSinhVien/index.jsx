@@ -63,7 +63,6 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    console.log(token);
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
@@ -78,7 +77,7 @@ function DSSV() {
     
     const [students, setStudent] = React.useState([]);
 
-    // const context = useContext(ThemeContext);
+    const context = useContext(ThemeContext);
     React.useEffect(() => {
         const getAllItem = async () => {
             try {
@@ -151,7 +150,7 @@ function DSSV() {
                                                     <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                    {/* <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell> */}
+                                                    <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell>
                                                     <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
                                                 </TableRow>
                                             );

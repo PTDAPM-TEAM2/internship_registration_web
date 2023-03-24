@@ -1,4 +1,5 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
+import Loading from '../Loading/Loading'
 
 const ThemeContext = createContext();
 
@@ -21,23 +22,50 @@ function ThemeProvider({ children }) {
     }
   }
 
-  function cellValidateLecture(e) {
+  function cellValidateCompany(e) {
     if (e === null) {
       return '';
     }
     else {
-      return e.lecturer.fullName;
+      return e.company.nameCompany;
+    }
+  }
+  function cellValidateSemesterIntern(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.semester.code;
+    }
+  }
+
+  function cellValidateLecturer(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.fullName;
+    }
+  }
+
+  function cellValidateStudent(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.fullName;
     }
   }
 
   const [auth, setAuth] = useState(true);
-  const [token, setToken] = useState("");
-  //luu token thi day
-
-  // 
+  const [loading, setLoading] = useState(true); 
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
-
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 4500)
+  })
   const updateAuth = (newValue) => {
     setAuth(newValue);
   }
@@ -47,12 +75,12 @@ function ThemeProvider({ children }) {
   const updateButton = (newValue) => {
     setActiveButton(newValue);
   };
-  const updateToken = (newValue) => {
-    localStorage.setItem('token', token);
-    setToken(newValue);
-  };
+  const updateLoading = (newValue) => {
+    setLoading(newValue);
+  }
   const value = {
-    cellValidateLecture,
+    cellValidateLecturer,
+    cellValidateStudent,
     auth,
     updateAuth,
     cellValidateName,
@@ -61,11 +89,16 @@ function ThemeProvider({ children }) {
     updateButton,
     toggle,
     updateToggle,
-    token,
-    //cho nay thoi
+    updateLoading,
+    cellValidateCompany,
+    cellValidateSemesterIntern
   };
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+
+    <ThemeContext.Provider value={value}>
+      {loading && <Loading />}
+      {children}
+    </ThemeContext.Provider>
   );
 }
 

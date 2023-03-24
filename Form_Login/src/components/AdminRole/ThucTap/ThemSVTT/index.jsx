@@ -3,7 +3,6 @@ import { TextField } from '@mui/material';
 import styles from './ThemSVTT.module.css';
 import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -13,15 +12,21 @@ import * as Yup from 'yup';
 import MenuItem from '@mui/material/MenuItem';
 // import Menu from '@mui/material/Menu';
 import studentApi from "../../../../api/studentApi";
+import companyApi from "../../../../api/companyApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
+import AlertMessage from '../../DoAn/ThemSV/Alert';
 
+const internship = {
+    start: '',
+    end: '',
+    company: '',
+}
+const grade = {
+    name: ''
+}
 
-// const grade = {
-//     name: '',
-// }
-
-const initialValues = {
+const initVl = {
     urlImg: '',
     fullName: '',
     gender: '',
@@ -31,9 +36,9 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade: '',
-    semester: '',
+    grade: grade,
     password: '',
+    internship: internship
 
 };
 const validationSchema = Yup.object({
@@ -46,14 +51,13 @@ const validationSchema = Yup.object({
     phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/).required(),
     studentCode: Yup.string().trim().required(),
     grade: Yup.object().required(),
-    semester: Yup.string().trim().required(),
     password: Yup.string().trim().required().min(8),
 });
 
-const ThemSV = () => {
-    const [successMessage, setSuccessMessage] = React.useState('');
-    const [errorMessages, setErrorMessages] = React.useState([]);
-    const [showAlert, setShowAlert] = React.useState(false);
+const ThemSVTT = () => {
+    // const [message, setMessage] = React.useState('');
+    // const [errorMessages, setErrorMessages] = React.useState('');
+    const [showAlert, setShowAlert] = React.useState(null);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
@@ -64,7 +68,22 @@ const ThemSV = () => {
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
+   
     };
+
+    const [companies, setCompanies] = React.useState([]);
+    React.useEffect(() => {
+        const getCompany = async () => {
+            try {
+                const response = await companyApi.getCompanies(token);
+                setCompanies(response);
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        getCompany()
+    }, []);
 
     const [grades, setGrade] = React.useState([]);
     React.useEffect(() => {
@@ -72,42 +91,35 @@ const ThemSV = () => {
             try {
                 const response = await studentApi.getGrade(token);
                 setGrade(response);
-                console.log(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
         getGrade()
-    }, [context.token]);
+    }, []);
 
+
+    
     const formik = useFormik({
-        initialValues: initialValues,
+        initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const errors = [];
-            if (values.fullName === '') {
-                errors.push('Nhập thiếu thông tin! Vui lòng nhập lại');
-            }
-            if (values.email === '') {
-                errors.push('Nhập thiếu thông tin! Vui lòng nhập lại');
-            } else if (!Yup.string().email().isValidSync(values.email)) {
-                errors.push('Thông tin sai định dạng! Vui lòng nhập lại');
-            }
-            if (errors.length === 0) {
-                setSuccessMessage('Thêm thông tin sinh viên thành công!');
-                setErrorMessages([]);
-            } else {
-                setSuccessMessage('');
-                setErrorMessages(errors);
-            }
             try {
+                const response = await studentApi.addSVTT(JSON.stringify(values), token);
+                console.log(response);
                 console.log(JSON.stringify(values));
-                const response = await studentApi.addSVDA(JSON.stringify(values), token);
+                setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
                 setTimeout(() => {
-                    navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
+                    setShowAlert(null);
+                    navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
                 }, 2000)
             } catch (error) {
-                console.error(error);
+                if (error.response.data.messgae) {
+                    setShowAlert({ type: 'error', text: error.response.data.messgae });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
             }
         },
     })
@@ -117,6 +129,7 @@ const ThemSV = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className={styles.form}>
+                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thêm Sinh Viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -162,7 +175,6 @@ const ThemSV = () => {
                                 <div className={styles.txt} >
                                     <label htmlFor='fullName'>Họ tên: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id='fullName'
                                         name='fullName'
@@ -174,7 +186,6 @@ const ThemSV = () => {
                                 <div className={styles.txt} >
                                     <label htmlFor='idNumber'>Số căn cước: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id="idNumber"
                                         name="idNumber"
@@ -254,6 +265,56 @@ const ThemSV = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
+                                <label htmlFor='internship'>Tên công ty thực tập: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    select
+                                    id='internship'
+                                    name='internship'
+                                    value={formik.values.internship}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                >
+                                    {companies.map((option) => (
+                                        <MenuItem key={option.id} value={option}>
+                                            {option.nameCompany}
+                                            { console.log(option.id)}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                            <div className={styles.txt}>
+                                <label htmlFor='start'>Bắt đầu: </label>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <DatePicker
+                                        renderInput={(props) => <TextField
+                                            {...props}
+                                            className={styles.txtFieldBot}
+                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                        />}
+                                        value={formik.values.internship.start}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
+                                        // onChange={formik.handleChange}
+                                        // name='internship.start'
+                                        format="YYYY/MM/DD"
+                                        maxDate={new Date()}
+
+                                    />
+                                </LocalizationProvider>
+                            </div>
+                            <div className={styles.txt}>
+                                <label htmlFor='password'>Mật khẩu: </label>
+                                <TextField className={styles.txtFieldBot}
+                                    id="password"
+                                    name="password"
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.password && Boolean(formik.errors.password)}
+                                    type='password'
+                                // disabled
+                                />
+                            </div>
+                            <div className={styles.txt}>
                                 <label htmlFor='grade'>Lớp: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
@@ -270,70 +331,37 @@ const ThemSV = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                {/* <TextField
-                                    className={styles.txtFieldBot}
-                                    id="grade"
-                                    name="grade.name"
-                                    select
-                                    value={formik.values.grade.name}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.grade && Boolean(formik.errors.grade)}
-                                >
-                                    <div style={{ maxHeight: 200 }}>
-                                        {grades.map((grade) => (
-                                            <MenuItem key={grade.id} value={grade.id} >
-                                                {grade.name}
-                                            </MenuItem>
-                                        ))}
-                                    </div>
-                                </TextField> */}
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='semester'>Kỳ: </label>
-                                <TextField
-                                    className={styles.txtFieldBot}
-                                    id="semester"
-                                    name="semester"
-                                    value={formik.values.semester}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.semester && Boolean(formik.errors.semester)}
-                                />
-                            </div>
-                            <div className={styles.txt}>
-                                <label htmlFor='password'>Mật khẩu: </label>
-                                <TextField className={styles.txtFieldBot}
-                                    id="password"
-                                    name="password"
-                                    value={formik.values.password}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.password && Boolean(formik.errors.password)}
-                                    type='password'
-                                // disabled
-                                />
+                                <label htmlFor='end'>Kết thúc: </label>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <DatePicker
+                                        renderInput={(props) => <TextField
+                                            {...props}
+                                            className={styles.txtFieldBot}
+                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                        />}
+                                        value={formik.values.internship.end}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.end', value: value } })}
+                                        // onChange={formik.handleChange}
+                                        // name='internship.end'
+                                        format="YYYY/MM/DD"
+                                        maxDate={new Date()}
+
+                                    />
+                                </LocalizationProvider>
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit" onClick={() => {
-                                setShowAlert(true);
-                                console.log(formik.touched);
-                                setTimeout(() => {
-                                    setShowAlert(false);
-                                }, 2000)
-
-                            }}>Thêm</button>
+                            <button className={styles.button} type="submit">Thêm</button>
+                            {/* <button className={styles.button} type="submit" onClick={ handleSubmit(formik.initialValues)}>Thêm</button> */}
                         </div>
                     </form>
                 </div>
 
             </div>
-            {successMessage && <Alert severity="success">{successMessage}</Alert>}
-            {errorMessages.map((error, index) => (
-                <Alert key={index} severity="error">
-                    {error}
-                </Alert>
-            ))}
         </div >
     );
 };
 
-export default ThemSV;
+export default ThemSVTT;

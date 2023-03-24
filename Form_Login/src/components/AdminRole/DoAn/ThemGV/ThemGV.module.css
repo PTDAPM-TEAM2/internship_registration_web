@@ -5,7 +5,7 @@ form {
 .inputValue{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 10px;
 }
 .title {
     width: 100%;
@@ -21,14 +21,6 @@ form {
     padding: 0 40px;
     width: 100%;
     padding-top: 70px;
-}
-.txt{
-    width: auto;
-    text-align: left;;
-}
-.txtField{
-    width: 400px;
-    padding: 10px 0;
 }
 .btn{
     position: relative;
@@ -46,8 +38,8 @@ form {
     transition: box-shadow .15s, transform .15s;
     font-size: 18px;
     width: 150px;
-    color: white;
-    background-color: #5698ff;
+    color: white !important;
+    background-color: #5698ff !important;
 }
 
 .button:focus {
@@ -74,18 +66,29 @@ form {
 .infoAccount {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    gap: 10px;
     border: 1px solid black;
     padding: 15px 30px;
+}
+.txt{
+    width: auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 90px;
+}
+.txtField{
+    width: 400px;
+    padding: 10px 0;
 }
 .txtFieldBot{
     width: 300px;
     padding: 10px 0;
+    
 }
 .image{
-    width: 140px;
-    height: 170px;
-    margin-bottom: 30px;
+    width: 150px;
+    height: 180px;
     border: 1px solid black;
     object-fit: cover;
     overflow: hidden;
@@ -95,8 +98,8 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 140px;
-    height: 170px;
+    width: 150px;
+    height: 180px;
     text-shadow: 1px 1px #fff;
     font-size: 20pt;
     background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
@@ -104,13 +107,45 @@ form {
     padding: 20px 8px;
     outline: none;
     white-space: nowrap;
-    margin-bottom: 30px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 .formAccount{
     display: flex;
-    justify-content: space-between;
     padding: 15px 30px;
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
+.txtDate{
+    width: 400px;
+    margin: 0 10px;
+}
+
+.infoImg{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 200px;
+}
+
+.gender{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 150px;
+}
+
+/* @media (max-width: 1450px) {
+    .txtField {
+        width: 300px;
+    }
+    .txtDate{
+        width: 300px;
+    }
+}
+@media (max-width: 900px) {
+    .db {
+        display: flex;
+        flex-direction: column;
+    }
+} */

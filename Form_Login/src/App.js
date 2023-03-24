@@ -26,6 +26,7 @@ import CTCT from './components/AdminRole/ThucTap/ChiTietCT';
 import DLSVTT from './components/AdminRole/ThucTap/DLSVTT';
 import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
 import ThemSVTT from './components/AdminRole/ThucTap/ThemSVTT';
+import CTSVTT from './components/AdminRole/ThucTap/ChiTietSV';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
@@ -56,20 +57,13 @@ import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
 import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
-function App() {
-  // const [loading, setLoading] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 1500);
-  // }, []);
+function App() {
+  
 
   const context = useContext(ThemeContext);
   return (
     <div className="App">
-      {/* {loading && <Loading />} */}
       {
         // Toán tử 3 ngôi
         Variables.userRole === 'admin' ?
@@ -106,9 +100,10 @@ function App() {
               <Route path='/them-sinh-vien-da' element={<ThemSV />} />
               <Route path='/them-sinh-vien-tt' element={<ThemSVTT />} />
               <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
-              <Route path='/ChiTietGV-da' element={<CTGV />} />
+              <Route path='/chi-tiet-sinh-vien-tt' element={<CTSVTT />} />
+              <Route path='/chi-tiet-giang-vien' element={<CTGV />} />
               <Route path='/ChiTietCT-tt' element={<CTCT />} />
-              <Route path='/ChiTietXD' element={<CTXD />} />
+              <Route path='/chi-tiet-do-an' element={<CTXD />} />
             </Routes>
           </Router>)
           :

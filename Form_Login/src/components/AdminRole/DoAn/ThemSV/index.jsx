@@ -3,8 +3,6 @@ import { TextField } from '@mui/material';
 import styles from './ThemSV.module.css';
 import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -18,9 +16,9 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import AlertMessage from './Alert.js';
 
-// const grade = {
-//     name: '',
-// }
+const grade = {
+    name: '',
+}
 
 const initialValues = {
     urlImg: '',
@@ -32,7 +30,7 @@ const initialValues = {
     phoneNumber: '',
     email: '',
     studentCode: '',
-    grade: '',
+    grade: grade,
     semester: '',
     password: '',
 
@@ -304,7 +302,7 @@ const ThemSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit">Thêm</button>
+                            <button className={styles.button} type="submit" onClick={console.log(formik.values)}>Thêm</button>
                         </div>
                     </form>
                 </div>
