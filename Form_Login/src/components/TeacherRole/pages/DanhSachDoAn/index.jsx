@@ -42,7 +42,7 @@ const ProjectListStudents = () => {
       // Invoke the async function
       fetchData();
     }, []); // Pass an empty dependency array to run only once
-    data.map((e) => {
+    data?.map((e) => {
       e.submitDay = new Date(e.submitDay).toLocaleDateString()
     })
     const navigate = useNavigate();

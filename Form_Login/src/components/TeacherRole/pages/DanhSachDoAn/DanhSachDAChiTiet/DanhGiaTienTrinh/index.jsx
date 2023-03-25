@@ -83,12 +83,12 @@ const ProcessEvaluation = () => {
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.formtitle}>
                                 <div className={styles.titleLeft}>
-                                    <p><b>Đề tài: </b>{state.data1.nameGraduationThesis}</p>
-                                    <p><b>Kỳ: </b>{state.data1.semester.code}</p>
+                                    <p><b>Đề tài: </b>{state.data1?.nameGraduationThesis}</p>
+                                    <p><b>Kỳ: </b>{state.data1?.semester?.code}</p>
                                 </div>
                                 <div className={styles.titleRight}>
-                                    <p><b>Tên sinh viên: </b>{state.data1.student.fullName}</p>
-                                    <p><b>Mã sinh viên: </b>{state.data1.student.studentCode}</p>
+                                    <p><b>Tên sinh viên: </b>{state.data1?.student?.fullName}</p>
+                                    <p><b>Mã sinh viên: </b>{state.data1?.student?.studentCode}</p>
                                 </div>
                                 
                             </div>

@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 import graduationThesis from '../../../../../api/graduationThesis';
 import userApi from '../../../../../api/authApi';
 import teacherRoleController from '../../../controller/TeacherRoleController';
-
+import { Card, CardContent, CardMedia } from '@mui/material';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -105,10 +105,9 @@ const PInformationDetails = () => {
         },
     })
 
-    // initialValues.id = state.item.id;
-
-
-
+    review.map(element => {
+        console.log(element);
+    });
     const navigate = useNavigate();
 
     function toComponent(item){
@@ -127,26 +126,49 @@ const PInformationDetails = () => {
                                 <div className={styles.formAccount} columns={{ lg: 4 }} >
                                     <div className={styles.formtitle}>
                                         <div className={styles.titleLeft}>
-                                            <p><b>Đề tài: </b>{state.item.nameGraduationThesis}</p>
-                                            <p><b>Kỳ: </b>{state.item.semester.code}</p>
+                                            <p><b>Đề tài: </b>{state.item?.nameGraduationThesis}</p>
+                                            <p><b>Kỳ: </b>{state.item?.semester?.code}</p>
                                         </div>
                                         <div className={styles.titleRight}>
-                                            <p><b>Tên sinh viên: </b>{state.item.student.fullName}</p>
-                                            <p><b>Mã sinh viên: </b>{state.item.student.studentCode}</p>
+                                            <p><b>Tên sinh viên: </b>{state.item?.student?.fullName}</p>
+                                            <p><b>Mã sinh viên: </b>{state.item?.student?.studentCode}</p>
                                         </div>
                                     </div>
                                     <div className={styles.formContent}>
                                         <label htmlFor="content"><b>Nội dung: </b></label>
-                                        <textarea
+                                        {/* <textarea
                                             className={styles.txtContent}
                                             id="content"
-                                            // listContentReview.map((content) => content)
-                                            defaultValue={review.map((value) => `${value.title}: ` + ` ${value.content}\n\n`)}
+                                            defaultValue={review.map((value) => `${value?.title.replace(',', '')}: ` + ` ${value?.content.replace(',', '')}\n\n`).join('')}
                                             name="content"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                                // value={formik.values.gender}
-                                        />
+                                            disabled
+                                        /> */}
+                                            {
+                                                <div className={styles.content}>
+                                                    {
+                                                        review.map((value) => 
+                                                        // <span className={styles.cardItem}>
+                                                        //     <div className = {styles.commentTitle}>{value?.title}:</div>
+                                                        //     <span className = {styles.comment}>{value?.content}</span>
+                                                        // </span>
+                                                        <Box>
+                                                            <Card className={styles.cardContent} sx={{ '&:hover': { boxShadow: 8 } }}>
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h6" component="div">
+                                                                    {value?.title}
+                                                                </Typography>
+                                                                <Typography variant="body2" color="text.primary">
+                                                                    {value?.content}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                        </Box>
+                                                    )
+                                                    }
+                                                </div>
+                                            }
                                     </div>
                                 </div>
                                 <div className={styles.btnForm}>
