@@ -38,4 +38,6 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
 
     @Query("SELECT COUNT(e) FROM GraduationThesis e WHERE e.lecturer.id=?1 and e.semester.code = ?2 and  e.isAccept = 2")
     Integer countGraduationByLecturerIdandSemesterCode(Long lecturerId, String semesterCode);
+
+
 }
