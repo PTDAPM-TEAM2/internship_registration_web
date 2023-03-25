@@ -80,6 +80,7 @@ public class SudentServiceImpl implements StudentService {
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
             isNewAccount = false;
         }
+
         if(entity == null){
             if(studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(),studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(),studentType)){
                 throw new Exception("Đã có sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
@@ -92,7 +93,7 @@ public class SudentServiceImpl implements StudentService {
             }
         }
         else {
-            if(studentRepository.existsByStudentCode(studentDto.getStudentCode()) || studentRepository.existsByIdNumber(studentDto.getIdNumber())){
+            if((!studentDto.getStudentCode().equals(entity.getStudentCode())&&studentRepository.existsByStudentCode(studentDto.getStudentCode())) || (!studentDto.getIdNumber().equals(entity.getIdNumber())&&studentRepository.existsByIdNumber(studentDto.getIdNumber()))){
                 throw new Exception("Đã có mã sinh viên này trong hệ thống ");
             }
         }
@@ -123,9 +124,9 @@ public class SudentServiceImpl implements StudentService {
         }
         entity.setGrade(grade);
         account = entity.getAccount();
-        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
-            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
-        }
+//        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
+//            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
+//        }
         Role roleDa = null;
         Role roleTT = null;
         if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
@@ -155,36 +156,35 @@ public class SudentServiceImpl implements StudentService {
             account = accountRepository.save(account);
         }
         if(account.getRoles() == null){
-            Set<Role> roleSet = new HashSet<>();
-            if(roleDa != null){
-                roleSet.add(roleDa);
-            }
-            if(roleTT != null){
-                roleSet.add(roleTT);
-            }
-            account.setRoles(roleSet);
+            account.setRoles(new HashSet<>());
         }
-        else {
-            boolean checkRoleDa = false;
-            boolean checkRoleTT = false;
-            for(Role role: account.getRoles()){
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey())){
-                    checkRoleDa = true;
-                }
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
-                    checkRoleTT = true;
-                }
-                if(checkRoleDa && checkRoleTT){
-                    break;
-                }
-            }
-            if(!checkRoleDa && roleDa != null){
-                account.getRoles().add(roleDa);
-            }
-            if(!checkRoleTT && roleTT != null){
-                account.getRoles().add(roleTT);
-            }
+        if(roleDa != null){
+            account.getRoles().add(roleDa);
         }
+        if(roleTT != null){
+            account.getRoles().add(roleTT);
+        }
+//        else {
+//            boolean checkRoleDa = false;
+//            boolean checkRoleTT = false;
+//            for(Role role: account.getRoles()){
+//                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey())){
+//                    checkRoleDa = true;
+//                }
+//                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
+//                    checkRoleTT = true;
+//                }
+//                if(checkRoleDa && checkRoleTT){
+//                    break;
+//                }
+//            }
+//            if(!checkRoleDa && roleDa != null){
+//                account.getRoles().add(roleDa);
+//            }
+//            if(!checkRoleTT && roleTT != null){
+//                account.getRoles().add(roleTT);
+//            }
+//        }
         return new StudentDto(studentRepository.save(entity));
     }
 

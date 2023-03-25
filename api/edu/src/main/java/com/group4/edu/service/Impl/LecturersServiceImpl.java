@@ -66,6 +66,9 @@ public class LecturersServiceImpl implements LecturersService {
                     throw new Exception("Ma giảng viên đã tồn tại");
                 }
             }
+            if((isNewAccount && lecturerRepository.existsByIdNumber(dto.getIdNumber()) ) || (!dto.getIdNumber().equals(entity.getIdNumber()) && lecturerRepository.existsByIdNumber(dto.getIdNumber()))){
+                throw new Exception("SCMND hoac SCCCD cua giang vien da ton tai");
+            }
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setIdNumber(dto.getIdNumber());
             entity.setLecturersCode(dto.getLecturersCode());
