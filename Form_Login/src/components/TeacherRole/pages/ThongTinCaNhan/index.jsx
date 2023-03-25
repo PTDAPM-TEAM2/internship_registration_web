@@ -38,13 +38,14 @@ const TTCN = () => {
           // Store the response data in the state variable
           setData(response);
         } catch (error) {
-          // Handle error
-          console.error(error);
+            // Handle error
+            console.error(error);
         }
-      }
-      // Invoke the async function
-      fetchData();
-  }, []); // Pass an empty dependency array to run only once
+    }
+    // Invoke the async function
+    fetchData();
+}, []); // Pass an empty dependency array to run only once
+data.dateOfBirth = new Date(data.dateOfBirth).toLocaleDateString()
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -89,13 +90,12 @@ const TTCN = () => {
         onSubmit: handleSubmit,
     })
 
-    console.log(data);
-
     const navigate = useNavigate();
 
     function toComponent(item) {
         navigate('doi-mat-khau', {state: {item}})
     }
+
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}

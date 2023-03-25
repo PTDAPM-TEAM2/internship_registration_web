@@ -47,7 +47,7 @@ function TTDA() {
                                     <h4>Mã sinh viên:</h4>
                                     <TextField disabled id="outlined-basic" variant="outlined" sx={styleTextField} value={TTDA?.id || ""}/>
                                     <h4>Kỳ:</h4>
-                                    <TextField id="outlined-basic" variant="outlined" sx={styleTextField} value={TTDA?.graduationThesis?.semeste?.code || ""}/>
+                                    <TextField disabled id="outlined-basic" variant="outlined" sx={styleTextField} value={TTDA?.graduationThesis?.semeste?.code || ""}/>
                                 </div>
                                 <div style={{ float: 'left', width: '50%', }}>
                                     <h4>Sinh viên thực hiện:</h4>
