@@ -2,19 +2,27 @@ package com.group4.edu.service.Impl;
 
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.*;
-import com.group4.edu.dto.LecturerDto;
-import com.group4.edu.dto.SearchObjectDto;
+import com.group4.edu.dto.*;
 import com.group4.edu.repositories.*;
 import com.group4.edu.service.LecturersService;
 import com.group4.edu.until.SemesterDateTimeUntil;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -169,5 +177,71 @@ public class LecturersServiceImpl implements LecturersService {
         } catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public List<LecturerDto> importExcel(MultipartFile file) {
+        XSSFWorkbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook(file.getInputStream());
+        } catch (IOException e) {
+            return null;
+        }
+        List<LecturerDto> lecturerDtos = new ArrayList<>();
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        int startLine = 0;
+        int totalLine = 0;
+        int rowIndex = 0;
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        boolean getIndexData = false;
+        XSSFRow row = sheet.getRow(0);
+        DataFormatter dataFormatter = new DataFormatter();
+        if(row != null){
+            if(row.getCell(0) != null && dataFormatter.formatCellValue(row.getCell(0)) != null && row.getCell(1) != null && dataFormatter.formatCellValue(row.getCell(1)) != null){
+                try {
+                    startLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(0)) ) -1;
+                    totalLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)) );
+                    rowIndex = startLine;
+                    getIndexData = true;
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        if(!getIndexData){
+            rowIndex = 1;
+            while (!(sheet.getRow(rowIndex) != null &&this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).equals("STT"))){
+                rowIndex++;
+                System.out.println(rowIndex);
+                if(rowIndex == 200){
+                    return null;
+                }
+            }
+            startLine = rowIndex++;
+        }
+        System.out.println(sheet.getRow(rowIndex).getCell(0).getRawValue());
+        while ((getIndexData && rowIndex - startLine <totalLine) || (sheet.getRow(rowIndex)!= null &&!this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))){
+            row = sheet.getRow(rowIndex++);
+            LecturerDto lecturerDto = new LecturerDto();
+            lecturerDto.setLecturersCode(getStringCellValue(row.getCell(1)));
+            lecturerDto.setFullName(row.getCell(2).getStringCellValue());
+            lecturerDto.setIdNumber(row.getCell(3).getStringCellValue());
+            lecturerDto.setAddress(row.getCell(4).getStringCellValue());
+            lecturerDto.setGender(row.getCell(5).getStringCellValue());
+            lecturerDto.setDateOfBirth(row.getCell(6).getDateCellValue());
+            lecturerDto.setPhoneNumber(this.getStringCellValue(row.getCell(7)));
+            lecturerDto.setEmail(row.getCell(8).getStringCellValue());
+            try {
+                lecturerDto = this.saveOrUpdate(lecturerDto,null);
+                lecturerDtos.add(lecturerDto);
+            } catch (Exception e) {
+            }
+        }
+        return lecturerDtos;
+    }
+    private String getStringCellValue(XSSFCell cell){
+        DataFormatter dataFormatter = new DataFormatter();
+        return dataFormatter.formatCellValue(cell);
     }
 }

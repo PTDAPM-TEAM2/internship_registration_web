@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,5 +52,10 @@ public class LecturerController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteStTT(@PathVariable Long id){
         return new ResponseEntity<>(lecturersService.deleteLt(id),HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/import-excel")
+    public List<LecturerDto> importExcel(@RequestPart MultipartFile file){
+        return lecturersService.importExcel(file);
     }
 }
