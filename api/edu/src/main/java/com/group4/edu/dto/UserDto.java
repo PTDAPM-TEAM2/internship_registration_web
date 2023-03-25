@@ -28,6 +28,7 @@ public class UserDto extends BaseDto{
     private Boolean isStudent = false;
 
     private Set<RoleDto> roles;
+    private String password;
 
     public UserDto(User entity){
         this.IdNumber = entity.getIdNumber();
@@ -213,5 +214,25 @@ public class UserDto extends BaseDto{
 
     public void setPlaceOfBitrh(String placeOfBitrh) {
         this.placeOfBitrh = placeOfBitrh;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public Boolean getLecturer() {
+        return isLecturer;
+    }
+
+    public Boolean getStudent() {
+        return isStudent;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

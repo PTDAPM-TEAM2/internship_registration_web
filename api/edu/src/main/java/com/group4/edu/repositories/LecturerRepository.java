@@ -18,4 +18,7 @@ public interface LecturerRepository extends JpaRepository<Lecturer,Long> {
     @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Lecturer e where e.lecturersCode =?1")
     public Boolean existsByLecturersCode(String code);
 
+    @Query(value = "SELECT CASE  WHEN count(e)> 0 THEN true ELSE false END FROM Lecturer e where e.IdNumber=?1")
+    public Boolean existsByIdNumber(String idNumber);
+
 }

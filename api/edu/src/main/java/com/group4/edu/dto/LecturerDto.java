@@ -28,7 +28,7 @@ public class LecturerDto extends UserDto {
         if(entity.getAccount() != null && entity.getAccount().getRoles() != null){
             this.roles = new HashSet<>();
             for(Role role: entity.getAccount().getRoles()){
-                this.roles.add(new RoleDto());
+                this.roles.add(new RoleDto(role));
             }
         }
     }

@@ -31,8 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto saveOrUpdate(CompanyDto dto)  {
         if(dto == null) return null;
 
-        List<Company> companys = companyRepository.findByTaxCode(dto.getTaxCode());
-        if(companys != null && companys.size() > 0){
+       Company company = companyRepository.findByTaxCode(dto.getTaxCode()).orElse(null);
+        if(company != null){
             System.out.println("Đã tồn tại công ty này");
             return null;
         }

@@ -42,6 +42,10 @@ public class RegisterTimeController {
 
     @GetMapping("/get-last-registertime")
     public ResponseEntity<RegisterTimeDto> get(){
-        return new ResponseEntity<>(registerTimeService.getLast(),HttpStatus.OK);
+        return new ResponseEntity<>(registerTimeService.getLast(1),HttpStatus.OK);
+    }
+    @GetMapping("/get-last-registertime-internship")
+    public ResponseEntity<RegisterTimeDto> getR(){
+        return new ResponseEntity<>(registerTimeService.getLast(2),HttpStatus.OK);
     }
 }

@@ -11,6 +11,7 @@ import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,12 +45,15 @@ public class InternshipServiceImpl implements InternshipService {
             return null;
         }
         Student student = null;
+        Company company = null;
         UserDto user = (UserDto) userService.getCurrentUser();
         if(user == null){
             return null;
         }
         //Nếu là sv thì người dùng hiện tại phải là sv và đăng trong thời gian được phép đk
+        //tim công ty theo sđt và mst. k có thì tạo mới
         if(user.isStudent()){
+            this.validateRegisterInternShip(dto,true);
             student = studentRepository.findById(user.getId()).orElse(null);
             String code = SemesterDateTimeUntil.getCodeSemesterDefault();
             List<RegisterTime> registerTimeList = registerTimeRepository.getBySemesterCodeAndType(code,EduConstants.RegisterTimeType.TT.getValue());
@@ -65,6 +69,19 @@ public class InternshipServiceImpl implements InternshipService {
                 if(i == registerTimeList.size() -1){
                     throw new Exception("Đăng ký không thành coong.Thời gian đăng ký thực tập đã hết");
                 }
+            }
+            company = companyRepository.findByTaxCode(dto.getTaxCode()).orElse(null);
+            if(company == null){
+                company = companyRepository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
+            }
+            if(company == null){
+                company  = new Company();
+                company.setNameCompany(dto.getNameCompany());
+                company.setAddress(dto.getAddress());
+                company.setEmail(dto.getEmail());
+                company.setPhoneNumber(dto.getPhoneNumber());
+                company.setTaxCode(dto.getTaxCode());
+                company = companyRepository.save(company);
             }
         }
         String code = SemesterDateTimeUntil.getCodeSemesterDefault();
@@ -82,21 +99,22 @@ public class InternshipServiceImpl implements InternshipService {
         // Nếu admin thêm thì phải có mã sinh viên hoặc id. Trong trường hớp sửa thì không cần
         if(user.isAdmin() && entity == null){
             if(dto.getStudentCode() == null && dto.getStudentId() == null ){
-                return null;
+                throw new Exception("Không tìm thấy sinh viên");
             }
             if(dto.getStudentCode() != null)
                 student = studentRepository.findByStudentCode(dto.getStudentCode()).orElse(null);
             if(student == null && dto.getStudentId() != null)
                 student = studentRepository.findById(dto.getStudentId()).orElse(null);
+            company = companyRepository.findById(dto.getCompanyId()).orElse(null);
+            if(company == null){
+                throw new Exception("Không tìm thấy công ty");
+            }
         }
         //Phải là sinh viên trong hệ thống thực tập mới có thể đăng ký thực tâp
 
         if(student == null || !(student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue()) || student.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
             return null;
         }
-
-        // check validate thông tin
-        this.validateRegisterInternShip(dto);
         // Nếu tạo mới thì sinh viên đó phải chưa đăng tại kỳ học đó
         if(entity == null){
             List<Internship> internships = intershipRepository.getBySemesterIdAndStudentId(semester.getId(), student.getId());
@@ -107,7 +125,6 @@ public class InternshipServiceImpl implements InternshipService {
 
         }
 
-        Company company = null;
         if(dto.getCompanyId() != null){
             company = companyRepository.findById(dto.getCompanyId()).orElse(null);
             if(company == null){
@@ -171,9 +188,15 @@ public class InternshipServiceImpl implements InternshipService {
         return studentRepository.findStudentTTByName(dto == null||dto.getKeySearchName()==null?"":dto.getKeySearchName());
     }
 
-    private void validateRegisterInternShip(RegisterinternshipDto dto) throws Exception {
+    private void validateRegisterInternShip(RegisterinternshipDto dto,boolean isSt) throws Exception {
         if(dto.getInternshipPosition() == null){
             throw new Exception("Thiếu thông tin. Vui lòng nhập đủ thông tin");
+        }
+        if(isSt){
+            if(!StringUtils.hasText(dto.getNameCompany()) || !StringUtils.hasText(dto.getEmail())
+                    || !StringUtils.hasText(dto.getAddress()) || !StringUtils.hasText(dto.getPhoneNumber()) || !StringUtils.hasText(dto.getTaxCode())){
+                throw new Exception("Thiếu thông tin. Vui lòng nhập đủ thông tin");
+            }
         }
     }
 

@@ -5,5 +5,5 @@ import com.group4.edu.dto.RegisterTimeDto;
 
 public interface RegisterTimeService {
     RegisterTimeDto save(RegisterTimeDto dto,Integer type) throws Exception;
-    RegisterTimeDto getLast();
+    RegisterTimeDto getLast(int type);
 }

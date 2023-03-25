@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -80,6 +81,7 @@ public class SudentServiceImpl implements StudentService {
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
             isNewAccount = false;
         }
+
         if(entity == null){
             if(studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(),studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(),studentType)){
                 throw new Exception("Đã có sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
@@ -92,7 +94,7 @@ public class SudentServiceImpl implements StudentService {
             }
         }
         else {
-            if(studentRepository.existsByStudentCode(studentDto.getStudentCode()) || studentRepository.existsByIdNumber(studentDto.getIdNumber())){
+            if((!studentDto.getStudentCode().equals(entity.getStudentCode())&&studentRepository.existsByStudentCode(studentDto.getStudentCode())) || (!studentDto.getIdNumber().equals(entity.getIdNumber())&&studentRepository.existsByIdNumber(studentDto.getIdNumber()))){
                 throw new Exception("Đã có mã sinh viên này trong hệ thống ");
             }
         }
@@ -123,9 +125,9 @@ public class SudentServiceImpl implements StudentService {
         }
         entity.setGrade(grade);
         account = entity.getAccount();
-        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
-            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
-        }
+//        if(isNewAccount && entity.getStudentType() != null &&(entity.getStudentType().equals(studentType)|| entity.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
+//            throw new Exception("Đã tồn tại sinh viên có mã "+ studentDto.getStudentCode()+" trong HTQL "+(studentType==1?" đồ án":"thực tập"));
+//        }
         Role roleDa = null;
         Role roleTT = null;
         if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
@@ -149,42 +151,41 @@ public class SudentServiceImpl implements StudentService {
         if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
-            account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
+            account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
             entity.setAccount(account);
             account.setUser(entity);
             account = accountRepository.save(account);
         }
         if(account.getRoles() == null){
-            Set<Role> roleSet = new HashSet<>();
-            if(roleDa != null){
-                roleSet.add(roleDa);
-            }
-            if(roleTT != null){
-                roleSet.add(roleTT);
-            }
-            account.setRoles(roleSet);
+            account.setRoles(new HashSet<>());
         }
-        else {
-            boolean checkRoleDa = false;
-            boolean checkRoleTT = false;
-            for(Role role: account.getRoles()){
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey())){
-                    checkRoleDa = true;
-                }
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
-                    checkRoleTT = true;
-                }
-                if(checkRoleDa && checkRoleTT){
-                    break;
-                }
-            }
-            if(!checkRoleDa && roleDa != null){
-                account.getRoles().add(roleDa);
-            }
-            if(!checkRoleTT && roleTT != null){
-                account.getRoles().add(roleTT);
-            }
+        if(roleDa != null){
+            account.getRoles().add(roleDa);
         }
+        if(roleTT != null){
+            account.getRoles().add(roleTT);
+        }
+//        else {
+//            boolean checkRoleDa = false;
+//            boolean checkRoleTT = false;
+//            for(Role role: account.getRoles()){
+//                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey())){
+//                    checkRoleDa = true;
+//                }
+//                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey())){
+//                    checkRoleTT = true;
+//                }
+//                if(checkRoleDa && checkRoleTT){
+//                    break;
+//                }
+//            }
+//            if(!checkRoleDa && roleDa != null){
+//                account.getRoles().add(roleDa);
+//            }
+//            if(!checkRoleTT && roleTT != null){
+//                account.getRoles().add(roleTT);
+//            }
+//        }
         return new StudentDto(studentRepository.save(entity));
     }
 
@@ -246,14 +247,15 @@ public class SudentServiceImpl implements StudentService {
             StudentDto studentDto = new StudentDto();
             studentDto.setStudentCode(getStringCellValue(row.getCell(1)));
             studentDto.setFullName(row.getCell(2).getStringCellValue());
-            studentDto.setAddress(row.getCell(3).getStringCellValue());
-            studentDto.setGender(row.getCell(4).getStringCellValue());
-            studentDto.setDateOfBirth(row.getCell(5).getDateCellValue());
+            studentDto.setIdNumber(row.getCell(3).getStringCellValue());
+            studentDto.setAddress(row.getCell(4).getStringCellValue());
+            studentDto.setGender(row.getCell(5).getStringCellValue());
+            studentDto.setDateOfBirth(row.getCell(6).getDateCellValue());
             GradeDto gradeDto = new GradeDto();
-            gradeDto.setName(row.getCell(6).getStringCellValue());
+            gradeDto.setName(row.getCell(7).getStringCellValue());
             studentDto.setGrade(gradeDto);
-            studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(7)));
-            studentDto.setEmail(row.getCell(8).getStringCellValue());
+            studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(8)));
+            studentDto.setEmail(row.getCell(9).getStringCellValue());
             try {
                 studentDto = this.saveOrUpdate(studentDto,null,1);
                 studentDtos.add(studentDto);

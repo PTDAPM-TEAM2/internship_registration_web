@@ -16,7 +16,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     @Query("select e from Company e where e.phoneNumber = ?1")
     Optional<Company> findByPhoneNumber(String phoneNumber);
     @Query("select e from Company e where e.taxCode = ?1")
-    List<Company> findByTaxCode(String phoneNumber);
+    Optional<Company> findByTaxCode(String phoneNumber);
     @Query("select new com.group4.edu.dto.CompanyDto(e) from Company e")
     List<CompanyDto> getAll();
 }
