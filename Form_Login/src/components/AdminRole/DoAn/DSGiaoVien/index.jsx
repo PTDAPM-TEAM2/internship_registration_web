@@ -17,6 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import lecturerApi from '../../../../api/lecturerApi';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import IconButton from '@mui/material/IconButton';
 
 const columns = [
     {
@@ -43,14 +45,20 @@ const columns = [
         minWidth: 170,
         align: 'center',
     },
+    {
+        id: 'select',
+        minWidth: 10,
+        align: 'center',
+    }
 ];
 
 function DSGV() {
     const navigate = useNavigate();
     const context = useContext(ThemeContext);
+    const [chevron, setChevron] = React.useState(true);
 
     function handleGo() {
-        navigate('/them-giang-vien-da');
+        navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da/them-giang-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -58,7 +66,7 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/chi-tiet-giang-vien/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-giang-vien-da/danh-sach-giang-vien-da/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
     const [lecturers, setLecturer] = React.useState([]);
@@ -123,7 +131,10 @@ function DSGV() {
         setFilteredData(filter);
     };
 
-
+    const handleChevon = (value) => {
+        setChevron(value);
+        console.log(chevron);
+    }
 
     return (
         <div style={{ display: 'flex' }}>
@@ -144,8 +155,8 @@ function DSGV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={20} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleChevon(true)}>Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleChevon(false)}>Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
                                     <MenuItem value={30} >Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
@@ -184,6 +195,9 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.phoneNumber}</TableCell>
+                                                            {/* <IconButton style={{ color: 'white' }}>
+                                                                <KeyboardArrowDownIcon />
+                                                            </IconButton> */}
                                                         </TableRow>
                                                     );
                                                 })
@@ -196,6 +210,8 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
+                                                            
+
                                                         </TableRow>
                                                     );
                                                 })
