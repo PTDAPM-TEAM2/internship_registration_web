@@ -1,12 +1,15 @@
-.form {
+form {
     display: flex;
+
     flex-direction: column;
 }
+
 
 .inputValue{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
+    column-gap: 30px;
 }
 .title {
     width: 100%;
@@ -16,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    border-bottom: 1px solid black;
 }
 .form {
     padding: 0 40px;
@@ -97,12 +100,12 @@
     display: block;
 }
 
-.txtField{
-    width: 100%;
-}
-
 .txtGender{
     width: 100px;
+}
+
+.txtField{
+    width: 300px;
 }
 
 .txtTextBottom{
@@ -114,7 +117,6 @@
     height: 190px;
     border: 1px solid black;
     object-fit: cover;
-    padding-right: 50px;
     overflow: hidden;
 }
 .userProfile{
@@ -129,6 +131,7 @@
     border-radius: 10px;
     object-fit: cover;
 }
+
 .formAccount{
     display: flex;
     justify-content: start;
@@ -136,27 +139,39 @@
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
-.txtDate{
-    width: 400px;
-    margin: 0 10px;
-}
 
 .infoImg{
     padding-right: 50px;
 }
 
-@media (min-width: 1366px) and (max-width: 1600px) {
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
+
+.txtDate{
+    width: 400px;
+    margin: 0 10px;
+}
+
+@media (min-width: 1024px) {
         
-    }
     .txtField{
-        width: 100%;
+        width: 300px;
     }
 
-    .txtBottom{
+    .txtTextBottom{
+        width: 100%;
+    }
+}
+
+@media (min-width: 1300px) and (max-width: 1920px) {
+    .txtField{
+        width: 400px;
+        margin-right: 50px ;
+    }
+
+    .txtGender{
+        width: 100%;
+    }
+    
+    .txtTextBottom{
         width: 100%;
     }
 
@@ -171,20 +186,12 @@
 
 @media (min-width: 1920px) and (max-width: 2560px){
     .userProfile{
-        width: 110%;
-        height: 110%;
+        width: 200px;
+        height: 100%;
         border: 1px solid black;
         object-fit: cover;
         overflow: hidden;
         margin-bottom: 20px;
-    }
-    
-    
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
-        
     }
 
     .txt{
@@ -193,17 +200,20 @@
     }
 
     .txtGender{
-        width: 100px;
+        width: 100%;
     }
 
-    .txtField{
+    .txtTextBottom{
         width: 100%;
     }
     
 
+    .txtField{
+        width: 500px;
+    }
+
     .infoAccount {
         display: grid;
-        width: 100%;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 20px;
         border: 1px solid black;
@@ -224,12 +234,17 @@
         text-align: left;
     }
 
+    .txtTextBottom{
+        width: 100%;
+    }
+
     .txtGender{
         width: 100px;
     }
 
     .txtField{
-        width: 100%;
+        width: 500px;
+        
     }
 
     .infoAccount {

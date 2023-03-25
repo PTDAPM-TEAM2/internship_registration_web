@@ -57,53 +57,12 @@ const PasswordChanging = () => {
         newPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
         reNewPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').oneOf([Yup.ref('newPassword'), null], 'Mật khẩu không trùng khớp!').required('Required'),
     });
-
-    // useEffect(() => {
-
-    //     const fetchData = async () => {
-    //         try {
-    //           // Make a GET request with Axios
-    //           const response = await teacherRoleController.changePassword(initialValues, token);
-    //           // Store the response data in the state variable
-    //           setMessagePw(response.error);
-    //         } catch (error) {
-    //           // Handle error
-    //           console.error(error);
-    //         }
-    //       }
-
-    //     fetchData();
-    // },[])
-
-
     const formik = useFormik({
-        initialValues,
-        validationSchema: validationSchema,
+        initialValues: initialValues,
+        // validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const response = await teacherRoleController.changePassword(values, token)
-                setMessagePw(response.error);
-            } catch (error) {
-                console.log(error);
-            }
-        },
-    })
-    
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setOpen(true);
-        if(Variables.pw !== ""){
-            if(formik.values.newPassword === "" || formik.values.oldPassword === "" || formik.values.reNewPassword === ""){
-                setErrorMessages("Trường mật khẩu không được bỏ trống!")
-    
-            }if ((formik.values.newPassword.trim().length < 8 && formik.values.newPassword.trim().length > 0) || (formik.values.reNewPassword.trim().length < 8 && formik.values.reNewPassword.trim().length > 0)){
-                setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
-            }else if (formik.values.newPassword !== formik.values.reNewPassword) {
-                setErrorMessages("Mật khẩu không trùng khớp!");
-            }
-            else if(formik.values.oldPassword !== Variables.pw){
-                setErrorMessages("Mật khẩu cũ không chính xác!");
-            }else{
+                await teacherRoleController.changePassword(values, token)
                 setOpen(false);
                 setErrorMessages(null);
                 setShowAlert(true);
@@ -111,15 +70,36 @@ const PasswordChanging = () => {
                 setTimeout(() => {
                     navigate('/thong-tin-ca-nhan');
                 }, 1000);
+                // setMessagePw(response.error);
+                // if()
+            } catch (error) {
+                console.log(error.response.data.error);
+                if((formik.values.newPassword.trim().length >= 1 && formik.values.newPassword.trim().length <= 7)  || (formik.values.oldPassword.trim().length >= 1 && formik.values.oldPassword.trim().length <= 7) || (formik.values.reNewPassword.trim().length >= 1 && formik.values.reNewPassword.trim().length <= 7)){
+                    setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!")
+                    if((error.response.data.error === "Mật khẩu có tối thiểu 8 ký tự")){
+                        setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!")
+                    }
+                }else if(formik.values.newPassword.trim() === "" || formik.values.oldPassword.trim() === "" || formik.values.reNewPassword.trim() === ""){
+                    setErrorMessages("Trường mật khẩu không được bỏ trống!")
+                }
+                else if(formik.values.newPassword !== formik.values.reNewPassword){
+                    setErrorMessages("Mật khẩu không trùng khớp!")
+                    if(error.response.data.error === "Nhập lại mật khẩu mới không khớp"){
+                        setErrorMessages("Mật khẩu không trùng khớp!")
+                    }
+                }else if(error.response.data.error === "Mật khẩu không chính xác"){
+                    setErrorMessages("Mật khẩu cũ không chính xác!")
+                }else{
+                    setMessagePw("Mật khẩu phải có tối thiểu 8 ký tự!")
+                }
+                setOpen(true);
             }
-        }else{
-            setErrorMessages("Mật khẩu cũ không chính xác!");
-        }
-    }
+        },
+    })
 
-    initialValues.oldPassword = formik.values.oldPassword
-    initialValues.newPassword = formik.values.newPassword
-    initialValues.reNewPassword = formik.values.reNewPassword
+    initialValues.oldPassword = formik.values.oldPassword.trim()
+    initialValues.newPassword = formik.values.newPassword.trim()
+    initialValues.reNewPassword = formik.values.reNewPassword.trim()
     // Declare a state variable for data
     return (
         <div className={styles.form}>
@@ -170,7 +150,8 @@ const PasswordChanging = () => {
                             </div>
                             <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} type="submit" onClick={handleSubmit}>Cập nhật</button>
+                                    {/* <button className={styles.button} type="submit" onClick={handleSubmit}>Cập nhật</button> */}                                    
+                                    <button className={styles.button} type="submit">Cập nhật</button>
                                 </div>
                             </div>
                         </div>
