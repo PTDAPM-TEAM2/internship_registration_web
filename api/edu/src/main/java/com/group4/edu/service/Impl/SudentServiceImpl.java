@@ -246,14 +246,15 @@ public class SudentServiceImpl implements StudentService {
             StudentDto studentDto = new StudentDto();
             studentDto.setStudentCode(getStringCellValue(row.getCell(1)));
             studentDto.setFullName(row.getCell(2).getStringCellValue());
-            studentDto.setAddress(row.getCell(3).getStringCellValue());
-            studentDto.setGender(row.getCell(4).getStringCellValue());
-            studentDto.setDateOfBirth(row.getCell(5).getDateCellValue());
+            studentDto.setIdNumber(row.getCell(3).getStringCellValue());
+            studentDto.setAddress(row.getCell(4).getStringCellValue());
+            studentDto.setGender(row.getCell(5).getStringCellValue());
+            studentDto.setDateOfBirth(row.getCell(6).getDateCellValue());
             GradeDto gradeDto = new GradeDto();
-            gradeDto.setName(row.getCell(6).getStringCellValue());
+            gradeDto.setName(row.getCell(7).getStringCellValue());
             studentDto.setGrade(gradeDto);
-            studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(7)));
-            studentDto.setEmail(row.getCell(8).getStringCellValue());
+            studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(8)));
+            studentDto.setEmail(row.getCell(9).getStringCellValue());
             try {
                 studentDto = this.saveOrUpdate(studentDto,null,1);
                 studentDtos.add(studentDto);

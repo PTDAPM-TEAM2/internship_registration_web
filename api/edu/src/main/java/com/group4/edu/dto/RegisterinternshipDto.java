@@ -9,11 +9,17 @@ public class RegisterinternshipDto {
     private Long internshipId;
     private String studentCode;
     private Long studentId;
+    //vị trí thực tập
     private String internshipPosition;
+    //tên công ty
     private String nameCompany;
+    // email
     private String email;
+    //sô điện thoại
     private String phoneNumber;
+    //địa chỉ
     private String address;
+    //mã số thuế
     private String taxCode;
 
     public String getInternshipPosition() {
