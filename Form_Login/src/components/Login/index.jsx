@@ -69,6 +69,8 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
+            var userInfoTT = await userApi.getInfo(tk);
+            console.log(userInfoTT);
             localStorage.setItem("token", tk);
             context.updateLoading(false);
             setShowAlert(true);
@@ -76,13 +78,23 @@ function Login() {
             setErrorMessage("");
             setUsername("");
             setPassword("");
+            if (userInfoTT.roles[0].role === "ADMIN") {
+              Variables.userRole = "admin";
+            }
+            else if (userInfoTT.roles[0].role === "STUDENT_DA" || userInfoTT.roles.length === 2) {
+              Variables.userRole = "students";
+            }
+            
+            else {
+              Variables.userRole = "teachers";
+            }
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
-              } else if (Variables.userRole === "teachers") {
-                navigate("/trang-chu-giang-vien");
-              } else {
+              } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-do-an");
+              } else {
+                navigate("/trang-chu-giang-vien");
               }
             }, 500);
           } else {
@@ -115,10 +127,15 @@ function Login() {
           localStorage.setItem('token', tk);
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
+            console.log(userInfoTT);
             if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
-            }else{
+            }
+            else if (userInfoTT.roles[0].role === "STUDENT_TT"  || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
+            }
+            else {
+              Variables.userRole = "teachers";
             }
             localStorage.setItem("token", tk);
             context.updateLoading(false);

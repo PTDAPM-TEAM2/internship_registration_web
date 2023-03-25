@@ -73,6 +73,15 @@ function ThemeProvider({ children }) {
     }
   }
 
+  function cellValidatePhone(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.phoneNumber;
+    }
+  }
+
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false); 
   const [toggle, setToggle] = useState(false);
@@ -95,6 +104,7 @@ function ThemeProvider({ children }) {
     setLoading(newValue);
   }
   const value = {
+    cellValidatePhone,
     cellValidateStart,
     cellValidateEnd,
     cellValidateLecturer,

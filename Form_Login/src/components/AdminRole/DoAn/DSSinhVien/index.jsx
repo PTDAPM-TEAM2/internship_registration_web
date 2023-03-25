@@ -66,6 +66,9 @@ function DSSV() {
     const token = localStorage.getItem('token');
     const context = useContext(ThemeContext);
     const [showAlert, setShowAlert] = React.useState(null);
+
+
+
     function handleMoveAdd() {
         navigate('/them-sinh-vien-da');
     }
@@ -133,6 +136,23 @@ function DSSV() {
         }
     }
 
+
+    const [search, setSearch] = React.useState("");
+    const [filteredData, setFilteredData] = React.useState([]);
+
+    const handleSearch = (event) => {
+        const value = event.target.value;
+        setSearch(value);
+        const filter = students.filter((student) => {
+            return (
+                student.fullName.toLowerCase().includes(value.toLowerCase()) ||
+                student.grade.name.toLowerCase().includes(value.toLowerCase()) ||
+                context.cellValidateName(student.graduationThesis).toLowerCase().includes(value.toLowerCase())
+            );
+        });
+        setFilteredData(filter);
+    };
+
     return (
         <div style={{ display: 'flex' }}>
             {showAlert && <AlertMessage />}
@@ -140,8 +160,11 @@ function DSSV() {
                 <div className={styles.header}>
                     <form>
                         <div className={styles.search} >
-                            <input type="text" placeholder="Nhập tìm kiếm: " />
-                            <IconButton variant="contained" type='submit'>
+                            <input type="text" placeholder="Nhập tìm kiếm: "
+                                value={search}
+                                onChange={handleSearch}
+                            />
+                            <IconButton variant="contained" disabled>
                                 <SearchIcon sx={{ cursor: 'pointer' }} />
                             </IconButton>
                         </div>
@@ -188,18 +211,34 @@ function DSSV() {
                                 </TableHead>
                                 <TableBody>
                                     {
-
-                                        students.map((row, index) => {
-                                            return (
-                                                <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(row.graduationThesis)}</TableCell>
-                                                    <TableCell sx={{ textAlign: 'center' }}>{row.internship}</TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
+                                        search === '' ?
+                                            (
+                                                students.map((student, index) => {
+                                                    return (
+                                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(student) }}>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{student.grade.name}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(student.graduationThesis)}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{student.internship}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })
+                                            ) :
+                                            (
+                                                filteredData.map((filter, index) => {
+                                                    return (
+                                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(filter) }}>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{filter.fullName}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{filter.grade.name}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(filter.graduationThesis)}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{filter.internship}</TableCell>
+                                                        </TableRow>
+                                                    )
+                                                })
+                                            )
+                                    }
                                 </TableBody>
                             </Table>
                         </TableContainer>

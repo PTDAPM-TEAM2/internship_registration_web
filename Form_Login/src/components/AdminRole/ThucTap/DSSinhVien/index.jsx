@@ -60,6 +60,7 @@ const columns = [
 function DSSV() {
     const navigate = useNavigate();
     const context = useContext(ThemeContext);
+    const [students, setStudent] = React.useState([]);
     function handleMoveAdd() {
         navigate('/them-sinh-vien-tt');
     }
@@ -71,7 +72,6 @@ function DSSV() {
     function handleGoClick(item) {
         navigate(`/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
     }
-    const [students, setStudent] = React.useState([]);
 
     const token = localStorage.getItem('token');
     React.useEffect(() => {
@@ -108,7 +108,7 @@ function DSSV() {
     const handleGetAll = async () => {
         context.updateLoading(true);
         try {
-            const response = await studentApi.getAllSvTT(null, token);
+            const response = await studentApi.getAllSvTt(null, token);
             setStudent(response);
             context.updateLoading(false);
         }
@@ -119,13 +119,30 @@ function DSSV() {
         }
     }
 
+    const [search, setSearch] = React.useState("");
+    const [filteredData, setFilteredData] = React.useState([]);
+
+    const handleSearch = (event) => {
+        const value = event.target.value;
+        setSearch(value);
+        const filter = students.filter((student) => {
+            return (
+                student.studentCode.toLowerCase().includes(value.toLowerCase()) ||
+                student.fullName.toLowerCase().includes(value.toLowerCase()) ||
+                student.grade.name.toLowerCase().includes(value.toLowerCase()) ||
+                context.cellValidateCompany(student.internship).toLowerCase().includes(value.toLowerCase())
+            );
+        });
+        setFilteredData(filter);
+    };
+
 
     return (
         <div style={{ display: 'flex', height: '90vh', position: 'relative' }}>
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <div className={styles.search}>
-                        <input type="text" placeholder="Nhập tìm kiếm: " />
+                        <input type="text" placeholder="Nhập tìm kiếm: " value={search} onChange={handleSearch} />
                         <SearchIcon />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -169,18 +186,36 @@ function DSSV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {students.map((row, index) => {
-                                        return (
-                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.studentCode}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.grade.name}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateCompany(row.internship)}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateSemesterIntern(row.internship)}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+                                    {search === '' ?
+                                        (
+                                            students.map((student, index) => {
+                                                return (
+                                                    <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(student) }}>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.studentCode}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.grade.name}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateCompany(student.internship)}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateSemesterIntern(student.internship)}</TableCell>
+                                                    </TableRow>
+                                                );
+                                            })
+                                        ) :
+                                        (
+                                            filteredData.map((student, index) => {
+                                                return (
+                                                    <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(student) }}>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.studentCode}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{student.grade.name}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateCompany(student.internship)}</TableCell>
+                                                        <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateSemesterIntern(student.internship)}</TableCell>
+                                                    </TableRow>
+                                                );
+                                            })
+                                        )
+                                    }
                                 </TableBody>
                             </Table>
                         </TableContainer>

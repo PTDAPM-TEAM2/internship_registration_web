@@ -20,11 +20,7 @@ import { useFormik } from 'formik';
 import lecturerApi from "../../../../api/lecturerApi";
 import MenuItem from '@mui/material/MenuItem';
 
-const genders = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-];
+
 
 const style = {
     position: 'absolute',
@@ -43,7 +39,7 @@ const style = {
 
 const validationSchema = Yup.object({
     fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    email: Yup.string().email().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
@@ -64,8 +60,14 @@ const ChiTietGV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const { id } = useParams()
+    const { id } = useParams();
 
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
+    console.log(state.item)
     const initialValues = {
         urlImg: state.item.urlImg || '',
         fullName: state.item.fullName || '',
@@ -301,7 +303,7 @@ const ChiTietGV = () => {
             {showAlert &&
                 <div>
                     <Alert severity="success" sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '40%',
                         bottom: '0',
                         right: '2%'
@@ -313,7 +315,7 @@ const ChiTietGV = () => {
             {showAlertD &&
                 <div>
                     <Alert severity="success" sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '40%',
                         bottom: '0',
                         right: '2%'

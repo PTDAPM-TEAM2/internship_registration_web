@@ -225,7 +225,6 @@ const ThemSV = () => {
                                 <div className={styles.txt}>
                                     <label htmlFor='placeOfBitrh'>Nơi sinh: </label>
                                     <TextField
-
                                         className={styles.txtField}
                                         id="placeOfBitrh"
                                         name="placeOfBitrh"

@@ -66,6 +66,27 @@ class LecturerApi {
     // day la ham update
   };
 
+  importExcel = (data) => {
+    // data la file excel
+    const url = "api/lecturer/import-excel";
+    const token = localStorage.getItem("token");
+    return axiosClient
+      .post(
+        url, data,
+        {
+          headers: {
+            Authorization: "Bearer " + token, //the token is a variable which holds the token
+            "Content-Type":
+              "multipart/form-data; boundary=<calculated when request is sent>",
+          },
+        }
+        // params
+      )
+      .then((res) => res);
+    // return res, check res.status == 200 va check res.data co bang true thi la doi mk thanh cong
+    // new res.status == 400 (!= 200) thi loi
+  };
+
 }
 
 const lecturerApi = new LecturerApi();

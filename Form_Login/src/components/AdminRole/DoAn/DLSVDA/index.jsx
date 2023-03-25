@@ -2,7 +2,7 @@ import * as React from "react";
 import styles from './DLSVDA.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import userApi from "../../../../api/studentApi";
+import studentApi from "../../../../api/studentApi";
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 function DLSVDA() {
@@ -25,7 +25,7 @@ function DLSVDA() {
             setHideImport(false);
         }
         try {
-            const response = await userApi.importExcelSvDa(formData, token);
+            const response = await studentApi.importExcelSvDa(formData, token);
             context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {

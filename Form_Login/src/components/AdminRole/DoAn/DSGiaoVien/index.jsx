@@ -76,7 +76,7 @@ function DSGV() {
         }
         getAllItem()
     }, []);
-    
+
     // const [numOfSinL, setNumOfSinL] = React.useState(0);
     // const body = {
     //     numberOfStudentsInLecturer: numOfSinL,
@@ -108,6 +108,21 @@ function DSGV() {
     //     }
     // }
 
+    const [search, setSearch] = React.useState("");
+    const [filteredData, setFilteredData] = React.useState([]);
+
+    const handleSearch = (event) => {
+        const value = event.target.value;
+        setSearch(value);
+        const filter = lecturers.filter((lecturer) => {
+            return (
+                lecturer.fullName.toLowerCase().includes(value.toLowerCase())
+                // context.cellValidatePhone(lecturer).toLowerCase().includes(value.toLowerCase())
+            );
+        });
+        setFilteredData(filter);
+    };
+
 
 
     return (
@@ -115,7 +130,7 @@ function DSGV() {
             <div className={styles.contain}>
                 <div className={styles.header}>
                     <div className={styles.search}>
-                        <input type="text" placeholder="Nhập tìm kiếm: " />
+                        <input type="text" placeholder="Nhập tìm kiếm: " value={search} onChange={handleSearch} />
                         <SearchIcon />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -159,16 +174,33 @@ function DSGV() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {lecturers.map((row, index) => {
-                                        return (
-                                            <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
-                                                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+                                    {
+                                        search === '' ?
+                                            (
+                                                lecturers.map((lecturer, index) => {
+                                                    return (
+                                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(lecturer) }}>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{lecturer.fullName}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{lecturer.numGrTh}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{lecturer.phoneNumber}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })
+                                            ) :
+                                            (
+                                                filteredData.map((row, index) => {
+                                                    return (
+                                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => { handleGoClick(row) }}>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })
+                                            )
+                                    }
                                 </TableBody>
                             </Table>
                         </TableContainer>
