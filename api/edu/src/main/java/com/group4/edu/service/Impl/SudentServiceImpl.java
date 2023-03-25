@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -150,7 +151,7 @@ public class SudentServiceImpl implements StudentService {
         if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
-            account.setPassword(passwordEncoder.encode(studentDto.getStudentCode()));
+            account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
             entity.setAccount(account);
             account.setUser(entity);
             account = accountRepository.save(account);

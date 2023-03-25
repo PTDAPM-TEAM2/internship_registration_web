@@ -23,6 +23,7 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -89,7 +90,7 @@ public class LecturersServiceImpl implements LecturersService {
             if (isNewAccount) {
                 account = new Account();
                 account.setUsername(dto.getLecturersCode());
-                account.setPassword(passwordEncoder.encode(dto.getLecturersCode()));
+                account.setPassword(passwordEncoder.encode(StringUtils.hasText(dto.getPassword())?dto.getPassword():dto.getLecturersCode()));
                 account.setUser(entity);
                 Role role = roleRepository.findByRole(EduConstants.Role.ROLELECTURERS.getValue());
                 if (role == null) {
@@ -97,6 +98,8 @@ public class LecturersServiceImpl implements LecturersService {
                     role.setRole(EduConstants.Role.ROLELECTURERS.getValue());
                     role = roleRepository.save(role);
                 }
+                account.setRoles(new HashSet<>());
+                account.getRoles().add(role);
                 account = accountRepository.save(account);
             }
             entity.setAccount(account);
