@@ -89,7 +89,6 @@ const ChiTietCT = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết công ty</p>

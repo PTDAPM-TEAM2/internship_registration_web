@@ -62,7 +62,7 @@ function DSSV() {
     const context = useContext(ThemeContext);
     const [students, setStudent] = React.useState([]);
     function handleMoveAdd() {
-        navigate('/them-sinh-vien-tt');
+        navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt');
     }
     const [value, setValue] = React.useState('');
 
@@ -70,7 +70,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
     }
 
     const token = localStorage.getItem('token');

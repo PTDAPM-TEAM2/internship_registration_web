@@ -70,7 +70,7 @@ function DSSV() {
 
 
     function handleMoveAdd() {
-        navigate('/them-sinh-vien-da');
+        navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/them-sinh-vien-da');
     }
     const [value, setValue] = React.useState('');
 
@@ -78,7 +78,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/chi-tiet-sinh-vien-da/${item.id}`, { state: { item } });
     }
 
     const [students, setStudent] = React.useState([]);
