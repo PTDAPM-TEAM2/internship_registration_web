@@ -266,11 +266,7 @@ function Sidebar() {
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
                             location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
-                        // teachers role
-                        : check === "teachers" ? (
-                            location.pathname === '/trang-chu-giang-vien' ||
-                            location.pathname === '/thong-tin-ca-nhan'
-                        ) :
+                        :
                             // students role
                             (location.pathname === '/sinh-vien-do-an' ||
                                 location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien' ||
@@ -283,7 +279,7 @@ function Sidebar() {
                     <List>
                         <ListItem disablePadding>
                             <Link
-                                to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : check === "teachers" ? "/trang-chu-giang-vien" : "/sinh-vien-do-an"}
+                                to={check === 'admin' ? "/quan-ly-do-an-sinh-vien" : "/sinh-vien-do-an"}
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
                                     handleItemClick('trang-chu')
@@ -299,7 +295,7 @@ function Sidebar() {
                         </ListItem>
                         <ListItem disablePadding>
                             <Link
-                                to={check === 'admin' ? "/quan-ly-do-an" : check === "teachers" ? "/thong-tin-ca-nhan" : "/sinh-vien-do-an/thong-tin-sinh-vien"}
+                                to={check === 'admin' ? "/quan-ly-do-an" : "/sinh-vien-do-an/thong-tin-sinh-vien"}
                                 style={{ width: '100%', textDecoration: 'none' }}
                                 onClick={() => {
                                     handleItemClick('QLDA')

@@ -64,6 +64,10 @@ const SInformationDetails = () => {
         onSubmit: handleSubmit,
     })
 
+    console.log(state.item);
+
+    state.item.student.dateOfBirth =  new Date(state.item?.student?.dateOfBirth).toLocaleDateString()
+
     return (
         <div style={{ display: 'flex' }}>
             {/* <Sidebar /> */}
@@ -111,7 +115,7 @@ const SInformationDetails = () => {
                             </div>
                             <div className={styles.inputValue}>
                                 <div className={styles.txt} >
-                                    <label htmlFor='name'>Họ tên: </label>
+                                    <label htmlFor='name'>Họ và tên: </label>
                                     <TextField
                                         className={styles.txtField}
                                         id='name'
@@ -130,7 +134,7 @@ const SInformationDetails = () => {
                                         className={styles.txtField}
                                         id="idCard"
                                         name="idCard"
-                                        defaultValue={state.item?.passport}
+                                        defaultValue={state.item?.student?.studentCode}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         disabled
@@ -195,15 +199,15 @@ const SInformationDetails = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mã sinh viên: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item?.student?.studentCode} disabled/>
+                                <TextField className={styles.txtBottom} defaultValue={state.item?.student?.studentCode} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Lớp: </p>
-                                <TextField className={styles.txtField} defaultValue={state.item?.student?.grade?.name} disabled/>
+                                <TextField className={styles.txtBottom} defaultValue={state.item?.student?.grade?.name} disabled/>
                             </div>
                             <div className={styles.txt}>
                                 <p>Khoa: </p>
-                                <TextField className={styles.txtField} defaultValue={'CNTT'} disabled/>
+                                <TextField className={styles.txtBottom} defaultValue={'CNTT'} disabled/>
                             </div>
                         </div>
                     </form>

@@ -76,12 +76,14 @@ const SRequirementDetails = () => {
             navigate('/danh-sach-sinh-vien-yeu-cau');
         }, 1000)
     }
+
+    state.item.student.dateOfBirth =  new Date(state.item?.student?.dateOfBirth).toLocaleDateString()
     // const {item} = props.location.state;
     // console.log(item);
     return (
         <div className={styles.form}>
             <div style={{ width: '100%' }}>
-                <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
+                <p className={styles.title}><b>Thông tin sinh viên</b></p>
                 <div className={styles.container}> 
                     <form onSubmit={formik.handleSubmit}>
                             <div>
