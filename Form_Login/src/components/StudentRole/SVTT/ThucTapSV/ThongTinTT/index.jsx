@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Avatar, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import userApi from "../../../../../api/authApi";
+import { ThemeContext } from "../../../../Theme/Theme";
+import AlertMessage from "./Alert";
 
 const styleTextField = {
     width: '80%', marginBottom: 1
@@ -14,14 +16,22 @@ const styleH4 ={
 function TTTT() {
     const token = localStorage.getItem('token');
     const [user, setUser] = React.useState([]);
+    const [showAlert, setShowAlert] = React.useState(null);
+    const context = useContext(ThemeContext);
+    
     React.useEffect(() => {
         const getTTDASV = async () => {
+            context.updateLoading(true);
             try{
                 const responseGV = await userApi.getInfo(token);
                 setUser(responseGV);
+                context.updateLoading(false);
                 console.log(responseGV);
-            }catch(err){
-                console.log('Error fetching data', err);
+            }catch(error){
+                setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
             }
         }
 
@@ -39,6 +49,7 @@ function TTTT() {
     return (
         <>
             <Box sx={{ display: 'flex' }}>
+            <AlertMessage message={showAlert} />
                 <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 550, marginTop: 30, marginLeft: 8, marginRight: 8  }}>
                     <div style={{ borderBottom: '2px ', width: '100%', height: '60%', boxSizing: 'border-box' }}>
                         <div style={{ height: '10%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: "lightgrey" }}>

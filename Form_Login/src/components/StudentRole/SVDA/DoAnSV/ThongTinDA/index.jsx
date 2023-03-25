@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TextField, Box, } from "@mui/material";
 import userApi from "../../../../../api/authApi";
 import graduationThesis from "../../../../../api/graduationThesis";
+import { ThemeContext } from "../../../../Theme/Theme";
+import AlertMessage from "./Alert";
 const styleTextField = {
     width: '80%',
     marginBottom: 2,
@@ -11,16 +13,22 @@ function TTDA() {
 
     const token = localStorage.getItem('token');
     const [TTDA,setTTDA] = React.useState([]);
+    const context = useContext(ThemeContext);
+    const [showAlert, setShowAlert] = React.useState(null);
 
     React.useEffect(() => {
         const getTTDASV = async () => {
+            context.updateLoading(true);
             try{
                 const response = await graduationThesis.importExcelSvDa(token);
                 setTTDA(response);
+                context.updateLoading(false);
                 console.log(TTDA)
-              
-            }catch(err){
-                console.log('Error fetching data', err);
+            }catch(error){
+                setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
             }
         }
         getTTDASV();
@@ -28,6 +36,7 @@ function TTDA() {
 
     return (
         <>
+            <AlertMessage message={showAlert} />
             <Box sx={{ display: "flex" }}>
                 <div style={{ display: 'block', top: '10%', borderStyle: "solid", borderWidth: '2px', width: '100%', height: 550, marginLeft: 8, marginTop: 30, marginRight: 8  }}>
                     <div style={{ height: '5%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>

@@ -215,6 +215,17 @@ class StudentApi {
     // day la ham update
   };
 
+  getInternshipTime = (token) => {
+    const url = `/api/registertime/get-last-registertime-internship`;
+    return axiosClient
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  }
+
 }
 
 const studentApi = new StudentApi();

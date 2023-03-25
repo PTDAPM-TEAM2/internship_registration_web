@@ -1,17 +1,25 @@
-import React, { useRef } from "react";
-import { TextField, Button, Autocomplete, Box, Alert, AlertTitle } from "@mui/material";
+import React, { useContext, useRef } from "react";
+import { TextField, Button, Autocomplete, Box, } from "@mui/material";
 import lecturerApi from "../../../../../api/lecturerApi";
 import userApi from "../../../../../api/authApi";
 import graduationThesis from "../../../../../api/graduationThesis";
+import { ThemeContext } from "../../../../Theme/Theme";
+import AlertMessage from "./Alert";
 
-var isSuccess = null;
 const user = {
     fullName: null,
     id: null,
     semester: null,
 }
+const getTime ={
+    timeStart: null,
+    timeEnd: null,
+}
 const DKDA = () => {
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlert, setShowAlert] = React.useState(null);
+    const context = useContext(ThemeContext);
+    
+
     const token = localStorage.getItem('token');
     const [lecturers, setLecturer] = React.useState([]);
     const [giaovien, setGiaoVien] = React.useState(null);
@@ -21,27 +29,44 @@ const DKDA = () => {
         const getCurrentUser = async () => {
             try{
                 const response = await userApi.getInfo(token);
+                return response;
+            }catch(err){
+                console.log('Error fetching data', err);
+            }
+        }
+        const getRegTime = async () => {
+            try{
+                const response = await graduationThesis.getRegTime(token);
                 console.log(response);
                 return response;
             }catch(err){
                 console.log('Error fetching data', err);
             }
         }
-        const data = getCurrentUser();
-        user.fullName = data.fullName;
-        user.id = data.id;
-        user.semester = data?.graduationThesis?.semester;
+        getCurrentUser().then(data => {
+            user.fullName = data.fullName;
+            user.id = data.id;
+            user.semester = data?.graduationThesis?.semester;
+        });
+        getRegTime().then(data => {
+            getTime.timeStart = data.timeStart;
+            getTime.timeEnd = data.timeEnd;
+        });
         const getTTDASV = async () => {
+            context.updateLoading(true);
             try{
                 const responseGV = await lecturerApi.getAllGV({
                     "fullName": user.fullName,
                 },token);
+                context.updateLoading(false);
                 setLecturer(responseGV);
-            }catch(err){
-                console.log('Error fetching data', err);
+            }catch(error){
+                setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
             }
         }
-
         getTTDASV();
     },[]);
 
@@ -50,46 +75,59 @@ const DKDA = () => {
     }
 
     const onClick = async () => {
-        console.log(giaovien.id);
-        console.log(inputDA.current.value);
-        try {
-            const response = await graduationThesis.addOrRemoveGraduation(
-                //pram like this {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
-                {
-                    "isAccept": 1,
-                    "status": 1,
-                    "nameGraduationThesis": inputDA.current.value,
-                    "student": {
-                        "id": user.id
-                    },
-                    "lecturer": {
-                        "id": giaovien.id
-                    },
-                    "semester": {
-                        "id": user?.semester?.id
-                    }
-                },token);
-                console.log(response);
-                isSuccess = true
-                setShowAlert(true);
+        const dateNow = new Date();
+        if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
+            console.log("Vuot qua thoi gian nop de cuong");
+                
+        }else{
+            context.updateLoading(true);
+            try {
+                const response = await graduationThesis.addOrRemoveGraduation(
+                    //pram like this {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
+                    {
+                        "isAccept": 1,
+                        "status": 1,
+                        "nameGraduationThesis": inputDA.current.value,
+                        "student": {
+                            "id": user.id
+                        },
+                        "lecturer": {
+                            "id": giaovien.id
+                        },
+                        "semester": {
+                            "id": user?.semester?.id
+                        }
+                    },token).then(response => {
+                        if(response.status === 200){
+                            setShowAlert({ type: 'success', text: 'Đăng ký đồ án thành công' });
+                            setTimeout(() => {
+                                setShowAlert(null);
+                            }, 2000)
+                        }
+                    });
+                    context.updateLoading(false);
+                    console.log(response);
+            } catch (error) {
+                context.updateLoading(false);
+                setShowAlert({ type: 'error', text: 'Đăng ký đồ án ko thành công ' + error });
                 setTimeout(() => {
-                    setShowAlert(false);
+                    setShowAlert(null);
                 }, 2000)
-        } catch (error) {
-            console.log(error);
-            isSuccess = false
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 2000)
+            }
         }
-        
     }
 
+    const transferDate = (date) => {
+        var date = new Date(date);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        return day + "/" + month + "/" + year;
+    }
 
-    console.log(`log: ${lecturers}`)
     return (
-        <>
+        <div>
+            <AlertMessage message={showAlert} />
             <Box sx={{ display: 'flex' }}>
                 <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 600, marginTop: 30, marginLeft: 8, marginRight: 8 }}>
                     <div style={{ height: '5%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>
@@ -97,8 +135,8 @@ const DKDA = () => {
                     </div>
                     <div style={{ height: '95%', }}>
                         <div style={{height:'13%',display:'flex',justifyContent:'end',flexFlow:'column',alignItems:"end",marginRight:300}}>
-                            <h4>Ngày bắt đầu:</h4>
-                            <h4>Ngày kết thúc</h4>
+                            <h4>Ngày bắt đầu: {transferDate(getTime.timeStart)}</h4>
+                            <h4>Ngày kết thúc: {transferDate(getTime.timeEnd)}</h4>
                         </div>
                         <div style={{ border: '2px dashed',marginTop:5,marginLeft:70,marginRight:70, height: '77%' }}>
                             <div style={{ float: 'left', width: '50%' }}>
@@ -128,22 +166,8 @@ const DKDA = () => {
                         </div>
                     </div>
                 </div>
-                {showAlert &&
-                <div>
-                    <Alert sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>{isSuccess ? "Đăng ký thành công":"Đăng ký thất bại"}</AlertTitle>
-                    </Alert>
-                </div>
-
-
-            }
             </Box>
-        </>
+        </div>
     );
 }
 

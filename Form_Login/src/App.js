@@ -28,13 +28,11 @@ import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
 import ThemSVTT from './components/AdminRole/ThucTap/ThemSVTT';
 import CTSVTT from './components/AdminRole/ThucTap/ChiTietSV';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
 import './App.css';
 import Layout from './components/Layout/Layout';
 import TCGV from './components/TeacherRole/pages/TrangChuGiangVien';
 import Variables from './utils/variables';
 import TTCN from './components/TeacherRole/pages/ThongTinCaNhan';
-import Sidebar from './components/Sidebar'
 import DSSVYC from './components/TeacherRole/pages/DanhSachSVYeuCau';
 import DSSV from './components/TeacherRole/pages/DanhSachSV';
 import ProjectListStudents from './components/TeacherRole/pages/DanhSachDoAn';
@@ -43,7 +41,6 @@ import SInformationDetails from './components/TeacherRole/pages/DanhSachSV/DanhS
 import PInformationDetails from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet';
 import ProcessEvaluation from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
 import PasswordChanging from './components/TeacherRole/pages/ThongTinCaNhan/DoiMatKhau';
-import Loading from './components/Loading/Loading.js'
 import { useContext } from 'react';
 import { ThemeContext } from './components/Theme/Theme.jsx';
 import { PrivateWrapper } from './Route/route.js';
@@ -52,12 +49,11 @@ import SVTT from './components/StudentRole/SVTT';
 import TTSV from './components/StudentRole/SVDA/DoAnSV/ThongTinCN';
 import DC from './components/StudentRole/SVDA/DoAnSV/DeCuong';
 import TTDA from './components/StudentRole/SVDA/DoAnSV/ThongTinDA';
-import TDMK from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
 import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
-import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
 import DKDA from './components/StudentRole/SVDA/DoAnSV/DangKyDA';
+import PasswordChangingDA from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
 function App() {
   
 
@@ -142,13 +138,13 @@ function App() {
                     <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
                   {/* Chuyen huong do an sinh vien */}
                     <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
-                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
+                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingDA />}></Route>
                     <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
                     <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
                     <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
                   {/* Chuyen huong thuc tap sinh vien */}
                     <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
-                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMKTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingDA />}></Route>
                     <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
                     <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
                   </ Route>
