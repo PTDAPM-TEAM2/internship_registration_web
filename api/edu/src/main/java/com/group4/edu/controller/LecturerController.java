@@ -20,6 +20,11 @@ public class LecturerController {
     @Autowired
     LecturersService lecturersService;
 
+    @PostMapping("/getLecturersBySearch")
+    public ResponseEntity<List<LecturerDto>> getLecturerBySearch(@RequestBody(required = false) SearchObjectDto dto){
+        List<LecturerDto> re = lecturersService.getLecturerByFilter(dto);
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
     @PostMapping("/getLecturersByFilter")
     public ResponseEntity<List<LecturerDto>> getGraduationThesis(@RequestBody SearchObjectDto dto){
         List<LecturerDto> re = lecturersService.getLecturerByFilter(dto);

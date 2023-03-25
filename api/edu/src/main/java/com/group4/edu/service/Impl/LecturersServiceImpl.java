@@ -44,37 +44,37 @@ public class LecturersServiceImpl implements LecturersService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private AccountRepository accountRepository;
+
     @Override
     public LecturerDto saveOrUpdate(LecturerDto dto, Long id) throws Exception {
-        if(dto != null){
-            if(dto.getLecturersCode() == null){
+        if (dto != null) {
+            if (dto.getLecturersCode() == null) {
                 throw new Exception("Mã giảng viên bị trống");
             }
-            if(dto.getFullName() == null){
+            if (dto.getFullName() == null) {
                 throw new Exception("Tên giảng viên bị trống");
             }
             boolean isNewAccount = false;
             Lecturer entity = null;
             Account account = null;
-            if(id != null){
+            if (id != null) {
                 entity = lecturerRepository.findById(id).orElse(null);
             }
-            if(entity == null && dto.getId() != null){
+            if (entity == null && dto.getId() != null) {
                 entity = lecturerRepository.findById(dto.getId()).orElse(null);
             }
-            if(entity == null){
-                if(lecturerRepository.existsByLecturersCode(dto.getLecturersCode())){
+            if (entity == null) {
+                if (lecturerRepository.existsByLecturersCode(dto.getLecturersCode())) {
                     throw new Exception("Ma giang vien da ton tai");
                 }
                 entity = new Lecturer();
                 isNewAccount = true;
-            }
-            else {
-                if(!dto.getLecturersCode().equals(entity.getLecturersCode())&& lecturerRepository.existsByLecturersCode(dto.getLecturersCode())){
+            } else {
+                if (!dto.getLecturersCode().equals(entity.getLecturersCode()) && lecturerRepository.existsByLecturersCode(dto.getLecturersCode())) {
                     throw new Exception("Ma giảng viên đã tồn tại");
                 }
             }
-            if((isNewAccount && lecturerRepository.existsByIdNumber(dto.getIdNumber()) ) || (!dto.getIdNumber().equals(entity.getIdNumber()) && lecturerRepository.existsByIdNumber(dto.getIdNumber()))){
+            if ((isNewAccount && lecturerRepository.existsByIdNumber(dto.getIdNumber())) || (!dto.getIdNumber().equals(entity.getIdNumber()) && lecturerRepository.existsByIdNumber(dto.getIdNumber()))) {
                 throw new Exception("SCMND hoac SCCCD cua giang vien da ton tai");
             }
             entity.setDateOfBirth(dto.getDateOfBirth());
@@ -86,13 +86,13 @@ public class LecturersServiceImpl implements LecturersService {
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setUserType(EduConstants.UserType.LECTURERS.getValue());
             entity.setPhoneNumber(dto.getPhoneNumber());
-            if(isNewAccount){
+            if (isNewAccount) {
                 account = new Account();
                 account.setUsername(dto.getLecturersCode());
                 account.setPassword(passwordEncoder.encode(dto.getLecturersCode()));
                 account.setUser(entity);
                 Role role = roleRepository.findByRole(EduConstants.Role.ROLELECTURERS.getValue());
-                if(role == null){
+                if (role == null) {
                     role = new Role();
                     role.setRole(EduConstants.Role.ROLELECTURERS.getValue());
                     role = roleRepository.save(role);
@@ -107,11 +107,11 @@ public class LecturersServiceImpl implements LecturersService {
 
     @Override
     public List<LecturerDto> getAll() {
-        List<LecturerDto> lecturerDtos= lecturerRepository.getAll();
+        List<LecturerDto> lecturerDtos = lecturerRepository.getAll();
         String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
-        for(LecturerDto lecturerDto: lecturerDtos){
-            Integer numGraTh = thesisRepository.countGraduationByLecturerIdandSemesterCode(lecturerDto.getId(),semesterCode);
-            if(numGraTh != null){
+        for (LecturerDto lecturerDto : lecturerDtos) {
+            Integer numGraTh = thesisRepository.countGraduationByLecturerIdandSemesterCode(lecturerDto.getId(), semesterCode);
+            if (numGraTh != null) {
                 lecturerDto.setNumGrTh(numGraTh);
             }
         }
@@ -119,36 +119,39 @@ public class LecturersServiceImpl implements LecturersService {
     }
 
     @Override
-    public List<LecturerDto> getLecturerByFilter(SearchObjectDto dto){
+    public List<LecturerDto> getLecturerByFilter(SearchObjectDto dto) {
         String whereClause = " where true = true ";
         String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
         String sql = "SELECT new com.group4.edu.dto.LecturerDto(tbl_lecturer) FROM Lecturer as tbl_lecturer";
 
 
-        if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
-            whereClause += " AND (tbl_lecturer.fullName like :fullName)";
+        if (dto != null) {
+            if (dto.getFullName() != null && StringUtils.hasText(dto.getFullName())) {
+                whereClause += " AND (tbl_lecturer.fullName like :fullName)";
+            }
+
+            if (dto.getNumberOfStudentsInLecturer() != null) {
+                sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
+                whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
+                if (dto.getNumberOfStudentsInLecturer() == 0)
+                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
+                if (dto.getNumberOfStudentsInLecturer() == 1)
+                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) = 30";
+                if (dto.getNumberOfStudentsInLecturer() == 2)
+                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) > 30";
+            }
+
         }
-
-        if(dto.getNumberOfStudentsInLecturer() != null){
-            sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
-            whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
-            if(dto.getNumberOfStudentsInLecturer() == 0)
-                whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
-            if(dto.getNumberOfStudentsInLecturer() == 1)
-                whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) = 30";
-            if(dto.getNumberOfStudentsInLecturer() == 2)
-                whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) > 30";
-        }
-
-
         sql += whereClause;
         Query query = manager.createQuery(sql, LecturerDto.class);
-        if(dto.getNumberOfStudentsInLecturer() != null){
-            query.setParameter("semesterCode", semesterCode);
-        }
+        if(dto != null){
+            if (dto.getNumberOfStudentsInLecturer() != null) {
+                query.setParameter("semesterCode", semesterCode);
+            }
 
-        if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
-            query.setParameter("fullName", '%'+dto.getFullName()+'%');
+            if (dto.getFullName() != null && StringUtils.hasText(dto.getFullName())) {
+                query.setParameter("fullName", '%' + dto.getFullName() + '%');
+            }
         }
 
         List<LecturerDto> entities = query.getResultList();
@@ -158,7 +161,7 @@ public class LecturersServiceImpl implements LecturersService {
     @Override
     public boolean deleteLt(Long id) {
         Lecturer lecturer = lecturerRepository.findById(id).orElse(null);
-        if (lecturer == null){
+        if (lecturer == null) {
             return false;
         }
         try {
@@ -174,7 +177,7 @@ public class LecturersServiceImpl implements LecturersService {
             if (lecturerRepository.existsById(lecturer.getId()))
                 lecturerRepository.deleteById(lecturer.getId());
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -196,32 +199,31 @@ public class LecturersServiceImpl implements LecturersService {
         boolean getIndexData = false;
         XSSFRow row = sheet.getRow(0);
         DataFormatter dataFormatter = new DataFormatter();
-        if(row != null){
-            if(row.getCell(0) != null && dataFormatter.formatCellValue(row.getCell(0)) != null && row.getCell(1) != null && dataFormatter.formatCellValue(row.getCell(1)) != null){
+        if (row != null) {
+            if (row.getCell(0) != null && dataFormatter.formatCellValue(row.getCell(0)) != null && row.getCell(1) != null && dataFormatter.formatCellValue(row.getCell(1)) != null) {
                 try {
-                    startLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(0)) ) -1;
-                    totalLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)) );
+                    startLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(0))) - 1;
+                    totalLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)));
                     rowIndex = startLine;
                     getIndexData = true;
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
             }
         }
-        if(!getIndexData){
+        if (!getIndexData) {
             rowIndex = 1;
-            while (!(sheet.getRow(rowIndex) != null &&this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).equals("STT"))){
+            while (!(sheet.getRow(rowIndex) != null && this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).equals("STT"))) {
                 rowIndex++;
                 System.out.println(rowIndex);
-                if(rowIndex == 200){
+                if (rowIndex == 200) {
                     return null;
                 }
             }
             startLine = rowIndex++;
         }
         System.out.println(sheet.getRow(rowIndex).getCell(0).getRawValue());
-        while ((getIndexData && rowIndex - startLine <totalLine) || (sheet.getRow(rowIndex)!= null &&!this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))){
+        while ((getIndexData && rowIndex - startLine < totalLine) || (sheet.getRow(rowIndex) != null && !this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))) {
             row = sheet.getRow(rowIndex++);
             LecturerDto lecturerDto = new LecturerDto();
             lecturerDto.setLecturersCode(getStringCellValue(row.getCell(1)));
@@ -233,14 +235,15 @@ public class LecturersServiceImpl implements LecturersService {
             lecturerDto.setPhoneNumber(this.getStringCellValue(row.getCell(7)));
             lecturerDto.setEmail(row.getCell(8).getStringCellValue());
             try {
-                lecturerDto = this.saveOrUpdate(lecturerDto,null);
+                lecturerDto = this.saveOrUpdate(lecturerDto, null);
                 lecturerDtos.add(lecturerDto);
             } catch (Exception e) {
             }
         }
         return lecturerDtos;
     }
-    private String getStringCellValue(XSSFCell cell){
+
+    private String getStringCellValue(XSSFCell cell) {
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);
     }
