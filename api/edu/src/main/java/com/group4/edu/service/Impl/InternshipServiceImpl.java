@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -186,6 +188,22 @@ public class InternshipServiceImpl implements InternshipService {
     public List<StudentDto> findStudentByDto(StudentSearchDto dto) {
 
         return studentRepository.findStudentTTByName(dto == null||dto.getKeySearchName()==null?"":dto.getKeySearchName());
+    }
+
+    @Override
+    public List<InternshipDto> regsiterMany(RegsiterManySt dto) {
+        List<InternshipDto> internshipDtos = new ArrayList<>();
+        for(String stCode: dto.getStudentCodes()){
+          RegisterinternshipDto registerinternshipDto = new RegisterinternshipDto();
+          registerinternshipDto.setStudentCode(stCode);
+          registerinternshipDto.setCompanyId(dto.getCompanyId());
+          registerinternshipDto.setInternshipPosition("Lao công");
+            try {
+                internshipDtos.add(this.registerOrUpdateIntership(registerinternshipDto,null));
+            } catch (Exception e) {
+            }
+        }
+        return internshipDtos;
     }
 
     private void validateRegisterInternShip(RegisterinternshipDto dto,boolean isSt) throws Exception {

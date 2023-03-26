@@ -2,6 +2,7 @@ package com.group4.edu.controller;
 
 import com.group4.edu.dto.InternshipDto;
 import com.group4.edu.dto.RegisterinternshipDto;
+import com.group4.edu.dto.RegsiterManySt;
 import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.service.InternshipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/internship")
@@ -39,6 +41,10 @@ public class IntershipController {
     @PostMapping("/find-st")
     public ResponseEntity<?> findStudent(@RequestBody StudentSearchDto dto){
         return new ResponseEntity<>(internshipService.findStudentByDto(dto),HttpStatus.OK);
+    }
+    @PostMapping("register-many-st")
+    public List<InternshipDto> internshipDtos(@RequestBody RegsiterManySt dto){
+        return internshipService.regsiterMany(dto);
     }
 
 }
