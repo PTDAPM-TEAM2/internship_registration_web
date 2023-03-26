@@ -50,13 +50,14 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto == null){
             throw new Exception("Hãy nhập thông tin");
         }
-        if(dto. getStudent() == null || dto.getStudent().getId() == null){
-            throw new Exception("Không tìm thấy sinh viên");
-        }
         GraduationThesis entity = null;
 
         if(dto.getId() != null){
             entity = graduationThesisRepository.findById(dto.getId()).orElse(null);
+        }
+        //Thêm mới đồ án thì bắt buộc phải có sv
+        if(entity == null && dto.getStudent() == null){
+            throw new Exception("Không tìm thấy sinh viên");
         }
         if(entity == null){
             entity = new GraduationThesis();
