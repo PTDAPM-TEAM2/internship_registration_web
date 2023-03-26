@@ -2,21 +2,36 @@ import * as React from "react";
 import styles from './NDSV.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import graduationThesisApi from "../../../../api/graduationThesis";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 function NDSV() {
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
+    const [hideImport, setHideImport] = React.useState(true);
     const handleExcelFileChange = (event) => {
         const file = event.target.files[0];
         setExcelFile(file);
-        console.log(file.name.replace('.xlsx', ''))
     };
 
-    const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append('file', excelFile);
+    const context = useContext(ThemeContext);
+    const handleSubmit = async () => {
         {
+            context.updateLoading(true);
+            setHideImport(false);
+        }
+        try {
+            const response = await graduationThesisApi.importExcelMark(formData);
+            context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
-            }, 2000)
+            }, 2000);
+        } catch (error) {
+            context.updateLoading(false);
+            console.error('Error fetching data:', error);
         }
     }
 
@@ -49,8 +64,12 @@ function NDSV() {
                             </div>
 
                         }
-                        <label htmlFor="file" className={styles.label}>+ Nhập điểm</label>
-                        <input className={styles.customFileInput} id='file' type="file" accept=".xlsx, .xls" onChange={handleExcelFileChange} />
+                        {hideImport &&
+                            <div>
+                                <label htmlFor="file" className={styles.label}>+ Nhập điểm</label>
+                                <input className={styles.customFileInput} id="file" type="file" accept=".xlsx, .xls" onChange={handleExcelFileChange} />
+                            </div>
+                        }
                         <button className={styles.btn} onClick={handleSubmit}>Lưu</button>
                     </div>
                 </div>

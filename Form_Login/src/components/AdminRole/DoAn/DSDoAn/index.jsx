@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import prjApi from "../../../../api/projectApi";
 import companyApi from '../../../../api/companyApi.js';
 
+
 const style = {
     position: 'absolute',
     top: '50%',

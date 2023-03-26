@@ -33,7 +33,6 @@ const ChiTietXD = () => {
     const navigate = useNavigate();
     const context = useContext(ThemeContext);
     const { id } = useParams();
-
     const handleClose = () => {
         setOpen(false);
         setStatus(0);

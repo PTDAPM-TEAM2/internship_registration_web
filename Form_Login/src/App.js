@@ -28,13 +28,11 @@ import DSSVTT from './components/AdminRole/ThucTap/DSSinhVien';
 import ThemSVTT from './components/AdminRole/ThucTap/ThemSVTT';
 import CTSVTT from './components/AdminRole/ThucTap/ChiTietSV';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
 import './App.css';
 import Layout from './components/Layout/Layout';
 import TCGV from './components/TeacherRole/pages/TrangChuGiangVien';
 import Variables from './utils/variables';
 import TTCN from './components/TeacherRole/pages/ThongTinCaNhan';
-import Sidebar from './components/Sidebar'
 import DSSVYC from './components/TeacherRole/pages/DanhSachSVYeuCau';
 import DSSV from './components/TeacherRole/pages/DanhSachSV';
 import ProjectListStudents from './components/TeacherRole/pages/DanhSachDoAn';
@@ -51,12 +49,12 @@ import SVTT from './components/StudentRole/SVTT';
 import TTSV from './components/StudentRole/SVDA/DoAnSV/ThongTinCN';
 import DC from './components/StudentRole/SVDA/DoAnSV/DeCuong';
 import TTDA from './components/StudentRole/SVDA/DoAnSV/ThongTinDA';
-import TDMK from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
 import TTSVTT from './components/StudentRole/SVTT/ThucTapSV/TTCN';
-import TDMKTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
 import DKDA from './components/StudentRole/SVDA/DoAnSV/DangKyDA';
+import PasswordChangingDA from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
+import PasswordChangingTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 function App() {
 
 
@@ -112,19 +110,21 @@ function App() {
               <Routes>
                 <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
                 <Route path='/dang-nhap' element={<Login />} />
-                <Route path='/' element={<Layout />}>
-                  {/* Main screen */}
-                  <Route path='trang-chu-giang-vien' element={<TCGV />}></Route>
-                  <Route path='thong-tin-ca-nhan' element={<TTCN />}></Route>
-                  <Route path='danh-sach-sinh-vien-yeu-cau' element={<DSSVYC />}></Route>
-                  <Route path='danh-sach-sinh-vien' element={<DSSV />}></Route>
-                  <Route path='danh-sach-do-an-sinh-vien' element={<ProjectListStudents />}></Route>
-                  {/* Navigate another screen */}
-                  <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails />}></Route>
-                  <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails />}></Route>
-                  <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails />}></Route>
-                  <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' element={<ProcessEvaluation />}></Route>
-                  <Route path='thong-tin-ca-nhan/doi-mat-khau' element={<PasswordChanging />}></Route>
+                <Route element={<PrivateWrapper auth={{ isAuthenticated: context.auth }} />}>
+                  <Route path='/' element={<Layout />}>
+                    {/* Main screen */}
+                    <Route path='trang-chu-giang-vien' element={<TCGV />}></Route>
+                    <Route path='thong-tin-ca-nhan' element={<TTCN />}></Route>
+                    <Route path='danh-sach-sinh-vien-yeu-cau' element={<DSSVYC />}></Route>
+                    <Route path='danh-sach-sinh-vien' element={<DSSV />}></Route>
+                    <Route path='danh-sach-do-an-sinh-vien' element={<ProjectListStudents />}></Route>
+                    {/* Navigate another screen */}
+                    <Route path='danh-sach-sinh-vien-yeu-cau/chi-tiet-yeu-cau' element={<SRequirementDetails />}></Route>
+                    <Route path='danh-sach-sinh-vien/chi-tiet-sinh-vien' element={<SInformationDetails />}></Route>
+                    <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet' element={<PInformationDetails />}></Route>
+                    <Route path='danh-sach-do-an-sinh-vien/danh-sach-do-an-chi-tiet/danh-gia-tien-trinh' element={<ProcessEvaluation />}></Route>
+                    <Route path='thong-tin-ca-nhan/doi-mat-khau' element={<PasswordChanging />}></Route>
+                  </Route>
                 </Route>
               </Routes>
             </Router>
@@ -134,22 +134,24 @@ function App() {
               <Routes>
                 <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
                 <Route path='/dang-nhap' element={<Login />} />
-                <Route path='/' element={<Layout />}>
-                  {/* Main screen */}
-                  <Route path='sinh-vien-do-an' element={<SVDA />}></Route>
-                  <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
-                  {/* Chuyen huong do an sinh vien */}
-                  <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
-                  <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
-                  <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
-                  <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
-                  <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
-                  {/* Chuyen huong thuc tap sinh vien */}
-                  <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
-                  <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMKTT />}></Route>
-                  <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
-                  <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
-                </ Route>
+                <Route element={<PrivateWrapper auth={{ isAuthenticated: context.auth }} />}>
+                  <Route path='/' element={<Layout />}>
+                    {/* Main screen */}
+                    <Route path='sinh-vien-do-an' element={<SVDA />}></Route>
+                    <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
+                    {/* Chuyen huong do an sinh vien */}
+                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
+                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingDA />}></Route>
+                    <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
+                    <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
+                    <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
+                    {/* Chuyen huong thuc tap sinh vien */}
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
+                  </ Route>
+                </Route>
               </ Routes>
             </Router>
       }
