@@ -102,14 +102,17 @@ form {
 
 .txtGender{
     width: 100px;
+    background-color: #D9D9D9;
 }
 
 .txtField{
     width: 300px;
+    background-color: #D9D9D9;
 }
 
 .txtTextBottom{
     width: 250px;
+    background-color: #D9D9D9;
 }
 
 .image{
@@ -149,22 +152,26 @@ form {
     width: 400px;
     margin: 0 10px;
 }
-/* 
+
 @media (min-width: 1024px) {
         
     .txtField{
-        width: 440px;
+        width: 300px;
     }
 
     .txtTextBottom{
-        width: 338px;
+        width: 100%;
     }
-} */
+}
 
-@media (min-width: 1300px) and (max-width: 2000px) {
+@media (min-width: 1300px) and (max-width: 1920px) {
     .txtField{
         width: 400px;
         margin-right: 50px ;
+    }
+
+    .txtGender{
+        width: 100%;
     }
     
     .txtTextBottom{

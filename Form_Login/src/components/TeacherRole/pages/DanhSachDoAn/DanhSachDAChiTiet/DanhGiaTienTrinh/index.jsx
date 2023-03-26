@@ -12,10 +12,6 @@ import teacherRoleController from '../../../../controller/TeacherRoleController'
 import { ThemeContext } from '../../../../../Theme/Theme.jsx'; 
 import { useContext } from 'react';
 
-const body = {
-
-}
-
 const ProcessEvaluation = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const location = useLocation()
@@ -27,13 +23,10 @@ const ProcessEvaluation = () => {
 
     function handleGo() {
         setShowAlert(true);
-        // data.filter((data) => item.id !== id);
         setTimeout(() => {
             navigate('/danh-sach-do-an-sinh-vien');
         }, 1000)
     }
-
-    // body.title = 
 
     const initialValues = {
         title: null,

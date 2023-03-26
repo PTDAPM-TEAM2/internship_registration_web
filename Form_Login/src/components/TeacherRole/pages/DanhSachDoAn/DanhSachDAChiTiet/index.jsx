@@ -48,15 +48,9 @@ const PInformationDetails = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    // const handleSubmit = (values, { setSubmitting }) => {
-    //     console.log(values);
-    //     setSubmitting(false);
-    // }
-
     function handleGo() {
         setOpen(false);
         setShowAlert(true);
-        // data.filter((data) => item.id !== id);
         setTimeout(() => {
             navigate('/danh-sach-do-an-sinh-vien');
         }, 1000)
@@ -75,18 +69,7 @@ const PInformationDetails = () => {
                 console.log(err);
             }
         }
-
-
-        // const getAllWeeklyReview = async () => {
-        //     try{
-        //         const response = await graduationThesis.weeklyTeacherSaving(null, context.token);
-        //         setReviewList(response)
-        //     }catch(err){
-        //         console.log(err);
-        //     }
-        // }
         getAllWeeklyReview();
-        // currentUser();
     }, [])
 
     const initialValues = {
@@ -104,10 +87,6 @@ const PInformationDetails = () => {
             }
         },
     })
-
-    review.map(element => {
-        console.log(element);
-    });
     const navigate = useNavigate();
 
     function toComponent(item){
@@ -136,23 +115,10 @@ const PInformationDetails = () => {
                                     </div>
                                     <div className={styles.formContent}>
                                         <label htmlFor="content"><b>Nội dung: </b></label>
-                                        {/* <textarea
-                                            className={styles.txtContent}
-                                            id="content"
-                                            defaultValue={review.map((value) => `${value?.title.replace(',', '')}: ` + ` ${value?.content.replace(',', '')}\n\n`).join('')}
-                                            name="content"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            disabled
-                                        /> */}
                                             {
                                                 <div className={styles.content}>
                                                     {
                                                         review.map((value) => 
-                                                        // <span className={styles.cardItem}>
-                                                        //     <div className = {styles.commentTitle}>{value?.title}:</div>
-                                                        //     <span className = {styles.comment}>{value?.content}</span>
-                                                        // </span>
                                                         <Box>
                                                             <Card className={styles.cardContent} sx={{ '&:hover': { boxShadow: 8 } }}>
                                                             <CardContent>
