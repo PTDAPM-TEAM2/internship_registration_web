@@ -175,10 +175,12 @@ class StudentApi {
     // day la ham update
   };
 
-  addSVTT = (body, token) => {
+  addSVTT = (data, token) => {
+    console.log('value');
+    console.log(data);
     const url = "api/student/save/tt";
     return axiosClient
-      .post(url, body, {
+      .post(url, data, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           'Content-Type': 'application/json'

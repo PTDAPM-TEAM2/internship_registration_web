@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -45,8 +44,7 @@ const validationSchema = Yup.object({
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    semester: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietSV = () => {
@@ -67,7 +65,7 @@ const ChiTietSV = () => {
         // id: state.item.grade.id,
         // students: state.item.grade.students
     }
-
+    
     const genders = [
         { value: "male", label: "Nam" },
         { value: "female", label: "Nữ" },
@@ -85,10 +83,11 @@ const ChiTietSV = () => {
         email: state.item.email || '',
         studentCode: state.item.studentCode || '',
         grade: grade,
-        semester: state.item.semester || '',
         //van de quan trong
-        password: state.item.password || '',
+        password: '',
     };
+
+    console.log(state.item.password);
 
 
     const token = localStorage.getItem('token');
@@ -114,6 +113,7 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            console.log(values);
             context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
@@ -295,25 +295,16 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <label htmlFor='semester'>Kỳ: </label>
-                                <TextField
-                                    className={styles.txtFieldBot}
-                                    id="semester"
-                                    name="semester"
-                                    value={formik.values.semester}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.semester && Boolean(formik.errors.semester)}
-                                    helperText={formik.touched.semester && formik.errors.semester}
+                                <TextField defaultValue={context.cellValidateSemester(state.item.graduationThesis)} className={styles.txtFieldBot} />
 
-                                />
                             </div>
                             <div className={styles.txt}>
                                 <label htmlFor='password'>Mật khẩu: </label>
                                 <TextField
-                                    defaultValue='********'
                                     className={styles.txtFieldBot}
                                     id="password"
                                     name="password"
-                                    // value={formik.values.password}
+                                    value={formik.values.password}
                                     onChange={formik.handleChange}
                                     type='password'
                                 // disabled
@@ -329,7 +320,7 @@ const ChiTietSV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='submit' onClick={() => console.log(formik.errors)} >Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

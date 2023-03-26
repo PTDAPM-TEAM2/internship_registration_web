@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ThemGV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -76,7 +75,7 @@ const ThemGV = () => {
                 setShowAlert({ type: 'success', text: "Thêm giảng viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
-                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                    navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
                 if (error.response.data.messgae) {

@@ -17,8 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import lecturerApi from '../../../../api/lecturerApi';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import IconButton from '@mui/material/IconButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const columns = [
     {
@@ -46,10 +45,11 @@ const columns = [
         align: 'center',
     },
     {
-        id: 'select',
-        minWidth: 10,
+        id: 'function',
+        label: 'Thêm sinh viên',
+        minWidth: 50,
         align: 'center',
-    }
+    },
 ];
 
 function DSGV() {
@@ -58,7 +58,7 @@ function DSGV() {
     const [chevron, setChevron] = React.useState(true);
 
     function handleGo() {
-        navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da/them-giang-vien-da');
+        navigate('/quan-ly-giang-vien/danh-sach-giang-vien/them-giang-vien');
     }
     const [value, setValue] = React.useState('');
 
@@ -66,7 +66,7 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/quan-ly-giang-vien-da/danh-sach-giang-vien-da/chi-tiet-giang-vien/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-giang-vien/danh-sach-giang-vien/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
     const [lecturers, setLecturer] = React.useState([]);
@@ -85,36 +85,23 @@ function DSGV() {
         getAllItem()
     }, []);
 
-    // const [numOfSinL, setNumOfSinL] = React.useState(0);
-    // const body = {
-    //     numberOfStudentsInLecturer: numOfSinL,
-    // }
-    // const handleFilterGV = async (newValue) => {
-    //     setNumOfSinL(newValue);
-    //     context.updateLoading(true);
-    //     try {
-    //         const response = await lecturerApi.filter(body);
-    //         setLecturer(response);
-    //         context.updateLoading(false);
-    //         console.log(body);
-    //     }
-    //     catch (err) {
-    //         context.updateLoading(false);
-    //         console.log(err);
-    //     }
-    // }
+    const [numOfSinL, setNumOfSinL] = React.useState(0);
+    const body = {
+        numberOfStudentsInLecturer: numOfSinL,
+    }
+    const handleFilterGV = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await lecturerApi.filter(body);
+            setLecturer(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            context.updateLoading(false);
+            console.log(err);
+        }
+    }
 
-    // const handleGetAll = async () => {
-    //     context.updateLoading(true);
-    //     try {
-    //         const response = await lecturerApi.getAllGV();
-    //         setLecturer(response);
-    //         context.updateLoading(false);
-    //     } catch (error) {
-    //         context.updateLoading(false);
-    //         console.error('Error fetching data:', error);
-    //     }
-    // }
 
     const [search, setSearch] = React.useState("");
     const [filteredData, setFilteredData] = React.useState([]);
@@ -155,9 +142,14 @@ function DSGV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10} onClick={() => handleChevon(true)}>Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={20} onClick={() => handleChevon(false)}>Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={30} >Tất cả</MenuItem>
+                                    <MenuItem value={10} onClick={() => {
+                                        setNumOfSinL(1)
+                                        handleFilterGV()
+                                    }} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={20} onClick={() => {
+                                        setNumOfSinL(0)
+                                        handleFilterGV()
+                                    }} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -195,9 +187,12 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.phoneNumber}</TableCell>
-                                                            {/* <IconButton style={{ color: 'white' }}>
-                                                                <KeyboardArrowDownIcon />
-                                                            </IconButton> */}
+                                                            <TableCell>
+                                                                <ExpandMoreIcon
+                                                                    // checked={checkboxes.includes(student.studentCode)}
+                                                                    // onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 })
@@ -210,8 +205,12 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
-                                                            
-
+                                                            {/* <TableCell>
+                                                                <ExpandMoreIcon
+                                                                    // checked={checkboxes.includes(student.studentCode)}
+                                                                    // onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell> */}
                                                         </TableRow>
                                                     );
                                                 })

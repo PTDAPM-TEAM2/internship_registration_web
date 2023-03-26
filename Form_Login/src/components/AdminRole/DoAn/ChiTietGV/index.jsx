@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -46,7 +45,7 @@ const validationSchema = Yup.object({
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietGV = () => {
@@ -94,7 +93,7 @@ const ChiTietGV = () => {
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
-                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                    navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
                 console.error(error);
@@ -112,7 +111,7 @@ const ChiTietGV = () => {
             context.updateLoading(false);
             setTimeout(() => {
                 setShowAlertD(false);
-                navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da')
             }, 1000)
         }
         catch (error) {
@@ -277,7 +276,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight:20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

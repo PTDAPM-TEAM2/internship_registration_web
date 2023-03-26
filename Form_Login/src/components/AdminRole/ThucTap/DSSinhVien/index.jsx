@@ -101,21 +101,6 @@ function DSSV() {
         catch (err) {
             console.log(err);
             context.updateLoading(false);
-
-        }
-    }
-
-    const handleGetAll = async () => {
-        context.updateLoading(true);
-        try {
-            const response = await studentApi.getAllSvTt(null, token);
-            setStudent(response);
-            context.updateLoading(false);
-        }
-        catch (err) {
-            console.log(err);
-            context.updateLoading(false);
-
         }
     }
 
@@ -158,7 +143,6 @@ function DSSV() {
                                 >
                                     <MenuItem value={10} onClick={() => handleFilterGV(3)}>Sinh viên chưa có công ty thực tập</MenuItem>
                                     <MenuItem value={20} onClick={() => handleFilterGV(4)}>Sinh viên đã có công ty thực tập</MenuItem>
-                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>

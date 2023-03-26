@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ChiTietXD.module.css';
-import Sidebar from '../../../Sidebar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -66,7 +65,6 @@ const ChiTietXD = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%', border: '1px solid black' }}>
                     <p className={styles.title}>Xét duyệt đồ án</p>

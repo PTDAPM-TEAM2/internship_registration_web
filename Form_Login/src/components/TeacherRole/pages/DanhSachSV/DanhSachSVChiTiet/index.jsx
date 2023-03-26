@@ -135,7 +135,7 @@ const SInformationDetails = () => {
                                                 id="idCard"
                                                 name="idCard"
                                                 disabled
-                                                defaultValue={'901237914214'}
+                                                defaultValue={state.item?.student?.studentCode}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                                 // value={formik.values.identityCard}
@@ -205,10 +205,6 @@ const SInformationDetails = () => {
                                 <div className={styles.txt}>
                                     <p>Lớp: </p>
                                     <TextField className={styles.txtTextBottom} defaultValue={state.item?.student?.grade?.name} disabled/>
-                                </div>
-                                <div className={styles.txt}>
-                                    <p>Khoa: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={'CNTT'} disabled/>
                                 </div>
                             </div>
                         </form>

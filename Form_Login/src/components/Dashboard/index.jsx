@@ -109,7 +109,7 @@ export default function Dashboard() {
                     Variables.userRole === 'admin' ?
                         (location.pathname === '/quan-ly-do-an-sinh-vien' ||
                             location.pathname === '/quan-ly-do-an' ||
-                            location.pathname === '/quan-ly-giang-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien' ||
                             location.pathname === '/quan-ly-sinh-vien-da') :
                         // students role
                         (location.pathname === '/sinh-vien-do-an')

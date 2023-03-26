@@ -52,11 +52,13 @@ class LecturerApi {
       // day la ham update
   };
 
-  filter = (params) => {
-    const url = 'api/lecturer/getLecturersByFilter';
+  filter = (body) => {
+    const url = '/api/lecturer/getLecturersByFilter';
     const token = localStorage.getItem('token');
+    console.log(token);
+    console.log(body);
     return axiosClient
-      .get(url, params , {
+      .post(url, body , {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           // 'Content-Type': 'application/json'

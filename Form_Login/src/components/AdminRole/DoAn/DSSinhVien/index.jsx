@@ -122,21 +122,6 @@ function DSSV() {
         }
     }
 
-    const handleGetAll = async () => {
-        context.updateLoading(true);
-        try {
-            const response = await studentApi.getAllSvDa(null, token);
-            setStudent(response);
-            context.updateLoading(false);
-        }
-        catch (err) {
-            console.log(err);
-            context.updateLoading(false);
-
-        }
-    }
-
-
     const [search, setSearch] = React.useState("");
     const [filteredData, setFilteredData] = React.useState([]);
 
@@ -152,6 +137,7 @@ function DSSV() {
         });
         setFilteredData(filter);
     };
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -180,9 +166,8 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10} onClick={() => handleFilterGV(2)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20} onClick={() => handleFilterGV(1)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleFilterGV(1)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleFilterGV(2)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -220,7 +205,7 @@ function DSSV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{student.grade.name}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateName(student.graduationThesis)}</TableCell>
-                                                            <TableCell sx={{ textAlign: 'center' }}>{student.internship}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateSemester(student.graduationThesis)}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })
