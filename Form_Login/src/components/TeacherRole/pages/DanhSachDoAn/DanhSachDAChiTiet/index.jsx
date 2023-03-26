@@ -119,10 +119,6 @@ const PInformationDetails = () => {
                                                 <div className={styles.content}>
                                                     {
                                                         review.map((value) => 
-                                                        // <span className={styles.cardItem}>
-                                                        //     <div className = {styles.commentTitle}>{value?.title}:</div>
-                                                        //     <span className = {styles.comment}>{value?.content}</span>
-                                                        // </span>
                                                         <Box>
                                                             <Card className={styles.cardContent} sx={{ '&:hover': { boxShadow: 8 } }}>
                                                             <CardContent>

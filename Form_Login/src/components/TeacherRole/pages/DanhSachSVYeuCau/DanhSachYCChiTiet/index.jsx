@@ -67,7 +67,6 @@ const SRequirementDetails = () => {
         try{
             setOpen(false);
             setShowAlert(true);
-            console.log("aaaaa");
             await teacherRoleController.forceToStopResearch(initialValues, token)
         }catch(err){
             console.log(err);
