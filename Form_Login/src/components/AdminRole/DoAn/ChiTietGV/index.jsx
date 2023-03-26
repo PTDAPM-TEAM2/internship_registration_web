@@ -45,7 +45,7 @@ const validationSchema = Yup.object({
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietGV = () => {
@@ -93,7 +93,7 @@ const ChiTietGV = () => {
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
-                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                    navigate('/quan-ly-giao-vien/danh-sach-giao-vien')
                 }, 2000)
             } catch (error) {
                 console.error(error);

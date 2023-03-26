@@ -58,26 +58,27 @@ const columns = [
 const ChiTietCT = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const [checkboxes, setCheckboxes] = React.useState([]);
     const navigate = useNavigate();
 
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
     const { idSV } = useParams();
-    const handleAdd = async () => {
-        setOpen(false)
-        setShowAlert(true);
-        setTimeout(() => {
-            setShowAlert(false);
-        }, 2000)
-        
-    };
+
+    const handleCheckboxChange = (id, isChecked) => {
+        if (isChecked) {
+            setCheckboxes(checkboxes.concat(id));
+        } else {
+            setCheckboxes(checkboxes.filter(item => item !== id));
+        }
+    }
 
     const [students, setStudent] = React.useState();
     const context = useContext(ThemeContext);
 
     const handleOpenList = async (type) => {
-       
+
         context.updateLoading(true);
         try {
             const response = await studentApi.filter(type);
@@ -91,7 +92,30 @@ const ChiTietCT = () => {
         }
     }
 
-    console.log(students);
+
+    const body ={
+        companyId: state.item.id,
+        studentCodes: checkboxes
+    }
+
+
+    const handleAdd = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await companyApi.addSV(body);
+            setOpen(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000)
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+        }
+        
+    };
 
 
     return (
@@ -171,14 +195,20 @@ const ChiTietCT = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            { students === undefined ? "" :
+                                            {students === undefined ? "" :
                                                 (students.map((student, index) => {
+
                                                     return (
                                                         <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ textAlign: 'center' }}>
                                                             <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{student.studentCode}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
-                                                            <Checkbox />
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    checked={checkboxes.includes(student.studentCode)}
+                                                                    onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 }))

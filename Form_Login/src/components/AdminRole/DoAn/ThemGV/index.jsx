@@ -75,7 +75,7 @@ const ThemGV = () => {
                 setShowAlert({ type: 'success', text: "Thêm giảng viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
-                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                    navigate('/quan-ly-giao-vien/danh-sach-giao-vien')
                 }, 2000)
             } catch (error) {
                 if (error.response.data.messgae) {

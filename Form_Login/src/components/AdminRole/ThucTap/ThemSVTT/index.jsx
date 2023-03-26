@@ -35,8 +35,6 @@ const ThemSVTT = () => {
     // const [message, setMessage] = React.useState('');
     // const [errorMessages, setErrorMessages] = React.useState('');
     const [showAlert, setShowAlert] = React.useState(null);
-    const [start, setStart] = React.useState('');
-    const [end, setEnd] = React.useState('');
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
@@ -50,8 +48,8 @@ const ThemSVTT = () => {
 
     };
     const internship = {
-        start: start,
-        end: end,
+        start: '',
+        end: '',
         company: '',
     }
     const grade = {
@@ -75,7 +73,7 @@ const ThemSVTT = () => {
         grade: grade,
         password: '',
         internship: internship
-    
+
     };
 
     const [companies, setCompanies] = React.useState([]);
@@ -112,13 +110,12 @@ const ThemSVTT = () => {
         getGrade()
     }, []);
 
-
-
+    
     const formik = useFormik({
         initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values.internship);
+            console.log(values);
             context.updateLoading(true);
             try {
                 const response = await studentApi.addSVTT(JSON.stringify(values), token);
@@ -139,8 +136,9 @@ const ThemSVTT = () => {
             }
         },
     })
+    
+    console.log(formik.values);
 
-   
 
 
     return (
@@ -235,8 +233,6 @@ const ThemSVTT = () => {
                                             />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            // onChange={formik.handleChange}
-                                            // name='dateOfBirth'
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
 
@@ -308,13 +304,9 @@ const ThemSVTT = () => {
                                     className={styles.txtFieldBot}
                                     select
                                     id='internship'
-                                    name='internship'
-                                    value={formik.values.internship}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                        initVl.internship.company = e.target.value;
-                                        console.log(initVl.internship.company);
-                                    }}
+                                    name='internship.company'
+                                    value={formik.values.internship.company}
+                                    onChange={formik.handleChange}
                                     error={formik.touched.internship && Boolean(formik.errors.internship)}
                                 >
                                     {companies.map((option) => (
@@ -333,13 +325,9 @@ const ThemSVTT = () => {
                                             className={styles.txtFieldBot}
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
-
-                                        value={start}
-                                        onChange={(e) => {
-                                            setStart(e);                                           
-                                            internship.start = e; 
-                                            initVl.internship.start = e;                                             
-                                        }}
+                                        
+                                        value={formik.values.internship.start}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
                                         // onChange={formik.handleChange}
                                         // name='internship.start'
                                         format="YYYY/MM/DD"
@@ -385,11 +373,8 @@ const ThemSVTT = () => {
                                             className={styles.txtFieldBot}
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
-                                        value={end}
-                                        onChange={(e) => {
-                                            setEnd(e);                                           
-                                            internship.end = e;                                            
-                                        }}
+                                        value={formik.values.internship.end}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.end', value } })}
                                         format="YYYY/MM/DD"
                                     />
                                 </LocalizationProvider>
