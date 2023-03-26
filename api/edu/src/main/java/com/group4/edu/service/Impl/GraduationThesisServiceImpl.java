@@ -7,6 +7,9 @@ import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -29,7 +32,7 @@ import java.util.List;
 @Service
 public class GraduationThesisServiceImpl implements GraduationThesisService {
     @PersistenceContext
-    EntityManager manager;
+     EntityManager manager;
     @Autowired
     GraduationThesisRepository graduationThesisRepository;
     @Autowired
@@ -47,6 +50,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto == null){
             throw new Exception("Hãy nhập thông tin");
         }
+        if(dto. getStudent() == null || dto.getStudent().getId() == null){
+            throw new Exception("Không tìm thấy sinh viên");
+        }
         GraduationThesis entity = null;
 
         if(dto.getId() != null){
@@ -55,13 +61,13 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(entity == null){
             entity = new GraduationThesis();
             entity.setSubmitDay(new Date(System.currentTimeMillis()));
-            if(dto.getStudent() != null && dto.getStudent().getId() != null
-                    && dto.getSemester() != null && dto.getSemester().getId() != null ){
-                List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllByStIdAndSemesterId(dto.getStudent().getId(), dto.getSemester().getId());
-                if(graduationThesis != null && graduationThesis.size() > 0){
-                    throw new Exception("Sinh viên đã có đồ án");
-                }
-            }
+//            if(dto.getStudent() != null && dto.getStudent().getId() != null
+//                    && dto.getSemester() != null && dto.getSemester().getId() != null ){
+//                List<GraduationThesisDto> graduationThesis = graduationThesisRepository.getAllByStIdAndSemesterId(dto.getStudent().getId(), dto.getSemester().getId());
+//                if(graduationThesis != null && graduationThesis.size() > 0){
+//                    throw new Exception("Sinh viên đã có đồ án");
+//                }
+//            }
         }
 
         if(dto.getNameGraduationThesis() != null){
@@ -81,6 +87,7 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             entity.setAvgMark((dto.getMark1() + dto.getMark2() + dto.getMark3())/3);
         }
 
+        String code = SemesterDateTimeUntil.getCodeSemesterDefault();
         // để set được isAccept và status: thì phải là id của giáo viên phải đúng với giáo viên người dùng chọn hoặc id admin
         if(dto.getStatus() != null){
             entity.setStatus(dto.getStatus());
@@ -92,6 +99,10 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             Student student = studentRepository.findById(dto.getStudent().getId()).orElse(null);
             if(student == null||!(student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue()) || student.getStudentType().equals(EduConstants.StudentType.ALL.getValue()))){
                 throw new Exception("Sinh viên không tồn tại");
+            }
+            List<GraduationThesis> graduationTheses = graduationThesisRepository.getAllByStCodeAndSemesterCode(student.getStudentCode(),code);
+            if(graduationTheses != null && graduationTheses.size()>0){
+                throw new Exception("Sinh viên đã có đồ án");
             }
             entity.setStudent(student);
         }
@@ -108,7 +119,6 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
         }
         //
-        String code = SemesterDateTimeUntil.getCodeSemesterDefault();
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity = graduationThesisRepository.save(entity);
@@ -147,6 +157,46 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         } catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public List<GraduationThesisDto> importMart(MultipartFile file) {
+        List<GraduationThesisDto> graduationThesisDtos = new ArrayList<>();
+        XSSFWorkbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook(file.getInputStream());
+        } catch (IOException e) {
+            return null;
+        }
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        int rowIndex = 1;
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        while (true){
+            if(sheet.getRow(rowIndex) == null || sheet.getRow(rowIndex).getCell(1)== null || !StringUtils.hasText(sheet.getRow(rowIndex).getCell(1).getStringCellValue())){
+                break;
+            }
+
+            XSSFRow row = sheet.getRow(rowIndex++);
+            String stCode = row.getCell(1).getStringCellValue();
+            List<GraduationThesis> graduationTheses = graduationThesisRepository.getAllByStCodeAndSemesterCode(stCode,semesterCode);
+            if(graduationTheses != null && graduationTheses.size()>0){
+                GraduationThesis graduationThesis = graduationTheses.get(0);
+                Double mark1 = getMark(row,8);
+                Double mark2 = getMark(row,9);
+                Double mark3 = getMark(row,10);
+                if(mark1 != null && mark2 != null && mark3 != null){
+                    Double avgMark = (mark1+mark2+mark3)/3;
+                    graduationThesis.setMark1(mark1);
+                    graduationThesis.setMark2(mark2);
+                    graduationThesis.setMark3(mark3);
+                    graduationThesis.setAvgMark(avgMark);
+                    graduationThesis =  graduationThesisRepository.save(graduationThesis);
+                    graduationThesisDtos.add(new GraduationThesisDto(graduationThesis));
+                }
+
+            }
+        }
+        return graduationThesisDtos;
     }
 
     // cái này để lấy được danh sách đồ án và sinh viên
@@ -262,5 +312,20 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
         }
         return graduationThesisDtos;
+    }
+    private Double getMark(XSSFRow row, int cellIndex){
+        Double mark1 = null;
+        try{
+            mark1 = row.getCell(cellIndex).getNumericCellValue();
+        }
+        catch (Exception ex){
+            try {
+                mark1 = Double.parseDouble(row.getCell(cellIndex).getStringCellValue());
+            }
+            catch (Exception e){
+                mark1 = null;
+            }
+        }
+        return mark1;
     }
 }

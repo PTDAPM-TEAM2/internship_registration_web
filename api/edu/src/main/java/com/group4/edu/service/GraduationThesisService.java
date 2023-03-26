@@ -19,4 +19,6 @@ public interface GraduationThesisService {
 
     boolean delete(Long id);
 
+    List<GraduationThesisDto> importMart(MultipartFile file);
+
 }

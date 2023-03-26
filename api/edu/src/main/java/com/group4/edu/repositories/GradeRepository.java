@@ -1,6 +1,7 @@
 package com.group4.edu.repositories;
 
 import com.group4.edu.domain.Grade;
+import com.group4.edu.domain.GraduationThesis;
 import com.group4.edu.dto.AccountDto;
 import com.group4.edu.dto.GradeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,6 @@ public interface GradeRepository extends JpaRepository<Grade,Long> {
 
     @Query("select g from Grade g where g.name = ?1")
     Optional<Grade> findByName(String name);
+    @Query("select e from GraduationThesis e where e.semester.code = ?1")
+    List<GraduationThesis> findAllBySemesterCode(String semesterCode);
 }

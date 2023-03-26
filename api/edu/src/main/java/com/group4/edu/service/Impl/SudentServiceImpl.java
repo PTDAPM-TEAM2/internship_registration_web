@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,6 +34,8 @@ import java.util.concurrent.Executors;
 
 @Service
 public class SudentServiceImpl implements StudentService {
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -397,8 +403,86 @@ public class SudentServiceImpl implements StudentService {
         }
         return null;
     }
+
+    @Override
+    public ByteArrayResource exportStDa() {
+        XSSFWorkbook wbook = null;
+
+        try (InputStream template = resourceLoader.getResource("classpath:templates/excel/DSSVDA.xlsx")
+                .getInputStream()) {
+            wbook = new XSSFWorkbook(template);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (wbook == null) {
+            throw new RuntimeException();
+        }
+        XSSFSheet sheet = wbook.getSheetAt(0);
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        List<GraduationThesis> graduationTheses = gradeRepository.findAllBySemesterCode(semesterCode);
+        int index = 1;
+        for(GraduationThesis graduationThesis: graduationTheses){
+            Student student = graduationThesis.getStudent();
+
+            XSSFRow row = sheet.getRow(index++);
+            if(row == null){
+                row = sheet.createRow(index-1);
+            }
+            setCellValue(row,0,index-1);
+            if(student != null){
+                setCellValue(row,1,student.getStudentCode());
+                setCellValue(row,2,student.getFullName());
+                setCellValue(row,3,student.getGrade().getName());
+                setCellValue(row,4,student.getEmail());
+                setCellValue(row,5,student.getPhoneNumber());
+            }
+            setCellValue(row,6,graduationThesis.getNameGraduationThesis());
+            setCellValue(row,7,graduationThesis.getLecturer()!= null?graduationThesis.getLecturer().getFullName():"");
+            if(graduationThesis.getMark1() != null){
+                setCellValue(row,8,graduationThesis.getMark1());
+            }
+            if(graduationThesis.getMark2() != null){
+                setCellValue(row,9,graduationThesis.getMark2());
+            }
+            if(graduationThesis.getMark2() != null){
+                setCellValue(row,10,graduationThesis.getMark3());
+            }
+            if(graduationThesis.getAvgMark() != null){
+                setCellValue(row,11,graduationThesis.getAvgMark());
+            }
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            wbook.write(out);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ByteArrayResource(out.toByteArray());
+    }
+
     private String getStringCellValue(XSSFCell cell){
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);
+    }
+    private void setCellValue(XSSFRow row, int cellIndex, String value){
+        XSSFCell cell = row.getCell(cellIndex);
+        if(cell == null){
+            cell = row.createCell(cellIndex);
+        }
+        cell.setCellValue(value);
+    }
+    private void setCellValue(XSSFRow row, int cellIndex, Double value){
+        XSSFCell cell = row.getCell(cellIndex);
+        if(cell == null){
+            cell = row.createCell(cellIndex);
+        }
+        cell.setCellValue(value);
+    }
+    private void setCellValue(XSSFRow row, int cellIndex, Integer value){
+        XSSFCell cell = row.getCell(cellIndex);
+        if(cell == null){
+            cell = row.createCell(cellIndex);
+        }
+        cell.setCellValue(value);
     }
 }

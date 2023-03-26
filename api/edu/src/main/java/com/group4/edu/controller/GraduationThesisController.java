@@ -78,4 +78,9 @@ public class GraduationThesisController {
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(graduationThesisService.delete(id),HttpStatus.OK);
     }
+
+    @PostMapping("/import-mark")
+    public List<GraduationThesisDto> importMark(@RequestPart MultipartFile file){
+        return graduationThesisService.importMart(file);
+    }
 }

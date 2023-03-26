@@ -16,6 +16,9 @@ public interface GraduationThesisRepository extends JpaRepository<GraduationThes
     @Query("select new com.group4.edu.dto.GraduationThesisDto(e) from GraduationThesis e" +
             " where e.semester.id = ?2 and e.student.id = ?1 and e.semester.active = true")
     List<GraduationThesisDto> getAllByStIdAndSemesterId(Long IdSv, Long semesterId);
+    @Query("select e from GraduationThesis e" +
+            " where e.semester.code = ?2 and e.student.studentCode = ?1 and e.semester.active = true")
+    List<GraduationThesis> getAllByStCodeAndSemesterCode(String stCode, String semesterCode);
 
     @Query("select e from GraduationThesis e" +
             " where e.student.id = ?1 and e.semester.active = true")
