@@ -95,10 +95,8 @@ function Login() {
                 navigate("/sinh-vien-do-an");
               }
                else {
-                setTimeout(() => {
-                  console.log("Bạn không có quyền");
-                },6000)
-                window.location.reload();
+                Variables.pw = password;
+                navigate("/trang-chu-giang-vien");
               }
             }, 500);
           } else {
@@ -152,8 +150,7 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
-                Variables.pw = password;
-                navigate("/trang-chu-giang-vien");
+
               } else {
                 navigate("/sinh-vien-thuc-tap");
               }
