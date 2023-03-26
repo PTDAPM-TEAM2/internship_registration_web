@@ -93,7 +93,7 @@ const ChiTietGV = () => {
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
-                    navigate('/quan-ly-giao-vien/danh-sach-giao-vien')
+                    navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
                 console.error(error);
@@ -111,7 +111,7 @@ const ChiTietGV = () => {
             context.updateLoading(false);
             setTimeout(() => {
                 setShowAlertD(false);
-                navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da')
             }, 1000)
         }
         catch (error) {
