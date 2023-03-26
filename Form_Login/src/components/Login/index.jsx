@@ -188,7 +188,7 @@ function Login() {
   };
   return (
     <div className={styles.bg}>
-      {(context.toggle === true) ? (null) : (showAlert && (
+      {(context.toggle === true && Variables.userRole === "teachers") ? (null) : (showAlert && (
         <div>
           <Alert
             severity="success"
