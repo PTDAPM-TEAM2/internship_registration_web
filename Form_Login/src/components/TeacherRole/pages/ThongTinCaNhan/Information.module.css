@@ -102,7 +102,7 @@ form {
     display: block;
 }
 .txtField{
-    width: 100%;
+    width: 260px;
 }
 
 .txtGender{
@@ -150,7 +150,21 @@ form {
         
     }
     .txtField{
-        width: 100%;
+        width: 260px;
+    }
+
+    .infoAccount {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        border: 1px solid black;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 1600px) and (max-width: 1920px) {
+    .txtField{
+        width: 500px;
     }
 
     .infoAccount {
@@ -165,7 +179,7 @@ form {
 @media (min-width: 1920px) and (max-width: 2560px){
 
     .txtField{
-        width: 300px;
+        width: 460px;
         margin-right: 50px ;
     }
 
@@ -176,14 +190,6 @@ form {
         object-fit: cover;
         overflow: hidden;
         margin-bottom: 20px;
-    }
-    
-    
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
-        
     }
 
     .txt{
@@ -205,11 +211,6 @@ form {
 }
 
 @media (min-width: 2560px){
-    .form {
-        padding-left: 100px;
-        width: 80%;
-        padding-top: 70px;
-    }
 
     .txt{
         width: auto;
@@ -221,7 +222,7 @@ form {
     }
 
     .txtField{
-        width: 400px;
+        width: 460px;
         margin-right: 50px ;
     }
 

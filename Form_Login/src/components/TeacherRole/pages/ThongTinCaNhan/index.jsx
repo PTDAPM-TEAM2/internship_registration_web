@@ -19,14 +19,11 @@ const TTCN = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
-    // const [date, setDate] = React.useState(dayjs());
-      // Declare a state variable for data
     const token = localStorage.getItem('token');
 
     const [data, setData] = useState([]);
     const context = useContext(ThemeContext);
 
-    // const [loading, setLoading] = useState(true);
 
     // Use useEffect hook to fetch data when the component mounts
     useEffect(() => {
@@ -45,7 +42,6 @@ const TTCN = () => {
     // Invoke the async function
     fetchData();
 }, []); // Pass an empty dependency array to run only once
-data.dateOfBirth = new Date(data.dateOfBirth).toLocaleDateString()
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
@@ -95,6 +91,7 @@ data.dateOfBirth = new Date(data.dateOfBirth).toLocaleDateString()
     function toComponent(item) {
         navigate('doi-mat-khau', {state: {item}})
     }
+    data.dateOfBirth = new Date(data.dateOfBirth).toLocaleDateString()
 
     return (
         <div style={{ display: 'flex' }}>
@@ -208,10 +205,6 @@ data.dateOfBirth = new Date(data.dateOfBirth).toLocaleDateString()
                                 <div className={styles.txt}>
                                     <p>Mã giáo viên: </p>
                                     <TextField className={styles.txtField} defaultValue={data?.idNumber} disabled/>
-                                </div>
-                                <div className={styles.txt}>
-                                    <p>Khoa: </p>
-                                    <TextField className={styles.txtField} defaultValue={'CNTT'} disabled/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Mật khẩu: </p>
