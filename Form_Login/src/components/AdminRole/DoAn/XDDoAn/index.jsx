@@ -54,7 +54,7 @@ function DSDA() {
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     function handleGoClick(item) {
-        navigate('/chi-tiet-do-an', { state: { item } });
+        navigate(`/quan-ly-do-an/xet-duyet-do-an/chi-tiet-do-an/${item.id}`, { state: { item } });
         console.log(item);
     }
     const [projects, setProject] = React.useState([]);

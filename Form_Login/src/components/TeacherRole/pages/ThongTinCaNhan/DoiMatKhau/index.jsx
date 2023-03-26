@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Variables from '../../../../../utils/variables';
+import context from 'react-bootstrap/esm/AccordionContext';
 
 const style = {
     position: 'absolute',
@@ -33,22 +34,16 @@ const style = {
     p: 4,
 };
 const PasswordChanging = () => {
-    const [password, setPassword] = useState("");
     const [errorMessages, setErrorMessages] = useState("");
     const token = localStorage.getItem('token');
-    const location = useLocation()
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [messagePw, setMessagePw] = useState("");
+    const [data, setData] = useState(false);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-
 
     const initialValues = {
         oldPassword: '',
@@ -63,19 +58,37 @@ const PasswordChanging = () => {
         reNewPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').oneOf([Yup.ref('newPassword'), null], 'Mật khẩu không trùng khớp!').required('Required'),
     });
 
+    // useEffect(() => {
+
+    //     const fetchData = async () => {
+    //         try {
+    //           // Make a GET request with Axios
+    //           const response = await teacherRoleController.changePassword(initialValues, token);
+    //           // Store the response data in the state variable
+    //           setMessagePw(response.error);
+    //         } catch (error) {
+    //           // Handle error
+    //           console.error(error);
+    //         }
+    //       }
+
+    //     fetchData();
+    // },[])
+
+
     const formik = useFormik({
         initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                await teacherRoleController.changePassword(values, token)
-
+                const response = await teacherRoleController.changePassword(values, token)
+                setMessagePw(response.error);
             } catch (error) {
                 console.log(error);
             }
         },
     })
-
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         setOpen(true);
@@ -107,7 +120,6 @@ const PasswordChanging = () => {
     initialValues.oldPassword = formik.values.oldPassword
     initialValues.newPassword = formik.values.newPassword
     initialValues.reNewPassword = formik.values.reNewPassword
-
     // Declare a state variable for data
     return (
         <div className={styles.form}>

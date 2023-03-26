@@ -46,7 +46,6 @@ const DSSVYC = () => {
       // Invoke the async function
       fetchData();
     }, []); // Pass an empty dependency array to run only once
-
     const navigate = useNavigate();
     function toComponent (item) {
       navigate('chi-tiet-yeu-cau', {state: {item}})

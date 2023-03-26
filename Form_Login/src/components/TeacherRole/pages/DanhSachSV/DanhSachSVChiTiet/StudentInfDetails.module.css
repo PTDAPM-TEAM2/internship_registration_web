@@ -105,6 +105,10 @@
     width: 100px;
 }
 
+.txtTextBottom{
+    width: 250px;
+}
+
 .image{
     width: 160px;
     height: 190px;
@@ -149,6 +153,10 @@
         
     }
     .txtField{
+        width: 100%;
+    }
+
+    .txtBottom{
         width: 100%;
     }
 

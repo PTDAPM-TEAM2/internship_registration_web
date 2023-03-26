@@ -161,10 +161,14 @@ form {
     }
 } */
 
-@media (min-width: 1366px) and (max-width: 1600px) {
+@media (min-width: 1300px) and (max-width: 2000px) {
     .txtField{
-        width: 300px;
+        width: 400px;
         margin-right: 50px ;
+    }
+    
+    .txtTextBottom{
+        width: 100%;
     }
 
     .infoAccount {
@@ -196,7 +200,7 @@ form {
     }
 
     .txtTextBottom{
-        width: 420px;
+        width: 100%;
     }
     
 
@@ -224,6 +228,10 @@ form {
     .txt{
         width: auto;
         text-align: left;
+    }
+
+    .txtTextBottom{
+        width: 100%;
     }
 
     .txtGender{
