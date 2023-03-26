@@ -217,6 +217,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         if(dto.getLecturerId() != null){
             whereClause += " AND (entity.lecturer.id = :lecturerId)";
         }
+        if(dto.getStatus() != null){
+            whereClause += " AND (entity.status = :status)";
+        }
 //        if(dto.getIsAccept() != null){
 //            whereClause += " AND (entity.isAccept = :isAccept)";
 //        }
@@ -238,6 +241,9 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
         }
         if(dto.getFullName() != null && StringUtils.hasText(dto.getFullName())){
             query.setParameter("fullName", '%'+dto.getFullName()+'%');
+        }
+        if(dto.getStatus() != null){
+            query.setParameter("status", dto.getStatus());
         }
 
         List<GraduationThesisDto> entities = query.getResultList();
