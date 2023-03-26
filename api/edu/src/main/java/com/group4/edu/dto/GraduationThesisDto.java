@@ -1,6 +1,11 @@
 package com.group4.edu.dto;
 
 import com.group4.edu.domain.GraduationThesis;
+import com.group4.edu.domain.WeeklyReview;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class GraduationThesisDto extends BaseDto {
@@ -16,6 +21,9 @@ public class GraduationThesisDto extends BaseDto {
     SemesterDto semester;
     LecturerDto lecturer;
 
+    private Set<WeeklyReviewDto> reviews;
+
+    Date submitDay;
     public GraduationThesisDto() {
     }
 
@@ -29,6 +37,7 @@ public class GraduationThesisDto extends BaseDto {
             this.mark3 = entity.getMark3();
             this.avgMark = entity.getAvgMark();
             this.status = entity.getStatus();
+            this.submitDay = entity.getSubmitDay();
             if (entity.getIsAccept() != null)
                 this.isAccept = entity.getIsAccept();
             if (entity.getStudent() != null)
@@ -37,6 +46,12 @@ public class GraduationThesisDto extends BaseDto {
                 this.semester = new SemesterDto(entity.getSemester());
             if (entity.getLecturer() != null) {
                 this.lecturer = new LecturerDto(entity.getLecturer());
+            }
+            if(entity.getReviews() != null && entity.getReviews().size()>0){
+                reviews = new HashSet<>();
+                for(WeeklyReview review: entity.getReviews()){
+                    reviews.add(new WeeklyReviewDto(review,true));
+                }
             }
         }
     }
@@ -51,6 +66,7 @@ public class GraduationThesisDto extends BaseDto {
             this.mark3 = entity.getMark3();
             this.avgMark = entity.getAvgMark();
             this.status = entity.getStatus();
+            this.submitDay = entity.getSubmitDay();
             if (entity.getIsAccept() != null)
                 this.isAccept = entity.getIsAccept();
             if (entity.getSemester() != null)
@@ -147,5 +163,21 @@ public class GraduationThesisDto extends BaseDto {
 
     public void setLecturer(LecturerDto lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Date getSubmitDay() {
+        return submitDay;
+    }
+
+    public void setSubmitDay(Date submitDay) {
+        this.submitDay = submitDay;
+    }
+
+    public Set<WeeklyReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<WeeklyReviewDto> reviews) {
+        this.reviews = reviews;
     }
 }

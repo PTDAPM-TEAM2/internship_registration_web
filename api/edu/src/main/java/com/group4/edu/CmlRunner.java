@@ -240,11 +240,19 @@ public class CmlRunner implements CommandLineRunner{
             roleSet.add(role4);
             roleList = roleRepository.saveAll(roleSet);
         }
-        if (!accountRepository.existsByUserName("admin")) {
+        if (!accountRepository.existsByUserName("ADMIN")) {
             createDefaultUser("ADMIN","ADMIN",1);
+        }
+        if (!accountRepository.existsByUserName("GV01")) {
             createDefaultUser("GV01","GV01",2);
+        }
+        if (!accountRepository.existsByUserName("SV000")) {
             createDefaultUser("SV000","SV000",3);
+        }
+        if (!accountRepository.existsByUserName("SV001")) {
             createDefaultUser("SV001","SV001",4);
+        }
+        if (!accountRepository.existsByUserName("SV002")) {
             createDefaultUser("SV002","SV002",5);
         }
         System.out.println("Danh sach tai khoan mac dinh:");
@@ -255,7 +263,7 @@ public class CmlRunner implements CommandLineRunner{
         System.out.println("Tai khoan co quyen Sinh vien lam ca TT va DA: SV002-SV002");
         System.out.println("**********************************************************");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = formatter.parse(EduConstants.dateInString);
+        Date date = formatter.parse(EduConstants.dateDefaultSemster);
         String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         if(semester  ==  null){
