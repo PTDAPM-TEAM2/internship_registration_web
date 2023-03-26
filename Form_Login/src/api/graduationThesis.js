@@ -96,10 +96,11 @@ class GraduationThesis {
   }
 
 
-  importExcelMark = (token) => {
-    const url = "/api/graduationthesis/import-mark";
+  importExcelMark = (body) => {
+    const url = "api/graduationthesis/import-mark";
+    const token = localStorage.getItem('token');
     return axiosClient
-      .post(url, {
+      .post(url, body, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           "Content-Type":

@@ -30,7 +30,7 @@ function QLSVTT() {
         else {
             context.updateLoading(true);
             try {
-                const response = await userApi.registerTimeDA({
+                const response = await userApi.registerTimeTT({
                     timeStart: startDate,
                     timeEnd: dueDate,
                 }, context.token);

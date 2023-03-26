@@ -109,6 +109,7 @@ function Sidebar() {
     const handleLogout = () => {
         navigate('/dang-nhap');
         localStorage.removeItem('token');
+        context.setActiveButton('trang-chu');
     }
 
     const { id } = useParams()
