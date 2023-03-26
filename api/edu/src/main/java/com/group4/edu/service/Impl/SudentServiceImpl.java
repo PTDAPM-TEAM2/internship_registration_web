@@ -5,6 +5,7 @@ import com.group4.edu.domain.*;
 import com.group4.edu.dto.*;
 import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.repositories.*;
+import com.group4.edu.service.InternshipService;
 import com.group4.edu.service.MailService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
@@ -54,6 +55,8 @@ public class SudentServiceImpl implements StudentService {
     private IntershipRepository intershipRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private InternshipService internshipService;
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -192,7 +195,13 @@ public class SudentServiceImpl implements StudentService {
 //                account.getRoles().add(roleTT);
 //            }
 //        }
-        return new StudentDto(studentRepository.save(entity));
+        entity = studentRepository.save(entity);
+        if(studentDto.getRegisterinternship() != null && studentType == 2){
+            studentDto.getRegisterinternship().setStudentCode(entity.getStudentCode());
+            studentDto.getRegisterinternship().setInternshipPosition("Lao công");
+            internshipService.registerOrUpdateIntership(studentDto.getRegisterinternship(),null);
+        }
+        return new StudentDto(entity);
     }
 
     @Override
