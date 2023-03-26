@@ -190,7 +190,6 @@ export default function Dashboard() {
                     Variables.userRole === 'admin' ?
                         (location.pathname === '/quan-ly-sinh-vien-thuc-tap' ||
                             location.pathname === '/quan-ly-cong-ty' ||
-                            location.pathname === '/quan-ly-giao-vien-tt' ||
                             location.pathname === '/quan-ly-sinh-vien-tt')
                         // teachers role
                         : Variables.userRole === 'teachers' ?

@@ -134,10 +134,10 @@ class StudentApi {
       .then((res) => res);
   };
 
-  addSVDA = (data, token) => {
+  addSVDA = (body, token) => {
     const url = "api/student/save/da";
     return axiosClient
-      .post(url, data, {
+      .post(url, body, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           'Content-Type': 'application/json'
@@ -146,11 +146,11 @@ class StudentApi {
       .then((res) => res);
   };
 
-  updateSVDA = (params, id) => {
+  updateSVDA = (body, id) => {
     const url = `api/student/update/da/${id}`;
     const token = localStorage.getItem('token');
     return axiosClient
-      .post(url, params, {
+      .post(url, body, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           // 'Content-Type': 'application/json'
@@ -189,11 +189,11 @@ class StudentApi {
       .then((res) => res);
   };
 
-  updateSVTT = (params, id) => {
+  updateSVTT = (body, id) => {
     const url = `api/student/update/tt/${id}`;
     const token = localStorage.getItem('token');
     return axiosClient
-      .post(url, params, {
+      .post(url, body, {
         headers: {
           Authorization: "Bearer " + token, //the token is a variable which holds the token
           // 'Content-Type': 'application/json'
@@ -216,6 +216,17 @@ class StudentApi {
       .then((res) => res);
     // day la ham update
   };
+
+  getInternshipTime = (token) => {
+    const url = `/api/registertime/get-last-registertime-internship`;
+    return axiosClient
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  }
 
 }
 

@@ -80,6 +80,17 @@ class GraduationThesis {
     return axiosClient.post(url,data, {
       headers: {
         Authorization: "Bearer " + token,
+        "Content-Type":
+              "multipart/form-data; boundary=<calculated when request is sent>",
+      }
+    }).then((res) => res);
+  }
+
+  getRegTime = (token) => {
+    const url = `/api/registertime/get-last-registertime`
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: "Bearer " + token,
       }
     }).then((res) => res);
   }
