@@ -72,7 +72,7 @@ function Login() {
             var userInfoTT = await userApi.getInfo(tk);
             context.checkToken(tk);
             localStorage.setItem("token", tk);
-            
+
             context.updateLoading(false);
             setShowAlert(true);
             setErrorMessage("");
@@ -84,7 +84,7 @@ function Login() {
             else if (userInfoTT.roles[0].role === "STUDENT_DA" || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
             }
-            
+
             else {
               Variables.userRole = "teachers";
             }
@@ -131,7 +131,7 @@ function Login() {
             if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
             }
-            else if (userInfoTT.roles[0].role === "STUDENT_TT"  || userInfoTT.roles.length === 2) {
+            else if (userInfoTT.roles[0].role === "STUDENT_TT" || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
             }
             else {
@@ -285,16 +285,16 @@ function Login() {
               </div>
               <div className={styles.switch}>
                 <span
-                  onClick={handleClickTT}
-                  className={context.toggle === false ? styles.active : {}}
-                >
-                  Thực tập
-                </span>
-                <span
                   onClick={handleClickDA}
                   className={context.toggle === true ? styles.active : {}}
                 >
                   Đồ án
+                </span>
+                <span
+                  onClick={handleClickTT}
+                  className={context.toggle === false ? styles.active : {}}
+                >
+                  Thực tập
                 </span>
               </div>
               <button className={styles.btnSubmit}>Đăng nhập</button>

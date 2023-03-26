@@ -58,14 +58,14 @@ const columns = [
 const ChiTietCT = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [checkboxes, setCheckboxes] = React.useState([]);
     const navigate = useNavigate();
-
+    
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
     const { idSV } = useParams();
-
+    
+    const [checkboxes, setCheckboxes] = React.useState([]);
     const handleCheckboxChange = (id, isChecked) => {
         if (isChecked) {
             setCheckboxes(checkboxes.concat(id));
@@ -103,6 +103,7 @@ const ChiTietCT = () => {
         context.updateLoading(true);
         try {
             const response = await companyApi.addSV(body);
+            console.log(response);
             setOpen(false);
             setShowAlert(true);
             setTimeout(() => {

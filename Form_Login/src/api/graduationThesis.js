@@ -83,6 +83,20 @@ class GraduationThesis {
       }
     }).then((res) => res);
   }
+
+
+  importExcelMark = (token) => {
+    const url = "/api/graduationthesis/import-mark";
+    return axiosClient
+      .post(url, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+          "Content-Type":
+            "multipart/form-data; boundary=<calculated when request is sent>",
+        },
+      })
+      .then((res) => res);
+  };
 }
 
 const graduationThesis = new GraduationThesis();

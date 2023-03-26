@@ -79,7 +79,7 @@ const ChiTietGV = () => {
         lecturersCode: state.item.lecturersCode || '',
         numGrTh: state.item.numGrTh || '',
         //van de quan trong
-        password: '********',
+        password: '',
     };
 
     const formik = useFormik({
@@ -111,7 +111,7 @@ const ChiTietGV = () => {
             context.updateLoading(false);
             setTimeout(() => {
                 setShowAlertD(false);
-                navigate('/quan-ly-giang-vien-da/danh-sach-giang-vien-da')
+                navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
             }, 1000)
         }
         catch (error) {

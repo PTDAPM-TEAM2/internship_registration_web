@@ -89,6 +89,21 @@ class LecturerApi {
     // new res.status == 400 (!= 200) thi loi
   };
 
+  addSV = (body) => {
+    const url = "api/graduationthesis/setLecturerToStudent";
+    const token = localStorage.getItem("token");
+    return axiosClient
+      .post(url, body, {
+        headers:
+        {
+          Authorization: "Bearer " + token,
+        },
+      }
+      )
+  }
+
+
+
 }
 
 const lecturerApi = new LecturerApi();

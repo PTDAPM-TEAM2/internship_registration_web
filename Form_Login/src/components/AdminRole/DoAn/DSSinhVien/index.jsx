@@ -166,8 +166,8 @@ function DSSV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10} onClick={() => handleFilterGV(1)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
-                                    <MenuItem value={20} onClick={() => handleFilterGV(2)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={10} onClick={() => handleFilterGV(2)}>Sinh viên chưa có giảng viên hướng dẫn</MenuItem>
+                                    <MenuItem value={20} onClick={() => handleFilterGV(1)}>Sinh viên đã có giảng viên hướng dẫn</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
