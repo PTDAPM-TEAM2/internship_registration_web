@@ -109,7 +109,7 @@ function Sidebar() {
 
     const handleLogout = () => {
         navigate('/dang-nhap');
-        context.updateAuth(false);
+        localStorage.removeItem('token');
     }
 
     const { id } = useParams()
@@ -252,19 +252,19 @@ function Sidebar() {
                     (check === 'admin' ?
                         (location.pathname === '/quan-ly-do-an-sinh-vien' ||
                             location.pathname === '/quan-ly-do-an' ||
-                            location.pathname === '/quan-ly-giao-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien' ||
                             location.pathname === '/quan-ly-sinh-vien-da' ||
                             location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' ||
-                            location.pathname === '/quan-ly-giao-vien-da/danh-sach-giao-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien/danh-sach-giang-vien' ||
                             location.pathname === '/quan-ly-do-an/xet-duyet-do-an' ||
-                            location.pathname === '/chi-tiet-do-an' ||
-                            location.pathname === '/them-sinh-vien-da' ||
-                            location.pathname === '/them-giang-vien-da' ||
-                            location.pathname === `/chi-tiet-sinh-vien-da/${id}` ||
-                            location.pathname === `/chi-tiet-giang-vien/${id}` ||
+                            location.pathname === `/quan-ly-do-an/xet-duyet-do-an/chi-tiet-do-an/${id}` ||
+                            location.pathname === '/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/them-sinh-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien/danh-sach-giang-vien/them-giang-vien' ||
+                            location.pathname === `/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/chi-tiet-sinh-vien-da/${id}` ||
+                            location.pathname === `/quan-ly-giang-vien/danh-sach-giang-vien/chi-tiet-giang-vien/${id}` ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an' ||
                             location.pathname === '/quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' ||
-                            location.pathname === '/quan-ly-giao-vien-da/du-lieu-giao-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien/du-lieu-giang-vien' ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
                         :
                             // students role
@@ -332,7 +332,7 @@ function Sidebar() {
                             check !== 'teachers' ?
                                 <ListItem disablePadding>
                                     <Link
-                                        to={check === 'admin' ? "/quan-ly-giao-vien-da" : '/sinh-vien-do-an/nop-de-cuong'}
+                                        to={check === 'admin' ? "/quan-ly-giang-vien" : '/sinh-vien-do-an/nop-de-cuong'}
                                         style={{ width: '100%', textDecoration: 'none' }}
                                         onClick={() => {
                                             handleItemClick('QLGV')
@@ -342,7 +342,7 @@ function Sidebar() {
                                             <ListItemIcon>
                                                 <GroupRoundedIcon className={styles.icon} />
                                             </ListItemIcon>
-                                            <ListItemText primary={check === 'admin' ? 'Quản lý giáo viên' : 'Nộp đề cương'} />
+                                            <ListItemText primary={check === 'admin' ? 'Quản lý giảng viên' : 'Nộp đề cương'} />
                                         </ListItemButton>
                                     </Link >
                                 </ListItem> : (null)
@@ -380,11 +380,11 @@ function Sidebar() {
                         location.pathname === '/danh-sach-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-cong-ty/du-lieu-cong-ty' ||
                         location.pathname === '/quan-ly-cong-ty/danh-sach-cong-ty' ||
-                        location.pathname === `/chi-tiet-cong-ty/${id}` ||
-                        location.pathname === '/them-sinh-vien-tt' ||
+                        location.pathname === `/quan-ly-cong-ty/danh-sach-cong-ty/chi-tiet-cong-ty/${id}` ||
+                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' ||
-                        location.pathname === `/chi-tiet-sinh-vien-tt/${id}`
+                        location.pathname === `/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${id}`
 
                     ) :
                     // teachers role

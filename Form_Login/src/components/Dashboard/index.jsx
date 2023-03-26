@@ -109,7 +109,7 @@ export default function Dashboard() {
                     Variables.userRole === 'admin' ?
                         (location.pathname === '/quan-ly-do-an-sinh-vien' ||
                             location.pathname === '/quan-ly-do-an' ||
-                            location.pathname === '/quan-ly-giao-vien-da' ||
+                            location.pathname === '/quan-ly-giang-vien' ||
                             location.pathname === '/quan-ly-sinh-vien-da') :
                         // students role
                         (location.pathname === '/sinh-vien-do-an')
@@ -142,7 +142,7 @@ export default function Dashboard() {
                             </div>
                             <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === 'admin' ? "Giáo viên" : Variables.userRole === 'teachers' ? "Danh Sách Sinh Viên" : "Nộp đề cương"}</p>
+                                    <p>{Variables.userRole === 'admin' ? "Giảng viên" : Variables.userRole === 'teachers' ? "Danh Sách Sinh Viên" : "Nộp đề cương"}</p>
                                 </div>
                                 <div className={styles.bgDB2}>
                                     <PeopleIcon style={{ fontSize: 130 }} />

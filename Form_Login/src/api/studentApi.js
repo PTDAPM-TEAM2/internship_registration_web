@@ -176,6 +176,8 @@ class StudentApi {
   };
 
   addSVTT = (data, token) => {
+    console.log('value');
+    console.log(data);
     const url = "api/student/save/tt";
     return axiosClient
       .post(url, data, {

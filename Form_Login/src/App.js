@@ -43,10 +43,9 @@ import SInformationDetails from './components/TeacherRole/pages/DanhSachSV/DanhS
 import PInformationDetails from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet';
 import ProcessEvaluation from './components/TeacherRole/pages/DanhSachDoAn/DanhSachDAChiTiet/DanhGiaTienTrinh';
 import PasswordChanging from './components/TeacherRole/pages/ThongTinCaNhan/DoiMatKhau';
-import Loading from './components/Loading/Loading.js'
 import { useContext } from 'react';
 import { ThemeContext } from './components/Theme/Theme.jsx';
-import { PrivateWrapper } from './Route/route.js';
+import PrivateWrapper from './Route/route.js';
 import SVDA from './components/StudentRole/SVDA';
 import SVTT from './components/StudentRole/SVTT';
 import TTSV from './components/StudentRole/SVDA/DoAnSV/ThongTinCN';
@@ -59,7 +58,7 @@ import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
 import DKDA from './components/StudentRole/SVDA/DoAnSV/DangKyDA';
 function App() {
-  
+
 
   const context = useContext(ThemeContext);
   return (
@@ -72,38 +71,37 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
               <Route path='/dang-nhap' element={<Login />} />
-              <Route element={<PrivateWrapper auth={{ isAuthenticated: context.auth }} />}>
+              <Route element={<PrivateWrapper />}>
                 <Route path='/' element={<Layout />}>
                   <Route path='quan-ly-do-an-sinh-vien' element={<QLDASV />} />
                   <Route path='quan-ly-sinh-vien-thuc-tap' element={<QLTTSV />} />
                   <Route path='quan-ly-do-an' element={<QLDA />} />
-                  <Route path='quan-ly-giao-vien-da' element={<QLGV />} />
+                  <Route path='quan-ly-giang-vien' element={<QLGV />} />
                   <Route path='quan-ly-sinh-vien-da' element={<QLSV />} />
                   <Route path='quan-ly-cong-ty' element={<QLCT />} />
                   <Route path='quan-ly-sinh-vien-tt' element={<QLSVTT />} />
-                  <Route path='quan-ly-giao-vien-tt' element={<QLGVTT />} />
                   <Route path='quan-ly-do-an/xet-duyet-do-an' element={<XDDA />} />
                   <Route path='quan-ly-do-an/danh-sach-do-an' element={<DSDA />} />
                   <Route path='quan-ly-sinh-vien-da/danh-sach-sinh-vien-da' element={<DSSVDA />} />
-                  <Route path='quan-ly-giao-vien-da/danh-sach-giao-vien-da' element={<DSGVDA />} />
+                  <Route path='quan-ly-giang-vien/danh-sach-giang-vien' element={<DSGVDA />} />
                   <Route path='quan-ly-sinh-vien-da/du-lieu-sinh-vien-da' element={<DLSVDA />} />
-                  <Route path='quan-ly-giao-vien-da/du-lieu-giao-vien-da' element={<DLGVDA />} />
+                  <Route path='quan-ly-giang-vien/du-lieu-giang-vien' element={<DLGVDA />} />
                   <Route path='quan-ly-do-an/danh-sach-do-an/nhap-diem-sv' element={<NDSV />} />
                   <Route path='quan-ly-cong-ty/du-lieu-cong-ty' element={<DLCT />} />
                   <Route path='quan-ly-cong-ty/danh-sach-cong-ty' element={<DSCT />} />
                   <Route path='quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' element={<DLSVTT />} />
                   <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' element={<DSSVTT />} />
-                  <Route path='trang-chu-giang-vien' element={<TCGV />}></Route >
+
+                  <Route path='quan-ly-giang-vien/danh-sach-giang-vien/them-giang-vien' element={<ThemGV />} />
+                  <Route path='quan-ly-giang-vien/danh-sach-giang-vien/chi-tiet-giang-vien/:id' element={<CTGV />} />
+                  <Route path='quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/them-sinh-vien-da' element={<ThemSV />} />
+                  <Route path='quan-ly-sinh-vien-da/danh-sach-sinh-vien-da/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
+                  <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt' element={<ThemSVTT />} />
+                  <Route path='quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/:id' element={<CTSVTT />} />
+                  <Route path='quan-ly-cong-ty/danh-sach-cong-ty/chi-tiet-cong-ty/:id' element={<CTCT />} />
+                  <Route path='quan-ly-do-an/xet-duyet-do-an/chi-tiet-do-an/:id' element={<CTXD />} />
                 </Route >
               </Route>
-              <Route path='/them-giang-vien-da' element={<ThemGV />} />
-              <Route path='/them-sinh-vien-da' element={<ThemSV />} />
-              <Route path='/them-sinh-vien-tt' element={<ThemSVTT />} />
-              <Route path='/chi-tiet-sinh-vien-da/:id' element={<CTSV />} />
-              <Route path='/chi-tiet-sinh-vien-tt/:id' element={<CTSVTT />} />
-              <Route path='/chi-tiet-giang-vien/:id' element={<CTGV />} />
-              <Route path='/chi-tiet-cong-ty/:id' element={<CTCT />} />
-              <Route path='/chi-tiet-do-an' element={<CTXD />} />
             </Routes>
           </Router>)
           :
@@ -138,20 +136,20 @@ function App() {
                 <Route path='/dang-nhap' element={<Login />} />
                 <Route path='/' element={<Layout />}>
                   {/* Main screen */}
-                    <Route path='sinh-vien-do-an' element={<SVDA />}></Route>
-                    <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
+                  <Route path='sinh-vien-do-an' element={<SVDA />}></Route>
+                  <Route path='sinh-vien-thuc-tap' element={<SVTT />}></Route>
                   {/* Chuyen huong do an sinh vien */}
-                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
-                    <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
-                    <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
-                    <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
-                    <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
+                  <Route path='sinh-vien-do-an/thong-tin-sinh-vien' element={<TTSV />}></Route>
+                  <Route path='sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMK />}></Route>
+                  <Route path='sinh-vien-do-an/dang-ky-do-an' element={<DKDA />}></Route>
+                  <Route path='sinh-vien-do-an/nop-de-cuong' element={<DC />}></Route>
+                  <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
                   {/* Chuyen huong thuc tap sinh vien */}
-                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
-                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMKTT />}></Route>
-                    <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
-                    <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
-                  </ Route>
+                  <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
+                  <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<TDMKTT />}></Route>
+                  <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
+                  <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
+                </ Route>
               </ Routes>
             </Router>
       }

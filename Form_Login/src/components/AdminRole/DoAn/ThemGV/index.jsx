@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ThemGV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -93,7 +92,6 @@ const ThemGV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>

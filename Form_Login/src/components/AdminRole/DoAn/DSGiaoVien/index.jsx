@@ -50,7 +50,7 @@ function DSGV() {
     const context = useContext(ThemeContext);
 
     function handleGo() {
-        navigate('/them-giang-vien-da');
+        navigate('/quan-ly-giang-vien/danh-sach-giang-vien/them-giang-vien');
     }
     const [value, setValue] = React.useState('');
 
@@ -58,7 +58,7 @@ function DSGV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/chi-tiet-giang-vien/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-giang-vien/danh-sach-giang-vien/chi-tiet-giang-vien/${item.id}`, { state: { item } });
     }
 
     const [lecturers, setLecturer] = React.useState([]);
@@ -77,36 +77,23 @@ function DSGV() {
         getAllItem()
     }, []);
 
-    // const [numOfSinL, setNumOfSinL] = React.useState(0);
-    // const body = {
-    //     numberOfStudentsInLecturer: numOfSinL,
-    // }
-    // const handleFilterGV = async (newValue) => {
-    //     setNumOfSinL(newValue);
-    //     context.updateLoading(true);
-    //     try {
-    //         const response = await lecturerApi.filter(body);
-    //         setLecturer(response);
-    //         context.updateLoading(false);
-    //         console.log(body);
-    //     }
-    //     catch (err) {
-    //         context.updateLoading(false);
-    //         console.log(err);
-    //     }
-    // }
+    const [numOfSinL, setNumOfSinL] = React.useState(0);
+    const body = {
+        numberOfStudentsInLecturer: numOfSinL,
+    }
+    const handleFilterGV = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await lecturerApi.filter(body);
+            setLecturer(response);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            context.updateLoading(false);
+            console.log(err);
+        }
+    }
 
-    // const handleGetAll = async () => {
-    //     context.updateLoading(true);
-    //     try {
-    //         const response = await lecturerApi.getAllGV();
-    //         setLecturer(response);
-    //         context.updateLoading(false);
-    //     } catch (error) {
-    //         context.updateLoading(false);
-    //         console.error('Error fetching data:', error);
-    //     }
-    // }
 
     const [search, setSearch] = React.useState("");
     const [filteredData, setFilteredData] = React.useState([]);
@@ -144,9 +131,12 @@ function DSGV() {
                                     onChange={handleChange}
                                     label="Lọc"
                                 >
-                                    <MenuItem value={10} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={20} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
-                                    <MenuItem value={30} >Tất cả</MenuItem>
+                                    <MenuItem value={10} onClick={() => {
+                                        setNumOfSinL(1)
+                                        handleFilterGV()}} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                    <MenuItem value={20} onClick={() => {
+                                        setNumOfSinL(0)
+                                        handleFilterGV()}} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>

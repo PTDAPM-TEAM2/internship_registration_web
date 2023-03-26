@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -35,17 +34,16 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    gender: Yup.string().required(),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/).required(),
-    dateOfBirth: Yup.date().max(new Date()).required(),
-    // placeOfBitrh: Yup.string().required(),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/).required(),
-    studentCode: Yup.string().required(),
-    grade: Yup.object().required(),
-    // semester: Yup.string().required(),
-    password: Yup.string().required(),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    password: Yup.string().trim().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietSV = () => {
@@ -91,7 +89,7 @@ const ChiTietSV = () => {
         grade: grade,
         internship: internship,
         //van de quan trong
-        password: '********',
+        password: '',
     };
     const token = localStorage.getItem('token');
     const [companies, setCompanies] = React.useState([]);
@@ -173,7 +171,6 @@ const ChiTietSV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết sinh viên</p>
@@ -193,6 +190,7 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.gender}
                                         error={formik.touched.gender && Boolean(formik.errors.gender)}
+                                        helperText={formik.touched.gender && formik.errors.gender}
                                         select
                                         sx={{ width: 150, textAlign: 'left' }}
                                     >
@@ -214,6 +212,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -225,6 +225,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
+                                        helperText={formik.touched.idNumber && formik.errors.idNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -237,6 +239,8 @@ const ChiTietSV = () => {
                                             format="YYYY/MM/DD"
                                             maxDate={new Date()}
                                             error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -249,6 +253,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
+                                        helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -260,6 +266,8 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -271,6 +279,8 @@ const ChiTietSV = () => {
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && formik.errors.email}
+
                                     />
                                 </div>
                             </div>
@@ -297,18 +307,16 @@ const ChiTietSV = () => {
                                     name='internship.company'
                                     value={formik.values.internship.company}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.company && Boolean(formik.errors.company)}
                                 >
                                     {companies.map((option) => (
                                         <MenuItem key={option.id} value={option}>
                                             {option.nameCompany}
-                                            {console.log(option.id)}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.start'>Kết thúc: </label>
+                                <label htmlFor='internship.start'>Bắt đầu: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
@@ -321,8 +329,6 @@ const ChiTietSV = () => {
                                         // onChange={formik.handleChange}
                                         // name='internship.start'
                                         format="YYYY/MM/DD"
-                                        maxDate={new Date()}
-
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -369,8 +375,6 @@ const ChiTietSV = () => {
                                         // onChange={formik.handleChange}
                                         // name='internship.end'
                                         format="YYYY/MM/DD"
-                                        maxDate={new Date()}
-
                                     />
                                 </LocalizationProvider>
                             </div>

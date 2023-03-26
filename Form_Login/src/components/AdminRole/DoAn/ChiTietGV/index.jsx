@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -124,7 +123,6 @@ const ChiTietGV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>
@@ -278,7 +276,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight:20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

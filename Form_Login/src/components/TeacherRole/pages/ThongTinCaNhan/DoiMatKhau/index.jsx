@@ -78,13 +78,13 @@ const PasswordChanging = () => {
 
     const formik = useFormik({
         initialValues,
-        validationSchema: validationSchema,
+        // validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
                 const response = await teacherRoleController.changePassword(values, token)
-                setMessagePw(response.error);
+                // setMessagePw(response.error);
             } catch (error) {
-                console.log(error);
+                console.log(error.response);
             }
         },
     })
@@ -170,7 +170,7 @@ const PasswordChanging = () => {
                             </div>
                             <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} type="submit" onClick={handleSubmit}>Cập nhật</button>
+                                    <button className={styles.button} type="submit" >Cập nhật</button>
                                 </div>
                             </div>
                         </div>

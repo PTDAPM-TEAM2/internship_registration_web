@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
 import styles from './ThemSVTT.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -17,34 +16,8 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import AlertMessage from '../../DoAn/ThemSV/Alert';
 
-const internship = {
-    start: '',
-    end: '',
-    company: '',
-}
-const grade = {
-    name: ''
-}
-const genders = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-];
-const initVl = {
-    urlImg: '',
-    fullName: '',
-    gender: '',
-    idNumber: '',
-    dateOfBirth: new Date(),
-    placeOfBitrh: '',
-    phoneNumber: '',
-    email: '',
-    studentCode: '',
-    grade: grade,
-    password: '',
-    internship: internship
 
-};
+
 const validationSchema = Yup.object({
     fullName: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
@@ -62,6 +35,8 @@ const ThemSVTT = () => {
     // const [message, setMessage] = React.useState('');
     // const [errorMessages, setErrorMessages] = React.useState('');
     const [showAlert, setShowAlert] = React.useState(null);
+    const [start, setStart] = React.useState('');
+    const [end, setEnd] = React.useState('');
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
     const [imageUrl, setImageUrl] = React.useState(null);
@@ -73,6 +48,34 @@ const ThemSVTT = () => {
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
 
+    };
+    const internship = {
+        start: start,
+        end: end,
+        company: '',
+    }
+    const grade = {
+        name: ''
+    }
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
+    const initVl = {
+        urlImg: '',
+        fullName: '',
+        gender: '',
+        idNumber: '',
+        dateOfBirth: new Date(),
+        placeOfBitrh: '',
+        phoneNumber: '',
+        email: '',
+        studentCode: '',
+        grade: grade,
+        password: '',
+        internship: internship
+    
     };
 
     const [companies, setCompanies] = React.useState([]);
@@ -115,6 +118,7 @@ const ThemSVTT = () => {
         initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            console.log(values.internship);
             context.updateLoading(true);
             try {
                 const response = await studentApi.addSVTT(JSON.stringify(values), token);
@@ -136,10 +140,11 @@ const ThemSVTT = () => {
         },
     })
 
+   
+
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
@@ -305,19 +310,22 @@ const ThemSVTT = () => {
                                     id='internship'
                                     name='internship'
                                     value={formik.values.internship}
-                                    onChange={formik.handleChange}
+                                    onChange={(e) => {
+                                        formik.handleChange(e);
+                                        initVl.internship.company = e.target.value;
+                                        console.log(initVl.internship.company);
+                                    }}
                                     error={formik.touched.internship && Boolean(formik.errors.internship)}
                                 >
                                     {companies.map((option) => (
                                         <MenuItem key={option.id} value={option}>
                                             {option.nameCompany}
-                                            {console.log(option.id)}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='start'>Bắt đầu: </label>
+                                <label htmlFor='internship.start'>Bắt đầu: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
@@ -325,13 +333,16 @@ const ThemSVTT = () => {
                                             className={styles.txtFieldBot}
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
-                                        value={formik.values.internship.start}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
+
+                                        value={start}
+                                        onChange={(e) => {
+                                            setStart(e);                                           
+                                            internship.start = e; 
+                                            initVl.internship.start = e;                                             
+                                        }}
                                         // onChange={formik.handleChange}
                                         // name='internship.start'
                                         format="YYYY/MM/DD"
-                                        maxDate={new Date()}
-
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -366,7 +377,7 @@ const ThemSVTT = () => {
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='end'>Kết thúc: </label>
+                                <label htmlFor='internship.end'>Kết thúc: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
@@ -374,13 +385,12 @@ const ThemSVTT = () => {
                                             className={styles.txtFieldBot}
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
-                                        value={formik.values.internship.end}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.end', value: value } })}
-                                        // onChange={formik.handleChange}
-                                        // name='internship.end'
+                                        value={end}
+                                        onChange={(e) => {
+                                            setEnd(e);                                           
+                                            internship.end = e;                                            
+                                        }}
                                         format="YYYY/MM/DD"
-                                        maxDate={new Date()}
-
                                     />
                                 </LocalizationProvider>
                             </div>

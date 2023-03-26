@@ -62,7 +62,7 @@ function DSSV() {
     const context = useContext(ThemeContext);
     const [students, setStudent] = React.useState([]);
     function handleMoveAdd() {
-        navigate('/them-sinh-vien-tt');
+        navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt');
     }
     const [value, setValue] = React.useState('');
 
@@ -70,7 +70,7 @@ function DSSV() {
         setValue(event.target.value);
     };
     function handleGoClick(item) {
-        navigate(`/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
+        navigate(`/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${item.id}`, { state: { item } });
     }
 
     const token = localStorage.getItem('token');
@@ -101,21 +101,6 @@ function DSSV() {
         catch (err) {
             console.log(err);
             context.updateLoading(false);
-
-        }
-    }
-
-    const handleGetAll = async () => {
-        context.updateLoading(true);
-        try {
-            const response = await studentApi.getAllSvTt(null, token);
-            setStudent(response);
-            context.updateLoading(false);
-        }
-        catch (err) {
-            console.log(err);
-            context.updateLoading(false);
-
         }
     }
 
@@ -158,7 +143,6 @@ function DSSV() {
                                 >
                                     <MenuItem value={10} onClick={() => handleFilterGV(3)}>Sinh viên chưa có công ty thực tập</MenuItem>
                                     <MenuItem value={20} onClick={() => handleFilterGV(4)}>Sinh viên đã có công ty thực tập</MenuItem>
-                                    <MenuItem value={30} onClick={handleGetAll}>Tất cả</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
