@@ -35,10 +35,10 @@ function Login() {
   const navigate = useNavigate();
   const context = useContext(ThemeContext);
   const handleClickTT = () => {
-    context.updateToggle(false);
+    context.updateToggle(true);
   };
   const handleClickDA = () => {
-    context.updateToggle(true);
+    context.updateToggle(false);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +61,7 @@ function Login() {
     if (username === "" || password === "") {
       setErrorMessage("Nhập thiếu thông tin! Vui lòng nhập lại!");
     } else {
-      if (context.toggle === true) {
+      if (context.toggle === false) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginDA({
@@ -121,7 +121,7 @@ function Login() {
             }
           }
         }
-      } else if (context.toggle === false) {
+      } else if (context.toggle === true) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginTT({
@@ -304,13 +304,13 @@ function Login() {
               <div className={styles.switch}>
                 <span
                   onClick={handleClickDA}
-                  className={context.toggle === true ? styles.active : {}}
+                  className={context.toggle === false ? styles.active : {}}
                 >
                   Đồ án
                 </span>
                 <span
                   onClick={handleClickTT}
-                  className={context.toggle === false ? styles.active : {}}
+                  className={context.toggle === true ? styles.active : {}}
                 >
                   Thực tập
                 </span>
