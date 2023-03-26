@@ -13,7 +13,7 @@ const styleTextField = {
 function TTSVTT() {
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate('/thuc-tap-sinh-vien/thong-tin-sinh-vien/thay-doi-mat-khau');
+        navigate('/sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau');
     }
     const token = localStorage.getItem('token');
     const [SV, setSV] = React.useState([]);
