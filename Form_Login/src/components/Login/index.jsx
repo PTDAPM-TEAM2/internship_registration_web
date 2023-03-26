@@ -93,8 +93,12 @@ function Login() {
                 navigate("/quan-ly-do-an-sinh-vien");
               } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-do-an");
-              } else {
-                navigate("/trang-chu-giang-vien");
+              }
+               else {
+                setTimeout(() => {
+                  console.log("Bạn không có quyền");
+                },6000)
+                window.location.reload();
               }
             }, 500);
           } else {
@@ -185,7 +189,21 @@ function Login() {
   };
   return (
     <div className={styles.bg}>
-      {showAlert && (
+      {(context.toggle === true && Variables.userRole == 'teachers') ? (showAlert && (
+        <div>
+          <Alert
+            severity="warning"
+            sx={{
+              position: "absolute",
+              width: "40%",
+              top: "3%",
+              right: "1%",
+            }}
+          >
+            <AlertTitle>Bạn không có quyền vào mục này</AlertTitle>
+          </Alert>
+        </div>
+      )) : (showAlert && (
         <div>
           <Alert
             severity="success"
@@ -199,7 +217,7 @@ function Login() {
             <AlertTitle>Đăng nhập thành công</AlertTitle>
           </Alert>
         </div>
-      )}
+      ))}
       <Grid
         container
         columns={12}
