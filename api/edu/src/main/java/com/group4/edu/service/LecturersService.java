@@ -12,4 +12,5 @@ public interface LecturersService {
     List<LecturerDto> getLecturerByFilter(SearchObjectDto dto);
    boolean deleteLt(Long id);
    List<LecturerDto> importExcel(MultipartFile file);
+
 }

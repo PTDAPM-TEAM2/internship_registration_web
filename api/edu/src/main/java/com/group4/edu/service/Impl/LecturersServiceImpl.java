@@ -123,8 +123,23 @@ public class LecturersServiceImpl implements LecturersService {
 
     @Override
     public List<LecturerDto> getLecturerByFilter(SearchObjectDto dto) {
-        String whereClause = " where true = true ";
         String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        if(dto != null && dto.getNumberOfStudentsInLecturer() != null){
+            int type = dto.getNumberOfStudentsInLecturer();
+            List<Lecturer> lecturers = lecturerRepository.findAll();
+            List<LecturerDto>lecturerDtos = new ArrayList<>();
+            for(Lecturer lecturer: lecturers){
+                Integer x = thesisRepository.countGraduationByLecturerIdandSemesterCode(lecturer.getId(),semesterCode);
+                if(x<30 && type==0){
+                    lecturerDtos.add(new LecturerDto(lecturer));
+                }
+                if(x>=30 && type == 1){
+                    lecturerDtos.add(new LecturerDto(lecturer));
+                }
+            }
+            return lecturerDtos;
+        }
+        String whereClause = " where true = true ";
         String sql = "SELECT new com.group4.edu.dto.LecturerDto(tbl_lecturer) FROM Lecturer as tbl_lecturer";
 
 
@@ -133,17 +148,16 @@ public class LecturersServiceImpl implements LecturersService {
                 whereClause += " AND (tbl_lecturer.fullName like :fullName)";
             }
 
-            if (dto.getNumberOfStudentsInLecturer() != null) {
-                sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
-                whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
-                if (dto.getNumberOfStudentsInLecturer() == 0)
-                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
-                if (dto.getNumberOfStudentsInLecturer() == 1)
-                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) = 30";
-                if (dto.getNumberOfStudentsInLecturer() == 2)
-                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) > 30";
-            }
-
+//            if (dto.getNumberOfStudentsInLecturer() != null) {
+//                sql += " inner join GraduationThesis entity on entity.lecturer.id = tbl_lecturer.id  ";
+//                whereClause += " and (entity.status = 1 or entity.status = 2 and entity.semester.code =:semesterCode)";
+//                if (dto.getNumberOfStudentsInLecturer() == 0)
+//                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) < 30";
+//                if (dto.getNumberOfStudentsInLecturer() == 1)
+//                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) = 30";
+//                if (dto.getNumberOfStudentsInLecturer() == 2)
+//                    whereClause += " group by tbl_lecturer.id HAVING COUNT(entity.id) > 30";
+//            }
         }
         sql += whereClause;
         Query query = manager.createQuery(sql, LecturerDto.class);

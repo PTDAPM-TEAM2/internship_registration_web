@@ -7,12 +7,18 @@ import com.group4.edu.dto.StudentDto;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -100,5 +106,16 @@ public class StudentController {
     @GetMapping("/get-st-by-filter")
     public List<StudentDto> getByFilter(@RequestParam(name = "type") int type){
         return studentService.getByFilter(type);
+    }
+    @GetMapping(value = "/export-excel-st-da",produces ="application/vnd.ms-excel")
+    public ResponseEntity<?> exportExcelDa(){
+        ByteArrayResource excel = studentService.exportStDa();
+        String filename = "DSSVDA.xlsx";
+        ByteArrayInputStream ins = new ByteArrayInputStream(excel.getByteArray());
+        InputStreamResource file = new InputStreamResource(ins);
+        return ResponseEntity.status(200)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=DSSVDA.xlsx")
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
     }
 }

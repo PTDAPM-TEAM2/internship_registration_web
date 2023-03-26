@@ -9,13 +9,30 @@ import com.group4.edu.service.InternshipService;
 import com.group4.edu.service.StudentService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.group4.edu.EduConstants.RESOURCE_FOLDER_OUTLINE_PUBLIC;
 
 @Service
 public class InternshipServiceImpl implements InternshipService {
@@ -186,6 +203,45 @@ public class InternshipServiceImpl implements InternshipService {
     public List<StudentDto> findStudentByDto(StudentSearchDto dto) {
 
         return studentRepository.findStudentTTByName(dto == null||dto.getKeySearchName()==null?"":dto.getKeySearchName());
+    }
+
+    @Override
+    public List<InternshipDto> regsiterMany(RegsiterManySt dto) {
+        List<InternshipDto> internshipDtos = new ArrayList<>();
+        for(String stCode: dto.getStudentCodes()){
+          RegisterinternshipDto registerinternshipDto = new RegisterinternshipDto();
+          registerinternshipDto.setStudentCode(stCode);
+          registerinternshipDto.setCompanyId(dto.getCompanyId());
+          registerinternshipDto.setInternshipPosition("Lao công");
+            try {
+                internshipDtos.add(this.registerOrUpdateIntership(registerinternshipDto,null));
+            } catch (Exception e) {
+            }
+        }
+        return internshipDtos;
+    }
+
+    @Override
+    public void exportInternship(Long internshipId, WebRequest request, HttpServletResponse response) {
+        try {
+            String file = EduConstants.RESOURCE_FOLDER_THEME_WORD_PUBLIC + "internship.docx";
+            FileInputStream reader = new FileInputStream(new File(file));
+            int available = reader.available();
+            byte[] data = new byte[available];
+            reader.read(data,0,available);
+            ServletOutputStream out = response.getOutputStream();
+            response.setHeader("Content-Disposition", "attachment; filename="+"internship.docx");
+            String contentType = URLConnection.guessContentTypeFromName("internship.docx");
+            response.setContentType(FilenameUtils.getExtension(contentType));
+            out.write(data);
+            response.flushBuffer();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void validateRegisterInternShip(RegisterinternshipDto dto,boolean isSt) throws Exception {
