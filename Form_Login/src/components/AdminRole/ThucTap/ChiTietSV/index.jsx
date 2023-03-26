@@ -59,10 +59,10 @@ const ChiTietSV = () => {
     const state = location.state;
     const { id } = useParams();
 
-    const internship = {
-        start: context.cellValidateStart(state.item.internship),
-        end: context.cellValidateEnd(state.item.internship),
-        company: context.cellValidateCompany(state.item.internship),
+    const registerinternship = {
+        start: context.cellValidateStart(state.item.registerinternship),
+        end: context.cellValidateEnd(state.item.registerinternship),
+        company: context.cellValidateCompany(state.item.registerinternship),
     }
     const grade = {
         name: state.item.grade.name || ''
@@ -87,7 +87,7 @@ const ChiTietSV = () => {
         email: state.item.email || '',
         studentCode: state.item.studentCode || '',
         grade: grade,
-        internship: internship,
+        registerinternship: registerinternship,
         //van de quan trong
         password: '',
     };
@@ -299,13 +299,13 @@ const ChiTietSV = () => {
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.company'>Tên công ty thực tập: </label>
+                                <label htmlFor='registerinternship.company'>Tên công ty thực tập: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
                                     id='company'
-                                    name='internship.company'
-                                    value={formik.values.internship.company}
+                                    name='registerinternship.company'
+                                    value={formik.values.registerinternship.company}
                                     onChange={formik.handleChange}
                                 >
                                     {companies.map((option) => (
@@ -316,18 +316,18 @@ const ChiTietSV = () => {
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.start'>Bắt đầu: </label>
+                                <label htmlFor='registerinternship.start'>Bắt đầu: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
                                             {...props}
                                             className={styles.txtFieldBot}
-                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                            error={formik.touched.registerinternship && Boolean(formik.errors.registerinternship)}
                                         />}
-                                        value={formik.values.internship.start}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value: value } })}
+                                        value={formik.values.registerinternship.start}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.start', value: value } })}
                                         // onChange={formik.handleChange}
-                                        // name='internship.start'
+                                        // name='registerinternship.start'
                                         format="YYYY/MM/DD"
                                     />
                                 </LocalizationProvider>
@@ -362,18 +362,18 @@ const ChiTietSV = () => {
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.end'>Kết thúc: </label>
+                                <label htmlFor='registerinternship.end'>Kết thúc: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
                                             {...props}
                                             className={styles.txtFieldBot}
-                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                            error={formik.touched.registerinternship && Boolean(formik.errors.registerinternship)}
                                         />}
-                                        value={formik.values.internship.end}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.end', value: value } })}
+                                        value={formik.values.registerinternship.end}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.end', value: value } })}
                                         // onChange={formik.handleChange}
-                                        // name='internship.end'
+                                        // name='registerinternship.end'
                                         format="YYYY/MM/DD"
                                     />
                                 </LocalizationProvider>

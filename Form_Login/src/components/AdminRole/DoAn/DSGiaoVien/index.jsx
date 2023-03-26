@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import lecturerApi from '../../../../api/lecturerApi';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const columns = [
     {
@@ -41,6 +42,12 @@ const columns = [
         id: 'SĐT',
         label: 'Số điện thoại',
         minWidth: 170,
+        align: 'center',
+    },
+    {
+        id: 'function',
+        label: 'Thêm sinh viên',
+        minWidth: 50,
         align: 'center',
     },
 ];
@@ -133,10 +140,12 @@ function DSGV() {
                                 >
                                     <MenuItem value={10} onClick={() => {
                                         setNumOfSinL(1)
-                                        handleFilterGV()}} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
+                                        handleFilterGV()
+                                    }} >Giảng viên quản lý dưới 30 sinh viên làm đồ án</MenuItem>
                                     <MenuItem value={20} onClick={() => {
                                         setNumOfSinL(0)
-                                        handleFilterGV()}} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
+                                        handleFilterGV()
+                                    }} >Giảng viên quản lý đủ 30 sinh viên làm đồ án</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -174,6 +183,12 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{lecturer.phoneNumber}</TableCell>
+                                                            <TableCell>
+                                                                <ExpandMoreIcon
+                                                                    // checked={checkboxes.includes(student.studentCode)}
+                                                                    // onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 })
@@ -186,6 +201,12 @@ function DSGV() {
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.fullName}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.numGrTh}</TableCell>
                                                             <TableCell sx={{ textAlign: 'center' }}>{row.phoneNumber}</TableCell>
+                                                            {/* <TableCell>
+                                                                <ExpandMoreIcon
+                                                                    // checked={checkboxes.includes(student.studentCode)}
+                                                                    // onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell> */}
                                                         </TableRow>
                                                     );
                                                 })

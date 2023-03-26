@@ -75,6 +75,9 @@ function DSDA() {
         }
         getAllDoAn();
     }, [])
+
+
+    
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
