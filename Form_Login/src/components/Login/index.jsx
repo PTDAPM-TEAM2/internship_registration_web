@@ -35,10 +35,10 @@ function Login() {
   const navigate = useNavigate();
   const context = useContext(ThemeContext);
   const handleClickTT = () => {
-    context.updateToggle(false);
+    context.updateToggle(true);
   };
   const handleClickDA = () => {
-    context.updateToggle(true);
+    context.updateToggle(false);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +61,7 @@ function Login() {
     if (username === "" || password === "") {
       setErrorMessage("Nhập thiếu thông tin! Vui lòng nhập lại!");
     } else {
-      if (context.toggle === true) {
+      if (context.toggle === false) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginDA({
@@ -69,20 +69,34 @@ function Login() {
             password: password,
           });
           if (tk !== "") {
+            var userInfoTT = await userApi.getInfo(tk);
+            context.checkToken(tk);
             localStorage.setItem("token", tk);
+
             context.updateLoading(false);
             setShowAlert(true);
-            context.updateAuth(true);
             setErrorMessage("");
             setUsername("");
             setPassword("");
+            if (userInfoTT.roles[0].role === "ADMIN") {
+              Variables.userRole = "admin";
+            }
+            else if (userInfoTT.roles[0].role === "STUDENT_DA" || userInfoTT.roles.length === 2) {
+              Variables.userRole = "students";
+            }
+
+            else {
+              Variables.userRole = "teachers";
+            }
             setTimeout(() => {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-do-an-sinh-vien");
-              } else if (Variables.userRole === "teachers") {
-                navigate("/trang-chu-giang-vien");
-              } else {
+              } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-do-an");
+              }
+               else {
+                Variables.pw = password;
+                navigate("/trang-chu-giang-vien");
               }
             }, 500);
           } else {
@@ -105,7 +119,7 @@ function Login() {
             }
           }
         }
-      } else if (context.toggle === false) {
+      } else if (context.toggle === true) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginTT({
@@ -115,15 +129,20 @@ function Login() {
           localStorage.setItem('token', tk);
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
+            console.log(userInfoTT);
             if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
-            }else{
+            }
+            else if (userInfoTT.roles[0].role === "STUDENT_TT" || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
+            }
+            else {
+              Variables.userRole = "teachers";
             }
             localStorage.setItem("token", tk);
             context.updateLoading(false);
             setShowAlert(true);
-            context.updateAuth(true);
+            context.checkToken(tk);
             setErrorMessage("");
             setUsername("");
             setPassword("");
@@ -131,8 +150,7 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
-                Variables.pw = password;
-                navigate("/trang-chu-giang-vien");
+
               } else {
                 navigate("/sinh-vien-thuc-tap");
               }
@@ -168,7 +186,21 @@ function Login() {
   };
   return (
     <div className={styles.bg}>
-      {showAlert && (
+      {(context.toggle === true && Variables.userRole == 'teachers') ? (showAlert && (
+        <div>
+          <Alert
+            severity="warning"
+            sx={{
+              position: "absolute",
+              width: "40%",
+              top: "3%",
+              right: "1%",
+            }}
+          >
+            <AlertTitle>Bạn không có quyền vào mục này</AlertTitle>
+          </Alert>
+        </div>
+      )) : (showAlert && (
         <div>
           <Alert
             severity="success"
@@ -182,7 +214,7 @@ function Login() {
             <AlertTitle>Đăng nhập thành công</AlertTitle>
           </Alert>
         </div>
-      )}
+      ))}
       <Grid
         container
         columns={12}
@@ -268,16 +300,16 @@ function Login() {
               </div>
               <div className={styles.switch}>
                 <span
-                  onClick={handleClickTT}
+                  onClick={handleClickDA}
                   className={context.toggle === false ? styles.active : {}}
                 >
-                  Thực tập
+                  Đồ án
                 </span>
                 <span
-                  onClick={handleClickDA}
+                  onClick={handleClickTT}
                   className={context.toggle === true ? styles.active : {}}
                 >
-                  Đồ án
+                  Thực tập
                 </span>
               </div>
               <button className={styles.btnSubmit}>Đăng nhập</button>

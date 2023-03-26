@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
-import Sidebar from '../../../Sidebar';
 import { useNavigate,useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -20,11 +19,7 @@ import { useFormik } from 'formik';
 import lecturerApi from "../../../../api/lecturerApi";
 import MenuItem from '@mui/material/MenuItem';
 
-const genders = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-];
+
 
 const style = {
     position: 'absolute',
@@ -43,14 +38,14 @@ const style = {
 
 const validationSchema = Yup.object({
     fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    email: Yup.string().email().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    password: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietGV = () => {
@@ -64,8 +59,14 @@ const ChiTietGV = () => {
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const { id } = useParams()
+    const { id } = useParams();
 
+    const genders = [
+        { value: "male", label: "Nam" },
+        { value: "female", label: "Nữ" },
+        { value: "other", label: "Khác" },
+    ];
+    console.log(state.item)
     const initialValues = {
         urlImg: state.item.urlImg || '',
         fullName: state.item.fullName || '',
@@ -78,7 +79,7 @@ const ChiTietGV = () => {
         lecturersCode: state.item.lecturersCode || '',
         numGrTh: state.item.numGrTh || '',
         //van de quan trong
-        password: '********',
+        password: '',
     };
 
     const formik = useFormik({
@@ -92,7 +93,7 @@ const ChiTietGV = () => {
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
-                    navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                    navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
                 console.error(error);
@@ -110,7 +111,7 @@ const ChiTietGV = () => {
             context.updateLoading(false);
             setTimeout(() => {
                 setShowAlertD(false);
-                navigate('/quan-ly-giao-vien-da/danh-sach-giao-vien-da')
+                navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
             }, 1000)
         }
         catch (error) {
@@ -122,7 +123,6 @@ const ChiTietGV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>
@@ -276,7 +276,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight:20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
@@ -301,7 +301,7 @@ const ChiTietGV = () => {
             {showAlert &&
                 <div>
                     <Alert severity="success" sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '40%',
                         bottom: '0',
                         right: '2%'
@@ -313,7 +313,7 @@ const ChiTietGV = () => {
             {showAlertD &&
                 <div>
                     <Alert severity="success" sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '40%',
                         bottom: '0',
                         right: '2%'

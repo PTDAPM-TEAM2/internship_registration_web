@@ -73,18 +73,52 @@ function ThemeProvider({ children }) {
     }
   }
 
-  const [auth, setAuth] = useState(true);
-  const [loading, setLoading] = useState(false); 
+  function cellValidatePhone(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.phoneNumber;
+    }
+  }
+  function cellValidateSemester(e) {
+    if (e === null) {
+      return '';
+    }
+    else {
+      return e.semester.code;
+    }
+  }
+
+  const [auth, setAuth] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 4500)
-  // })
-  const updateAuth = (newValue) => {
-    setAuth(newValue);
+
+  const checkToken = (newValue) => {
+    const token = localStorage.getItem("token");
+    // if (token === null) {
+    //   localStorage.setItem("token", newValue);
+    //   setAuth(true);
+    //   console.log('dang nhap');
+    // }
+    // if (token === newValue) {
+    //   setAuth(true);
+    //   console.log('dang nhap1');
+    // }
+
+    if (token) {
+      setAuth(true);
+      
+    }
+    console.log(token);
+    console.log(newValue);
   }
+
+  useEffect((newValue) => {
+    checkToken(newValue);
+  }, [])
+
   const updateToggle = (newValue) => {
     setToggle(newValue);
   };
@@ -95,12 +129,14 @@ function ThemeProvider({ children }) {
     setLoading(newValue);
   }
   const value = {
+    cellValidateSemester,
+    cellValidatePhone,
     cellValidateStart,
     cellValidateEnd,
     cellValidateLecturer,
     cellValidateStudent,
     auth,
-    updateAuth,
+    checkToken,
     cellValidateName,
     cellValidate,
     activeButton,

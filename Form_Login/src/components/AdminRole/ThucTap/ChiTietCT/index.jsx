@@ -16,8 +16,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-import Sidebar from '../../../Sidebar';
 import { useLocation, useParams } from 'react-router-dom';
+import studentApi from "../../../../api/studentApi";
+import companyApi from "../../../../api/companyApi";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -52,44 +55,72 @@ const columns = [
     },
 ];
 
-function createData(STT, Ma, Ten) {
-    return { STT, Ma, Ten };
-}
-
-const rows = [
-    createData(1, '205106', 'Nguyễn Đức Tâm'),
-    createData(2, '205106', 'Nguyễn Đức Tâm'),
-    createData(3, '205106', 'Nguyễn Đức Tâm'),
-];
-
 const ChiTietCT = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
-    const handleOpen = () => setOpen(true);
+    
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
-    const {idSV} = useParams();
-    const handleAdd = () => {
-        setOpen(false)
-        setShowAlert(true);
-        setTimeout(() => {
-            setShowAlert(false);
-        }, 2000)
+    const { idSV } = useParams();
+    
+    const [checkboxes, setCheckboxes] = React.useState([]);
+    const handleCheckboxChange = (id, isChecked) => {
+        if (isChecked) {
+            setCheckboxes(checkboxes.concat(id));
+        } else {
+            setCheckboxes(checkboxes.filter(item => item !== id));
+        }
+    }
+
+    const [students, setStudent] = React.useState();
+    const context = useContext(ThemeContext);
+
+    const handleOpenList = async (type) => {
+
+        context.updateLoading(true);
+        try {
+            const response = await studentApi.filter(type);
+            setStudent(response);
+            setOpen(true);
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+        }
+    }
+
+
+    const body ={
+        companyId: state.item.id,
+        studentCodes: checkboxes
+    }
+
+
+    const handleAdd = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await companyApi.addSV(body);
+            console.log(response);
+            setOpen(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000)
+            context.updateLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            context.updateLoading(false);
+        }
+        
     };
 
 
-    // function handleGo() {
-    //     setOpen(false);
-    //     setTimeout(() => {
-    //         navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da');
-    //     }, 500)
-    // }
-
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết công ty</p>
@@ -127,11 +158,11 @@ const ChiTietCT = () => {
                         <div className={styles.infoAccount}>
                             <div className={styles.txt}>
                                 <p>Mô tả về công ty: </p>
-                                <TextField defaultValue={state.item.description} className={styles.txtFieldBot} multiline rows={8} disabled/>
+                                <TextField defaultValue={state.item.description} className={styles.txtFieldBot} multiline rows={8} disabled />
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px', width: 300 }} onClick={handleOpen}>Thêm sinh viên thực tập</Button>
+                            <Button className={styles.button} style={{ color: 'white' }} sx={{ margin: '0 10px', width: 300 }} onClick={() => { handleOpenList(3) }}>Thêm sinh viên thực tập</Button>
                         </div>
                     </form>
                 </div>
@@ -165,24 +196,24 @@ const ChiTietCT = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {rows.map((row) => {
-                                                return (
-                                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.STT} >
-                                                        {columns.map((column) => {
-                                                            const value = row[column.id];
-                                                            return (
-                                                                <TableCell key={column.id} align={column.align}>
-                                                                    {column.format && typeof value === 'number'
-                                                                        ? column.format(value)
-                                                                        : value}
-                                                                </TableCell>
-                                                            );
+                                            {students === undefined ? "" :
+                                                (students.map((student, index) => {
 
-                                                        })}
-                                                        <Checkbox />
-                                                    </TableRow>
-                                                );
-                                            })}
+                                                    return (
+                                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ textAlign: 'center' }}>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{student.studentCode}</TableCell>
+                                                            <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    checked={checkboxes.includes(student.studentCode)}
+                                                                    onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                }))
+                                            }
                                         </TableBody>
                                     </Table>
                                 </TableContainer>

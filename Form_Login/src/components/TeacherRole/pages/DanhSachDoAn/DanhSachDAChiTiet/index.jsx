@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 import graduationThesis from '../../../../../api/graduationThesis';
 import userApi from '../../../../../api/authApi';
 import teacherRoleController from '../../../controller/TeacherRoleController';
-
+import { Card, CardContent, CardMedia } from '@mui/material';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -48,15 +48,9 @@ const PInformationDetails = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    // const handleSubmit = (values, { setSubmitting }) => {
-    //     console.log(values);
-    //     setSubmitting(false);
-    // }
-
     function handleGo() {
         setOpen(false);
         setShowAlert(true);
-        // data.filter((data) => item.id !== id);
         setTimeout(() => {
             navigate('/danh-sach-do-an-sinh-vien');
         }, 1000)
@@ -75,18 +69,7 @@ const PInformationDetails = () => {
                 console.log(err);
             }
         }
-
-
-        // const getAllWeeklyReview = async () => {
-        //     try{
-        //         const response = await graduationThesis.weeklyTeacherSaving(null, context.token);
-        //         setReviewList(response)
-        //     }catch(err){
-        //         console.log(err);
-        //     }
-        // }
         getAllWeeklyReview();
-        // currentUser();
     }, [])
 
     const initialValues = {
@@ -104,11 +87,6 @@ const PInformationDetails = () => {
             }
         },
     })
-
-    // initialValues.id = state.item.id;
-
-
-
     const navigate = useNavigate();
 
     function toComponent(item){
@@ -127,26 +105,36 @@ const PInformationDetails = () => {
                                 <div className={styles.formAccount} columns={{ lg: 4 }} >
                                     <div className={styles.formtitle}>
                                         <div className={styles.titleLeft}>
-                                            <p><b>Đề tài: </b>{state.item.nameGraduationThesis}</p>
-                                            <p><b>Kỳ: </b>{state.item.semester.code}</p>
+                                            <p><b>Đề tài: </b>{state.item?.nameGraduationThesis}</p>
+                                            <p><b>Kỳ: </b>{state.item?.semester?.code}</p>
                                         </div>
                                         <div className={styles.titleRight}>
-                                            <p><b>Tên sinh viên: </b>{state.item.student.fullName}</p>
-                                            <p><b>Mã sinh viên: </b>{state.item.student.studentCode}</p>
+                                            <p><b>Tên sinh viên: </b>{state.item?.student?.fullName}</p>
+                                            <p><b>Mã sinh viên: </b>{state.item?.student?.studentCode}</p>
                                         </div>
                                     </div>
                                     <div className={styles.formContent}>
                                         <label htmlFor="content"><b>Nội dung: </b></label>
-                                        <textarea
-                                            className={styles.txtContent}
-                                            id="content"
-                                            // listContentReview.map((content) => content)
-                                            defaultValue={review.map((value) => `${value.title}: ` + ` ${value.content}\n\n`)}
-                                            name="content"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                                // value={formik.values.gender}
-                                        />
+                                            {
+                                                <div className={styles.content}>
+                                                    {
+                                                        review.map((value) => 
+                                                        <Box>
+                                                            <Card className={styles.cardContent} sx={{ '&:hover': { boxShadow: 8 } }}>
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h6" component="div">
+                                                                    {value?.title}
+                                                                </Typography>
+                                                                <Typography variant="body2" color="text.primary">
+                                                                    {value?.content}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                        </Box>
+                                                    )
+                                                    }
+                                                </div>
+                                            }
                                     </div>
                                 </div>
                                 <div className={styles.btnForm}>

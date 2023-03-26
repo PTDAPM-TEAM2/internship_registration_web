@@ -15,9 +15,7 @@ class CompanyApi {
   importExcel = (data, token) => {
     const url = "api/company/import-excel";
     return axiosClient
-      .post(
-        url,
-        data,
+      .post(url, data,
         {
           headers: {
             Authorization: "Bearer " + token, //the token is a variable which holds the token
@@ -28,6 +26,31 @@ class CompanyApi {
       )
       .then((res) => res);
   };
+
+  addSV = (body) => {
+    const url = "api/internship/register-many-st";
+    const token = localStorage.getItem("token");
+    return axiosClient
+      .post(url, body, {
+        headers:
+        {
+          Authorization: "Bearer " + token,
+        },
+      }
+      )
+  }
+
+  exportGraduationThesis = (id, token) => {
+    const url = "/api/graduationthesis/export-graduationthesis/";
+    return axiosClient
+      .get(url + id, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
+
 }
 
 const companyApi = new CompanyApi();

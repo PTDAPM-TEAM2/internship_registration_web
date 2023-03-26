@@ -67,7 +67,6 @@ const SRequirementDetails = () => {
         try{
             setOpen(false);
             setShowAlert(true);
-            console.log("aaaaa");
             await teacherRoleController.forceToStopResearch(initialValues, token)
         }catch(err){
             console.log(err);
@@ -76,12 +75,14 @@ const SRequirementDetails = () => {
             navigate('/danh-sach-sinh-vien-yeu-cau');
         }, 1000)
     }
+
+    state.item.student.dateOfBirth =  new Date(state.item?.student?.dateOfBirth).toLocaleDateString()
     // const {item} = props.location.state;
     // console.log(item);
     return (
         <div className={styles.form}>
             <div style={{ width: '100%' }}>
-                <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
+                <p className={styles.title}><b>Thông tin sinh viên</b></p>
                 <div className={styles.container}> 
                     <form onSubmit={formik.handleSubmit}>
                             <div>
@@ -145,7 +146,7 @@ const SRequirementDetails = () => {
                                                 id="idCard"
                                                 name="idCard"
                                                 disabled
-                                                defaultValue={'901237914214'}
+                                                defaultValue={state.item?.student?.studentCode}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                                 // value={formik.values.identityCard}
@@ -215,10 +216,6 @@ const SRequirementDetails = () => {
                                 <div className={styles.txt}>
                                     <p>Lớp: </p>
                                     <TextField className={styles.txtTextBottom} defaultValue={state.item?.student?.grade?.name} disabled/>
-                                </div>
-                                <div className={styles.txt}>
-                                    <p>Khoa: </p>
-                                    <TextField className={styles.txtTextBottom} defaultValue={'CNTT'} disabled/>
                                 </div>
                                 <div className={styles.txt}>
                                     <p>Đề tài: </p>

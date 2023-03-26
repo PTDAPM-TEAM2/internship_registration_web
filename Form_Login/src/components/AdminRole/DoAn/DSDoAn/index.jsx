@@ -18,6 +18,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
 import prjApi from "../../../../api/projectApi";
+import companyApi from '../../../../api/companyApi.js';
+
 
 const style = {
     position: 'absolute',
@@ -95,6 +97,21 @@ function DSDA() {
         getAllDoAn();
     }, [])
 
+    const handleGo = async () => {
+        // data.filter((data) => item.id !== id);
+        try{
+            setOpen(false)
+            // await companyApi.exportGraduationThesis()
+        }catch(err){
+            console.log(err);
+        }
+        setTimeout(() => {
+            navigate('/danh-sach-sinh-vien-yeu-cau');
+        }, 1000)
+    }
+
+    console.log(projects.map((it) => console.log(it.semester)));
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -128,8 +145,8 @@ function DSDA() {
                                             <TableRow key={index} hover role="checkbox" tabIndex={-1} sx={{ cursor: 'pointer', textAlign: 'center' }}>
                                                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{project.nameGraduationThesis}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateStudent(project.student)}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateLecturer(project.lecturer)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateStudent(project?.student)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateLecturer(project?.lecturer)}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{project.semester.code}</TableCell>
                                             </TableRow>
                                         );
@@ -158,9 +175,11 @@ function DSDA() {
                         id="demo-simple-select-helper"
                         onChange={handleChange}
                     >
-                        <MenuItem value="10">
-                            01/2022-2023
-                        </MenuItem>
+                        {projects.map(it => 
+                            <MenuItem value="10">
+                                {it.semester.code}
+                            </MenuItem>
+                            )}
                     </Select>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
                         <Button className={styles.button} onClick={() => setOpen(false)}>Xuất</Button>

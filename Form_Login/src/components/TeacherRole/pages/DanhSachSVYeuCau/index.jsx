@@ -46,7 +46,6 @@ const DSSVYC = () => {
       // Invoke the async function
       fetchData();
     }, []); // Pass an empty dependency array to run only once
-
     const navigate = useNavigate();
     function toComponent (item) {
       navigate('chi-tiet-yeu-cau', {state: {item}})
@@ -64,7 +63,6 @@ const DSSVYC = () => {
                                     <a><b>Họ và tên: </b>{item.student?.fullName}</a> 
                                     <p><b>Mã sinh viên: </b>{item.student?.id}</p> 
                                     <p><b>Lớp: </b>{item.student?.grade?.name}</p> 
-                                    <p><b>Khoa: </b>CNTT</p> 
                                 </div> 
                             </div>
                         </div>

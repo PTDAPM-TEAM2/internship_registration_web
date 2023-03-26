@@ -2,24 +2,38 @@ import * as React from "react";
 import styles from './DLGVDA.module.css';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import lecturerApi from "../../../../api/lecturerApi";
+import { useContext } from 'react';
+import { ThemeContext } from '../../../Theme/Theme.jsx';
 function DLGVDA() {
     const [showAlert, setShowAlert] = React.useState(false);
     const [excelFile, setExcelFile] = React.useState(null);
+    const [hideImport, setHideImport] = React.useState(true);
     const handleExcelFileChange = (event) => {
         const file = event.target.files[0];
         setExcelFile(file);
-        console.log(file.name.replace('.xlsx', ''))
     };
 
-    const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append('file', excelFile);
+    const context = useContext(ThemeContext);
+    const handleSubmit = async () => {
         {
+            context.updateLoading(true);
+            setHideImport(false);
+        }
+        try {
+            const response = await lecturerApi.importExcel(formData);
+            context.updateLoading(false);
             excelFile && setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
-            }, 2000)
+            }, 2000);
+        } catch (error) {
+            context.updateLoading(false);
+            console.error('Error fetching data:', error);
         }
     }
-
     return (
         <div style={{ position: 'relative' }}>
             {showAlert &&

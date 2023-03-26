@@ -39,11 +39,7 @@ class TeacherRoleController{
     }
 
     changePassword = async (body, token) => {
-        try{
-            await userApi.setChangingPassword(body, token);
-        }catch(err){
-            console.log(err);
-        }
+        await userApi.setChangingPassword(body, token);
     }
 
 }

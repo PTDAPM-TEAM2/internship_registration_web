@@ -9,7 +9,6 @@ import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-
 import { TextField } from '@mui/material';
 import imageLock from '../../../../../images/lock.png';
 import warningImage from '../../../../../images/warning.png';
@@ -20,6 +19,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Variables from '../../../../../utils/variables';
+import context from 'react-bootstrap/esm/AccordionContext';
+
+// const validationSchema = Yup.object().shape({
+//     oldPassword: Yup.string().trim().required('Required').test('match', 'Mật khẩu cũ không chính xác!', function (value) {
+//         return value === this.parent.newPassword;
+//     }),
+//     newPassword: Yup.string().trim().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
+//     reNewPassword: Yup.string().trim().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
+// });
 
 const style = {
     position: 'absolute',
@@ -33,21 +41,19 @@ const style = {
     p: 4,
 };
 const PasswordChanging = () => {
-    const [password, setPassword] = useState("");
     const [errorMessages, setErrorMessages] = useState("");
     const token = localStorage.getItem('token');
-    const location = useLocation()
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [messagePw, setMessagePw] = useState("");
+    const [data, setData] = useState(false);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    // const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
+    const [emptyOldPw, setEmptyOldPw] = useState(false);
+    const [emptyNewPw, setEmptyNewPw] = useState(false);
+    const [emptyRenewPw, setEmptyRenewPw] = useState(false);
 
 
     const initialValues = {
@@ -55,52 +61,80 @@ const PasswordChanging = () => {
         newPassword: '',
         reNewPassword: ''
     };
-    const validationSchema = Yup.object().shape({
-        oldPassword: Yup.string().required('Required'),
-        newPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
-        reNewPassword: Yup.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
-    });
 
     const formik = useFormik({
-        initialValues,
-        validationSchema: validationSchema,
-        onSubmit: async (values) => {
+        initialValues: initialValues,
+        // validationSchema: validationSchema,
+        onSubmit:  async (values) => {
             try {
                 await teacherRoleController.changePassword(values, token)
-
+                setOpen(false);
+                setErrorMessages(null);
+                setShowAlert(true);
+                setEmptyOldPw(false);
+                setShowModal(false);
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
+                // setMessagePw(response.error);
+                // if()
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data.error);
+                if((formik.values.newPassword.trim().length >= 1 && formik.values.newPassword.trim().length <= 7)  || (formik.values.oldPassword.trim().length >= 1 && formik.values.oldPassword.trim().length <= 7) || (formik.values.reNewPassword.trim().length >= 1 && formik.values.reNewPassword.trim().length <= 7)){
+                    if(formik.values.oldPassword.trim().length < 8){
+                        setEmptyOldPw(true)
+                    }
+                    if(formik.values.newPassword.trim().length < 8){
+                        setEmptyNewPw(true)
+                    }
+                    if(formik.values.reNewPassword.trim().length < 8){
+                        setEmptyRenewPw(true)
+                    }
+                    setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!")
+                    if((error.response.data.error === "Mật khẩu có tối thiểu 8 ký tự")){
+                        setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!")
+                    }
+                }else if(formik.values.newPassword.trim() === "" || formik.values.oldPassword.trim() === "" || formik.values.reNewPassword.trim() === ""){
+                    if(formik.values.oldPassword.trim() === ""){
+                        setEmptyOldPw(true)
+                    }
+                    if(formik.values.newPassword.trim() === ""){
+                        setEmptyNewPw(true)
+                    }
+                    if(formik.values.reNewPassword.trim() === ""){
+                        setEmptyRenewPw(true)
+                    }
+                    setErrorMessages("Trường mật khẩu không được bỏ trống!")
+                }
+                else if(formik.values.newPassword !== formik.values.reNewPassword){
+                    setEmptyRenewPw(true)
+                    setErrorMessages("Mật khẩu không trùng khớp!")
+                    if(error.response.data.error === "Nhập lại mật khẩu mới không khớp"){
+                        setErrorMessages("Mật khẩu không trùng khớp!")
+                    }
+                }else if(error.response.data.error === "Mật khẩu không chính xác"){
+                    setEmptyOldPw(true)
+                    setErrorMessages("Mật khẩu cũ không chính xác!")
+                }else{
+                    if(formik.values.oldPassword.trim().length < 8){
+                        setEmptyOldPw(true)
+                    }
+                    if(formik.values.newPassword.trim().length < 8){
+                        setEmptyNewPw(true)
+                    }
+                    if(formik.values.reNewPassword.trim().length < 8){
+                        setEmptyRenewPw(true)
+                    }
+                    setMessagePw("Mật khẩu phải có tối thiểu 8 ký tự!")
+                }
+                setOpen(true);
             }
         },
     })
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setOpen(true);
-        if(Variables.pw === "" || formik.values.newPassword === "" || formik.values.oldPassword === "" || formik.values.reNewPassword === ""){
-            setErrorMessages("Trường mật khẩu không được bỏ trống!")
-
-        }if ((formik.values.newPassword.trim().length < 8 && formik.values.newPassword.trim().length > 0) || (formik.values.reNewPassword.trim().length < 8 && formik.values.reNewPassword.trim().length > 0)){
-            setErrorMessages("Mật khẩu phải có tối thiểu 8 ký tự!");
-        }else if (formik.values.newPassword !== formik.values.reNewPassword) {
-            setErrorMessages("Mật khẩu không trùng khớp!");
-        }
-        else if(formik.values.oldPassword !== Variables.pw){
-            setErrorMessages("Mật khẩu cũ không chính xác!");
-        }else{
-            setOpen(false);
-            setErrorMessages(null);
-            setShowAlert(true);
-            setShowModal(false);
-            setTimeout(() => {
-                navigate('/thong-tin-ca-nhan');
-            }, 1000);
-        }
-    }
-
-    initialValues.oldPassword = formik.values.oldPassword
-    initialValues.newPassword = formik.values.newPassword
-    initialValues.reNewPassword = formik.values.reNewPassword
+    initialValues.oldPassword = formik.values.oldPassword.trim()
+    initialValues.newPassword = formik.values.newPassword.trim()
+    initialValues.reNewPassword = formik.values.reNewPassword.trim()
 
     // Declare a state variable for data
     return (
@@ -115,10 +149,25 @@ const PasswordChanging = () => {
                             <div className={styles.txt}>
                                 <TextField
                                     className={styles.txtField}
+                                    style = {
+                                        emptyOldPw === true ? {'border':'1px solid red', 'borderRadius' : '5px'} : null}
                                     id="oldPassword"
+                                    sx={{
+                                        "& fieldset": { border: 'none' },
+                                    }}
                                     name="oldPassword"
                                     type="password"
-                                    onChange={formik.handleChange}
+                                    onChange={e => {
+                                        formik.handleChange(e);
+                                        if(e.target.value.length >= 8){
+                                            setEmptyOldPw(false);
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.oldPassword}
                                     error={formik.touched.oldPassword && Boolean(formik.errors.oldPassword)}
@@ -130,8 +179,22 @@ const PasswordChanging = () => {
                                     className={styles.txtField}
                                     id="newPassword"
                                     name="newPassword"
+                                    style = {emptyNewPw === true ? {'border':'1px solid red', 'borderRadius' : '5px'} : {}}
                                     type="password"
-                                    onChange={formik.handleChange}
+                                    sx={{
+                                        "& fieldset": { border: 'none' },
+                                    }}
+                                    onChange={e => {
+                                        formik.handleChange(e);
+                                        if(e.target.value.length >= 8){
+                                            setEmptyNewPw(false);
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.newPassword}
                                     error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
@@ -144,7 +207,24 @@ const PasswordChanging = () => {
                                     id="reNewPassword"
                                     name="reNewPassword"
                                     type="password"
-                                    onChange={formik.handleChange}
+                                    style = {emptyRenewPw === true ? {'border':'1px solid red', 'borderRadius' : '5px'} : {}}
+                                    sx={{
+                                        "& fieldset": { border: 'none' },
+                                    }}
+                                    onChange={e => {
+                                        formik.handleChange(e);
+                                        if(e.target.value.length >= 8){
+                                            setEmptyRenewPw(false);
+                                        }
+                                        if((initialValues.newPassword === initialValues.reNewPassword) && ((initialValues.newPassword.length >= 8) || (initialValues.reNewPassword.length >= 8))){
+                                            setEmptyRenewPw(false);
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.reNewPassword}
                                     error={formik.touched.reNewPassword && Boolean(formik.errors.reNewPassword)}
@@ -152,7 +232,8 @@ const PasswordChanging = () => {
                             </div>
                             <div className={styles.btnForm}>
                                 <div className={styles.btn}>
-                                    <button className={styles.button} type="submit" onClick={handleSubmit}>Cập nhật</button>
+                                    {/* <button className={styles.button} type="submit" onClick={handleSubmit}>Cập nhật</button> */}                                    
+                                    <button className={styles.button} type="submit">Cập nhật</button>
                                 </div>
                             </div>
                         </div>
