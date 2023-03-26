@@ -54,6 +54,7 @@ import TTTT from './components/StudentRole/SVTT/ThucTapSV/ThongTinTT';
 import DKTT from './components/StudentRole/SVTT/ThucTapSV/DangKyTT';
 import DKDA from './components/StudentRole/SVDA/DoAnSV/DangKyDA';
 import PasswordChangingDA from './components/StudentRole/SVDA/DoAnSV/ThayDoiMatKhau';
+import PasswordChangingTT from './components/StudentRole/SVTT/ThucTapSV/ThayDoiMatKhau';
 function App() {
 
 
@@ -146,7 +147,7 @@ function App() {
                     <Route path='sinh-vien-do-an/thong-tin-do-an' element={<TTDA />}></Route>
                     {/* Chuyen huong thuc tap sinh vien */}
                     <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien' element={<TTSVTT />}></Route>
-                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingDA />}></Route>
+                    <Route path='sinh-vien-thuc-tap/thong-tin-sinh-vien/thay-doi-mat-khau' element={<PasswordChangingTT />}></Route>
                     <Route path='sinh-vien-thuc-tap/dang-ky-thuc-tap' element={<DKTT />}></Route>
                     <Route path='sinh-vien-thuc-tap/thong-tin-thuc-tap' element={<TTTT />}></Route>
                   </ Route>
