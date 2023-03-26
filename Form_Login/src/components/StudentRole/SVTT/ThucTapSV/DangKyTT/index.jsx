@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Avatar, Button, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import userApi from "../../../../../api/authApi";
@@ -6,6 +6,8 @@ import * as yup from "yup";
 import { Field, Formik, useFormik } from "formik";
 import { Form } from "react-router-dom";
 import studentApi from "../../../../../api/studentApi";
+import { ThemeContext } from "../../../../Theme/Theme";
+import AlertMessage from "./Alert";
 
 const styleTextField = {
     width: '80%', marginBottom: 5
@@ -29,20 +31,44 @@ const initialValues = {
     companyCode: "",
 };
 
+const getTime = {
+    timeStart:null,
+    timeEnd:null,
+}
+
 function DKTT() {
     const token = localStorage.getItem('token');
     const [user, setUser] = React.useState([]);
+    const [showAlert, setShowAlert] = React.useState(null);
+    const context = useContext(ThemeContext)
     React.useEffect(() => {
-        const getTTDASV = async () => {
+        const getInterTime = async () => {
             try{
-                const responseGV = await userApi.getInfo(token);
-                setUser(responseGV);
+                const responseGV = await studentApi.getInternshipTime(token);
                 console.log(responseGV);
             }catch(err){
                 console.log('Error fetching data', err);
             }
-        }
-
+        };
+        getInterTime().then(data => {
+            getTime.timeStart = data.timeStart;
+            getTime.timeEnd = data.timeEnd;
+        });
+        const getTTDASV = async () => {
+            context.updateLoading(true);
+            try{
+                const responseGV = await userApi.getInfo(token);
+                setUser(responseGV);
+                context.updateLoading(false);
+                console.log(responseGV);
+            }catch(error){
+                context.updateLoading(false);
+                setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
+            }
+        };
         getTTDASV();
     },[]);
 
@@ -56,22 +82,37 @@ function DKTT() {
 
     const handleSubmit = async (values) => {
         console.log(values);
-        try {
-            const response = await studentApi.internshipRegisterBySv({
-                "studentCode": null,
-                'studentId': null,
-                "code": null,
-                "nameCompany": values.nameCompany,
-                "address": values.addressCompany,
-                "email": values.emailCompany,
-                "internshipPosition": values.position,
-                "phoneNumber": values.phoneCompany,
-                "taxCode": values.companyCode,
-                "description": null,
-            },token);
-            console.log(response);
-        } catch (error) {
-            console.log(error);
+        const dateNow = new Date();
+        if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
+            alert("Thời gian đăng ký đã kết thúc");
+        }else{
+            context.updateLoading(true);
+            try {
+                const response = await studentApi.internshipRegisterBySv({
+                    "studentCode":null,
+                    "studentId" :null,
+                    "code": null,
+                    "nameCompany": values.nameCompany,
+                    "address": values.addressCompany,
+                    "email": values.emailCompany,
+                    "internshipPosition": values.position,
+                    "phoneNumber": values.phoneCompany,
+                    "taxCode": values.companyCode,
+                    "description": null,
+                },token);
+                context.updateLoading(false);
+                setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
+                console.log(response);
+            } catch (error) {
+                context.updateLoading(false);
+                setShowAlert({ type: 'error', text: "Thêm sinh viên không thành công " + error});
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
+            }
         }
     }
     const formik = useFormik({
@@ -82,6 +123,7 @@ function DKTT() {
 
     return (
         <>
+        <AlertMessage message={showAlert} />
         <Formik>
             <Box sx={{ display: 'flex' }}>
                 <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 700, marginTop: 30, marginLeft: 8, marginRight: 8  }}>

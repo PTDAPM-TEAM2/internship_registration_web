@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Avatar, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import userApi from "../../../../../api/authApi";
+import { ThemeContext } from "../../../../Theme/Theme";
+import AlertMessage from "./Alert";
 
 const styleTextField = {
     width: '80%', marginBottom: 1
@@ -15,15 +17,23 @@ function TTSVTT() {
     }
     const token = localStorage.getItem('token');
     const [SV, setSV] = React.useState([]);
+    const [showAlert, setShowAlert] = React.useState(null);
+    const context = useContext(ThemeContext);
+    
     React.useEffect(() => {
         const getDataSV = async () => {
+            context.updateLoading(true);
             try{
                 const response = await userApi.getInfo(token);
                 setSV(response);
+                context.updateLoading(false);
                 console.log(SV)
               
-            }catch(err){
-                console.log('Error fetching data', err);
+            }catch(error){
+                setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
+                setTimeout(() => {
+                    setShowAlert(null);
+                }, 2000)
             }
         }
         getDataSV();
@@ -39,11 +49,12 @@ function TTSVTT() {
 
     return (
         <>
+            <AlertMessage message={showAlert} />    
             <Box sx={{ display: 'flex' }}>
                 <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 550, marginTop: 20, marginLeft: 8, marginRight: 8  }}>
                     <div style={{ borderBottom: '2px ', width: '100%', height: '60%', boxSizing: 'border-box' }}>
                         <div style={{ height: '10%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: "lightgrey" }}>
-                            <h1>Thông tin cá nhân</h1>
+                            <h1 style={{fontWeight:700}}><b>Thông tin cá nhân</b></h1>
                         </div>
                         <div style={{ height: '90%', borderBottom: '2px', marginTop: 20, textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
                             <div style={{ float: 'left', width: '20%', height: '100%' }}>

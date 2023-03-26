@@ -123,7 +123,6 @@ const ThemSV = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
