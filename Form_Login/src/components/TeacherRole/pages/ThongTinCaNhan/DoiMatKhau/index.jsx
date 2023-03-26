@@ -217,7 +217,7 @@ const PasswordChanging = () => {
                                         if(e.target.value.length >= 8){
                                             setEmptyRenewPw(false);
                                         }
-                                        if(initialValues.newPassword === initialValues.reNewPassword){
+                                        if((initialValues.newPassword === initialValues.reNewPassword) && ((initialValues.newPassword.length >= 8) || (initialValues.reNewPassword.length >= 8))){
                                             setEmptyRenewPw(false);
                                         }
                                     }}
