@@ -63,7 +63,7 @@ function TTSV() {
                         </div>
                         <div style={{ height: '88%', borderBottom: '2px', marginTop: 10, textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
                             <div style={{ float: 'left', width: '20%', height: '100%' }}>
-                                <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" sx={{ width: 161, height: 161, marginBottom: 0.3 }}></Avatar>
+                                <Avatar src={SV?.urlImg || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} sx={{ width: 161, height: 161, marginBottom: 0.3 }}></Avatar>
                                 <h4 style={{ marginBottom: 2 }}>Giới tính:</h4>
                                 <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} value={SV?.gender || ""}/>
                             </div>
@@ -91,22 +91,20 @@ function TTSV() {
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Mã sinh viên:</h4>
                                     <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.studentCode || ""}/>
-                                    <h4 style={{ marginBottom: 10 }}>Mật khẩu:</h4>
-                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField}/>
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
                                     <h4 style={{ marginBottom: 10 }}>Lớp:</h4>
                                     <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.grade?.name || ""}/>
                                 </div>
                                 <div style={{ float: 'left', width: '33%', height: '100%' }}>
-                                    <h4 style={{ marginBottom: 10 }}>Khoa:</h4>
-                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} value={SV?.grade?.name || ""}/>
+                                    <h4 style={{ marginBottom: 10 }}>Mật khẩu:</h4>
+                                    <TextField disabled id="outlined-basic" variant="outlined" size="small" style={styleTextField} defaultValue="***************"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div style={{ textAlign: "right", }}>
-                        <Button variant="contained" color="success" onClick={handleClick}>Đổi mật khẩu</Button>
+                        <Button variant="contained" style={{backgroundColor:'#23434E'}} onClick={handleClick}>Đổi mật khẩu</Button>
                     </div>
                 </div>
             </Box>

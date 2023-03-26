@@ -52,12 +52,12 @@ function TTTT() {
             <AlertMessage message={showAlert} />
                 <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 550, marginTop: 30, marginLeft: 8, marginRight: 8  }}>
                     <div style={{ borderBottom: '2px ', width: '100%', height: '60%', boxSizing: 'border-box' }}>
-                        <div style={{ height: '10%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: "lightgrey" }}>
-                            <h1>Thông tin cá nhân</h1>
+                        <div style={{ height: '12%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: "lightgrey" }}>
+                            <h1 style={{fontWeight:700, fontSize:25,}}><b>Thông tin thực tập</b></h1>
                         </div>
-                        <div style={{ height: '90%', borderBottom: '2px', marginTop: 20, textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
+                        <div style={{ height: '88%', borderBottom: '2px', marginTop: 20, textAlign: 'left', marginLeft: 50, marginRight: 10 }}>
                             <div style={{ float: 'left', width: '20%', height: '100%' }}>
-                                <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" sx={{ width: 161, height: 161, marginBottom: 0.4 }}></Avatar>
+                                <Avatar src={user?.urlImg || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} sx={{ width: 161, height: 161, marginBottom: 0.4 }}></Avatar>
                                 <h4 style={styleH4}>Giới tính:</h4>
                                 <TextField disabled id="outlined-basic" variant="outlined" size="small" sx={{ width: '80%', }} value={user?.gender  || ""}/>
                             </div>

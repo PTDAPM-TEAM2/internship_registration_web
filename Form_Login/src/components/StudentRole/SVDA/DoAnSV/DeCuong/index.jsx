@@ -45,13 +45,13 @@ const DC = () => {
             <AlertMessage message={showAlert} />
             <Box sx={{ display: 'flex' }}>
                 <div style={{ borderStyle: "solid", borderWidth: '2px', width: '100%', height: 550, marginTop: 30, marginLeft: 8, marginRight: 8  }}>
-                    <div style={{ height: '5%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>
-                        <h1>Đăng ký đồ án</h1>
+                    <div style={{ height: '6%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>
+                        <h1 style={{fontWeight:700, fontSize:25}}><b>Nộp đề cương</b></h1>
                     </div>
-                    <div style={{ height: '95%', }}>
+                    <div style={{ height: '94%', }}>
                         <div style={{ background: '#FFFCFC',boxShadow: "inset 3px 3px 20px rgba(0, 0, 0, 0.3)", marginLeft: 70,marginRight: 70,marginTop:40, height: '83%' }}>
-                            <div style={{ width: '100%' }}>
-                                <h3>Đề cương của bạn:</h3>
+                            <div style={{ width: '100%'}}>
+                                <h1 style={{fontWeight:700, fontSize:25,textAlign:"start"}}><b>Đề cương của bạn:</b></h1>
                             </div>
                             <div style={{ width: '100%' }}>
                                 <div style={{ height: '90%', marginTop: 20, marginBottom: 180, alignItems:"center",display:"flex",flexFlow:"column",justifyContent:"center" }}>
@@ -79,7 +79,7 @@ const DC = () => {
                                     
                                 </div>
                                 <div style={{ height: '10%', }}>
-                                    <Button variant="contained" color="success" onClick={onSubmit}>Lưu</Button>
+                                    <Button variant="contained" style={{backgroundColor:'#23434E'}} onClick={onSubmit}>Lưu</Button>
                                 </div>
                             </div>
                         </div>
