@@ -7,6 +7,7 @@ import com.group4.edu.repositories.*;
 import com.group4.edu.service.GraduationThesisService;
 import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -14,13 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -198,6 +206,29 @@ public class GraduationThesisServiceImpl implements GraduationThesisService {
             }
         }
         return graduationThesisDtos;
+    }
+
+    @Override
+    public void exportGraduationthesis(Long graduationthesisId, WebRequest request, HttpServletResponse response) {
+        try {
+            String file = EduConstants.RESOURCE_FOLDER_THEME_WORD_PUBLIC + "GraduationThesis.docx";
+            FileInputStream reader = new FileInputStream(new File(file));
+            int available = reader.available();
+            byte[] data = new byte[available];
+            reader.read(data,0,available);
+            ServletOutputStream out = response.getOutputStream();
+            response.setHeader("Content-Disposition", "attachment; filename="+"GraduationThesis.docx");
+            String contentType = URLConnection.guessContentTypeFromName("GraduationThesis.docx");
+            response.setContentType(FilenameUtils.getExtension(contentType));
+            out.write(data);
+            response.flushBuffer();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     // cái này để lấy được danh sách đồ án và sinh viên

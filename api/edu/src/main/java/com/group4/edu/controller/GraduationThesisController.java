@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -82,5 +84,9 @@ public class GraduationThesisController {
     @PostMapping("/import-mark")
     public List<GraduationThesisDto> importMark(@RequestPart MultipartFile file){
         return graduationThesisService.importMart(file);
+    }
+    @GetMapping("/export-graduationthesis/{graduationthesisId}")
+    public void exportGraduationthesis (@PathVariable("graduationthesisId") Long graduationthesisId, WebRequest request, HttpServletResponse response){
+        graduationThesisService.exportGraduationthesis(graduationthesisId, request, response);
     }
 }

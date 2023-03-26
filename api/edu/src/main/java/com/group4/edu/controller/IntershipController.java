@@ -6,10 +6,13 @@ import com.group4.edu.dto.RegsiterManySt;
 import com.group4.edu.dto.Search.StudentSearchDto;
 import com.group4.edu.service.InternshipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,4 +50,8 @@ public class IntershipController {
         return internshipService.regsiterMany(dto);
     }
 
+    @GetMapping("/export-internship/{internshipId}")
+    public void exportInternship (@PathVariable("internshipId") Long internshipId,WebRequest request, HttpServletResponse response){
+        internshipService.exportInternship(internshipId, request, response);
+    }
 }
