@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
@@ -53,5 +54,10 @@ public class IntershipController {
     @GetMapping("/export-internship/{internshipId}")
     public void exportInternship (@PathVariable("internshipId") Long internshipId,WebRequest request, HttpServletResponse response){
         internshipService.exportInternship(internshipId, request, response);
+    }
+
+    @PostMapping("/import-mark")
+    public List<InternshipDto> importMark(@RequestPart MultipartFile file){
+        return internshipService.importMark(file);
     }
 }
