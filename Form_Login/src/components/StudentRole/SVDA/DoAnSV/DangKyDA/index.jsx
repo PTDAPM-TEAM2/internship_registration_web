@@ -119,7 +119,7 @@ const DKDA = () => {
                     setOpen(true);
                 }else if(inputDA.current.value === ""){
                     context.updateLoading(false);
-                    setErrorMessages("Chưa điền đề tài đồ án");
+                    setErrorMessages("Trường đề tài là bắt buộc");
                     setOpen(true);
                 }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
                     context.updateLoading(false);
