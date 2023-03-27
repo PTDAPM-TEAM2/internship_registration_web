@@ -19,7 +19,6 @@ public class RegisterTime extends BaseObject {
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Semester semester;
 
     public Date getTimeStart() {

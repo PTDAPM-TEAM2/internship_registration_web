@@ -46,7 +46,7 @@
     background: #EEA9A0;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 10px 0 grey;
+    /* box-shadow: 0 10px 0 grey; */
     cursor: pointer;
     transition: all 0.2s linear;
     margin-top: 20px;

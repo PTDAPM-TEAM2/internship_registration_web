@@ -1,0 +1,89 @@
+.form {
+    padding: 0 40px;
+    width: 100%;
+    padding-top: 70px;
+}
+
+.title {
+    width: 100%;
+    height: 50px;
+    background-color: #d9d9d9;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000; 
+
+}
+
+.container { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    column-gap: 80px; 
+    border-left: 2px solid #000; 
+    border-right: 2px solid #000; 
+    border-bottom: 2px solid #000; 
+    row-gap: 30px; 
+    padding: 25px;
+    align-items: center;
+}
+
+.card { 
+    border: 2px solid #000; 
+    border-radius: 20px;
+}
+
+.card:hover{
+    border-color: grey;
+}
+
+.cardItem{
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.cardItem .itemImage { 
+    width: 30%;
+    height: 30%;
+}
+
+.body { 
+    padding: 10px; 
+    text-align: start;
+}
+
+.body h3 { margin-top: 0; }
+
+.body button { background-color: blue; color: white; }
+
+.circularProgressIndicator{
+    position: absolute;
+    left: 61%;
+    transform: translate(-50%, -50%)
+}
+
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .circularProgressIndicator{
+        position: absolute;
+        left: 58%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px){
+    .circularProgressIndicator{
+        position: absolute;
+        left: 57%;
+        transform: translate(-50%, -50%)
+    }
+}
+
+@media (min-width: 2560px){
+    .circularProgressIndicator{
+        position: absolute;
+        left: 55%;
+        transform: translate(-50%, -50%)
+    }
+}

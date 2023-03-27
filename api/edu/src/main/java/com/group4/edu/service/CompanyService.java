@@ -9,4 +9,6 @@ public interface CompanyService {
     CompanyDto saveOrUpdate(CompanyDto dto);
     List<CompanyDto> getAll();
     List<CompanyDto> importExcel(MultipartFile file);
+
+    boolean delete(Long id);
 }

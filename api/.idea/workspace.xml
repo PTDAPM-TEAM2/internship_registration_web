@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6cca57e-3a52-45c8-89d5-d4230e740790" name="Changes" comment="" />
+    <list default="true" id="f8876908-55db-449d-afd1-120d17aa9d8c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,12 +19,11 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="Use Maven wrapper" />
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2N6MMV4VZCrOGh2jqPoYPJ1cBiq" />
+  <component name="ProjectId" id="2Mjm11mLUHG7cMLidN1KQohFy8M" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -52,19 +51,6 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="edu" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="edu" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="EduApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="edu" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.group4.edu.EduApplication" />
@@ -76,16 +62,26 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0091291a-41bc-43a9-9ddd-dfc519a9f9d7" name="Changes" comment="" />
-      <created>1678980030184</created>
+      <changelist id="f8876908-55db-449d-afd1-120d17aa9d8c" name="Changes" comment="" />
+      <created>1678289146457</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1678980030184</updated>
-      <workItem from="1678980031352" duration="1326000" />
-      <workItem from="1679016632169" duration="2729000" />
-      <workItem from="1679042146423" duration="7000" />
-      <workItem from="1679050430402" duration="1000" />
-      <workItem from="1679111285932" duration="80000" />
+      <updated>1678289146457</updated>
+      <workItem from="1678289147636" duration="5905000" />
+      <workItem from="1678320651731" duration="632000" />
+      <workItem from="1678326698888" duration="990000" />
+      <workItem from="1678374358682" duration="59000" />
+      <workItem from="1678377246060" duration="1359000" />
+      <workItem from="1678435203222" duration="2181000" />
+      <workItem from="1678450377283" duration="595000" />
+      <workItem from="1678547373516" duration="627000" />
+      <workItem from="1678702149011" duration="151000" />
+      <workItem from="1678704376784" duration="593000" />
+      <workItem from="1678887967356" duration="600000" />
+      <workItem from="1678898190778" duration="9000" />
+      <workItem from="1678929730172" duration="1219000" />
+      <workItem from="1678979683336" duration="382000" />
+      <workItem from="1679320540589" duration="7040000" />
     </task>
     <servers />
   </component>

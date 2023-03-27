@@ -1,8 +1,10 @@
 package com.group4.edu.service.Impl;
 
 import com.group4.edu.domain.Company;
+import com.group4.edu.domain.Internship;
 import com.group4.edu.dto.CompanyDto;
 import com.group4.edu.repositories.CompanyRepository;
+import com.group4.edu.repositories.IntershipRepository;
 import com.group4.edu.service.CompanyService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -21,12 +23,16 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    IntershipRepository intershipRepository;
+
     @Override
     public CompanyDto saveOrUpdate(CompanyDto dto)  {
         if(dto == null) return null;
 
-        List<Company> companys = companyRepository.findByTaxCode(dto.getTaxCode());
-        if(companys != null && companys.size() > 0){
+       Company company = companyRepository.findByTaxCode(dto.getTaxCode()).orElse(null);
+        if(company != null){
             System.out.println("Đã tồn tại công ty này");
             return null;
         }
@@ -88,5 +94,17 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
         return companyDtos;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        try {
+            List<Internship> internships = intershipRepository.getInternshipByCompanyId(id);
+            intershipRepository.deleteAll(internships);
+            companyRepository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }
