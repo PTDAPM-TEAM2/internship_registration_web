@@ -39,7 +39,7 @@ const validationSchema = Yup.object({
     email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
@@ -220,7 +220,6 @@ const ChiTietSV = () => {
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             format="DD/MM/YYYY"
                                             maxDate={new Date()}
-
                                         />
                                     </LocalizationProvider>
                                 </div>

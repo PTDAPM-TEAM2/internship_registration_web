@@ -41,7 +41,7 @@ const validationSchema = Yup.object({
     email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
@@ -66,18 +66,18 @@ const ChiTietGV = () => {
         { value: "Nữ", label: "Nữ" },
         { value: "Khác", label: "Khác" },
     ];
-    console.log(state.item)
+    
     const initialValues = {
-        urlImg: state.item.urlImg || '',
-        fullName: state.item.fullName || '',
-        gender: state.item.gender || '',
-        idNumber: state.item.idNumber || '',
-        dateOfBirth: new Date(state.item.dateOfBirth) || '',
-        placeOfBitrh: state.item.placeOfBitrh || '',
-        phoneNumber: state.item.phoneNumber || '',
-        email: state.item.email || '',
-        lecturersCode: state.item.lecturersCode || '',
-        numGrTh: state.item.numGrTh || '',
+        urlImg: state.item?.urlImg || '',
+        fullName: state.item?.fullName || '',
+        gender: state.item?.gender || '',
+        idNumber: state.item?.idNumber || '',
+        dateOfBirth: new Date(state.item?.dateOfBirth) || '',
+        placeOfBitrh: state.item?.placeOfBitrh || '',
+        phoneNumber: state.item?.phoneNumber || '',
+        email: state.item?.email || '',
+        lecturersCode: state.item?.lecturersCode || '',
+        numGrTh: state.item?.numGrTh || '',
         //van de quan trong
         password: '',
     };
@@ -195,8 +195,7 @@ const ChiTietGV = () => {
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             format="DD/MM/YYYY"
                                             maxDate={new Date()}
-
-
+                                            
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -280,7 +279,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit' style={{ marginRight: 20 }}>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight: 20 }} onClick={() => {console.log(formik.errors.dateOfBirth)}}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

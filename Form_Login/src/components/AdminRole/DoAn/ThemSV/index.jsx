@@ -44,7 +44,7 @@ const validationSchema = Yup.object({
     email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     studentCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
@@ -210,8 +210,6 @@ const ThemSV = () => {
                                             />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            // onChange={formik.handleChange}
-                                            // name='dateOfBirth'
                                             format="DD/MM/YYYY"
                                             maxDate={new Date()}
                                         />
