@@ -95,29 +95,27 @@ function ThemeProvider({ children }) {
   const [toggle, setToggle] = useState(false);
   const [activeButton, setActiveButton] = useState("trang-chu");
 
-  const checkToken = (newValue) => {
-    const token = localStorage.getItem("token");
-    // if (token === null) {
-    //   localStorage.setItem("token", newValue);
-    //   setAuth(true);
-    //   console.log('dang nhap');
-    // }
-    // if (token === newValue) {
-    //   setAuth(true);
-    //   console.log('dang nhap1');
-    // }
+  // const checkToken = (newValue) => {
+  //   const token = localStorage.getItem("token");
+  //   // if (token === null) {
+  //   //   localStorage.setItem("token", newValue);
+  //   //   setAuth(true);
+  //   //   console.log('dang nhap');
+  //   // }
+  //   // if (token === newValue) {
+  //   //   setAuth(true);
+  //   //   console.log('dang nhap1');
+  //   // }
 
-    if (token) {
-      setAuth(true);
+  //   if (token) {
+  //     setAuth(true);
       
-    }
-    console.log(token);
-    console.log(newValue);
-  }
+  //   }
+  // }
 
-  useEffect((newValue) => {
-    checkToken(newValue);
-  }, [])
+  // useEffect((newValue) => {
+  //   checkToken(newValue);
+  // }, [])
 
   const updateToggle = (newValue) => {
     setToggle(newValue);
@@ -136,7 +134,7 @@ function ThemeProvider({ children }) {
     cellValidateLecturer,
     cellValidateStudent,
     auth,
-    checkToken,
+    // checkToken,
     cellValidateName,
     cellValidate,
     activeButton,

@@ -6,9 +6,8 @@ import { ThemeContext } from '../components/Theme/Theme';
 
 
 const PrivateWrapper = () => {
-  const context = useContext(ThemeContext);
-  console.log(context.auth);
-  return context.auth ? <Outlet /> : <Navigate to="/dang-nhap" />;
+  const token = localStorage.getItem('token');
+  return token ? <Outlet /> : <Navigate to="/dang-nhap" replace />;
 };
 
 

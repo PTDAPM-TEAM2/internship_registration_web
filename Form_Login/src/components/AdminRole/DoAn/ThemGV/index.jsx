@@ -17,9 +17,9 @@ import AlertMessage from '../ThemSV/Alert';
 
 
 const genders = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
+    { value: "Nam", label: "Nam" },
+    { value: "Nữ", label: "Nữ" },
+    { value: "Khác", label: "Khác" },
 ];
 
 const initialValues = {

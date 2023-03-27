@@ -61,6 +61,9 @@ function DSSV() {
     const navigate = useNavigate();
     const context = useContext(ThemeContext);
     const [students, setStudent] = React.useState([]);
+    function handleExcel() {
+        navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/nhap-diem-sv')
+    }
     function handleMoveAdd() {
         navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt');
     }
@@ -206,7 +209,8 @@ function DSSV() {
                     </Paper>
                 </div>
                 <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button className='button' sx={{ marginRight: 2 }}>Nhập điểm</Button>
+                    
+                    <Button className='button' sx={{ marginRight: 2 }} onClick={handleExcel} >Nhập điểm</Button>
                     <Button className='button' >Xuất dữ liệu</Button>
                 </div>
             </div>

@@ -67,9 +67,9 @@ const ChiTietSV = () => {
     }
     
     const genders = [
-        { value: "male", label: "Nam" },
-        { value: "female", label: "Nữ" },
-        { value: "other", label: "Khác" },
+        { value: "Nam", label: "Nam" },
+        { value: "Nữ", label: "Nữ" },
+        { value: "Khác", label: "Khác" },
     ];
 
     const initialValues = {
@@ -83,7 +83,6 @@ const ChiTietSV = () => {
         email: state.item.email || '',
         studentCode: state.item.studentCode || '',
         grade: grade,
-        //van de quan trong
         password: '',
     };
 

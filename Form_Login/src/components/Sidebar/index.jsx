@@ -109,7 +109,7 @@ function Sidebar() {
     const handleLogout = () => {
         navigate('/dang-nhap');
         localStorage.removeItem('token');
-        context.setActiveButton('trang-chu');
+        // context.setActiveButton('trang-chu');
     }
 
     const { id } = useParams()
@@ -384,7 +384,8 @@ function Sidebar() {
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' ||
-                        location.pathname === `/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${id}`
+                        location.pathname === `/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${id}`||
+                        location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/nhap-diem-sv'
 
                     ) :
                     // teachers role

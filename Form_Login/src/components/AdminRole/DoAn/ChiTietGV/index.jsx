@@ -62,9 +62,9 @@ const ChiTietGV = () => {
     const { id } = useParams();
 
     const genders = [
-        { value: "male", label: "Nam" },
-        { value: "female", label: "Nữ" },
-        { value: "other", label: "Khác" },
+        { value: "Nam", label: "Nam" },
+        { value: "Nữ", label: "Nữ" },
+        { value: "Khác", label: "Khác" },
     ];
     console.log(state.item)
     const initialValues = {

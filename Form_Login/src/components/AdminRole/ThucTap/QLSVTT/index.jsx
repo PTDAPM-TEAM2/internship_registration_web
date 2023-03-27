@@ -19,7 +19,7 @@ function QLSVTT() {
     const [showAlert, setShowAlert] = React.useState(false);
     const getDate = dayjs();
     const context = useContext(ThemeContext);
-
+    const token = localStorage.getItem('token');
     const handleClick = async () => {
         if (startDate < getDate) {
             setErrorMessage('Ngày không hợp lệ');
@@ -33,7 +33,7 @@ function QLSVTT() {
                 const response = await userApi.registerTimeTT({
                     timeStart: startDate,
                     timeEnd: dueDate,
-                }, context.token);
+                }, token);
                 context.updateLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
