@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietSV.module.css';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -38,13 +38,13 @@ const validationSchema = Yup.object({
     fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietSV = () => {
@@ -65,7 +65,7 @@ const ChiTietSV = () => {
         // id: state.item.grade.id,
         // students: state.item.grade.students
     }
-    
+
     const genders = [
         { value: "Nam", label: "Nam" },
         { value: "Nữ", label: "Nữ" },
@@ -211,13 +211,16 @@ const ChiTietSV = () => {
                                     <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} value={new Date(formik.values.dateOfBirth)} />}
+                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }}
+                                                value={new Date(formik.values.dateOfBirth)}
+                                                error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                                helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+                                            />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            format="YYYY/MM/DD"
+                                            format="DD/MM/YYYY"
                                             maxDate={new Date()}
-                                            error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
-                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -270,7 +273,7 @@ const ChiTietSV = () => {
                                     id="studentCode"
                                     name="studentCode"
                                     value={formik.values.studentCode}
-                                    onChange={formik.handleChange}                                    
+                                    onChange={formik.handleChange}
                                     disabled
                                 />
                             </div>
@@ -306,6 +309,8 @@ const ChiTietSV = () => {
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     type='password'
+                                    error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
                                 // disabled
                                 />
                             </div>

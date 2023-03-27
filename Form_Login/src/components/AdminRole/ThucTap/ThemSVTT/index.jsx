@@ -23,7 +23,7 @@ const validationSchema = Yup.object({
     email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
+    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     studentCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
@@ -65,7 +65,7 @@ const ThemSVTT = () => {
         fullName: '',
         gender: '',
         idNumber: '',
-        dateOfBirth: new Date(),
+        dateOfBirth: '',
         placeOfBitrh: '',
         phoneNumber: '',
         email: '',
@@ -110,7 +110,7 @@ const ThemSVTT = () => {
         getGrade()
     }, []);
 
-    
+
     const formik = useFormik({
         initialValues: initVl,
         validationSchema: validationSchema,
@@ -136,9 +136,6 @@ const ThemSVTT = () => {
             }
         },
     })
-    
-    console.log(formik.values);
-
 
 
     return (
@@ -230,10 +227,12 @@ const ThemSVTT = () => {
                                                 {...props}
                                                 className={styles.txtDate}
                                                 error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                                helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+
                                             />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            format="YYYY/MM/DD"
+                                            format="DD/MM/YYYY"
                                             maxDate={new Date()}
 
                                         />
@@ -325,7 +324,7 @@ const ThemSVTT = () => {
                                             className={styles.txtFieldBot}
                                             error={formik.touched.internship && Boolean(formik.errors.internship)}
                                         />}
-                                        
+
                                         value={formik.values.internship.start}
                                         onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
                                         // onChange={formik.handleChange}
@@ -342,6 +341,8 @@ const ThemSVTT = () => {
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
+
                                     type='password'
                                 // disabled
                                 />

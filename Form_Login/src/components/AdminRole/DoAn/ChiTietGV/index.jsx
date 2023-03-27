@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './ChiTietGV.module.css';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import dayjs from 'dayjs';
@@ -40,12 +40,12 @@ const validationSchema = Yup.object({
     fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/,'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    password: Yup.string().min(8,'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
 });
 
 const ChiTietGV = () => {
@@ -185,13 +185,17 @@ const ChiTietGV = () => {
                                     <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }} value={new Date(formik.values.dateOfBirth)} />}
+                                            renderInput={(props) => <TextField
+                                                {...props} style={{ width: 400 }}
+                                                value={new Date(formik.values.dateOfBirth)}
+                                                error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                                helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+                                            />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
-                                            format="YYYY/MM/DD"
+                                            format="DD/MM/YYYY"
                                             maxDate={new Date()}
-                                            error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
-                                            helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+
 
                                         />
                                     </LocalizationProvider>
@@ -252,13 +256,13 @@ const ChiTietGV = () => {
                             <div className={styles.txt}>
                                 <label htmlFor='password'>Mật khẩu: </label>
                                 <TextField
-                                    defaultValue='********'
                                     className={styles.txtFieldBot}
                                     id="password"
                                     name="password"
                                     // value={formik.values.password}
                                     onChange={formik.handleChange}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
                                     type='password'
                                 // disabled
                                 />
@@ -276,7 +280,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit' style={{ marginRight:20 }}>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight: 20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

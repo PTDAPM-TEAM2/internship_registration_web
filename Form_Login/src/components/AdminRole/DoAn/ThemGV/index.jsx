@@ -27,7 +27,7 @@ const initialValues = {
     fullName: '',
     gender: '',
     idNumber: '',
-    dateOfBirth: new Date(),
+    dateOfBirth: '',
     placeOfBitrh: '',
     phoneNumber: '',
     email: '',
@@ -40,7 +40,7 @@ const validationSchema = Yup.object({
     email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     gender: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     idNumber: Yup.string().trim().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    dateOfBirth: Yup.date().max(new Date()).required('Nhập thiếu thông tin! Vui lòng nhập lại'),
+    dateOfBirth: Yup.date().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     placeOfBitrh: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     phoneNumber: Yup.string().trim().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
     lecturersCode: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
@@ -181,14 +181,14 @@ const ThemGV = () => {
                                                 {...props}
                                                 className={styles.txtDate}
                                                 error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                                                helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
                                             />}
                                             value={formik.values.dateOfBirth}
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             // onChange={formik.handleChange}
                                             // name='dateOfBirth'
-                                            format="YYYY/MM/DD"
+                                            format="DD/MM/YYYY"
                                             maxDate={new Date()}
-
                                         />
                                     </LocalizationProvider>
                                 </div>

@@ -211,7 +211,7 @@ function DSGV() {
 
     console.log(checkboxes)
 
-    const bodyS ={
+    const bodyS = {
         idLecturer: id,
         idStudents: checkboxes
     }
@@ -223,17 +223,19 @@ function DSGV() {
             const response = await lecturerApi.addSV(bodyS);
             console.log(response);
             setOpen(false);
-            // setShowAlert(true);
-            // setTimeout(() => {
-            //     setShowAlert(false);
-            // }, 2000)
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000);
+            setNumOfSinL(1);
+            handleFilterGV();
             context.updateLoading(false);
         }
         catch (err) {
             console.log(err);
             context.updateLoading(false);
         }
-        
+
     };
 
 
@@ -398,16 +400,16 @@ function DSGV() {
                     </Box>
                 </Modal>
                 {showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Thêm sinh viên thành công !</AlertTitle>
-                    </Alert>
-                </div>}
+                    <div>
+                        <Alert severity="success" sx={{
+                            position: 'absolute',
+                            width: '40%',
+                            bottom: '0',
+                            right: '2%'
+                        }}>
+                            <AlertTitle>Thêm sinh viên thành công !</AlertTitle>
+                        </Alert>
+                    </div>}
             </div>
         </div>
 

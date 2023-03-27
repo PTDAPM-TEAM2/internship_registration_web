@@ -97,20 +97,6 @@ function DSDA() {
         getAllDoAn();
     }, [])
 
-    const handleGo = async () => {
-        // data.filter((data) => item.id !== id);
-        try{
-            setOpen(false)
-            // await companyApi.exportGraduationThesis()
-        }catch(err){
-            console.log(err);
-        }
-        setTimeout(() => {
-            navigate('/danh-sach-sinh-vien-yeu-cau');
-        }, 1000)
-    }
-
-    console.log(projects.map((it) => console.log(it.semester)));
 
     return (
         <div style={{ display: 'flex' }}>
@@ -166,7 +152,7 @@ function DSDA() {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Chọn kì xuất biểu mẫu sinh viên hoàn thành đồ án
+                        Chọn sinh viên hoàn thành đồ án
                     </Typography>
                     <Select
                         sx={{ width: 300 }}
@@ -175,9 +161,9 @@ function DSDA() {
                         id="demo-simple-select-helper"
                         onChange={handleChange}
                     >
-                        {projects.map(it => 
-                            <MenuItem value="10">
-                                {it.semester.code}
+                        {projects.map(project => 
+                            <MenuItem key={project.id} value={project.id}>
+                                {project.student.fullName}
                             </MenuItem>
                             )}
                     </Select>
