@@ -40,6 +40,17 @@ class CompanyApi {
       )
   }
 
+  exportGraduationThesis = (id, token) => {
+    const url = "/api/graduationthesis/export-graduationthesis/";
+    return axiosClient
+      .get(url + id, {
+        headers: {
+          Authorization: "Bearer " + token, //the token is a variable which holds the token
+        },
+      })
+      .then((res) => res);
+  };
+
 }
 
 const companyApi = new CompanyApi();

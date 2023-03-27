@@ -8,6 +8,6 @@ import java.util.List;
 
 
 public interface RegisterTimeRepository extends JpaRepository<RegisterTime,Long> {
-    @Query("select e from RegisterTime e where e.semester.code = ?1 and e.type = ?2")
+    @Query("select e from RegisterTime e where e.semester.code = ?1 and e.type = ?2 order by e.timeEnd DESC")
     List<RegisterTime> getBySemesterCodeAndType(String code,Integer type);
 }

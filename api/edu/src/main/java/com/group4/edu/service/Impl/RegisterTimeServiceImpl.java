@@ -45,12 +45,22 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
             throw new Exception("Thông tin thời gian bắt đầu đang bị trống");
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = formatter.parse(EduConstants.dateInString);
+        Date date = formatter.parse(EduConstants.dateDefaultSemster);
         String code = SemesterDateTimeUntil.getSemesterCodeByDate(date);
         Semester semester = semesterRepository.getSemesterByCode(code).orElse(null);
         entity.setSemester(semester);
         entity.setType(type);
         entity = registerTimeRepository.save(entity);
         return new RegisterTimeDto(entity);
+    }
+
+    @Override
+    public RegisterTimeDto getLast(int type) {
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        List<RegisterTime> registerTimeDtos = registerTimeRepository.getBySemesterCodeAndType(semesterCode,type);
+        if(registerTimeDtos != null && registerTimeDtos.size()>0){
+            return new RegisterTimeDto(registerTimeDtos.get(registerTimeDtos.size()-1));
+        }
+        return null;
     }
 }

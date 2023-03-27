@@ -35,10 +35,10 @@ function Login() {
   const navigate = useNavigate();
   const context = useContext(ThemeContext);
   const handleClickTT = () => {
-    context.updateToggle(false);
+    context.updateToggle(true);
   };
   const handleClickDA = () => {
-    context.updateToggle(true);
+    context.updateToggle(false);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +61,7 @@ function Login() {
     if (username === "" || password === "") {
       setErrorMessage("Nhập thiếu thông tin! Vui lòng nhập lại!");
     } else {
-      if (context.toggle === true) {
+      if (context.toggle === false) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginDA({
@@ -72,7 +72,7 @@ function Login() {
             var userInfoTT = await userApi.getInfo(tk);
             context.checkToken(tk);
             localStorage.setItem("token", tk);
-            
+
             context.updateLoading(false);
             setShowAlert(true);
             setErrorMessage("");
@@ -84,7 +84,7 @@ function Login() {
             else if (userInfoTT.roles[0].role === "STUDENT_DA" || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
             }
-            
+
             else {
               Variables.userRole = "teachers";
             }
@@ -93,7 +93,9 @@ function Login() {
                 navigate("/quan-ly-do-an-sinh-vien");
               } else if (Variables.userRole === "students") {
                 navigate("/sinh-vien-do-an");
-              } else {
+              }
+               else {
+                Variables.pw = password;
                 navigate("/trang-chu-giang-vien");
               }
             }, 500);
@@ -117,7 +119,7 @@ function Login() {
             }
           }
         }
-      } else if (context.toggle === false) {
+      } else if (context.toggle === true) {
         context.updateLoading(true);
         try {
           var tk = await userApi.loginTT({
@@ -131,7 +133,7 @@ function Login() {
             if (userInfoTT.roles[0].role === "ADMIN") {
               Variables.userRole = "admin";
             }
-            else if (userInfoTT.roles[0].role === "STUDENT_TT"  || userInfoTT.roles.length === 2) {
+            else if (userInfoTT.roles[0].role === "STUDENT_TT" || userInfoTT.roles.length === 2) {
               Variables.userRole = "students";
             }
             else {
@@ -148,8 +150,9 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
-                Variables.pw = password;
-                navigate("/trang-chu-giang-vien");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100)
               } else {
                 navigate("/sinh-vien-thuc-tap");
               }
@@ -185,7 +188,7 @@ function Login() {
   };
   return (
     <div className={styles.bg}>
-      {showAlert && (
+      {(context.toggle === true && Variables.userRole === "teachers") ? (null) : (showAlert && (
         <div>
           <Alert
             severity="success"
@@ -199,7 +202,7 @@ function Login() {
             <AlertTitle>Đăng nhập thành công</AlertTitle>
           </Alert>
         </div>
-      )}
+      ))}
       <Grid
         container
         columns={12}
@@ -285,16 +288,16 @@ function Login() {
               </div>
               <div className={styles.switch}>
                 <span
-                  onClick={handleClickTT}
+                  onClick={handleClickDA}
                   className={context.toggle === false ? styles.active : {}}
                 >
-                  Thực tập
+                  Đồ án
                 </span>
                 <span
-                  onClick={handleClickDA}
+                  onClick={handleClickTT}
                   className={context.toggle === true ? styles.active : {}}
                 >
-                  Đồ án
+                  Thực tập
                 </span>
               </div>
               <button className={styles.btnSubmit}>Đăng nhập</button>

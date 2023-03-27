@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto extends BaseDto{
+    private String IdNumber;
+    private String placeOfBitrh;
     private String fullName;
     private String email;
     private Date dateOfBirth;
@@ -26,9 +28,12 @@ public class UserDto extends BaseDto{
     private Boolean isStudent = false;
 
     private Set<RoleDto> roles;
+    private String password;
 
     public UserDto(User entity){
+        this.IdNumber = entity.getIdNumber();
         this.fullName = entity.getFullName();
+        this.placeOfBitrh = entity.getPlaceOfBirth();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
         this.address = entity.getAddress();
@@ -41,6 +46,8 @@ public class UserDto extends BaseDto{
     }
 
     public UserDto(User entity, boolean getAccount){
+        this.placeOfBitrh = entity.getPlaceOfBirth();
+        this.IdNumber = entity.getIdNumber();
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.dateOfBirth = entity.getDateOfBirth();
@@ -54,6 +61,7 @@ public class UserDto extends BaseDto{
     }
 
     public UserDto(User entity, Set<Role> roles){
+        this.IdNumber = entity.getIdNumber();
         this.setId(entity.getId());
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
@@ -65,6 +73,7 @@ public class UserDto extends BaseDto{
         this.gender = entity.getGender();
         this.phoneNumber = entity.getPhoneNumber();
         this.urlImg = entity.getUrlImg();
+        this.placeOfBitrh = entity.getPlaceOfBirth();
         if(entity.getAccount() != null && entity.getAccount().getRoles() != null){
             this.roles = new HashSet<>();
             for(Role role: entity.getAccount().getRoles()){
@@ -191,5 +200,39 @@ public class UserDto extends BaseDto{
         isStudent = student;
     }
 
+    public String getIdNumber() {
+        return IdNumber;
+    }
 
+    public void setIdNumber(String idNumber) {
+        IdNumber = idNumber;
+    }
+
+    public String getPlaceOfBitrh() {
+        return placeOfBitrh;
+    }
+
+    public void setPlaceOfBitrh(String placeOfBitrh) {
+        this.placeOfBitrh = placeOfBitrh;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public Boolean getLecturer() {
+        return isLecturer;
+    }
+
+    public Boolean getStudent() {
+        return isStudent;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

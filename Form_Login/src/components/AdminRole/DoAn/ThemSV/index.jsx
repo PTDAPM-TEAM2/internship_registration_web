@@ -36,7 +36,6 @@ const initialValues = {
     email: '',
     studentCode: '',
     grade: grade,
-    semester: '',
     password: '',
 
 };
