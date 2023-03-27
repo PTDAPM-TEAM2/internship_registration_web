@@ -166,7 +166,7 @@ const DKDA = () => {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        var formattedTime = date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+        var formattedTime = moment(date).format('hh:mm A');
         return day + "/" + month + "/" + year + " " + formattedTime;
     }
 
