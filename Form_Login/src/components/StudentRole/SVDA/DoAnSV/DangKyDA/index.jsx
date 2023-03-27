@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import warningImage from '../../../../../images/warning.png';
 import styles from "./DangKyDA.module.css";
+import moment from 'moment';
 
 const user = {
     fullName: null,
@@ -121,7 +122,7 @@ const DKDA = () => {
                     context.updateLoading(false);
                     setErrorMessages("Trường đề tài là bắt buộc");
                     setOpen(true);
-                }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
+                }else if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
                     context.updateLoading(false);
                     setErrorMessages("Đã quá thời gian đăng ký đồ án");
                     setOpen(true);
