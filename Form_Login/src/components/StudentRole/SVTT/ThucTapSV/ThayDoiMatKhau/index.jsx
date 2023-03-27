@@ -18,7 +18,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Variables from '../../../../../utils/variables';
-import context from 'react-bootstrap/esm/AccordionContext';
 import userApi from '../../../../../api/authApi';
 
 const style = {
