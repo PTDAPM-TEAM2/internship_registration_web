@@ -121,7 +121,7 @@ const DKDA = () => {
                     context.updateLoading(false);
                     setErrorMessages("Chưa điền đề tài đồ án");
                     setOpen(true);
-                }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
+                }else if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
                     context.updateLoading(false);
                     setErrorMessages("Đã quá thời gian đăng ký đồ án");
                     setOpen(true);
