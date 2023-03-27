@@ -107,10 +107,6 @@ const DKDA = () => {
 
     const onClick = async () => {
         const dateNow = new Date();
-        if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
-            console.log("Vuot qua thoi gian nop de cuong");
-                
-        }else{
             context.updateLoading(true);
             try {
                 if(inputDA.current.value === "" && giaovien === null){
@@ -125,12 +121,17 @@ const DKDA = () => {
                     context.updateLoading(false);
                     setErrorMessages("Chưa điền đề tài đồ án");
                     setOpen(true);
-                }else{
+                }else if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
+                    context.updateLoading(false);
+                    setErrorMessages("Đã quá thời gian đăng ký đồ án");
+                    setOpen(true);
+                }
+                else{
                     const response = await graduationThesis.addOrRemoveGraduation(
                         //pram like this {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
                         {
                             "isAccept": 1,
-                            "status": 1,
+                            "status": 0,
                             "nameGraduationThesis": inputDA.current.value,
                             "student": {
                                 "id": user.id
@@ -152,7 +153,6 @@ const DKDA = () => {
                     setShowAlert(null);
                 }, 2000)
             }
-        }
     }
     const formik = useFormik({
         initialValues,
