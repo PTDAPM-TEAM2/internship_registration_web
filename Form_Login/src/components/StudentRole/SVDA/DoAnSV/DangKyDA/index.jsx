@@ -121,7 +121,7 @@ const DKDA = () => {
                     context.updateLoading(false);
                     setErrorMessages("Chưa điền đề tài đồ án");
                     setOpen(true);
-                }else if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
+                }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
                     context.updateLoading(false);
                     setErrorMessages("Đã quá thời gian đăng ký đồ án");
                     setOpen(true);
@@ -165,7 +165,8 @@ const DKDA = () => {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        return day + "/" + month + "/" + year;
+        var formattedTime = date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+        return day + "/" + month + "/" + year + " " + formattedTime;
     }
 
     return (

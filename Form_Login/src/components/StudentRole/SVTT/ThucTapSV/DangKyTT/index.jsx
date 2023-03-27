@@ -82,8 +82,11 @@ function DKTT() {
     const handleSubmit = async (values) => {
         console.log(values);
         const dateNow = new Date();
-        if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
-            alert("Thời gian đăng ký đã kết thúc");
+        if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
+            setShowAlert({ type: 'error', text: "Hết hạn thời gian đăng ký" });
+            setTimeout(() => {
+                setShowAlert(null);
+            }, 2000)
         }else{
             context.updateLoading(true);
             try {
