@@ -20,6 +20,11 @@ public class LecturerController {
     @Autowired
     LecturersService lecturersService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        LecturerDto lecturerDto = lecturersService.getById(id);
+        return new ResponseEntity<>(lecturerDto==null?Collections.singletonMap("error","Không tìm thấy giảng viên"):lecturerDto,lecturerDto==null?HttpStatus.BAD_REQUEST:HttpStatus.OK);
+    }
     @PostMapping("/getLecturersBySearch")
     public ResponseEntity<List<LecturerDto>> getLecturerBySearch(@RequestBody(required = false) SearchObjectDto dto){
         List<LecturerDto> re = lecturersService.getLecturerByFilter(dto);

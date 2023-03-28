@@ -87,10 +87,10 @@ public class LecturersServiceImpl implements LecturersService {
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setUserType(EduConstants.UserType.LECTURERS.getValue());
             entity.setPhoneNumber(dto.getPhoneNumber());
+            account = entity.getAccount();
             if (isNewAccount) {
                 account = new Account();
                 account.setUsername(dto.getLecturersCode());
-                account.setPassword(passwordEncoder.encode(StringUtils.hasText(dto.getPassword())?dto.getPassword():dto.getLecturersCode()));
                 account.setUser(entity);
                 Role role = roleRepository.findByRole(EduConstants.Role.ROLELECTURERS.getValue());
                 if (role == null) {
@@ -100,8 +100,9 @@ public class LecturersServiceImpl implements LecturersService {
                 }
                 account.setRoles(new HashSet<>());
                 account.getRoles().add(role);
-                account = accountRepository.save(account);
             }
+            account.setPassword(passwordEncoder.encode(StringUtils.hasText(dto.getPassword())?dto.getPassword():dto.getLecturersCode()));
+            account = accountRepository.save(account);
             entity.setAccount(account);
             return new LecturerDto(lecturerRepository.save(entity));
         }
@@ -258,6 +259,12 @@ public class LecturersServiceImpl implements LecturersService {
             }
         }
         return lecturerDtos;
+    }
+
+    @Override
+    public LecturerDto getById(Long id) {
+        Lecturer lecturer = lecturerRepository.findById(id).orElse(null);
+        return  lecturer==null?null:new LecturerDto(lecturer);
     }
 
     private String getStringCellValue(XSSFCell cell) {

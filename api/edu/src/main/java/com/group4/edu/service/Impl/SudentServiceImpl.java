@@ -157,13 +157,13 @@ public class SudentServiceImpl implements StudentService {
                 entity.setStudentType(EduConstants.StudentType.ALL.getValue());
             }
         }
+        account = entity.getAccount();
         if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
             account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
             entity.setAccount(account);
             account.setUser(entity);
-            account = accountRepository.save(account);
         }
         if(account.getRoles() == null){
             account.setRoles(new HashSet<>());
@@ -174,6 +174,8 @@ public class SudentServiceImpl implements StudentService {
         if(roleTT != null){
             account.getRoles().add(roleTT);
         }
+        account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
+        account = accountRepository.save(account);
 //        else {
 //            boolean checkRoleDa = false;
 //            boolean checkRoleTT = false;
