@@ -113,7 +113,6 @@ const DKDA = () => {
                 setOpen(true);
             }else if(values.giaovien === null){
                 context.updateLoading(false);
-                setEmptyField(true);
                 setErrorMessages("Chưa chọn giáo viên hướng dẫn");
                 setOpen(true);
             }else if(formik.values.tenDoAn === "" || formik.values.tenDoAn === " "){
