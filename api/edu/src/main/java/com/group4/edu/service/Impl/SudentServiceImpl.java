@@ -58,6 +58,12 @@ public class SudentServiceImpl implements StudentService {
     @Autowired
     private InternshipService internshipService;
 
+    @Autowired
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public StudentDto saveOrUpdate(StudentDto studentDto, Long id, int studentType) throws Exception {
@@ -199,9 +205,25 @@ public class SudentServiceImpl implements StudentService {
 //        }
         entity = studentRepository.save(entity);
         if(studentDto.getRegisterinternship() != null && studentType == 2){
-            studentDto.getRegisterinternship().setStudentCode(entity.getStudentCode());
-            studentDto.getRegisterinternship().setInternshipPosition("Lao công");
-            internshipService.registerOrUpdateIntership(studentDto.getRegisterinternship(),null);
+            RegisterinternshipDto registerinternshipDto = studentDto.getRegisterinternship();
+            Internship internship = null;
+            Semester semester = semesterRepository.getSemesterByCode(SemesterDateTimeUntil.getCodeSemesterDefault()).orElse(null);
+            if(semester == null){
+                return null;
+            }
+            List<Internship> internships = intershipRepository.getBySemesterIdAndStudentId(semester.getId(), entity.getId());
+            if( internships != null && internships.size()>0){
+                internship = internships.get(0);
+            }
+            if(internship ==  null){
+                internship = new Internship();
+            }
+            internship.setStudent(entity);
+            internship.setSemester(semester);
+            internship.setCompany(companyRepository.findById(registerinternshipDto.getCompany().getId()).orElse(null));
+            internship.setStart(registerinternshipDto.getStart());
+            internship.setEnd(registerinternshipDto.getEnd());
+            intershipRepository.save(internship);
         }
         return new StudentDto(entity);
     }

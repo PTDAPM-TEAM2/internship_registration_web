@@ -21,6 +21,7 @@ public class RegisterinternshipDto {
     private String address;
     //mã số thuế
     private String taxCode;
+    private CompanyDto company;
 
     public String getInternshipPosition() {
         return internshipPosition;
@@ -116,5 +117,13 @@ public class RegisterinternshipDto {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
+    }
+
+    public CompanyDto getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDto company) {
+        this.company = company;
     }
 }
