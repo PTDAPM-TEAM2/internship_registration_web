@@ -61,8 +61,10 @@ const ChiTietSV = () => {
     const { id } = useParams();
 
 
+
     const company = {
-        nameCompany: context.cellValidateCompany(state.item.registerinternship),
+        id: context.cellValidateCompanyID(state.item.registerinternship),
+        nameCompany: state.item.registerinternship.company.nameCompany || '',
     }
 
     const registerinternship = {
@@ -71,10 +73,11 @@ const ChiTietSV = () => {
         company: company,
     }
     const grade = {
-        name: state.item.grade.name || ''
-        // id: state.item.grade.id,
+        name: state.item.grade.name || '',
+        id: state.item.grade.id,
         // students: state.item.grade.students
     }
+    console.log(registerinternship.company.nameCompany);
 
     const genders = [
         { value: "Nam", label: "Nam" },
@@ -138,6 +141,7 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            console.log(values);
             context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVTT(JSON.stringify(values), state.item.id);
@@ -231,8 +235,10 @@ const ChiTietSV = () => {
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
                                         onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                            if (e.target.value) {
+                                                if (e.keyCode === 32) {
+                                                    e.preventDefault();
+                                                }
                                             }
                                         }}
                                     />
@@ -249,7 +255,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -284,7 +290,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -301,7 +307,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -318,7 +324,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.email && formik.errors.email}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -337,30 +343,54 @@ const ChiTietSV = () => {
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
                             </div>
-                            <div className={styles.txt}>
+                            {/* <div className={styles.txt}>
                                 <label htmlFor='registerinternship.company'>Tên công ty thực tập: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
-                                    id='company'
+                                    id='registerinternship.company'
                                     name='registerinternship.company'
                                     value={formik.values.registerinternship.company}
                                     onChange={formik.handleChange}
                                 >
-                                    {/* <ul style={{ maxHeight: 150 }}> */}
-                                    {companies.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.nameCompany}
+                                    {console.log(formik.values.registerinternship.company.nameCompany)}
+                                    
+                                    {companies.map((company) => (
+                                        <MenuItem key={company.id} value={company}>
+                                            {company.nameCompany}
                                         </MenuItem>
                                     ))}
-                                    {/* </ul> */}
+                                   
+                                </TextField>
+                            </div> */}
+
+                            <div className={styles.txt}>
+                                <label htmlFor='nameCompany'>Tên công ty: </label>
+                                <TextField
+                                    className={styles.txtFieldBot}
+                                    select
+                                    id='nameCompany'
+                                    name='registerinternship.company.nameCompany'
+                                    value={formik.values.registerinternship.company.nameCompany}
+                                    onChange={formik.handleChange}
+                                >
+    
+                                    {companies.map((company) => (
+                                        <MenuItem key={company.id} value={company.nameCompany}>
+                                            {company.nameCompany}
+                                        </MenuItem>
+                                    ))}
+                                    
                                 </TextField>
                             </div>
+
+
+
                             <div className={styles.txt}>
                                 <label htmlFor='registerinternship.start'>Bắt đầu: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -391,7 +421,7 @@ const ChiTietSV = () => {
                                     type='password'
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
