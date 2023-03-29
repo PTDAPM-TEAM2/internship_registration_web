@@ -78,13 +78,14 @@ const ThemGV = () => {
                     navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
-                if (error.response.data.messgae) {
-                    context.updateLoading(false);
-                    setShowAlert({ type: 'error', text: error.response.data.messgae });
+                context.updateLoading(false);
+                if (error.response.data.error) {
+                    setShowAlert({ type: 'error', text: error.response.data.error});
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
                 }
+                
             }
         },
     })
@@ -156,7 +157,11 @@ const ThemGV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -170,7 +175,11 @@ const ThemGV = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -203,7 +212,11 @@ const ThemGV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -217,7 +230,11 @@ const ThemGV = () => {
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -231,7 +248,11 @@ const ThemGV = () => {
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
                                         helperText={formik.touched.email && formik.errors.email}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -248,7 +269,11 @@ const ThemGV = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.lecturersCode && Boolean(formik.errors.lecturersCode)}
                                     helperText={formik.touched.lecturersCode && formik.errors.lecturersCode}
-
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -261,7 +286,11 @@ const ThemGV = () => {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                     type='password'
-                                // disabled
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>

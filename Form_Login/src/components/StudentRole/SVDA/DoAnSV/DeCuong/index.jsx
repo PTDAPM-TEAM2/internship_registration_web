@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import graduationThesis from "../../../../../api/graduationThesis";
 import { ThemeContext } from "../../../../Theme/Theme";
 import AlertMessage from "./Alert";
+import styles from './DeCuong.module.css';
 // import { Document, Page,PDFViewer } from '@react-pdf/renderer';
 
 const DC = () => {
@@ -44,17 +45,17 @@ const DC = () => {
         <>
             <AlertMessage message={showAlert} />
             <Box sx={{ display: 'flex' }}>
-                <div style={{ borderStyle: "solid", borderWidth: '2px', width: '100%', height: 550, marginTop: 30, marginLeft: 8, marginRight: 8  }}>
-                    <div style={{ height: '6%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>
-                        <h1 style={{fontWeight:700, fontSize:25}}><b>Nộp đề cương</b></h1>
+                <div className={styles.container}>
+                    <div className={styles.container_title}>
+                        <h1 className={styles.title}><b>Nộp đề cương</b></h1>
                     </div>
                     <div style={{ height: '94%', }}>
-                        <div style={{ background: '#FFFCFC',boxShadow: "inset 3px 3px 20px rgba(0, 0, 0, 0.3)", marginLeft: 70,marginRight: 70,marginTop:40, height: '83%' }}>
+                        <div className={styles.container_addfile}>
                             <div style={{ width: '100%'}}>
-                                <h1 style={{fontWeight:700, fontSize:25,textAlign:"start"}}><b>Đề cương của bạn:</b></h1>
+                                <h1 className={styles.addfile_title}><b>Đề cương của bạn:</b></h1>
                             </div>
                             <div style={{ width: '100%' }}>
-                                <div style={{ height: '90%', marginTop: 20, marginBottom: 180, alignItems:"center",display:"flex",flexFlow:"column",justifyContent:"center" }}>
+                                <div className ={styles.box_addfile}>
                                 <input 
                                     type="file"
                                     name="file"
@@ -64,7 +65,7 @@ const DC = () => {
                                     onChange={handleChange}
                                     />
                                     { filePDF &&
-                                        <div style={{borderStyle: "solid", borderWidth: '2px',borderRadius:5,width:'75%',marginTop:10,textAlign:"center"}}>
+                                        <div className={styles.file}>
                                             <h4>{filePDF.name}</h4>
                                             {/* <embed src={filePDF} type="application/pdf"/> */}
                                         </div>
@@ -73,7 +74,7 @@ const DC = () => {
                                         onClick={handleClick}
                                         variant="outlined"
                                         color="inherit"
-                                        sx={{ width: '75%', height: 120,textAlign:"center" }}
+                                        className={styles.button}
                                         startIcon={<AddIcon />}
                                     >Nộp đề cương</Button>
                                     

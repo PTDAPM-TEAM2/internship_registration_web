@@ -30,6 +30,15 @@ function ThemeProvider({ children }) {
       return e.company.nameCompany;
     }
   }
+
+  function cellValidateCompanyID(e) {
+    if (e === null) {
+      return null;
+    }
+    else {
+      return e.company.id;
+    }
+  }
   function cellValidateSemesterIntern(e) {
     if (e === null) {
       return '';
@@ -89,6 +98,14 @@ function ThemeProvider({ children }) {
       return e.semester.code;
     }
   }
+  function cellValidateImage(e) {
+    if (e === null) {
+      return null;
+    }
+    else {
+      return e.urlImg;
+    }
+  }
 
   const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -127,6 +144,8 @@ function ThemeProvider({ children }) {
     setLoading(newValue);
   }
   const value = {
+    cellValidateCompanyID,
+    cellValidateImage,
     cellValidateSemester,
     cellValidatePhone,
     cellValidateStart,

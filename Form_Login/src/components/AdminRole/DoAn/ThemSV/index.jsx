@@ -99,15 +99,14 @@ const ThemSV = () => {
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
+                context.updateLoading(false);
                 if (error.response.data.messgae) {
-                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: error.response.data.messgae });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
                 }
                 if (error.response.data.status === 403) {
-                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
                     setTimeout(() => {
                         setShowAlert(null);
@@ -123,7 +122,7 @@ const ThemSV = () => {
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thêm Sinh Viên</p>
+                    <p className={styles.title}>Đăng kí thực tập</p>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >
@@ -183,6 +182,11 @@ const ThemSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -196,6 +200,11 @@ const ThemSV = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -225,6 +234,11 @@ const ThemSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -238,6 +252,11 @@ const ThemSV = () => {
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -251,6 +270,11 @@ const ThemSV = () => {
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
                                         helperText={formik.touched.email && formik.errors.email}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -267,6 +291,11 @@ const ThemSV = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
                                     helperText={formik.touched.studentCode && formik.errors.studentCode}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -281,11 +310,13 @@ const ThemSV = () => {
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                     helperText={formik.touched.grade && formik.errors.grade}
                                 >
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {grades.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
+                                        <MenuItem key={option.id} value={option} >
                                             {option.name}
                                         </MenuItem>
                                     ))}
+                                    {/* </ul> */}
                                 </TextField>
                                 {/* <TextField
                                     className={styles.txtFieldBot}
@@ -315,7 +346,11 @@ const ThemSV = () => {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                     type='password'
-                                // disabled
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>

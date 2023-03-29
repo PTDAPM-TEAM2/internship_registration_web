@@ -47,10 +47,13 @@ const ThemSVTT = () => {
         setImageUrl(imageUrl);
 
     };
-    const internship = {
+    const company = {
+        nameCompany: null
+    }
+    const registerinternship = {
         start: '',
         end: '',
-        company: '',
+        company: company,
     }
     const grade = {
         name: ''
@@ -72,7 +75,7 @@ const ThemSVTT = () => {
         studentCode: '',
         grade: grade,
         password: '',
-        internship: internship
+        registerinternship: registerinternship
 
     };
 
@@ -203,7 +206,11 @@ const ThemSVTT = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -216,7 +223,11 @@ const ThemSVTT = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -249,7 +260,11 @@ const ThemSVTT = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -263,7 +278,11 @@ const ThemSVTT = () => {
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -277,7 +296,11 @@ const ThemSVTT = () => {
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
                                         helperText={formik.touched.email && formik.errors.email}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -294,41 +317,47 @@ const ThemSVTT = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
                                     helperText={formik.touched.studentCode && formik.errors.studentCode}
-
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship'>Tên công ty thực tập: </label>
+                                <label htmlFor='registerinternship'>Tên công ty thực tập: </label>
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
-                                    id='internship'
-                                    name='internship.company'
-                                    value={formik.values.internship.company}
+                                    id='registerinternship'
+                                    name='registerinternship.company'
+                                    value={formik.values.registerinternship.company}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                    error={formik.touched.registerinternship && Boolean(formik.errors.registerinternship)}
                                 >
-                                    {companies.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.nameCompany}
-                                        </MenuItem>
-                                    ))}
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
+                                        {companies.map((option) => (
+                                            <MenuItem key={option.id} value={option}>
+                                                {option.nameCompany}
+                                            </MenuItem>
+                                        ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.start'>Bắt đầu: </label>
+                                <label htmlFor='registerinternship.start'>Bắt đầu: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
                                             {...props}
                                             className={styles.txtFieldBot}
-                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                            error={formik.touched.registerinternship && Boolean(formik.errors.registerinternship)}
                                         />}
 
-                                        value={formik.values.internship.start}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.start', value } })}
+                                        value={formik.values.registerinternship.start}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.start', value } })}
                                         // onChange={formik.handleChange}
-                                        // name='internship.start'
+                                        // name='registerinternship.start'
                                         format="YYYY/MM/DD"
                                     />
                                 </LocalizationProvider>
@@ -344,7 +373,11 @@ const ThemSVTT = () => {
                                     helperText={formik.touched.password && formik.errors.password}
 
                                     type='password'
-                                // disabled
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -358,24 +391,26 @@ const ThemSVTT = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
-                                    {grades.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
+                                        {grades.map((option) => (
+                                            <MenuItem key={option.id} value={option}>
+                                                {option.name}
+                                            </MenuItem>
+                                        ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
-                                <label htmlFor='internship.end'>Kết thúc: </label>
+                                <label htmlFor='registerinternship.end'>Kết thúc: </label>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         renderInput={(props) => <TextField
                                             {...props}
                                             className={styles.txtFieldBot}
-                                            error={formik.touched.internship && Boolean(formik.errors.internship)}
+                                            error={formik.touched.registerinternship && Boolean(formik.errors.registerinternship)}
                                         />}
-                                        value={formik.values.internship.end}
-                                        onChange={(value) => formik.handleChange({ target: { name: 'internship.end', value } })}
+                                        value={formik.values.registerinternship.end}
+                                        onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.end', value } })}
                                         format="YYYY/MM/DD"
                                     />
                                 </LocalizationProvider>
