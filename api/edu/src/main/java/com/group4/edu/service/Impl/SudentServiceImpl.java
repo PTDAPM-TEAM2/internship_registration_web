@@ -204,7 +204,7 @@ public class SudentServiceImpl implements StudentService {
 //            }
 //        }
         entity = studentRepository.save(entity);
-        if(studentDto.getRegisterinternship() != null && studentType == 2){
+        if(studentDto.getRegisterinternship() != null && studentType == 2 && studentDto.getRegisterinternship().getCompany() != null && studentDto.getRegisterinternship().getCompany().getId() != null){
             RegisterinternshipDto registerinternshipDto = studentDto.getRegisterinternship();
             Internship internship = null;
             Semester semester = semesterRepository.getSemesterByCode(SemesterDateTimeUntil.getCodeSemesterDefault()).orElse(null);
