@@ -28,8 +28,10 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
             throw new Exception("Thông tin thời gian đang bị trống");
         }
         RegisterTime entity = null;
-        if(dto.getId() != null){
-            entity = registerTimeRepository.findById(dto.getId()).orElse(null);
+        String semsterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        List<RegisterTime> registerTimeList = registerTimeRepository.getBySemesterCodeAndType(semsterCode, type);
+        if(registerTimeList != null && registerTimeList.size()>0){
+            entity = registerTimeList.get(0);
         }
         if(entity == null){
             entity = new RegisterTime();

@@ -58,6 +58,12 @@ public class SudentServiceImpl implements StudentService {
     @Autowired
     private InternshipService internshipService;
 
+    @Autowired
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public StudentDto saveOrUpdate(StudentDto studentDto, Long id, int studentType) throws Exception {
@@ -157,13 +163,13 @@ public class SudentServiceImpl implements StudentService {
                 entity.setStudentType(EduConstants.StudentType.ALL.getValue());
             }
         }
+        account = entity.getAccount();
         if(account == null){
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
             account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
             entity.setAccount(account);
             account.setUser(entity);
-            account = accountRepository.save(account);
         }
         if(account.getRoles() == null){
             account.setRoles(new HashSet<>());
@@ -174,6 +180,8 @@ public class SudentServiceImpl implements StudentService {
         if(roleTT != null){
             account.getRoles().add(roleTT);
         }
+        account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
+        account = accountRepository.save(account);
 //        else {
 //            boolean checkRoleDa = false;
 //            boolean checkRoleTT = false;
@@ -196,10 +204,26 @@ public class SudentServiceImpl implements StudentService {
 //            }
 //        }
         entity = studentRepository.save(entity);
-        if(studentDto.getRegisterinternship() != null && studentType == 2){
-            studentDto.getRegisterinternship().setStudentCode(entity.getStudentCode());
-            studentDto.getRegisterinternship().setInternshipPosition("Lao công");
-            internshipService.registerOrUpdateIntership(studentDto.getRegisterinternship(),null);
+        if(studentDto.getRegisterinternship() != null && studentType == 2 && studentDto.getRegisterinternship().getCompany() != null && studentDto.getRegisterinternship().getCompany().getId() != null){
+            RegisterinternshipDto registerinternshipDto = studentDto.getRegisterinternship();
+            Internship internship = null;
+            Semester semester = semesterRepository.getSemesterByCode(SemesterDateTimeUntil.getCodeSemesterDefault()).orElse(null);
+            if(semester == null){
+                return null;
+            }
+            List<Internship> internships = intershipRepository.getBySemesterIdAndStudentId(semester.getId(), entity.getId());
+            if( internships != null && internships.size()>0){
+                internship = internships.get(0);
+            }
+            if(internship ==  null){
+                internship = new Internship();
+            }
+            internship.setStudent(entity);
+            internship.setSemester(semester);
+            internship.setCompany(companyRepository.findById(registerinternshipDto.getCompany().getId()).orElse(null));
+            internship.setStart(registerinternshipDto.getStart());
+            internship.setEnd(registerinternshipDto.getEnd());
+            intershipRepository.save(internship);
         }
         return new StudentDto(entity);
     }

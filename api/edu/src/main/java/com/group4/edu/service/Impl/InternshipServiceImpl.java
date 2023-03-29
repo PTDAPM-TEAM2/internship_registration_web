@@ -11,6 +11,9 @@ import com.group4.edu.service.UserService;
 import com.group4.edu.until.SemesterDateTimeUntil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -242,6 +246,32 @@ public class InternshipServiceImpl implements InternshipService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<InternshipDto> importMark(MultipartFile file) {
+        XSSFWorkbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook(file.getInputStream());
+        } catch (IOException e) {
+            return null;
+        }
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        int rowIndex = 1;
+        XSSFRow row = sheet.getRow(rowIndex++);
+        List<InternshipDto>internshipDtos = new ArrayList<>();
+        String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
+        while (row != null && row.getCell(0) != null && StringUtils.hasText(row.getCell(0).getStringCellValue())){
+            String studentCode = row.getCell(0).getStringCellValue();
+            Internship internship = intershipRepository.getBySemesterCodeAndStudentCode(semesterCode,studentCode).orElse(null);
+            if(internship != null){
+                internship.setMark(row.getCell(3).getNumericCellValue());
+                internship = intershipRepository.save(internship);
+                internshipDtos.add(new InternshipDto(internship));
+            }
+            row = sheet.getRow(rowIndex++);
+        }
+        return internshipDtos;
     }
 
     private void validateRegisterInternShip(RegisterinternshipDto dto,boolean isSt) throws Exception {

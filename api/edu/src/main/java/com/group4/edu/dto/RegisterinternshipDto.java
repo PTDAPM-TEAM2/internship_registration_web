@@ -1,5 +1,7 @@
 package com.group4.edu.dto;
 
+import com.group4.edu.domain.Internship;
+
 import java.util.Date;
 
 public class RegisterinternshipDto {
@@ -21,6 +23,16 @@ public class RegisterinternshipDto {
     private String address;
     //mã số thuế
     private String taxCode;
+    private CompanyDto company;
+
+    public RegisterinternshipDto (Internship internship){
+        if(internship != null){
+            this.company = new CompanyDto(internship.getCompany());
+            this.start = internship.getStart();
+            this.end = internship.getEnd();
+        }
+    }
+    public RegisterinternshipDto(){}
 
     public String getInternshipPosition() {
         return internshipPosition;
@@ -116,5 +128,13 @@ public class RegisterinternshipDto {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
+    }
+
+    public CompanyDto getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDto company) {
+        this.company = company;
     }
 }
