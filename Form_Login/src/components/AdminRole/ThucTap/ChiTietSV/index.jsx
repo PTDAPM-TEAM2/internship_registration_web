@@ -64,7 +64,7 @@ const ChiTietSV = () => {
 
     const company = {
         id: context.cellValidateCompanyID(state.item.registerinternship),
-        nameCompany: state.item.registerinternship.company.nameCompany || '',
+        nameCompany: context.cellValidateCompany(state.item.registerinternship),
     }
 
     const registerinternship = {
