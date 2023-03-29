@@ -47,6 +47,7 @@ public class StudentDto extends UserDto{
         }
         if(internship != null){
             this.internship = new InternshipDto(internship,true);
+            this.registerinternship = new RegisterinternshipDto(internship);
         }
     }
 
