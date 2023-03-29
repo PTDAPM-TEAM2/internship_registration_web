@@ -39,4 +39,13 @@ public class RegisterTimeController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/get-last-registertime")
+    public ResponseEntity<RegisterTimeDto> get(){
+        return new ResponseEntity<>(registerTimeService.getLast(1),HttpStatus.OK);
+    }
+    @GetMapping("/get-last-registertime-internship")
+    public ResponseEntity<RegisterTimeDto> getR(){
+        return new ResponseEntity<>(registerTimeService.getLast(2),HttpStatus.OK);
+    }
 }

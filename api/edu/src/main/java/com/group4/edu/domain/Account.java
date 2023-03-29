@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.group4.edu.EduConstants;
 import com.group4.edu.domain.core.BaseObject;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -23,7 +25,8 @@ public class Account extends BaseObject {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @ManyToMany(fetch = FetchType.EAGER )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Set<Role> roles;
     private String token;
     @OneToOne(cascade = CascadeType.ALL)

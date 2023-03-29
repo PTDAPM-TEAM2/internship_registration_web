@@ -97,6 +97,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/login-da").permitAll()
                 .antMatchers("/login-tt").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/configuration/ui",
+                        "/configuration/security")
+                .permitAll()
+                .antMatchers("/swagger-ui/index.html").permitAll()
                 .antMatchers("/api/account/**").hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue(), EduConstants.Role.ROLELECTURERS.getValue(),EduConstants.Role.ROLESTUDENT_DA.getValue(),EduConstants.Role.ROLESTUDENT_TT.getValue())
                 .antMatchers("/api/role/**").hasAuthority(EduConstants.Role.ROLEADMIN.getValue())
                 .anyRequest().hasAnyAuthority(EduConstants.Role.ROLEADMIN.getValue(), EduConstants.Role.ROLELECTURERS.getValue(),EduConstants.Role.ROLESTUDENT_DA.getValue(),EduConstants.Role.ROLESTUDENT_TT.getValue())

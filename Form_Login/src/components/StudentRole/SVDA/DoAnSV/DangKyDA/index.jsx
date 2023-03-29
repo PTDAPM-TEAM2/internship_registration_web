@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { TextField, Button, Autocomplete, Box, Modal, Typography, } from "@mui/material";
+import { TextField, Button, Autocomplete, Box, Modal, Typography, MenuItem, } from "@mui/material";
 import lecturerApi from "../../../../../api/lecturerApi";
 import userApi from "../../../../../api/authApi";
 import graduationThesis from "../../../../../api/graduationThesis";
@@ -7,9 +7,10 @@ import { ThemeContext } from "../../../../Theme/Theme";
 import AlertMessage from "./Alert";
 import imageDoAn from '../../../../../images/doAn.png';
 import * as yup from "yup";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import warningImage from '../../../../../images/warning.png';
 import styles from "./DangKyDA.module.css";
+import moment from 'moment';
 
 const user = {
     fullName: null,
@@ -23,13 +24,9 @@ const getTime ={
 
 const initialValues = {
     tenDoAn: '',
-    giaoVien: ''
+    giaoVien: null
 }
 
-const validationSchema = yup.object().shape({
-    tenDoAn: yup.string().required('Chưa điền đề tài đồ án'),
-    giaoVien: yup.string().required('Chưa chọn giáo viên hướng dẫn'),
-});
 
 const style = {
     position: 'absolute',
@@ -46,7 +43,7 @@ const style = {
 const DKDA = () => {
     const [showAlert, setShowAlert] = React.useState(null);
     const context = useContext(ThemeContext);
-    
+    const [emptyField, setEmptyField] = React.useState(false);
 
     const token = localStorage.getItem('token');
     const [lecturers, setLecturer] = React.useState([]);
@@ -54,7 +51,6 @@ const DKDA = () => {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [errorMessages, setErrorMessages] = useState("");
-    const inputDA = useRef();
 
     React.useEffect(() => {
         const getCurrentUser = async () => {
@@ -105,58 +101,64 @@ const DKDA = () => {
         setGiaoVien(value);
     }
 
-    const onClick = async () => {
-        const dateNow = new Date();
-        if(dateNow < getTime.timeStart || dateNow > getTime.timeEnd){
-            console.log("Vuot qua thoi gian nop de cuong");
-                
-        }else{
-            context.updateLoading(true);
-            try {
-                if(inputDA.current.value === "" && giaovien === null){
-                    context.updateLoading(false);
-                    setErrorMessages("Hãy điền đầy đủ thông tin");
-                    setOpen(true);
-                }else if(giaovien === null){
-                    context.updateLoading(false);
-                    setErrorMessages("Chưa chọn giáo viên hướng dẫn");
-                    setOpen(true);
-                }else if(inputDA.current.value === ""){
-                    context.updateLoading(false);
-                    setErrorMessages("Chưa điền đề tài đồ án");
-                    setOpen(true);
-                }else{
-                    const response = await graduationThesis.addOrRemoveGraduation(
-                        //pram like this {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
-                        {
-                            "isAccept": 1,
-                            "status": 1,
-                            "nameGraduationThesis": inputDA.current.value,
-                            "student": {
-                                "id": user.id
-                            },
-                            "lecturer": {
-                                "id": giaovien.id
-                            },
-                            "semester": {
-                                "id": user?.semester?.id
-                            }
-                        },token);
-                        context.updateLoading(false);
-                        console.log(response);
-                }
-            } catch (error) {
+    const onClick = async (values) => {
+        const dateNow = moment(new Date());
+        console.log(values.giaoVien);
+        context.updateLoading(true);
+        try {
+            if((formik.values.tenDoAn === "" || formik.values.tenDoAn === " ") && values.giaoVien === null){
                 context.updateLoading(false);
-                setShowAlert({ type: 'error', text: 'Đăng ký đồ án ko thành công '});
-                setTimeout(() => {
-                    setShowAlert(null);
-                }, 2000)
+                setEmptyField(true);
+                setErrorMessages("Hãy điền đầy đủ thông tin");
+                setOpen(true);
+            }else if(values.giaovien === null){
+                context.updateLoading(false);
+                setErrorMessages("Chưa chọn giáo viên hướng dẫn");
+                setOpen(true);
+            }else if(formik.values.tenDoAn === "" || formik.values.tenDoAn === " "){
+                context.updateLoading(false);
+                setEmptyField(true);
+                setErrorMessages("Trường đề tài là bắt buộc");
+                setOpen(true);
+            }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
+                context.updateLoading(false);
+                setErrorMessages("Đã quá thời gian đăng ký đồ án");
+                setOpen(true);
             }
+            else{
+                const response = await graduationThesis.addOrRemoveGraduation(
+                    //pram like this {"isAccept":1,"status":0,"nameGraduationThesis":"web ban do an 2","student":{"id":5},"lecturer":{"id":2},"semester":{"id": 1}}
+                    {
+                        "isAccept": 1,
+                        "status": 0,
+                        "nameGraduationThesis": values.tenDoAn,
+                        "student": {
+                            "id": user.id
+                        },
+                        "lecturer": {
+                            "id": values.giaoVien.id
+                        },
+                        "semester": {
+                            "id": user?.semester?.id
+                        }
+                    },token);
+                    context.updateLoading(false);
+                    setShowAlert({ type: 'success', text: 'Đăng ký đồ án thành công' });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 5000)
+            }
+        } catch (error) {
+            context.updateLoading(false);
+            setShowAlert({ type: 'error', text: 'Đăng ký đồ án ko thành công '});
+            setTimeout(() => {
+                setShowAlert(null);
+            }, 2000)
         }
     }
     const formik = useFormik({
-        initialValues,
-        validationSchema,
+        initialValues: initialValues,
+        // validationSchema: validationSchema,
         onSubmit: onClick,
     })
 
@@ -165,67 +167,72 @@ const DKDA = () => {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        return day + "/" + month + "/" + year;
+        var formattedTime = moment(date).format('hh:mm A');
+        return day + "/" + month + "/" + year + " " + formattedTime;
     }
 
     return (
-        <div>
-            <AlertMessage message={showAlert} />
-            <Box sx={{ display: 'flex' }}>
-                <div style={{ display: "block", borderStyle: "solid", borderWidth: '2px', top: '10%', width: '100%', height: 600, marginTop: 30, marginLeft: 8, marginRight: 8 }}>
-                    <div style={{ height: '6%', width: '100%', borderBottom: '2px solid', textAlign: 'center', backgroundColor: 'lightgrey' }}>
-                        <h1 style={{fontWeight:700, fontSize:25}}><b>Đăng ký đồ án</b></h1>
+            <Box style={{display: "flex"}}>
+                <div className={styles.container}>
+                    <div className={styles.container_title}>
+                        <h1 className={styles.title}><b>Đăng ký đồ án</b></h1>
                     </div>
                     <div style={{ height: '94%', }}>
-                        <div style={{height:'13%',display:'flex',justifyContent:'end',flexFlow:'column',alignItems:"end",marginRight:300}}>
+                        <div className={styles.container_date}>
                             <h4>Ngày bắt đầu: {transferDate(getTime.timeStart)}</h4>
                             <h4>Ngày kết thúc: {transferDate(getTime.timeEnd)}</h4>
                         </div>
-                        <div style={{ border: '2px dashed',marginTop:5,marginLeft:70,marginRight:70, height: '77%' }}>
-                            <div style={{ float: 'left', width: '50%', height:'98%'}}>
+                        <form className={styles.container_register} onSubmit={formik.handleSubmit}>
+                            <div className={styles.image}>
                                 <img src={imageDoAn} alt="" />
                             </div>
-                            <div style={{ float: 'left', width: '50%' }}>
-                                <div style={{ height: '90%', marginTop: 20, marginBottom: 80, textAlign: 'left ', marginLeft: 50 }}>
+                            <div className={styles.box_register}>
+                                <div className={styles.register}>
                                     <h4>Đề tài:</h4>
                                     <TextField 
-                                        id="outlined-basic" 
-                                        variant="outlined" 
-                                        sx={{ width: '80%', marginBottom: 5 }} 
-                                        inputRef={inputDA} 
-                                        // onChange={formik.handleChange}
-                                        // onBlur={formik.handleBlur}
-                                        // value={formik.values.tenDoAn}
-                                        // error={formik.touched.tenDoAn && Boolean(formik.errors.tenDoAn)}
-                                        // helperText={formik.touched.tenDoAn && formik.errors.tenDoAn}
-                                        />
+                                        variant="outlined"
+                                        name="tenDoAn"
+                                        className={styles.text_field}
+                                        style = {emptyField === true ? {'border':'1px solid red', 'borderRadius' : '5px'} : {}}
+                                        onChange={(e) => {
+                                            formik.handleChange(e);
+                                            if (e.target.value === "" || e.target.value === " ") {
+                                                setEmptyField(true);
+                                            }else{
+                                                setEmptyField(false);
+                                            }
+                                        }}
+                                        value={formik.values.tenDoAn}
+                                        error={formik.touched.tenDoAn && Boolean(formik.errors.tenDoAn)}
+                                        onBlur={formik.handleBlur}
+                                    />
                                     <h4>Giáo viên hướng dẫn:</h4>
                                     {/* <TextField id="outlined-basic" variant="outlined" sx={{ width: '80%', marginBottom: 5 }} /> */}
-                                    <Autocomplete
-                                        id="giao_vien"
-                                        options={lecturers}
-                                        getOptionLabel={(option) => option.fullName}
-                                        onChange={handleChange}
-                                        sx={{ width: '80%', marginBottom: 5 }}
-                                        renderInput={(params) =>(
-                                            <TextField {...params} 
-                                                variant="outlined" 
-                                                label="GV"
-                                                // helperText={formik.touched.giaoVien && formik.errors.giaoVien} 
-                                                // error={formik.touched.giaoVien && Boolean(formik.errors.giaoVien)}
-                                            />
-                                        )}
-                                    />
+                                    <TextField
+                                        name="giaoVien"
+                                        select
+                                        onChange={formik.handleChange}
+                                        className={styles.text_field}
+                                        value={formik.values.giaoVien}
+                                        helperText={formik.touched.giaoVien && formik.errors.giaoVien} 
+                                        error={formik.touched.giaoVien && Boolean(formik.errors.giaoVien)}
+                                    >
+                                        {lecturers.map((option) => (
+                                            <MenuItem key={option.id} value={option}>
+                                                {option.fullName}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </div>
-                                <div style={{ height: '10%', }}>
-                                    <Button variant="contained" style={{backgroundColor:'#23434E'}} onClick={onClick}>Đăng ký</Button>
+                                <div style={{ height: '40%', }}>
+                                    <button className={styles.button} type="submit">Đăng ký</button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </Box>
-            <Modal
+                <AlertMessage message={showAlert} />
+                <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
@@ -240,7 +247,8 @@ const DKDA = () => {
                         </div>
                     </Box>
                 </Modal>
-        </div>
+            </Box>
+            
     );
 }
 

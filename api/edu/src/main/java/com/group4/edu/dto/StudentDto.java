@@ -12,6 +12,7 @@ public class StudentDto extends UserDto{
     private Integer studentType;
     private GraduationThesisDto graduationThesis;
     private InternshipDto internship;
+    private RegisterinternshipDto registerinternship;
 
     public StudentDto(){}
     public StudentDto(Student entity){
@@ -33,7 +34,7 @@ public class StudentDto extends UserDto{
             this.grade = new GradeDto(entity.getGrade());
         }
         if(thesis != null){
-            this.graduationThesis = new GraduationThesisDto(thesis);
+            this.graduationThesis = new GraduationThesisDto(thesis,true);
         }
     }
     public StudentDto(Student entity, Internship internship){
@@ -102,5 +103,13 @@ public class StudentDto extends UserDto{
 
     public void setInternship(InternshipDto internship) {
         this.internship = internship;
+    }
+
+    public RegisterinternshipDto getRegisterinternship() {
+        return registerinternship;
+    }
+
+    public void setRegisterinternship(RegisterinternshipDto registerinternship) {
+        this.registerinternship = registerinternship;
     }
 }

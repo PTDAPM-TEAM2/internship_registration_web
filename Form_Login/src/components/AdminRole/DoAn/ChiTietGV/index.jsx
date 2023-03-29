@@ -171,7 +171,11 @@ const ChiTietGV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -184,7 +188,11 @@ const ChiTietGV = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -215,7 +223,11 @@ const ChiTietGV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -228,7 +240,11 @@ const ChiTietGV = () => {
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -241,7 +257,11 @@ const ChiTietGV = () => {
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
                                         helperText={formik.touched.email && formik.errors.email}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -255,6 +275,11 @@ const ChiTietGV = () => {
                                     name="lecturersCode"
                                     value={formik.values.lecturersCode}
                                     onChange={formik.handleChange}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -268,6 +293,11 @@ const ChiTietGV = () => {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                     type='password'
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 // disabled
                                 />
                             </div>

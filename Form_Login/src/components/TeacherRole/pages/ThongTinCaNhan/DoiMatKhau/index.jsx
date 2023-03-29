@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styles from '../DoiMatKhau/ChangePassw.module.css';
-// import { DataGrid } from '@mui/x-data-grid';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,15 +18,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Variables from '../../../../../utils/variables';
-import context from 'react-bootstrap/esm/AccordionContext';
-
-// const validationSchema = Yup.object().shape({
-//     oldPassword: Yup.string().trim().required('Required').test('match', 'Mật khẩu cũ không chính xác!', function (value) {
-//         return value === this.parent.newPassword;
-//     }),
-//     newPassword: Yup.string().trim().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
-//     reNewPassword: Yup.string().trim().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự').required('Required'),
-// });
 
 const style = {
     position: 'absolute',

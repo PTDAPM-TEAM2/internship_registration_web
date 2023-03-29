@@ -149,7 +149,9 @@ function Login() {
               if (Variables.userRole === "admin") {
                 navigate("/quan-ly-sinh-vien-thuc-tap");
               } else if (Variables.userRole === "teachers") {
-
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100)
               } else {
                 navigate("/sinh-vien-thuc-tap");
               }
@@ -185,21 +187,7 @@ function Login() {
   };
   return (
     <div className={styles.bg}>
-      {(context.toggle === true && Variables.userRole == 'teachers') ? (showAlert && (
-        <div>
-          <Alert
-            severity="warning"
-            sx={{
-              position: "absolute",
-              width: "40%",
-              top: "3%",
-              right: "1%",
-            }}
-          >
-            <AlertTitle>Bạn không có quyền vào mục này</AlertTitle>
-          </Alert>
-        </div>
-      )) : (showAlert && (
+      {(context.toggle === true && Variables.userRole === "teachers") ? (null) : (showAlert && (
         <div>
           <Alert
             severity="success"

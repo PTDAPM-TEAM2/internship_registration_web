@@ -60,10 +60,15 @@ const ChiTietSV = () => {
     const state = location.state;
     const { id } = useParams();
 
+
+    const company = {
+        nameCompany: context.cellValidateCompany(state.item.registerinternship),
+    }
+
     const registerinternship = {
         start: context.cellValidateStart(state.item.registerinternship),
         end: context.cellValidateEnd(state.item.registerinternship),
-        company: context.cellValidateCompany(state.item.registerinternship),
+        company: company,
     }
     const grade = {
         name: state.item.grade.name || ''
@@ -225,7 +230,11 @@ const ChiTietSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -238,7 +247,11 @@ const ChiTietSV = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -269,7 +282,11 @@ const ChiTietSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -282,7 +299,11 @@ const ChiTietSV = () => {
                                         value={formik.values.phoneNumber}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -295,7 +316,11 @@ const ChiTietSV = () => {
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
                                         helperText={formik.touched.email && formik.errors.email}
-
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 32) {
+                                              e.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -310,6 +335,11 @@ const ChiTietSV = () => {
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -359,7 +389,11 @@ const ChiTietSV = () => {
                                     helperText={formik.touched.password && formik.errors.password}
 
                                     type='password'
-                                // disabled
+                                    onKeyDown={(e) => {
+                                        if (e.keyCode === 32) {
+                                          e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className={styles.txt}>
