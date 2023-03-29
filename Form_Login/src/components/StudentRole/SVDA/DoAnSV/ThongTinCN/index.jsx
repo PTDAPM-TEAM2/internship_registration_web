@@ -28,13 +28,13 @@ function TTSV() {
     React.useEffect(() => {
         const getDataSV = async () => {
             context.updateLoading(true);
-            try{
+            try {
                 const response = await userApi.getInfo(token);
                 context.updateLoading(false);
                 setSV(response);
                 console.log(SV)
-              
-            }catch(error){
+
+            } catch (error) {
                 setShowAlert({ type: 'error', text: 'Có lỗi xảy ra' + error });
                 setTimeout(() => {
                     setShowAlert(null);
@@ -42,7 +42,7 @@ function TTSV() {
             }
         }
         getDataSV();
-    },[]);
+    }, []);
 
     const transferDate = (date) => {
         var date = new Date(date);
@@ -63,94 +63,94 @@ function TTSV() {
                         </div>
                         <div className={styles.box_textfield}>
                             <div className={styles.column_avatar}>
-                                <img src={SV?.urlImg || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="avatar" className={styles.avatar}/>
+                                <img src={SV?.urlImg || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="avatar" className={styles.avatar} />
                                 <h4 style={{ marginBottom: 2 }}>Giới tính:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
                                     sx={{ width: '80%', }}
-                                    value={SV?.gender || ""}/>
+                                    value={SV?.gender || ""} />
                             </div>
                             <div className={styles.column_textfield}>
                                 <h4 className={styles.label}>Họ và tên:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={SV?.fullName || ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={SV?.fullName || ""} />
                                 <h4 className={styles.label}>Ngày sinh:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={transferDate(SV?.dateOfBirth )|| ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={transferDate(SV?.dateOfBirth) || ""} />
                                 <h4 className={styles.label}>Số điện thoại:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={SV?.phoneNumber || ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={SV?.phoneNumber || ""} />
                             </div>
                             <div className={styles.column_textfield}>
                                 <h4 className={styles.label}>Căn cước:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={SV?.idNumber || ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={SV?.idNumber || ""} />
                                 <h4 className={styles.label}>Nơi sinh:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={SV?.placeOfBirth || ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={SV?.placeOfBitrh || ""} />
                                 <h4 className={styles.label}>Email:</h4>
-                                <TextField disabled 
-                                    id="outlined-basic" 
-                                    variant="outlined" 
-                                    size="small" 
-                                    className={styles.text_field} 
-                                    value={SV?.email || ""}/>
+                                <TextField disabled
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    size="small"
+                                    className={styles.text_field}
+                                    value={SV?.email || ""} />
                             </div>
                         </div>
                     </div>
                     <div className={styles.container_info2}>
                         <div className={styles.column_textfield1}>
                             <h4 className={styles.label}>Mã sinh viên:</h4>
-                            <TextField disabled 
-                                id="outlined-basic" 
-                                variant="outlined" 
-                                size="small" 
-                                className={styles.text_field} 
-                                value={SV?.studentCode || ""}/>
+                            <TextField disabled
+                                id="outlined-basic"
+                                variant="outlined"
+                                size="small"
+                                className={styles.text_field}
+                                value={SV?.studentCode || ""} />
                         </div>
                         <div className={styles.column_textfield1}>
                             <h4 className={styles.label}>Lớp:</h4>
-                            <TextField disabled 
-                                id="outlined-basic" 
-                                variant="outlined" 
-                                size="small" 
-                                className={styles.text_field} 
-                                value={SV?.grade?.name || ""}/>
+                            <TextField disabled
+                                id="outlined-basic"
+                                variant="outlined"
+                                size="small"
+                                className={styles.text_field}
+                                value={SV?.grade?.name || ""} />
                         </div>
                         <div className={styles.column_textfield1}>
                             <h4 className={styles.label}>Mật khẩu:</h4>
-                            <TextField disabled 
-                                id="outlined-basic" 
-                                variant="outlined" 
-                                size="small" 
-                                className={styles.text_field} 
-                                defaultValue="***************"/>
+                            <TextField disabled
+                                id="outlined-basic"
+                                variant="outlined"
+                                size="small"
+                                className={styles.text_field}
+                                defaultValue="***************" />
                         </div>
                     </div>
                     <div style={{ textAlign: "right", }}>
-                        <Button variant="contained" style={{backgroundColor:'#23434E'}} onClick={handleClick}>Đổi mật khẩu</Button>
+                        <Button variant="contained" style={{ backgroundColor: '#23434E' }} onClick={handleClick}>Đổi mật khẩu</Button>
                     </div>
                 </div>
             </Box>
