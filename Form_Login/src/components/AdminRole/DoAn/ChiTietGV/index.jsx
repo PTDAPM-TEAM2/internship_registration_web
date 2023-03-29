@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import lecturerApi from "../../../../api/lecturerApi";
 import MenuItem from '@mui/material/MenuItem';
-
+import AlertMessage from '../ThemSV/Alert';
 
 
 const style = {
@@ -50,7 +50,7 @@ const validationSchema = Yup.object({
 
 const ChiTietGV = () => {
     const context = useContext(ThemeContext);
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlert, setShowAlert] = React.useState(null);
     const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -89,15 +89,20 @@ const ChiTietGV = () => {
             context.updateLoading(true);
             try {
                 const response = await lecturerApi.updateGV(JSON.stringify(values), state.item.id);
-                setShowAlert(true);
+                setShowAlert({ type: 'success', text: "Sửa giảng viên thành công" });
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
-                console.error(error);
                 context.updateLoading(false);
+                if (error.response.data.error) {
+                    setShowAlert({ type: 'error', text: error.response.data.error});
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
             }
         },
     })
@@ -124,6 +129,7 @@ const ChiTietGV = () => {
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.form}>
+            <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -249,7 +255,6 @@ const ChiTietGV = () => {
                                     name="lecturersCode"
                                     value={formik.values.lecturersCode}
                                     onChange={formik.handleChange}
-                                    disabled
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -279,7 +284,7 @@ const ChiTietGV = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit' style={{ marginRight: 20 }} onClick={() => {console.log(formik.errors.dateOfBirth)}}>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight: 20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
@@ -301,17 +306,6 @@ const ChiTietGV = () => {
                     </div>
                 </Box>
             </Modal>
-            {showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'fixed',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Sửa thông tin giảng viên thành công !</AlertTitle>
-                    </Alert>
-                </div>}
 
             {showAlertD &&
                 <div>

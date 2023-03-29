@@ -14,7 +14,6 @@ function DLCT() {
     const handleExcelFileChange = (event) => {
         const file = event.target.files[0];
         setExcelFile(file);
-        console.log(file.name.replace('.xlsx', ''))
     };
     const formData = new FormData();
     formData.append('file', excelFile);

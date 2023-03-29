@@ -56,7 +56,7 @@ export default function Dashboard() {
 
     const formatDate = (date) => {
         const day = date.getDate();
-        const month = 1+date.getMonth();
+        const month = 1 + date.getMonth();
         const year = date.getFullYear();
         const formattedDay = day < 10 ? `0${day}` : day;
         const formattedMonth = month < 10 ? `0${month}` : month;
@@ -96,7 +96,7 @@ export default function Dashboard() {
     // }
 
     const navigate = useNavigate();
-    function toComponent (path) {
+    function toComponent(path) {
         navigate(path);
     }
 
@@ -116,15 +116,15 @@ export default function Dashboard() {
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }} onClick = {
-                                    () => {
-                                        if(Variables.userRole === "admin"){
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }} onClick={
+                                () => {
+                                    if (Variables.userRole === "admin") {
+                                        navigate('/quan-ly-do-an')
+                                    } else {
 
-                                        }else{
-
-                                        }
                                     }
-                                }>
+                                }
+                            }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === 'admin' ? "Đồ án" : Variables.userRole === 'teachers' ? "Thông Tin Cá Nhân" : "Thông Tin Cá Nhân"}</p>
                                 </div>
@@ -132,7 +132,16 @@ export default function Dashboard() {
                                     <MenuBookIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }}
+                                onClick={
+                                    () => {
+                                        if (Variables.userRole === "admin") {
+                                            navigate('/quan-ly-sinh-vien-da')
+                                        } else {
+
+                                        }
+                                    }
+                                }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === 'admin' ? "Sinh viên" : Variables.userRole === 'teachers' ? "Xác Nhận Yêu Cầu Sinh Viên" : "Đăng ký đồ án "}</p>
                                 </div>
@@ -140,7 +149,16 @@ export default function Dashboard() {
                                     <PeopleIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }}
+                                onClick={
+                                    () => {
+                                        if (Variables.userRole === "admin") {
+                                            navigate('/quan-ly-giang-vien')
+                                        } else {
+
+                                        }
+                                    }
+                                }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === 'admin' ? "Giảng viên" : Variables.userRole === 'teachers' ? "Danh Sách Sinh Viên" : "Nộp đề cương"}</p>
                                 </div>
@@ -158,7 +176,7 @@ export default function Dashboard() {
                                         <div className={styles.bgDB3}>
                                             <AccessTimeIcon style={{ fontSize: 120 }} />
                                         </div>
-                                    </div> :Variables.userRole === 'teachers'?
+                                    </div> : Variables.userRole === 'teachers' ?
                                         <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} >
                                             <div className={styles.infoTag}>
                                                 <p>Danh Sách Đồ Án</p>
@@ -166,7 +184,7 @@ export default function Dashboard() {
                                             <div className={styles.bgDB2}>
                                                 <PeopleIcon style={{ fontSize: 130 }} />
                                             </div>
-                                        </div>:
+                                        </div> :
                                         <div className={styles.dashBoard} style={{ backgroundColor: '#e95835' }} >
                                             <div className={styles.infoTag}>
                                                 <p>Thông tin đồ án</p>
@@ -199,15 +217,15 @@ export default function Dashboard() {
                 ) &&
                     <div style={{ width: '100%' }}>
                         <div className={styles.db}>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }}  onClick={() => {
-                                    if(Variables.userRole === 'admin'){
-                                        toComponent("/quan-ly-sinh-vien-thuc-tap")
-                                    }else if(Variables.userRole === 'teachers'){
-                                        toComponent("/trang-chu-giang-vien")
-                                    }else{
-                                        toComponent("/sinh-vien-thuc-tap")
-                                    }
-                                }}>
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#00b0f3' }} onClick={() => {
+                                if (Variables.userRole === 'admin') {
+                                    toComponent("/quan-ly-sinh-vien-thuc-tap")
+                                } else if (Variables.userRole === 'teachers') {
+                                    toComponent("/trang-chu-giang-vien")
+                                } else {
+                                    toComponent("/sinh-vien-thuc-tap")
+                                }
+                            }}>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === "admin" ? "Thực tập" : Variables.userRole === "teachers" ? "Thông Tin Cá Nhân" : "Thông Tin Cá Nhân"}</p>
                                 </div>
@@ -215,17 +233,17 @@ export default function Dashboard() {
                                     <MenuBookIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }} onClick = {
-                                    () => {
-                                        if(Variables.userRole === "admin"){
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#009259' }} onClick={
+                                () => {
+                                    if (Variables.userRole === "admin") {
+                                        navigate('/quan-ly-sinh-vien-tt')
+                                    } else if (Variables.userRole === "teachers") {
+                                        navigate('/danh-sach-sinh-vien-yeu-cau')
+                                    } else {
 
-                                        }else if(Variables.userRole === "teachers"){
-                                            navigate('/danh-sach-sinh-vien-yeu-cau')
-                                        }else{
-
-                                        }
                                     }
-                                }>
+                                }
+                            }>
                                 <div className={styles.infoTag}>
                                     <p>{Variables.userRole === "admin" ? "Sinh viên" : Variables.userRole === "teachers" ? "Xác Nhận Yêu Cầu Sinh Viên" : "Đăng ký thực tập"}</p>
                                 </div>
@@ -233,19 +251,19 @@ export default function Dashboard() {
                                     <PeopleIcon style={{ fontSize: 130 }} />
                                 </div>
                             </div>
-                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} onClick = {
-                                    () => {
-                                        if(Variables.userRole === "admin"){
+                            <div className={styles.dashBoard} style={{ backgroundColor: '#fe9c0a' }} onClick={
+                                () => {
+                                    if (Variables.userRole === "admin") {
+                                        navigate('/quan-ly-cong-ty')
+                                    } else if (Variables.userRole === "teachers") {
+                                        navigate('/danh-sach-sinh-vien')
+                                    } else {
 
-                                        }else if(Variables.userRole === "teachers"){
-                                            navigate('/danh-sach-sinh-vien')
-                                        }else{
-
-                                        }
                                     }
-                                }>
+                                }
+                            }>
                                 <div className={styles.infoTag}>
-                                    <p>{Variables.userRole === "admin" ? "Giáo viên" : Variables.userRole === "teachers" ? "Danh sách sinh viên" : "Thông tin thực tập"}</p>
+                                    <p>{Variables.userRole === "admin" ? "Công ty" : Variables.userRole === "teachers" ? "Danh sách sinh viên" : "Thông tin thực tập"}</p>
                                 </div>
                                 <div className={styles.bgDB2}>
                                     <PeopleIcon style={{ fontSize: 130 }} />
@@ -260,12 +278,12 @@ export default function Dashboard() {
                                             <div className={styles.date}>{formatDate(time)}</div>
                                         </div>
                                         <div className={styles.bgDB3}>
-                                            <AccessTimeIcon style={{ fontSize: 130 }} />
+                                            <AccessTimeIcon style={{ fontSize: 120 }} />
                                         </div>
                                     </div> :
                                     // teacher role
                                     Variables.userRole === "teachers" ?
-                                        <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }}  onClick = {
+                                        <div className={styles.dashBoard} style={{ backgroundColor: '#E85835' }} onClick={
                                             () => {
                                                 navigate('/danh-sach-do-an-sinh-vien')
                                             }

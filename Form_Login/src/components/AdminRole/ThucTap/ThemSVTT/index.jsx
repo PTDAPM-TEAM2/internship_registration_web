@@ -115,7 +115,6 @@ const ThemSVTT = () => {
         initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values);
             context.updateLoading(true);
             try {
                 const response = await studentApi.addSVTT(JSON.stringify(values), token);
@@ -216,7 +215,7 @@ const ThemSVTT = () => {
                                         value={formik.values.idNumber}
                                         error={formik.touched.idNumber && Boolean(formik.errors.idNumber)}
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
-
+                                        
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -308,11 +307,13 @@ const ThemSVTT = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.internship && Boolean(formik.errors.internship)}
                                 >
-                                    {companies.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.nameCompany}
-                                        </MenuItem>
-                                    ))}
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
+                                        {companies.map((option) => (
+                                            <MenuItem key={option.id} value={option}>
+                                                {option.nameCompany}
+                                            </MenuItem>
+                                        ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
@@ -358,11 +359,13 @@ const ThemSVTT = () => {
                                     onChange={formik.handleChange}
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                 >
-                                    {grades.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
+                                        {grades.map((option) => (
+                                            <MenuItem key={option.id} value={option}>
+                                                {option.name}
+                                            </MenuItem>
+                                        ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>

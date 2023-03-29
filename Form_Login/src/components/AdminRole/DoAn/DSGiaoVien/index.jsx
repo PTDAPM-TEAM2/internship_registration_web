@@ -227,8 +227,6 @@ function DSGV() {
             setTimeout(() => {
                 setShowAlert(false);
             }, 2000);
-            setNumOfSinL(1);
-            handleFilterGV();
             context.updateLoading(false);
         }
         catch (err) {

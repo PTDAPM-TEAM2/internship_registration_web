@@ -217,8 +217,9 @@ class StudentApi {
     // day la ham update
   };
 
-  getInternshipTime = (token) => {
-    const url = `/api/registertime/get-last-registertime-internship`;
+  getInternshipTime = () => {
+    const url = 'api/registertime/get-last-registertime-internship';
+    const token = localStorage.getItem('token');
     return axiosClient
       .get(url, {
         headers: {

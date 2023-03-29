@@ -78,13 +78,14 @@ const ThemGV = () => {
                     navigate('/quan-ly-giang-vien/danh-sach-giang-vien')
                 }, 2000)
             } catch (error) {
-                if (error.response.data.messgae) {
-                    context.updateLoading(false);
-                    setShowAlert({ type: 'error', text: error.response.data.messgae });
+                context.updateLoading(false);
+                if (error.response.data.error) {
+                    setShowAlert({ type: 'error', text: error.response.data.error});
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
                 }
+                
             }
         },
     })

@@ -103,7 +103,6 @@ const ChiTietCT = () => {
         context.updateLoading(true);
         try {
             const response = await companyApi.addSV(body);
-            console.log(response);
             setOpen(false);
             setShowAlert(true);
             setTimeout(() => {

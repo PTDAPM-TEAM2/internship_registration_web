@@ -18,6 +18,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import studentApi from "../../../../api/studentApi";
 import MenuItem from '@mui/material/MenuItem';
+import AlertMessage from '../ThemSV/Alert';
 
 const style = {
     position: 'absolute',
@@ -49,7 +50,7 @@ const validationSchema = Yup.object({
 
 const ChiTietSV = () => {
     const context = useContext(ThemeContext);
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlert, setShowAlert] = React.useState(null);
     const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -86,8 +87,6 @@ const ChiTietSV = () => {
         password: '',
     };
 
-    console.log(state.item.password);
-
 
     const token = localStorage.getItem('token');
     const [grades, setGrade] = React.useState([]);
@@ -112,11 +111,10 @@ const ChiTietSV = () => {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values);
             context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVDA(JSON.stringify(values), state.item.id);
-                setShowAlert(true);
+                setShowAlert({ type: 'success', text: "Sửa sinh viên thành công" });
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
@@ -124,7 +122,18 @@ const ChiTietSV = () => {
                 }, 2000)
             } catch (error) {
                 context.updateLoading(false);
-                console.error(error);
+                if (error.response.data.messgae) {
+                    setShowAlert({ type: 'error', text: error.response.data.messgae });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
+                if (error.response.data.status === 403) {
+                    setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
             }
         },
     })
@@ -151,6 +160,7 @@ const ChiTietSV = () => {
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.form}>
+                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết sinh viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -273,7 +283,6 @@ const ChiTietSV = () => {
                                     name="studentCode"
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
-                                    disabled
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -286,12 +295,16 @@ const ChiTietSV = () => {
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
                                     disabled
+                                    sx={{ maxHeight: 150 }}
                                 >
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {grades.map((grade) => (
-                                        <MenuItem key={grade.id} value={grade.name}>
+                                        <MenuItem key={grade.id} value={grade.name} >
                                             {grade.name}
                                         </MenuItem>
                                     ))}
+                                    {/* </ul> */}
+
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
@@ -319,7 +332,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis)} className={styles.txtFieldBot} />
+                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis.lecturer)} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>
@@ -328,7 +341,7 @@ const ChiTietSV = () => {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div >
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -345,19 +358,9 @@ const ChiTietSV = () => {
                     </div>
                 </Box>
             </Modal>
-            {showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
-                    </Alert>
-                </div>}
 
-            {showAlertD &&
+            {
+                showAlertD &&
                 <div>
                     <Alert severity="success" sx={{
                         position: 'absolute',
@@ -367,8 +370,9 @@ const ChiTietSV = () => {
                     }}>
                         <AlertTitle>Xóa thông tin sinh viên thành công !</AlertTitle>
                     </Alert>
-                </div>}
-        </div>
+                </div>
+            }
+        </div >
     );
 };
 

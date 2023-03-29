@@ -95,7 +95,7 @@ const ChiTietXD = () => {
                         </div>
                         <div className={styles.txt}>
                             <p>Tên giảng viên: </p>
-                            <TextField label={state.item.lecturer.fullName} className={styles.txtField} disabled />
+                            <TextField label={context.cellValidateLecturer(state.item.lecturer)} className={styles.txtField} disabled />
                         </div>
                     </form>
                 </div>

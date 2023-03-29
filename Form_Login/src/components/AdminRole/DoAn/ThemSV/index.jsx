@@ -99,15 +99,14 @@ const ThemSV = () => {
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
                 }, 2000)
             } catch (error) {
+                context.updateLoading(false);
                 if (error.response.data.messgae) {
-                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: error.response.data.messgae });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
                 }
                 if (error.response.data.status === 403) {
-                    context.updateLoading(false);
                     setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
                     setTimeout(() => {
                         setShowAlert(null);
@@ -123,7 +122,7 @@ const ThemSV = () => {
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thêm Sinh Viên</p>
+                    <p className={styles.title}>Đăng kí thực tập</p>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >
@@ -281,11 +280,13 @@ const ThemSV = () => {
                                     error={formik.touched.grade && Boolean(formik.errors.grade)}
                                     helperText={formik.touched.grade && formik.errors.grade}
                                 >
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {grades.map((option) => (
-                                        <MenuItem key={option.id} value={option}>
+                                        <MenuItem key={option.id} value={option} >
                                             {option.name}
                                         </MenuItem>
                                     ))}
+                                    {/* </ul> */}
                                 </TextField>
                                 {/* <TextField
                                     className={styles.txtFieldBot}

@@ -18,6 +18,7 @@ import { useFormik } from 'formik';
 import studentApi from "../../../../api/studentApi";
 import MenuItem from '@mui/material/MenuItem';
 import companyApi from "../../../../api/companyApi";
+import AlertMessage from '../../DoAn/ThemSV/Alert';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -48,7 +49,7 @@ const validationSchema = Yup.object({
 
 const ChiTietSV = () => {
     const context = useContext(ThemeContext);
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [showAlert, setShowAlert] = React.useState(null);
     const [showAlertD, setShowAlertD] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -135,16 +136,26 @@ const ChiTietSV = () => {
             context.updateLoading(true);
             try {
                 const response = await studentApi.updateSVTT(JSON.stringify(values), state.item.id);
-                setShowAlert(true);
+                setShowAlert({ type: 'success', text: "Sửa sinh viên thành công" });
                 context.updateLoading(false);
                 setTimeout(() => {
                     setShowAlert(false);
                     navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
                 }, 2000)
             } catch (error) {
-                console.error(error);
                 context.updateLoading(false);
-
+                if (error.response.data.messgae) {
+                    setShowAlert({ type: 'error', text: error.response.data.messgae });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
+                if (error.response.data.status === 403) {
+                    setShowAlert({ type: 'error', text: "Lỗi kết nối!" });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                }
             }
         },
     })
@@ -172,6 +183,7 @@ const ChiTietSV = () => {
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.form}>
+                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết sinh viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -298,7 +310,6 @@ const ChiTietSV = () => {
                                     value={formik.values.studentCode}
                                     onChange={formik.handleChange}
                                     error={formik.touched.studentCode && Boolean(formik.errors.studentCode)}
-                                    disabled
                                 />
                             </div>
                             <div className={styles.txt}>
@@ -311,11 +322,13 @@ const ChiTietSV = () => {
                                     value={formik.values.registerinternship.company}
                                     onChange={formik.handleChange}
                                 >
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {companies.map((option) => (
                                         <MenuItem key={option.id} value={option}>
                                             {option.nameCompany}
                                         </MenuItem>
                                     ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
@@ -359,11 +372,13 @@ const ChiTietSV = () => {
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
                                 >
+                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {grades.map((grade) => (
                                         <MenuItem key={grade.id} value={grade.name}>
                                             {grade.name}
                                         </MenuItem>
                                     ))}
+                                    {/* </ul> */}
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
@@ -409,18 +424,6 @@ const ChiTietSV = () => {
                     </div>
                 </Box>
             </Modal>
-            {showAlert &&
-                <div>
-                    <Alert severity="success" sx={{
-                        position: 'absolute',
-                        width: '40%',
-                        bottom: '0',
-                        right: '2%'
-                    }}>
-                        <AlertTitle>Sửa thông tin sinh viên thành công !</AlertTitle>
-                    </Alert>
-                </div>}
-
             {showAlertD &&
                 <div>
                     <Alert severity="success" sx={{
