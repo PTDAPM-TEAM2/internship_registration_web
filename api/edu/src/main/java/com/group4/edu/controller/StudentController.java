@@ -83,7 +83,13 @@ public class StudentController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping(value = "/import-excel-da")
     public ResponseEntity<?> addEmpByExcel(@RequestPart MultipartFile file) throws IOException {
-        ResponseImportExcelStudentDto result = studentService.importExcel(file);
+        ResponseImportExcelStudentDto result = studentService.importExcel(file,1);
+        return new ResponseEntity<>(result, result == null? HttpStatus.BAD_REQUEST:HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping(value = "/import-excel-tt")
+    public ResponseEntity<?> addEmpByExcelTT(@RequestPart MultipartFile file) throws IOException {
+        ResponseImportExcelStudentDto result = studentService.importExcel(file,2);
         return new ResponseEntity<>(result, result == null? HttpStatus.BAD_REQUEST:HttpStatus.OK);
     }
 

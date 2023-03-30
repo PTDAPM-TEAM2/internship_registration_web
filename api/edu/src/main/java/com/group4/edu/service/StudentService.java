@@ -13,7 +13,7 @@ public interface StudentService {
     StudentDto saveOrUpdate(StudentDto studentDto,Long id, int studentType) throws Exception;
 
     List<StudentDto> getAll();
-    ResponseImportExcelStudentDto importExcel(MultipartFile file);
+    ResponseImportExcelStudentDto importExcel(MultipartFile file, int type);
     List<StudentDto> getStDaBySearch(StudentSearchDto dto, int type);
 
     boolean deleteStTT(Long id);

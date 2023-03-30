@@ -67,49 +67,47 @@ public class SudentServiceImpl implements StudentService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public StudentDto saveOrUpdate(StudentDto studentDto, Long id, int studentType) throws Exception {
-        if(studentDto == null){
+        if (studentDto == null) {
             throw new Exception("Thông tin sinh viên bị trống hoặc lỗi");
         }
-        if(studentDto.getStudentCode() == null || studentDto.getStudentCode().trim().equals("")){
-            throw  new Exception("Mã sinh viên bị trống");
+        if (studentDto.getStudentCode() == null || studentDto.getStudentCode().trim().equals("")) {
+            throw new Exception("Mã sinh viên bị trống");
         }
-        if(studentDto.getFullName() == null || studentDto.getFullName().trim().equals("")){
+        if (studentDto.getFullName() == null || studentDto.getFullName().trim().equals("")) {
             throw new Exception("Teen sinh viên bị trống");
         }
-        if(studentDto.getEmail() == null || studentDto.getEmail().trim().equals("")){
+        if (studentDto.getEmail() == null || studentDto.getEmail().trim().equals("")) {
             throw new Exception("Email sinh viên bị trống");
         }
-        if(studentDto.getGrade()== null|| studentDto.getGrade().getName() == null || studentDto.getGrade().getName().trim().equals("")){
+        if (studentDto.getGrade() == null || studentDto.getGrade().getName() == null || studentDto.getGrade().getName().trim().equals("")) {
             throw new Exception("Lớp sinh viên không đúng");
         }
-        if(studentDto.getIdNumber() == null){
-            throw  new Exception("CCCD hoặc SCMND bị trống");
+        if (studentDto.getIdNumber() == null) {
+            throw new Exception("CCCD hoặc SCMND bị trống");
         }
         Student entity = null;
         Account account = null;
         boolean isNewAccount = true;
-        if(id != null){
+        if (id != null) {
             entity = studentRepository.findById(id).orElse(null);
             isNewAccount = false;
         }
-        if(entity ==  null && studentDto.getId() != null){
+        if (entity == null && studentDto.getId() != null) {
             entity = studentRepository.findById(studentDto.getId()).orElse(null);
             isNewAccount = false;
         }
 
-        if(entity == null){
-            if(studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(),studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(),studentType)){
-                throw new Exception("Đã có sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
-            }
-            else {
+        if (entity == null) {
+            if (studentRepository.existsByStudentCodeAndStudentType(studentDto.getStudentCode(), studentType) || studentRepository.existsByIdNumberAndStudentType(studentDto.getIdNumber(), studentType)) {
+                throw new Exception("Đã có sinh viên này trong hệ thống quản lý " + (studentType == 1 ? "đồ án" : "thực tập"));
+            } else {
                 entity = studentRepository.findByStudentCode(studentDto.getStudentCode()).orElse(new Student());
-                if(EduConstants.StudentType.ALL.getValue().equals(entity.getStudentType())){
-                    throw new Exception("Đã có mã sinh viên này trong hệ thống quản lý "+(studentType==1?"đồ án":"thực tập"));
+                if (EduConstants.StudentType.ALL.getValue().equals(entity.getStudentType())) {
+                    throw new Exception("Đã có mã sinh viên này trong hệ thống quản lý " + (studentType == 1 ? "đồ án" : "thực tập"));
                 }
             }
-        }
-        else {
-            if((!studentDto.getStudentCode().equals(entity.getStudentCode())&&studentRepository.existsByStudentCode(studentDto.getStudentCode())) || (!studentDto.getIdNumber().equals(entity.getIdNumber())&&studentRepository.existsByIdNumber(studentDto.getIdNumber()))){
+        } else {
+            if ((!studentDto.getStudentCode().equals(entity.getStudentCode()) && studentRepository.existsByStudentCode(studentDto.getStudentCode())) || (!studentDto.getIdNumber().equals(entity.getIdNumber()) && studentRepository.existsByIdNumber(studentDto.getIdNumber()))) {
                 throw new Exception("Đã có mã sinh viên này trong hệ thống ");
             }
         }
@@ -127,13 +125,13 @@ public class SudentServiceImpl implements StudentService {
         entity.setPhoneNumber(studentDto.getPhoneNumber());
         entity.setUrlImg(studentDto.getUrlImg());
         Grade grade = null;
-        if(studentDto.getGrade().getId() != null){
+        if (studentDto.getGrade().getId() != null) {
             grade = gradeRepository.findById(studentDto.getGrade().getId()).orElse(null);
         }
-        if(grade == null && studentDto.getGrade().getName() !=null){
+        if (grade == null && studentDto.getGrade().getName() != null) {
             grade = gradeRepository.findByName(studentDto.getGrade().getName()).orElse(null);
         }
-        if(grade == null){
+        if (grade == null) {
             grade = new Grade();
             grade.setName(studentDto.getGrade().getName());
             grade = gradeRepository.save(grade);
@@ -145,42 +143,40 @@ public class SudentServiceImpl implements StudentService {
 //        }
         Role roleDa = null;
         Role roleTT = null;
-        if(EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)){
+        if (EduConstants.StudentType.STUDENT_DA.getValue().equals(studentType)) {
             roleDa = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_DA.getValue());
-            if(entity.getStudentType() == null){
+            if (entity.getStudentType() == null) {
                 entity.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
-            }
-            else {
+            } else {
                 entity.setStudentType(EduConstants.StudentType.ALL.getValue());
             }
         }
-        if(EduConstants.StudentType.STUDENT_TT.getValue().equals(studentType)){
+        if (EduConstants.StudentType.STUDENT_TT.getValue().equals(studentType)) {
             roleTT = roleRepository.findByRole(EduConstants.Role.ROLESTUDENT_TT.getValue());
-            if(entity.getStudentType() == null){
+            if (entity.getStudentType() == null) {
                 entity.setStudentType(EduConstants.StudentType.STUDENT_TT.getValue());
-            }
-            else {
+            } else {
                 entity.setStudentType(EduConstants.StudentType.ALL.getValue());
             }
         }
         account = entity.getAccount();
-        if(account == null){
+        if (account == null) {
             account = new Account();
             account.setUsername(studentDto.getStudentCode());
-            account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
+            account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword()) ? studentDto.getPassword() : studentDto.getStudentCode()));
             entity.setAccount(account);
             account.setUser(entity);
         }
-        if(account.getRoles() == null){
+        if (account.getRoles() == null) {
             account.setRoles(new HashSet<>());
         }
-        if(roleDa != null){
+        if (roleDa != null) {
             account.getRoles().add(roleDa);
         }
-        if(roleTT != null){
+        if (roleTT != null) {
             account.getRoles().add(roleTT);
         }
-        account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword())?studentDto.getPassword():studentDto.getStudentCode()));
+        account.setPassword(passwordEncoder.encode(StringUtils.hasText(studentDto.getPassword()) ? studentDto.getPassword() : studentDto.getStudentCode()));
         account = accountRepository.save(account);
 //        else {
 //            boolean checkRoleDa = false;
@@ -204,18 +200,18 @@ public class SudentServiceImpl implements StudentService {
 //            }
 //        }
         entity = studentRepository.save(entity);
-        if(studentDto.getRegisterinternship() != null && studentType == 2 && studentDto.getRegisterinternship().getCompany() != null && studentDto.getRegisterinternship().getCompany().getId() != null){
+        if (studentDto.getRegisterinternship() != null && studentType == 2 && studentDto.getRegisterinternship().getCompany() != null && studentDto.getRegisterinternship().getCompany().getId() != null) {
             RegisterinternshipDto registerinternshipDto = studentDto.getRegisterinternship();
             Internship internship = null;
             Semester semester = semesterRepository.getSemesterByCode(SemesterDateTimeUntil.getCodeSemesterDefault()).orElse(null);
-            if(semester == null){
+            if (semester == null) {
                 return null;
             }
             List<Internship> internships = intershipRepository.getBySemesterIdAndStudentId(semester.getId(), entity.getId());
-            if( internships != null && internships.size()>0){
+            if (internships != null && internships.size() > 0) {
                 internship = internships.get(0);
             }
-            if(internship ==  null){
+            if (internship == null) {
                 internship = new Internship();
             }
             internship.setStudent(entity);
@@ -235,7 +231,7 @@ public class SudentServiceImpl implements StudentService {
 
     @Override
     @Transactional
-    public ResponseImportExcelStudentDto importExcel(MultipartFile file) {
+    public ResponseImportExcelStudentDto importExcel(MultipartFile file, int type) {
         XSSFWorkbook workbook = null;
         try {
             workbook = new XSSFWorkbook(file.getInputStream());
@@ -251,37 +247,36 @@ public class SudentServiceImpl implements StudentService {
         boolean getIndexData = false;
         XSSFRow row = sheet.getRow(0);
         DataFormatter dataFormatter = new DataFormatter();
-        if(row != null){
-            if(row.getCell(0) != null && dataFormatter.formatCellValue(row.getCell(0)) != null && row.getCell(1) != null && dataFormatter.formatCellValue(row.getCell(1)) != null){
+        if (row != null) {
+            if (row.getCell(0) != null && dataFormatter.formatCellValue(row.getCell(0)) != null && row.getCell(1) != null && dataFormatter.formatCellValue(row.getCell(1)) != null) {
                 try {
-                    startLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(0)) ) -1;
-                    totalLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)) );
+                    startLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(0))) - 1;
+                    totalLine = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(1)));
                     rowIndex = startLine;
                     getIndexData = true;
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
             }
         }
-        if(!getIndexData){
+        if (!getIndexData) {
             rowIndex = 1;
-            while (!(sheet.getRow(rowIndex) != null &&this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).equals("STT"))){
+            while (!(sheet.getRow(rowIndex) != null && this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).equals("STT"))) {
                 rowIndex++;
                 System.out.println(rowIndex);
-                if(rowIndex == 200){
+                if (rowIndex == 200) {
                     return null;
                 }
             }
             startLine = rowIndex++;
         }
         List<StudentDto> studentDtos = new ArrayList<>();
-        List< DataErrorImportExcelDto> dataError = new ArrayList<>();
-        System.out.println("rowIndex = "+rowIndex);
-        System.out.println("StartIndex = "+startLine);
-        System.out.println("TotalLine = "+totalLine);
+        List<DataErrorImportExcelDto> dataError = new ArrayList<>();
+        System.out.println("rowIndex = " + rowIndex);
+        System.out.println("StartIndex = " + startLine);
+        System.out.println("TotalLine = " + totalLine);
         System.out.println(sheet.getRow(rowIndex).getCell(0).getRawValue());
-        while ((getIndexData && rowIndex - startLine <totalLine) || (sheet.getRow(rowIndex)!= null &&!this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))){
+        while ((getIndexData && rowIndex - startLine < totalLine) || (sheet.getRow(rowIndex) != null && !this.getStringCellValue(sheet.getRow(rowIndex).getCell(0)).trim().equals(""))) {
             row = sheet.getRow(rowIndex++);
             StudentDto studentDto = new StudentDto();
             studentDto.setStudentCode(getStringCellValue(row.getCell(1)));
@@ -296,48 +291,50 @@ public class SudentServiceImpl implements StudentService {
             studentDto.setPhoneNumber(this.getStringCellValue(row.getCell(8)));
             studentDto.setEmail(row.getCell(9).getStringCellValue());
             try {
-                studentDto = this.saveOrUpdate(studentDto,null,1);
+                studentDto = this.saveOrUpdate(studentDto, null, type);
                 studentDtos.add(studentDto);
             } catch (Exception e) {
                 dataError.add(new DataErrorImportExcelDto(rowIndex, e.getMessage()));
             }
         }
 //        Su dung da luong de gui Email;
-        int numberOfThread = 10;
-        ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
-        for(StudentDto studentDto: studentDtos){
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: "+studentDto.getStudentCode()+"\nMật khẩu: "+studentDto.getStudentCode();
-                    MailDto mailDto = new MailDto();
-                    mailDto.setMsgBody(msgBody);
-                    mailDto.setRecipient(studentDto.getEmail());
-                    mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
-                    Boolean result = mailService.sendSimpleMail(mailDto);
-                    if(result)
-                        System.out.println("Gửi mail đến sv " +studentDto.getStudentCode() +" có địa chỉ mail là "+ studentDto.getEmail()+ " thành công");
-                }
-            });
+        if (type == 1) {
+            int numberOfThread = 10;
+            ExecutorService executor = Executors.newFixedThreadPool(numberOfThread);
+            for (StudentDto studentDto : studentDtos) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        String msgBody = "Tên tài khoản và mật khẩu dùng để truy cập vào hệ thống\nTên tài khoản: " + studentDto.getStudentCode() + "\nMật khẩu: " + studentDto.getStudentCode();
+                        MailDto mailDto = new MailDto();
+                        mailDto.setMsgBody(msgBody);
+                        mailDto.setRecipient(studentDto.getEmail());
+                        mailDto.setSubject("Tài khoản và mật khẩu dùng đăng nhập vào hệ thống đăng kýd đồ án");
+                        Boolean result = mailService.sendSimpleMail(mailDto);
+                        if (result)
+                            System.out.println("Gửi mail đến sv " + studentDto.getStudentCode() + " có địa chỉ mail là " + studentDto.getEmail() + " thành công");
+                    }
+                });
+            }
         }
-        return new ResponseImportExcelStudentDto(studentDtos.size()+dataError.size(),studentDtos.size(),dataError.size(),studentDtos,dataError);
+        return new ResponseImportExcelStudentDto(studentDtos.size() + dataError.size(), studentDtos.size(), dataError.size(), studentDtos, dataError);
     }
 
     @Override
-    public List<StudentDto> getStDaBySearch(StudentSearchDto dto,int type) {
+    public List<StudentDto> getStDaBySearch(StudentSearchDto dto, int type) {
         List<Student> studentList = studentRepository.findAll();
         List<StudentDto> studentDtos = new ArrayList<>();
-        for (Student st: studentList){
+        for (Student st : studentList) {
             Account account = st.getAccount();
-            for(Role role: account.getRoles()){
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey()) && type == 1){
+            for (Role role : account.getRoles()) {
+                if (role.getCode().equals(EduConstants.Role.ROLESTUDENT_DA.getKey()) && type == 1) {
                     List<GraduationThesis> graduationThesiss = thesisRepository.getGraduationThesisByStId(st.getId());
-                    studentDtos.add(new StudentDto(st, graduationThesiss.size()>0?graduationThesiss.get(0):null));
+                    studentDtos.add(new StudentDto(st, graduationThesiss.size() > 0 ? graduationThesiss.get(0) : null));
                     break;
                 }
-                if(role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2){
-                    List<Internship> internships = intershipRepository.getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(),st.getId());
-                    studentDtos.add(new StudentDto(st,internships.size()>0?internships.get(0):null));
+                if (role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()) && type == 2) {
+                    List<Internship> internships = intershipRepository.getBySemesterCodeAndStudentId(SemesterDateTimeUntil.getCurrentSemesterCode(), st.getId());
+                    studentDtos.add(new StudentDto(st, internships.size() > 0 ? internships.get(0) : null));
                     break;
                 }
             }
@@ -349,7 +346,7 @@ public class SudentServiceImpl implements StudentService {
     @Override
     public boolean deleteStTT(Long id) {
         Student student = studentRepository.findById(id).orElse(null);
-        if(student == null){
+        if (student == null) {
             return false;
         }
         if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
@@ -361,7 +358,7 @@ public class SudentServiceImpl implements StudentService {
             if (studentRepository.existsById(student.getId()))
                 studentRepository.deleteById(student.getId());
             return true;
-        }else  if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue())) {
+        } else if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_DA.getValue())) {
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
             accountRepository.delete(account);
             System.out.println("a");
@@ -370,7 +367,7 @@ public class SudentServiceImpl implements StudentService {
             if (studentRepository.existsById(student.getId()))
                 studentRepository.deleteById(student.getId());
             return true;
-        } else if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+        } else if (student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())) {
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
             accountRepository.delete(account);
 
@@ -390,7 +387,7 @@ public class SudentServiceImpl implements StudentService {
     @Override
     public boolean deleteStDa(Long id) {
         Student student = studentRepository.findById(id).orElse(null);
-        if(student == null){
+        if (student == null) {
             return false;
         }
         if (student.getStudentType().equals(EduConstants.StudentType.STUDENT_TT.getValue())) {
@@ -402,10 +399,10 @@ public class SudentServiceImpl implements StudentService {
                 studentRepository.deleteById(student.getId());
             return true;
         }
-        if(student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())){
+        if (student.getStudentType().equals(EduConstants.StudentType.ALL.getValue())) {
             student.setStudentType(EduConstants.StudentType.STUDENT_DA.getValue());
             Account account = accountRepository.getAccountByUserId(student.getId()).orElse(null);
-            if(account != null){
+            if (account != null) {
                 Set<Role> roleSet = account.getRoles();
                 roleSet.removeIf(role -> role.getCode().equals(EduConstants.Role.ROLESTUDENT_TT.getKey()));
             }
@@ -419,19 +416,19 @@ public class SudentServiceImpl implements StudentService {
     @Override
     public List<StudentDto> getByFilter(int type) {
         String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
-        if(type==1){
+        if (type == 1) {
             return studentRepository.getStHasLecturerInstructorWithSemesterCode(semesterCode);
         }
-        if(type == 2){
+        if (type == 2) {
             return studentRepository.getStnotHasInstructorWithSemesterCode(semesterCode);
         }
-        if(type == 3){
+        if (type == 3) {
             return studentRepository.getStNotHasCompanyInternship();
         }
-        if(type ==4){
+        if (type == 4) {
             return studentRepository.getStHasCompanyInternshipBySemesterCode(semesterCode);
         }
-        if(type == 5){
+        if (type == 5) {
             return studentRepository.getStNotregister();
         }
         return null;
@@ -454,34 +451,34 @@ public class SudentServiceImpl implements StudentService {
         String semesterCode = SemesterDateTimeUntil.getCodeSemesterDefault();
         List<GraduationThesis> graduationTheses = gradeRepository.findAllBySemesterCode(semesterCode);
         int index = 1;
-        for(GraduationThesis graduationThesis: graduationTheses){
+        for (GraduationThesis graduationThesis : graduationTheses) {
             Student student = graduationThesis.getStudent();
 
             XSSFRow row = sheet.getRow(index++);
-            if(row == null){
-                row = sheet.createRow(index-1);
+            if (row == null) {
+                row = sheet.createRow(index - 1);
             }
-            setCellValue(row,0,index-1);
-            if(student != null){
-                setCellValue(row,1,student.getStudentCode());
-                setCellValue(row,2,student.getFullName());
-                setCellValue(row,3,student.getGrade().getName());
-                setCellValue(row,4,student.getEmail());
-                setCellValue(row,5,student.getPhoneNumber());
+            setCellValue(row, 0, index - 1);
+            if (student != null) {
+                setCellValue(row, 1, student.getStudentCode());
+                setCellValue(row, 2, student.getFullName());
+                setCellValue(row, 3, student.getGrade().getName());
+                setCellValue(row, 4, student.getEmail());
+                setCellValue(row, 5, student.getPhoneNumber());
             }
-            setCellValue(row,6,graduationThesis.getNameGraduationThesis());
-            setCellValue(row,7,graduationThesis.getLecturer()!= null?graduationThesis.getLecturer().getFullName():"");
-            if(graduationThesis.getMark1() != null){
-                setCellValue(row,8,graduationThesis.getMark1());
+            setCellValue(row, 6, graduationThesis.getNameGraduationThesis());
+            setCellValue(row, 7, graduationThesis.getLecturer() != null ? graduationThesis.getLecturer().getFullName() : "");
+            if (graduationThesis.getMark1() != null) {
+                setCellValue(row, 8, graduationThesis.getMark1());
             }
-            if(graduationThesis.getMark2() != null){
-                setCellValue(row,9,graduationThesis.getMark2());
+            if (graduationThesis.getMark2() != null) {
+                setCellValue(row, 9, graduationThesis.getMark2());
             }
-            if(graduationThesis.getMark2() != null){
-                setCellValue(row,10,graduationThesis.getMark3());
+            if (graduationThesis.getMark2() != null) {
+                setCellValue(row, 10, graduationThesis.getMark3());
             }
-            if(graduationThesis.getAvgMark() != null){
-                setCellValue(row,11,graduationThesis.getAvgMark());
+            if (graduationThesis.getAvgMark() != null) {
+                setCellValue(row, 11, graduationThesis.getAvgMark());
             }
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -493,27 +490,30 @@ public class SudentServiceImpl implements StudentService {
         return new ByteArrayResource(out.toByteArray());
     }
 
-    private String getStringCellValue(XSSFCell cell){
+    private String getStringCellValue(XSSFCell cell) {
         DataFormatter dataFormatter = new DataFormatter();
         return dataFormatter.formatCellValue(cell);
     }
-    private void setCellValue(XSSFRow row, int cellIndex, String value){
+
+    private void setCellValue(XSSFRow row, int cellIndex, String value) {
         XSSFCell cell = row.getCell(cellIndex);
-        if(cell == null){
+        if (cell == null) {
             cell = row.createCell(cellIndex);
         }
         cell.setCellValue(value);
     }
-    private void setCellValue(XSSFRow row, int cellIndex, Double value){
+
+    private void setCellValue(XSSFRow row, int cellIndex, Double value) {
         XSSFCell cell = row.getCell(cellIndex);
-        if(cell == null){
+        if (cell == null) {
             cell = row.createCell(cellIndex);
         }
         cell.setCellValue(value);
     }
-    private void setCellValue(XSSFRow row, int cellIndex, Integer value){
+
+    private void setCellValue(XSSFRow row, int cellIndex, Integer value) {
         XSSFCell cell = row.getCell(cellIndex);
-        if(cell == null){
+        if (cell == null) {
             cell = row.createCell(cellIndex);
         }
         cell.setCellValue(value);
