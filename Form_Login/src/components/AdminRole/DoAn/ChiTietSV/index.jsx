@@ -156,6 +156,8 @@ const ChiTietSV = () => {
         };
     };
 
+    console.log(state.item);
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -202,11 +204,7 @@ const ChiTietSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                    
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -253,11 +251,7 @@ const ChiTietSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                    
 
                                     />
                                 </div>
@@ -364,7 +358,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis.lecturer)} className={styles.txtFieldBot} />
+                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis)} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>

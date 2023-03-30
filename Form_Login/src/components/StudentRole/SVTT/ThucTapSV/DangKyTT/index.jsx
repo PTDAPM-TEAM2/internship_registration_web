@@ -288,8 +288,23 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../../Theme/Theme';
 import AlertMessage from '../../../../AdminRole/DoAn/ThemSV/Alert';
 import userApi from '../../../../../api/authApi';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import warningImage from '../../../../../images/warning.png';
 
-
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 const validationSchema = Yup.object({
     internshipPosition: Yup.string().trim().required('Vui lòng nhập đủ thông tin!'),
     nameCompany: Yup.string().trim().required('Vui lòng nhập đủ thông tin!'),
@@ -310,8 +325,9 @@ const DKTT = () => {
     const [end, setEnd] = React.useState('');
     const [user, setUser] = React.useState([]);
     const getToday = new Date();
-
-    console.log(getToday);
+    const [errorMessages, setErrorMessages] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => setOpen(false);
 
     const initVl = {
         nameCompany: '',
@@ -326,8 +342,7 @@ const DKTT = () => {
         const getInterTime = async () => {
             try {
                 const response = await studentApi.getInternshipTime();
-                setStart(new Date(response.timeStart))
-                setEnd(new Date(response.timeEnd))
+                // s
             } catch (err) {
                 console.log('Error fetching data', err);
             }
@@ -354,33 +369,33 @@ const DKTT = () => {
         initialValues: initVl,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            
+            context.updateLoading(true);
             if (getToday < start) {
-                console.log("Chưa đến thời gian đki");
+                setErrorMessages("Chưa đến thời gian đăng ký thực tập!");
             }
-            else if(getToday > end) {
-                console.log("Hết thời gian đki");
+            else if (getToday > end) {
+                setErrorMessages("Đã hết thời gian đăng ký thực tập!");
             }
             else {
-                console.log(values);
+                try {
+                    const response = await studentApi.internshipRegisterBySv(values, token);
+                    context.updateLoading(false);
+                    setErrorMessages('');
+                    setShowAlert({ type: 'success', text: "Đăng ký thành công!" });
+                    setTimeout(() => {
+                        setShowAlert(null);
+                    }, 2000)
+                    console.log(response);
+                } catch (error) {
+                    context.updateLoading(false);
+                    if (error.response.data.error) {
+                        setShowAlert({ type: 'error', text: error.response.data.error });
+                        setTimeout(() => {
+                            setShowAlert(null);
+                        }, 2000)
+                    }
+                }
             }
-            // try {
-            //     const response = await studentApi.addSVTT(JSON.stringify(values), token);
-            //     context.updateLoading(false);
-            //     setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
-            //     setTimeout(() => {
-            //         setShowAlert(null);
-            //         navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt')
-            //     }, 2000)
-            // } catch (error) {
-            //     context.updateLoading(false);
-            //     if (error.response.data.messgae) {
-            //         setShowAlert({ type: 'error', text: error.response.data.messgae });
-            //         setTimeout(() => {
-            //             setShowAlert(null);
-            //         }, 2000)
-            //     }
-            // }
         },
     })
 
@@ -399,7 +414,7 @@ const DKTT = () => {
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Thêm Sinh Viên</p>
+                    <p className={styles.title}>Đăng ký thực tập</p>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} >
                             <label htmlFor="">Thời gian thực tập:</label>
@@ -417,7 +432,7 @@ const DKTT = () => {
                         <div className={styles.inputValues}>
                             <div className={styles.infoAccount}>
                                 <div className={styles.txt}>
-                                    <label htmlFor='taxCode'>Mã số thuế công ty: </label>
+                                    <label htmlFor='taxCode'>Mã công ty: </label>
                                     <TextField
                                         className={styles.txtFieldBot}
                                         id="taxCode"
@@ -510,11 +525,24 @@ const DKTT = () => {
                         </div>
                         <div className={styles.btn}>
                             <button className={styles.button} type="submit">Thêm</button>
-                            {/* <button className={styles.button} onClick={() => { console.log(formik.values) }}>Thêm</button> */}
                         </div>
                     </form>
                 </div>
-
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h3" style={{ color: 'red', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <img src={warningImage} alt="" style={{ width: '25px', height: '25px', objectFit: 'cover', marginRight: '20px' }} />{errorMessages}
+                        </Typography>
+                        <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                            <Button onClick={handleClose} className={styles.button}>OK</Button>
+                        </div>
+                    </Box>
+                </Modal>
             </div>
         </div >
     )

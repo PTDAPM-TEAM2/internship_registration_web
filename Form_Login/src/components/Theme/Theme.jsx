@@ -69,7 +69,7 @@ function ThemeProvider({ children }) {
       return '';
     }
     else {
-      return e.fullName;
+      return e.lecturer.fullName;
     }
   }
 
