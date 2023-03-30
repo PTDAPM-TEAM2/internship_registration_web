@@ -74,6 +74,9 @@ public class InternshipServiceImpl implements InternshipService {
         //Nếu là sv thì người dùng hiện tại phải là sv và đăng trong thời gian được phép đk
         //tim công ty theo sđt và mst. k có thì tạo mới
         if(user.isStudent()){
+            if(dto.getCompany() != null && dto.getCompany().getId() != null){
+                dto.setCompanyId(dto.getCompany().getId());
+            }
             this.validateRegisterInternShip(dto,true);
             student = studentRepository.findById(user.getId()).orElse(null);
             String code = SemesterDateTimeUntil.getCodeSemesterDefault();
@@ -269,6 +272,7 @@ public class InternshipServiceImpl implements InternshipService {
                 internship = intershipRepository.save(internship);
                 internshipDtos.add(new InternshipDto(internship));
             }
+            System.out.println(rowIndex);
             row = sheet.getRow(rowIndex++);
         }
         return internshipDtos;
