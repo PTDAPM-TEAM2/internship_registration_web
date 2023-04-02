@@ -258,7 +258,8 @@ const ChiTietSV = () => {
                                     <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }}
+                                            renderInput={(props) => <TextField {...props}
+                                                className={styles.txtDate}
                                                 value={new Date(formik.values.dateOfBirth)}
                                                 error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                                 helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
@@ -456,7 +457,7 @@ const ChiTietSV = () => {
 
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit'>Sửa</button>
+                            <button className={styles.button} type='submit' style={{ marginRight: 20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>

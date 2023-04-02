@@ -15,6 +15,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import AlertMessage from './Alert.js';
 
+
 const grade = {
     name: '',
 }
@@ -124,7 +125,7 @@ const ThemSV = () => {
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Đăng kí thực tập</p>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className={styles.formAccount} columns={{ lg: 4 }} >
+                        <div className={styles.formAccount} >
                             <div className={styles.infoImg} >
                                 <div>
                                     {(imageFile === null) &&

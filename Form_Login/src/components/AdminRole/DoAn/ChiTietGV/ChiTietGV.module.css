@@ -3,9 +3,10 @@ form {
     flex-direction: column;
 }
 .inputValue{
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 20px;
 }
 .title {
     width: 100%;
@@ -64,11 +65,12 @@ form {
 }
 
 .infoAccount {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: 20px;
     border: 1px solid black;
-    padding: 15px 30px;
+    padding: 20px 30px;
 }
 .txt{
     width: auto;
@@ -78,11 +80,11 @@ form {
     height: 90px;
 }
 .txtField{
-    width: 400px;
+    max-width: 400px;
     padding: 10px 0;
 }
 .txtFieldBot{
-    width: 300px;
+    max-width: 400px;
     padding: 10px 0;
     
 }
@@ -112,12 +114,12 @@ form {
 }
 .formAccount{
     display: flex;
-    padding: 15px 30px;
+    padding: 20px 30px;
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
 .txtDate{
-    width: 400px;
+    max-width: 400px;
     margin: 0 10px;
 }
 
@@ -133,4 +135,35 @@ form {
     flex-direction: column;
     align-items: flex-start;
     width: 150px;
+}
+
+@media (max-width: 1100px) {
+    .formAccount {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    .inputValue{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .infoAccount{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .txtField{
+        width: 400px;
+    }
+    .txtFieldBot{
+        width: 400px;
+    }
+    .txtDate{
+        width: 400px;
+    }
+    
 }

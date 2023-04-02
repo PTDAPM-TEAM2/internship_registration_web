@@ -196,7 +196,8 @@ const ChiTietGV = () => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
                                             renderInput={(props) => <TextField
-                                                {...props} style={{ width: 400 }}
+                                                {...props}
+                                                className={styles.txtDate}
                                                 value={new Date(formik.values.dateOfBirth)}
                                                 error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                                 helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}

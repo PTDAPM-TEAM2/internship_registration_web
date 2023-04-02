@@ -45,7 +45,6 @@ const ThemSVTT = () => {
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
-
     };
     const company = {
         nameCompany: null
@@ -64,7 +63,7 @@ const ThemSVTT = () => {
         { value: "Khác", label: "Khác" },
     ];
     const initVl = {
-        urlImg: '',
+        urlImg: imageUrl,
         fullName: '',
         gender: '',
         idNumber: '',
@@ -409,7 +408,7 @@ const ThemSVTT = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit">Thêm</button>
+                            <button className={styles.button} type="submit" onClick={() => {console.log(formik.values)}}>Thêm</button>
                             {/* <button className={styles.button} type="submit" onClick={ handleSubmit(formik.initialValues)}>Thêm</button> */}
                         </div>
                     </form>

@@ -129,6 +129,22 @@ function Sidebar() {
         currentUser();
     }, []); // Pass an empty dependency array to run only once
 
+
+    // React.useEffect(() => {
+    //     const handleResize = () => {
+    //       if (window.innerWidth >= 800) {
+    //         setOpen(true);
+    //       } else {
+    //         setOpen(false);
+    //       }
+    //     };
+    //     window.addEventListener("resize", handleResize);
+    //     return () => {
+    //       window.removeEventListener("resize", handleResize);
+    //     };
+    //   });
+
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -219,6 +235,7 @@ function Sidebar() {
                 variant="persistent"
                 anchor="left"
                 open={open}
+                
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose} style={{ color: 'white' }}>
