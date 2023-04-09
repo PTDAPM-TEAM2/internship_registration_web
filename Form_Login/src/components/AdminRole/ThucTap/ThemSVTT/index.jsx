@@ -349,7 +349,7 @@ const ThemSVTT = () => {
                                         onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.start', value } })}
                                         // onChange={formik.handleChange}
                                         // name='registerinternship.start'
-                                        format="YYYY/MM/DD"
+                                        format="DD/MM/YYYY"
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -402,7 +402,7 @@ const ThemSVTT = () => {
                                         />}
                                         value={formik.values.registerinternship.end}
                                         onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.end', value } })}
-                                        format="YYYY/MM/DD"
+                                        format="DD/MM/YYYY"
                                     />
                                 </LocalizationProvider>
                             </div>

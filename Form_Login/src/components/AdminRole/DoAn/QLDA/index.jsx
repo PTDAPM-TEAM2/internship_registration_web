@@ -60,6 +60,7 @@ function QLDA() {
                             onChange={(newValue) => {
                                 setStartDate(newValue);
                             }}
+                            format="DD/MM/YYYY"
                         />
                     </LocalizationProvider>
                 </div>
@@ -72,6 +73,7 @@ function QLDA() {
                             onChange={(newValue) => {
                                 setDueDate(newValue);
                             }}
+                            format="DD/MM/YYYY"
                         />
                     </LocalizationProvider>
                 </div>

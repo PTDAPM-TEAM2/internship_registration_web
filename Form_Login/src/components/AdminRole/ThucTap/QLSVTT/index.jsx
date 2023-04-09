@@ -59,6 +59,7 @@ function QLSVTT() {
                             onChange={(newValue) => {
                                 setStartDate(newValue);
                             }}
+                            format="DD/MM/YYYY"
                         />
                     </LocalizationProvider>
                 </div>
@@ -71,6 +72,7 @@ function QLSVTT() {
                             onChange={(newValue) => {
                                 setDueDate(newValue);
                             }}
+                            format="DD/MM/YYYY"
                         />
                     </LocalizationProvider>
                 </div>
