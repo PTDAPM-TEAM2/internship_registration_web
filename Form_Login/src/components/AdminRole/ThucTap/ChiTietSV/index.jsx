@@ -35,16 +35,16 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại'),
-    password: Yup.string().trim().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    password: Yup.string().trim().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
 });
 
 const ChiTietSV = () => {
