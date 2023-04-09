@@ -53,15 +53,9 @@ const ThemGV = () => {
     const [showAlert, setShowAlert] = React.useState(null);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
-    const [imageUrl, setImageUrl] = React.useState(null);
     const context = useContext(ThemeContext);
     const token = localStorage.getItem('token');
-    const handleImageFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
-    };
+   
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -72,6 +66,7 @@ const ThemGV = () => {
                 console.log(values);
                 const response = await lecturerApi.addGV(JSON.stringify(values), token);
                 context.updateLoading(false);
+                URL.revokeObjectURL(imageFile);
                 setShowAlert({ type: 'success', text: "Thêm giảng viên thành công" });
                 setTimeout(() => {
                     setShowAlert(null);
@@ -80,12 +75,12 @@ const ThemGV = () => {
             } catch (error) {
                 context.updateLoading(false);
                 if (error.response.data.error) {
-                    setShowAlert({ type: 'error', text: error.response.data.error});
+                    setShowAlert({ type: 'error', text: error.response.data.error });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
                 }
-                
+
             }
         },
     })
@@ -100,7 +95,7 @@ const ThemGV = () => {
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} columns={{ lg: 4 }} >
                             <div className={styles.infoImg} >
-                                <div >
+                                <div>
                                     {(imageFile === null) &&
                                         <div>
                                             <label htmlFor="urlImg" className={styles.upload} >
@@ -113,15 +108,19 @@ const ThemGV = () => {
                                                 id='urlImg'
                                                 type="file"
                                                 accept=".jpg, .jpeg, .png"
-                                                onChange={handleImageFileChange}
-                                                value={formik.values.urlImg}
+                                                onChange={(event) => {
+                                                    formik.setFieldValue('urlImg', URL.createObjectURL(event.currentTarget.files[0]).slice(5));
+                                                    setImageFile(URL.createObjectURL(event.currentTarget.files[0]));
+                                                }}
+
                                             />
                                         </div>
                                     }
                                     {
                                         imageFile &&
                                         <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
+                                            <img src={imageFile} alt='avatar' style={{ maxWidth: '100%' }}
+                                            />
                                         </div>
                                     }
                                 </div>
@@ -157,7 +156,7 @@ const ThemGV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                        
+
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -173,7 +172,7 @@ const ThemGV = () => {
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -208,7 +207,7 @@ const ThemGV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                       
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -224,7 +223,7 @@ const ThemGV = () => {
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -242,7 +241,7 @@ const ThemGV = () => {
                                         helperText={formik.touched.email && formik.errors.email}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -263,7 +262,7 @@ const ThemGV = () => {
                                     helperText={formik.touched.lecturersCode && formik.errors.lecturersCode}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
@@ -280,7 +279,7 @@ const ThemGV = () => {
                                     type='password'
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />

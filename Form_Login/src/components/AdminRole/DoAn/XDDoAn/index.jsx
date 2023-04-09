@@ -77,7 +77,6 @@ function DSDA() {
     }, [])
 
 
-    
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.contain}>
@@ -111,7 +110,7 @@ function DSDA() {
                                                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{project.nameGraduationThesis}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateStudent(project.student)}</TableCell>
-                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateLecturer(project.lecturer)}</TableCell>
+                                                <TableCell sx={{ textAlign: 'center' }}>{context.cellValidateStudent(project.lecturer)}</TableCell>
                                                 <TableCell sx={{ textAlign: 'center' }}>{project.semester.code}</TableCell>
                                             </TableRow>
                                         );

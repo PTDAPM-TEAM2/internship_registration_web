@@ -69,7 +69,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate replace to="/dang-nhap" />} />
               <Route path='/dang-nhap' element={<Login />} />
-              <Route element={<PrivateWrapper />}>
+              <Route element={<PrivateWrapper auth={{ isAuthenticated: context.auth }} />}>
                 <Route path='/' element={<Layout />}>
                   <Route path='quan-ly-do-an-sinh-vien' element={<QLDASV />} />
                   <Route path='quan-ly-sinh-vien-thuc-tap' element={<QLTTSV />} />

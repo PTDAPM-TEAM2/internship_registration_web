@@ -70,7 +70,7 @@ function Login() {
           });
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
-            // context.checkToken(tk);
+            context.updateAuth(true);
             localStorage.setItem("token", tk);
             context.updateLoading(false);
             setShowAlert(true);
@@ -141,7 +141,7 @@ function Login() {
             localStorage.setItem("token", tk);
             context.updateLoading(false);
             setShowAlert(true);
-            // context.checkToken(tk);
+            context.updateAuth(true);
             setErrorMessage("");
             setUsername("");
             setPassword("");

@@ -72,15 +72,31 @@ function Sidebar() {
     const context = React.useContext(ThemeContext);
     const token = localStorage.getItem('token');
 
-    // const [activeButton, setActiveButton] = React.useState('button1');
-
-    // const [pathname, setPathname] = React.useState("/quan-ly-do-an");
 
     // React.useEffect(() => {
-    //     if (location.pathname) {
-    //         return setPathname(location.pathname);
-    //     }
-    // }, [location.pathname])
+    //     const getTTDASV = async () => {
+    //         context.updateLoading(true);
+    //         try {
+    //             const response = await userApi.getInfo(token);
+    //             context.updateLoading(false);
+    //             if (response.roles[0].role === "ADMIN") {
+    //                 Variables.userRole = "admin";
+    //             }
+    //             else if (response.roles[0].role === "STUDENT_DA" || response.roles.length === 2) {
+    //                 Variables.userRole = "students";
+    //             }
+
+    //             else {
+    //                 Variables.userRole = "teachers";
+    //             }
+    //         } catch (error) {
+    //             context.updateLoading(false);
+    //         }
+    //     };
+    //     getTTDASV();
+    // }, [Variables.userRole])
+
+
     const handleItemClick = (value) => {
         context.updateButton(value);
     }
@@ -107,9 +123,10 @@ function Sidebar() {
     }
 
     const handleLogout = () => {
-        navigate('/dang-nhap');
         localStorage.removeItem('token');
         // context.setActiveButton('trang-chu');
+        Variables.userRole = '';
+        window.location.href = '/dang-nhap';
     }
 
     const { id } = useParams()
@@ -235,7 +252,7 @@ function Sidebar() {
                 variant="persistent"
                 anchor="left"
                 open={open}
-                
+
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose} style={{ color: 'white' }}>
@@ -284,14 +301,14 @@ function Sidebar() {
                             location.pathname === '/quan-ly-giang-vien/du-lieu-giang-vien' ||
                             location.pathname === '/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv')
                         :
-                            // students role
-                            (location.pathname === '/sinh-vien-do-an' ||
-                                location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien' ||
-                                location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' ||
-                                location.pathname === '/sinh-vien-do-an/dang-ky-do-an' ||
-                                location.pathname === '/sinh-vien-do-an/nop-de-cuong' ||
-                                location.pathname === '/sinh-vien-do-an/thong-tin-do-an'
-                            ))
+                        // students role
+                        (location.pathname === '/sinh-vien-do-an' ||
+                            location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien' ||
+                            location.pathname === '/sinh-vien-do-an/thong-tin-sinh-vien/thay-doi-mat-khau' ||
+                            location.pathname === '/sinh-vien-do-an/dang-ky-do-an' ||
+                            location.pathname === '/sinh-vien-do-an/nop-de-cuong' ||
+                            location.pathname === '/sinh-vien-do-an/thong-tin-do-an'
+                        ))
                     &&
                     <List>
                         <ListItem disablePadding>
@@ -401,7 +418,7 @@ function Sidebar() {
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/them-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/du-lieu-sinh-vien-tt' ||
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt' ||
-                        location.pathname === `/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${id}`||
+                        location.pathname === `/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/chi-tiet-sinh-vien-tt/${id}` ||
                         location.pathname === '/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/nhap-diem-sv'
 
                     ) :
