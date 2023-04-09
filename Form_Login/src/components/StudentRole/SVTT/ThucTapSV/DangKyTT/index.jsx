@@ -48,7 +48,7 @@ const DKTT = () => {
     const [end, setEnd] = React.useState('');
     const [user, setUser] = React.useState([]);
     const getToday = new Date();
-    const [errorMessages, setErrorMessages] = React.useState('');
+    const [errorMessages, setErrorMessages] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
 
@@ -97,10 +97,12 @@ const DKTT = () => {
             if (getToday < start || start === null || end === null) {
                 setErrorMessages("Chưa đến thời gian đăng ký thực tập!");
                 context.updateLoading(false);
+                setOpen(true);
             }
             else if (getToday > end) {
                 setErrorMessages("Đã hết thời gian đăng ký thực tập!");
                 context.updateLoading(false);
+                setOpen(true);
             }
             else {
                 try {
