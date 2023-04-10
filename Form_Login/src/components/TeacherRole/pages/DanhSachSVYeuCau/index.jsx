@@ -24,17 +24,19 @@ const DSSVYC = () => {
     const [data, setData] = useState([]);
     const location = useLocation()
     const token = localStorage.getItem('token');
+    const [user, setCurrentUser] = useState('');
 
     const context = useContext(ThemeContext);
     useEffect(() => {
-      body.lecturerId = teacherRoleController.getCurrentUser(token).lecturersCode;
       context.updateLoading(true)
       const fetchData = async () => {
         try {
+          const currentUser = await userApi.getInfo(token);
           // Make a GET request with Axios
           const response = await teacherRoleController.getAllResearch(body, token);
           // Store the response data in the state variable
           setTimeout(() => {
+            setCurrentUser(currentUser.id);
             setData(response);
             context.updateLoading(false)
           }, 1000);
@@ -46,6 +48,10 @@ const DSSVYC = () => {
       // Invoke the async function
       fetchData();
     }, []); // Pass an empty dependency array to run only once
+    
+    body.lecturerId = user;
+    console.log(body.lecturerId);
+  
     const navigate = useNavigate();
     function toComponent (item) {
       navigate('chi-tiet-yeu-cau', {state: {item}})
@@ -56,16 +62,19 @@ const DSSVYC = () => {
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
                     { data?.map((item, key) =>  
-                          <div className={styles.card} key = {key}> 
-                            <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
-                                <img src={item.student?.urlImg} alt='' className={styles.itemImage}/> 
-                                <div className={styles.body}> 
-                                    <a><b>Họ và tên: </b>{item.student?.fullName}</a> 
-                                    <p><b>Mã sinh viên: </b>{item.student?.id}</p> 
-                                    <p><b>Lớp: </b>{item.student?.grade?.name}</p> 
-                                </div> 
-                            </div>
-                        </div>
+                      {
+                        item.lecturer.id === body.lecturerId ? 
+                        (<div className={styles.card} key = {key}> 
+                          <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
+                              <img src={item.student?.urlImg} alt='' className={styles.itemImage}/> 
+                              <div className={styles.body}> 
+                                  <a><b>Họ và tên: </b>{item.student?.fullName}</a> 
+                                  <p><b>Mã sinh viên: </b>{item.student?.id}</p> 
+                                  <p><b>Lớp: </b>{item.student?.grade?.name}</p> 
+                              </div> 
+                          </div>
+                        </div>) : (<div></div>)
+                      }
                     )
                     } 
                 </div> 
