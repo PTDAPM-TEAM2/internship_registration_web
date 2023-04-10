@@ -45,7 +45,6 @@ const ThemSVTT = () => {
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setImageUrl(imageUrl);
-
     };
     const company = {
         nameCompany: null
@@ -64,7 +63,7 @@ const ThemSVTT = () => {
         { value: "Khác", label: "Khác" },
     ];
     const initVl = {
-        urlImg: '',
+        urlImg: imageUrl,
         fullName: '',
         gender: '',
         idNumber: '',
@@ -206,11 +205,7 @@ const ThemSVTT = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                        
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -260,11 +255,7 @@ const ThemSVTT = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                            
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -358,7 +349,7 @@ const ThemSVTT = () => {
                                         onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.start', value } })}
                                         // onChange={formik.handleChange}
                                         // name='registerinternship.start'
-                                        format="YYYY/MM/DD"
+                                        format="DD/MM/YYYY"
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -411,13 +402,13 @@ const ThemSVTT = () => {
                                         />}
                                         value={formik.values.registerinternship.end}
                                         onChange={(value) => formik.handleChange({ target: { name: 'registerinternship.end', value } })}
-                                        format="YYYY/MM/DD"
+                                        format="DD/MM/YYYY"
                                     />
                                 </LocalizationProvider>
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit">Thêm</button>
+                            <button className={styles.button} type="submit" onClick={() => {console.log(formik.values)}}>Thêm</button>
                             {/* <button className={styles.button} type="submit" onClick={ handleSubmit(formik.initialValues)}>Thêm</button> */}
                         </div>
                     </form>

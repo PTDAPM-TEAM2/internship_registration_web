@@ -5,12 +5,7 @@ import projectApi from "../../../api/projectApi";
 class TeacherRoleController{
 
     getCurrentUser = async (token) => {
-        try{
-            const response = await userApi.getInfo(token)
-            return response;
-        }catch(err){
-            console.log(err);
-        }
+        await userApi.getInfo(token)
     }
 
     getAllResearch = async (body, token) => {

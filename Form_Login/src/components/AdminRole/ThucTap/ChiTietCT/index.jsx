@@ -155,7 +155,7 @@ const ChiTietCT = () => {
                             </div>
                         </div>
                         <div className={styles.infoAccount}>
-                            <div className={styles.txt}>
+                            <div className={styles.txtDescrip}>
                                 <p>Mô tả về công ty: </p>
                                 <TextField defaultValue={state.item.description} className={styles.txtFieldBot} multiline rows={8} disabled />
                             </div>

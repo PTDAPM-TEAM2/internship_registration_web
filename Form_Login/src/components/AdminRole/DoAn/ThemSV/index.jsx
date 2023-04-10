@@ -15,6 +15,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Theme/Theme.jsx';
 import AlertMessage from './Alert.js';
 
+
 const grade = {
     name: '',
 }
@@ -25,20 +26,7 @@ const genders = [
     { value: "Khác", label: "Khác" },
 ];
 
-const initialValues = {
-    urlImg: '',
-    fullName: '',
-    gender: '',
-    idNumber: '',
-    dateOfBirth: '',
-    placeOfBitrh: '',
-    phoneNumber: '',
-    email: '',
-    studentCode: '',
-    grade: grade,
-    password: '',
 
-};
 const validationSchema = Yup.object({
     fullName: Yup.string().trim().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
     email: Yup.string().trim().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
@@ -58,15 +46,21 @@ const ThemSV = () => {
     const [showAlert, setShowAlert] = React.useState(null);
     const navigate = useNavigate();
     const [imageFile, setImageFile] = React.useState(null);
-    const [imageUrl, setImageUrl] = React.useState(null);
     const context = useContext(ThemeContext);
     const token = localStorage.getItem('token');
+    const initialValues = {
+        urlImg: '',
+        fullName: '',
+        gender: '',
+        idNumber: '',
+        dateOfBirth: '',
+        placeOfBitrh: '',
+        phoneNumber: '',
+        email: '',
+        studentCode: '',
+        grade: grade,
+        password: '',
 
-    const handleImageFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
     };
 
     const [grades, setGrade] = React.useState([]);
@@ -84,7 +78,6 @@ const ThemSV = () => {
         }
         getGrade()
     }, []);
-
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
@@ -94,6 +87,7 @@ const ThemSV = () => {
                 const response = await studentApi.addSVDA(JSON.stringify(values), token);
                 setShowAlert({ type: 'success', text: "Thêm sinh viên thành công" });
                 context.updateLoading(false);
+                URL.revokeObjectURL(imageFile);
                 setTimeout(() => {
                     setShowAlert(null);
                     navigate('/quan-ly-sinh-vien-da/danh-sach-sinh-vien-da')
@@ -122,9 +116,9 @@ const ThemSV = () => {
             <div className={styles.form}>
                 <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
-                    <p className={styles.title}>Đăng kí thực tập</p>
+                    <p className={styles.title}>Thêm sinh viên</p>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className={styles.formAccount} columns={{ lg: 4 }} >
+                        <div className={styles.formAccount} >
                             <div className={styles.infoImg} >
                                 <div>
                                     {(imageFile === null) &&
@@ -139,15 +133,19 @@ const ThemSV = () => {
                                                 id='urlImg'
                                                 type="file"
                                                 accept=".jpg, .jpeg, .png"
-                                                onChange={handleImageFileChange}
-                                                value={formik.values.urlImg}
+                                                onChange={(event) => {
+                                                    formik.setFieldValue('urlImg', URL.createObjectURL(event.currentTarget.files[0]));
+                                                    setImageFile(URL.createObjectURL(event.currentTarget.files[0]));
+                                                }}
+
                                             />
                                         </div>
                                     }
                                     {
                                         imageFile &&
                                         <div className={styles.image}>
-                                            <img src={imageUrl} alt='avatar' style={{ maxWidth: '100%' }} />
+                                            <img src={imageFile} alt='avatar' style={{ maxWidth: '100%' }}
+                                            />
                                         </div>
                                     }
                                 </div>
@@ -182,11 +180,7 @@ const ThemSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+
                                     />
                                 </div>
                                 <div className={styles.txt} >
@@ -202,7 +196,7 @@ const ThemSV = () => {
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -234,11 +228,7 @@ const ThemSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -254,7 +244,7 @@ const ThemSV = () => {
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -272,7 +262,7 @@ const ThemSV = () => {
                                         helperText={formik.touched.email && formik.errors.email}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -293,7 +283,7 @@ const ThemSV = () => {
                                     helperText={formik.touched.studentCode && formik.errors.studentCode}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
@@ -348,7 +338,7 @@ const ThemSV = () => {
                                     type='password'
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />

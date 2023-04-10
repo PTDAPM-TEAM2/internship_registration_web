@@ -36,16 +36,16 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!'),
-    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!'),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
 });
 
 const ChiTietSV = () => {
@@ -156,6 +156,8 @@ const ChiTietSV = () => {
         };
     };
 
+    console.log(state.item);
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -202,11 +204,7 @@ const ChiTietSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                    
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -231,7 +229,7 @@ const ChiTietSV = () => {
                                     <label htmlFor='dateOfBirth'>Ngày sinh: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                                         <DatePicker
-                                            renderInput={(props) => <TextField {...props} style={{ width: 400 }}
+                                            renderInput={(props) => <TextField {...props} className={styles.txtDate}
                                                 value={new Date(formik.values.dateOfBirth)}
                                                 error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                                                 helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
@@ -253,11 +251,7 @@ const ChiTietSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode === 32) {
-                                              e.preventDefault();
-                                            }
-                                        }}
+                    
 
                                     />
                                 </div>
@@ -364,11 +358,11 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={context.cellValidateLecturer(state.item.graduationThesis.lecturer)} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.graduationThesis ? context.cellValidateLecturer(state.item.graduationThesis) : ''} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type='submit' onClick={() => console.log(formik.errors)} >Sửa</button>
+                            <button className={styles.button} type='submit' onClick={() => console.log(formik.errors)} style={{ marginRight: 20 }}>Sửa</button>
                             <button className={styles.button} type='button' onClick={handleOpen}>Xóa</button>
                         </div>
                     </form>
