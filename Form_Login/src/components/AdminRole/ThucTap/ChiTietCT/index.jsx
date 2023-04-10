@@ -59,26 +59,24 @@ const ChiTietCT = () => {
     const [showAlert, setShowAlert] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
-    
+
     const handleClose = () => setOpen(false);
     const location = useLocation();
     const state = location.state;
     const { idSV } = useParams();
-    
-    const [checkboxes, setCheckboxes] = React.useState([]);
+
+    const [listStudents, setListStudents] = React.useState([]);
     const handleCheckboxChange = (id, isChecked) => {
         if (isChecked) {
-            setCheckboxes(checkboxes.concat(id));
+            setListStudents(listStudents.concat(id));
         } else {
-            setCheckboxes(checkboxes.filter(item => item !== id));
+            setListStudents(listStudents.filter(item => item !== id));
         }
     }
-
     const [students, setStudent] = React.useState();
     const context = useContext(ThemeContext);
 
     const handleOpenList = async (type) => {
-
         context.updateLoading(true);
         try {
             const response = await studentApi.filter(type);
@@ -93,28 +91,34 @@ const ChiTietCT = () => {
     }
 
 
-    const body ={
+    const body = {
         companyId: state.item.id,
-        studentCodes: checkboxes
+        studentCodes: listStudents
     }
 
+    console.log(listStudents[0] === undefined);
 
     const handleAdd = async () => {
-        context.updateLoading(true);
-        try {
-            const response = await companyApi.addSV(body);
+        if (listStudents[0] === undefined) {
             setOpen(false);
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 2000)
-            context.updateLoading(false);
         }
-        catch (err) {
-            console.log(err);
-            context.updateLoading(false);
+        else {
+            context.updateLoading(true);
+            try {
+                const response = await companyApi.addSV(body);
+                setOpen(false);
+                setShowAlert(true);
+                setTimeout(() => {
+                    setShowAlert(false);
+                }, 2000)
+                context.updateLoading(false);
+            }
+            catch (err) {
+                console.log(err);
+                context.updateLoading(false);
+            }
         }
-        
+
     };
 
 
@@ -205,7 +209,7 @@ const ChiTietCT = () => {
                                                             <TableCell sx={{ textAlign: 'center' }}>{student.fullName}</TableCell>
                                                             <TableCell>
                                                                 <Checkbox
-                                                                    checked={checkboxes.includes(student.studentCode)}
+                                                                    checked={listStudents.includes(student.studentCode)}
                                                                     onClick={(e) => handleCheckboxChange(student.studentCode, e.target.checked)}
                                                                 />
                                                             </TableCell>
