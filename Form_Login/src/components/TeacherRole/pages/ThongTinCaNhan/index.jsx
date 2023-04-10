@@ -45,38 +45,38 @@ const TTCN = () => {
     // Use useEffect hook to fetch data when the component mounts
     useEffect(() => {
       // Define an async function that calls the API
-      const fetchData = async () => {
-        try {
-          // Make a GET request with Axios
-          const response = await userApi.getInfo(token);
-          // Store the response data in the state variable
-          response.dateOfBirth = new Date(response.dateOfBirth).toLocaleDateString()
+        const fetchData = async () => {
+            try {
+            // Make a GET request with Axios
+            const response = await userApi.getInfo(token);
+            // Store the response data in the state variable
+            response.dateOfBirth = new Date(response.dateOfBirth).toLocaleDateString()
 
-          initialValues = {
-            id: response?.id,
-            placeOfBitrh: response?.placeOfBitrh,
-            fullName: response?.fullName,
-            email: response?.email,
-            dateOfBirth: response?.dateOfBirth,
-            address: response?.address,
-            userType: response?.userType,
-            firstName: response?.firstName,
-            lastName: response?.lastName,
-            gender: response?.gender,
-            phoneNumber: response?.phoneNumber,
-            urlImg: response?.urlImg,
-            lecturersCode: response?.lecturersCode,
-            numGrTh: response?.numGrTh,
-            idNumber: response?.idNumber,
-          } 
-        } catch (error) {
-            // Handle error
-            console.error(error);
+            initialValues = {
+                id: response?.id,
+                placeOfBitrh: response?.placeOfBitrh,
+                fullName: response?.fullName,
+                email: response?.email,
+                dateOfBirth: response?.dateOfBirth,
+                address: response?.address,
+                userType: response?.userType,
+                firstName: response?.firstName,
+                lastName: response?.lastName,
+                gender: response?.gender,
+                phoneNumber: response?.phoneNumber,
+                urlImg: response?.urlImg,
+                lecturersCode: response?.lecturersCode,
+                numGrTh: response?.numGrTh,
+                idNumber: response?.idNumber,
+            } 
+            } catch (error) {
+                // Handle error
+                console.error(error);
+            }
         }
-    }
     // Invoke the async function
     fetchData();
-}, []); // Pass an empty dependency array to run only once
+    }, []); // Pass an empty dependency array to run only once
     const navigate = useNavigate();
 
     function toComponent(item) {
