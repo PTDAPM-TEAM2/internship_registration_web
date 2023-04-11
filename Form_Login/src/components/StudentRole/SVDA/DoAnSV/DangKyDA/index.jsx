@@ -121,9 +121,15 @@ const DKDA = () => {
                 setErrorMessages("Trường đề tài là bắt buộc");
                 setOpen(true);
             }else if(dateNow.isBefore(getTime.timeStart) || dateNow.isAfter(getTime.timeEnd)){
-                context.updateLoading(false);
-                setErrorMessages("Đã quá thời gian đăng ký đồ án");
-                setOpen(true);
+                if(dateNow.isBefore(getTime.timeStart)){
+                    context.updateLoading(false);
+                    setErrorMessages("Chưa đến thời gian đăng ký đồ án");
+                    setOpen(true);
+                } else if(dateNow.isAfter(getTime.timeEnd)){
+                    context.updateLoading(false);
+                    setErrorMessages("Đã quá thời gian đăng ký đồ án");
+                    setOpen(true);
+                }
             }
             else{
                 const response = await graduationThesis.addOrRemoveGraduation(

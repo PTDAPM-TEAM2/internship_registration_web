@@ -308,23 +308,6 @@ const ThemSV = () => {
                                     ))}
                                     {/* </ul> */}
                                 </TextField>
-                                {/* <TextField
-                                    className={styles.txtFieldBot}
-                                    id="grade"
-                                    name="grade.name"
-                                    select
-                                    value={formik.values.grade.name}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.grade && Boolean(formik.errors.grade)}
-                                >
-                                    <div style={{ maxHeight: 200 }}>
-                                        {grades.map((grade) => (
-                                            <MenuItem key={grade.id} value={grade.id} >
-                                                {grade.name}
-                                            </MenuItem>
-                                        ))}
-                                    </div>
-                                </TextField> */}
                             </div>
                             <div className={styles.txt}>
                                 <label htmlFor='password'>Mật khẩu: </label>

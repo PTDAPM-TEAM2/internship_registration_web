@@ -36,16 +36,16 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    studentCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    grade: Yup.object().required('Nhập thiếu thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
 });
 
 const ChiTietSV = () => {
@@ -204,7 +204,7 @@ const ChiTietSV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                    
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -219,7 +219,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
 
@@ -251,7 +251,7 @@ const ChiTietSV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                    
+
 
                                     />
                                 </div>
@@ -267,7 +267,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -284,7 +284,7 @@ const ChiTietSV = () => {
                                         helperText={formik.touched.email && formik.errors.email}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -302,7 +302,7 @@ const ChiTietSV = () => {
                                     onChange={formik.handleChange}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
@@ -312,21 +312,18 @@ const ChiTietSV = () => {
                                 <TextField
                                     className={styles.txtFieldBot}
                                     select
-                                    id='grade'
+                                    id='grade.name'
                                     name='grade.name'
                                     value={formik.values.grade.name}
                                     onChange={formik.handleChange}
                                     disabled
                                     sx={{ maxHeight: 150 }}
                                 >
-                                    {/* <ul style={{ maxHeight: 150 }}> */}
                                     {grades.map((grade) => (
                                         <MenuItem key={grade.id} value={grade.name} >
                                             {grade.name}
                                         </MenuItem>
                                     ))}
-                                    {/* </ul> */}
-
                                 </TextField>
                             </div>
                             <div className={styles.txt}>
@@ -347,7 +344,7 @@ const ChiTietSV = () => {
                                     helperText={formik.touched.password && formik.errors.password}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />

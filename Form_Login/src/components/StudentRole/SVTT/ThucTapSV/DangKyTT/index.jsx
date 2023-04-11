@@ -161,7 +161,7 @@ const DKTT = () => {
                         <div className={styles.inputValues}>
                             <div className={styles.infoAccount}>
                                 <div className={styles.txt}>
-                                    <label htmlFor='taxCode'>Mã công ty: </label>
+                                    <label htmlFor='taxCode'>Mã số thuế: </label>
                                     <TextField
                                         className={styles.txtFieldBot}
                                         id="taxCode"
@@ -253,7 +253,7 @@ const DKTT = () => {
                             </div>
                         </div>
                         <div className={styles.btn}>
-                            <button className={styles.button} type="submit" >Thêm</button>
+                            <button className={styles.button} type="submit" >Đăng ký</button>
                         </div>
                     </form>
                 </div>

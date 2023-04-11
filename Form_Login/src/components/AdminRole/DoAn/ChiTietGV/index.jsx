@@ -37,15 +37,15 @@ const style = {
 
 
 const validationSchema = Yup.object({
-    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
-    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => {return !/^\s*$/.test(value)}),
+    fullName: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    email: Yup.string().email('Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    gender: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    idNumber: Yup.string().matches(/^[0-9]{12}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    dateOfBirth: Yup.date().typeError('Nhập thiếu thông tin! Vui lòng nhập lại').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    placeOfBitrh: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    phoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    lecturersCode: Yup.string().required('Nhập thiếu thông tin! Vui lòng nhập lại').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
+    password: Yup.string().min(8, 'Nhập sai định dạng thông tin! Vui lòng nhập lại!').test('is-all-spaces', 'Nhập thiếu thông tin! Vui lòng nhập lại!', value => { return !/^\s*$/.test(value) }),
 });
 
 const ChiTietGV = () => {
@@ -66,7 +66,7 @@ const ChiTietGV = () => {
         { value: "Nữ", label: "Nữ" },
         { value: "Khác", label: "Khác" },
     ];
-    
+
     const initialValues = {
         urlImg: state.item?.urlImg || '',
         fullName: state.item?.fullName || '',
@@ -98,7 +98,7 @@ const ChiTietGV = () => {
             } catch (error) {
                 context.updateLoading(false);
                 if (error.response.data.error) {
-                    setShowAlert({ type: 'error', text: error.response.data.error});
+                    setShowAlert({ type: 'error', text: error.response.data.error });
                     setTimeout(() => {
                         setShowAlert(null);
                     }, 2000)
@@ -129,7 +129,7 @@ const ChiTietGV = () => {
     return (
         <div style={{ display: 'flex' }}>
             <div className={styles.form}>
-            <AlertMessage message={showAlert} />
+                <AlertMessage message={showAlert} />
                 <div style={{ width: '100%' }}>
                     <p className={styles.title}>Thông tin chi tiết giảng viên</p>
                     <form onSubmit={formik.handleSubmit}>
@@ -171,7 +171,7 @@ const ChiTietGV = () => {
                                         value={formik.values.fullName}
                                         error={formik.touched.fullName && Boolean(formik.errors.fullName)}
                                         helperText={formik.touched.fullName && formik.errors.fullName}
-                                       
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -186,7 +186,7 @@ const ChiTietGV = () => {
                                         helperText={formik.touched.idNumber && formik.errors.idNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -206,7 +206,7 @@ const ChiTietGV = () => {
                                             onChange={(value) => formik.handleChange({ target: { name: 'dateOfBirth', value } })}
                                             format="DD/MM/YYYY"
                                             maxDate={new Date()}
-                                            
+
                                         />
                                     </LocalizationProvider>
                                 </div>
@@ -220,7 +220,7 @@ const ChiTietGV = () => {
                                         value={formik.values.placeOfBitrh}
                                         error={formik.touched.placeOfBitrh && Boolean(formik.errors.placeOfBitrh)}
                                         helperText={formik.touched.placeOfBitrh && formik.errors.placeOfBitrh}
-                                        
+
                                     />
                                 </div>
                                 <div className={styles.txt}>
@@ -235,7 +235,7 @@ const ChiTietGV = () => {
                                         helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -252,7 +252,7 @@ const ChiTietGV = () => {
                                         helperText={formik.touched.email && formik.errors.email}
                                         onKeyDown={(e) => {
                                             if (e.keyCode === 32) {
-                                              e.preventDefault();
+                                                e.preventDefault();
                                             }
                                         }}
                                     />
@@ -267,10 +267,12 @@ const ChiTietGV = () => {
                                     id="lecturersCode"
                                     name="lecturersCode"
                                     value={formik.values.lecturersCode}
+                                    error={formik.touched.lecturersCode && Boolean(formik.errors.lecturersCode)}
+                                    helperText={formik.touched.lecturersCode && formik.errors.lecturersCode}
                                     onChange={formik.handleChange}
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 />
@@ -288,7 +290,7 @@ const ChiTietGV = () => {
                                     type='password'
                                     onKeyDown={(e) => {
                                         if (e.keyCode === 32) {
-                                          e.preventDefault();
+                                            e.preventDefault();
                                         }
                                     }}
                                 // disabled
