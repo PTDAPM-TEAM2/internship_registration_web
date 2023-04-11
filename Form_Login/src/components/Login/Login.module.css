@@ -25,7 +25,7 @@
     display: flex;
     border-radius: 5px;
     overflow: hidden;
-    background-color: #EEA9A0;
+    background-color: #FFBFBF;
 }
 .switch span{
     padding: 5px 10px;
@@ -37,13 +37,13 @@
     cursor: pointer;
 }
 .switch span.active {
-    background-color: #eb6958 !important;
+    background-color: #FD7575 !important;
 }
 .btnSubmit{
     width: 130px;
     height: 40px;
     font-size: 15px;
-    background: #EEA9A0;
+    background: #FFBFBF;
     border: none;
     border-radius: 5px;
     /* box-shadow: 0 10px 0 grey; */

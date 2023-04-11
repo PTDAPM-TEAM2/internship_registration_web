@@ -71,6 +71,7 @@ function Login() {
           if (tk !== "") {
             var userInfoTT = await userApi.getInfo(tk);
             context.updateAuth(true);
+            context.updateButton('trang-chu');
             localStorage.setItem("token", tk);
             context.updateLoading(false);
             setShowAlert(true);
@@ -140,6 +141,7 @@ function Login() {
             }
             localStorage.setItem("token", tk);
             context.updateLoading(false);
+            context.updateButton('trang-chu');
             setShowAlert(true);
             context.updateAuth(true);
             setErrorMessage("");

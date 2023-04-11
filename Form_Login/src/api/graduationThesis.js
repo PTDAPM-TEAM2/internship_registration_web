@@ -77,11 +77,11 @@ class GraduationThesis {
   }
   insertPDF = (data, token) => {
     const url = `/api/graduationthesis/add-outline`;
-    return axiosClient.post(url,data, {
+    return axiosClient.post(url, data, {
       headers: {
         Authorization: "Bearer " + token,
         "Content-Type":
-              "multipart/form-data; boundary=<calculated when request is sent>",
+          "multipart/form-data; boundary=<calculated when request is sent>",
       }
     }).then((res) => res);
   }
@@ -108,6 +108,22 @@ class GraduationThesis {
         },
       })
       .then((res) => res);
+  };
+
+  exportDA = (id) => {
+    const url = `api/graduationthesis/export-graduationthesis/${id}`;
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .get(
+        url,
+        {
+          headers: {
+            Authorization: "Bearer " + token, //the token is a variable which holds the token
+          },
+          responseType: 'arraybuffer'
+        })
+      .then((res) => res);
+    // day la ham update
   };
 }
 

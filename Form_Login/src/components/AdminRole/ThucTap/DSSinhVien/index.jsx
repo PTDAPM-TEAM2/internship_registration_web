@@ -18,6 +18,24 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../../../src/button.css'
 import studentApi from "../../../../api/studentApi";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TTApi from '../../../../api/intership.js';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    transform: 'translate(-50%, -50%)',
+    width: 550,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 const columns = [
     {
         id: 'STT',
@@ -61,6 +79,10 @@ function DSSV() {
     const navigate = useNavigate();
     const context = useContext(ThemeContext);
     const [students, setStudent] = React.useState([]);
+    const [open, setOpen] = React.useState(false);
+    const [studentIntern, setStudentIntern] = React.useState();
+    const [showAlert, setShowAlert] = React.useState(false);
+
     function handleExcel() {
         navigate('/quan-ly-sinh-vien-tt/danh-sach-sinh-vien-tt/nhap-diem-sv')
     }
@@ -93,7 +115,7 @@ function DSSV() {
         getAllItem()
     }, []);
 
-
+    
     const handleFilterGV = async (type) => {
         context.updateLoading(true);
         try {
@@ -106,6 +128,7 @@ function DSSV() {
             context.updateLoading(false);
         }
     }
+    
 
     const [search, setSearch] = React.useState("");
     const [filteredData, setFilteredData] = React.useState([]);
@@ -123,6 +146,35 @@ function DSSV() {
         });
         setFilteredData(filter);
     };
+
+
+    const handleExport = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await TTApi.exportTT(studentIntern.id);
+
+            const url = URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${studentIntern.fullName}.docx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            context.updateLoading(false);
+            setOpen(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000)
+        }
+        catch (err) {
+            context.updateLoading(false);
+            console.log(err);
+        }
+    };
+
 
 
     return (
@@ -209,11 +261,50 @@ function DSSV() {
                     </Paper>
                 </div>
                 <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-end' }}>
-                    
+
                     <Button className='button' sx={{ marginRight: 2 }} onClick={handleExcel} >Nhập điểm</Button>
-                    <Button className='button' >Xuất dữ liệu</Button>
+                    <Button className='button' onClick={() => {setOpen(true); handleFilterGV(4)}}>Xuất dữ liệu</Button>
                 </div>
             </div>
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Chọn sinh viên hoàn thành thực tập
+                    </Typography>
+                    <Select
+                        sx={{ width: 300 }}
+                        value={value}
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        onChange={handleChange}
+                    >
+                        {students.map(student =>
+                            <MenuItem key={student.id} value={student.id} onClick={() => { setStudentIntern(student) }}>
+                                {student.fullName}
+                            </MenuItem>
+                        )}
+                    </Select>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
+                        <Button className={styles.button} onClick={handleExport}>Xuất</Button>
+                    </div>
+                </Box>
+            </Modal>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'fixed',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xuất thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div>
 
     )

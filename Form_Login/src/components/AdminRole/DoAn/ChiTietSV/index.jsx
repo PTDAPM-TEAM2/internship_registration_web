@@ -355,7 +355,7 @@ const ChiTietSV = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p>Giảng viên hướng dẫn: </p>
-                                <TextField defaultValue={state.item.graduationThesis ? context.cellValidateLecturer(state.item.graduationThesis) : ''} className={styles.txtFieldBot} />
+                                <TextField defaultValue={state.item.graduationThesis ? context.cellValidateStudent(state.item.graduationThesis.lecturer) : ''} className={styles.txtFieldBot} />
                             </div>
                         </div>
                         <div className={styles.btn}>

@@ -27,6 +27,22 @@ class InternshipApi {
       .then((res) => res);
   };
 
+  exportTT = (id) => {
+    const url = `api/internship/export-internship/${id}`;
+    const token = localStorage.getItem('token');
+    return axiosClient
+      .get(
+        url,
+        {
+          headers: {
+            Authorization: "Bearer " + token, //the token is a variable which holds the token
+          },
+          responseType: 'arraybuffer'
+        })
+      .then((res) => res);
+    // day la ham update
+  };
+
 }
 
 const internshipApi = new InternshipApi();

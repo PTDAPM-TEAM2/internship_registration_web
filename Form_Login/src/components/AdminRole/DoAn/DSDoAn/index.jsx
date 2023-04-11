@@ -18,7 +18,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
 import prjApi from "../../../../api/projectApi";
-import companyApi from '../../../../api/companyApi.js';
+import GTApi from '../../../../api/graduationThesis.js';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 
 const style = {
@@ -71,6 +73,8 @@ function DSDA() {
     const context = useContext(ThemeContext);
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const [graduationThesis, setGraduationThesis] = React.useState();
+    const [showAlert, setShowAlert] = React.useState(false);
     function handleExcel() {
         navigate('/quan-ly-do-an/danh-sach-do-an/nhap-diem-sv');
     }
@@ -96,8 +100,36 @@ function DSDA() {
         }
         getAllDoAn();
     }, [])
-    console.log(projects);
-    
+
+
+
+    const handleExport = async () => {
+        context.updateLoading(true);
+        try {
+            const response = await GTApi.exportDA(graduationThesis.id);
+            
+            const url = URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${graduationThesis.nameGraduationThesis}.docx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            context.updateLoading(false);
+            setOpen(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000)
+        }
+        catch (err) {
+            context.updateLoading(false);
+            console.log(err);
+        }
+    };
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -162,17 +194,28 @@ function DSDA() {
                         id="demo-simple-select-helper"
                         onChange={handleChange}
                     >
-                        {projects.map(project => 
-                            <MenuItem key={project.id} value={project.id}>
+                        {projects.map(project =>
+                            <MenuItem key={project.id} value={project.id} onClick={() => { setGraduationThesis(project) }}>
                                 {project.student.fullName}
                             </MenuItem>
-                            )}
+                        )}
                     </Select>
                     <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: 40 }}>
-                        <Button className={styles.button} onClick={() => setOpen(false)}>Xuất</Button>
+                        <Button className={styles.button} onClick={handleExport}>Xuất</Button>
                     </div>
                 </Box>
             </Modal>
+            {showAlert &&
+                <div>
+                    <Alert severity="success" sx={{
+                        position: 'fixed',
+                        width: '40%',
+                        bottom: '0',
+                        right: '2%'
+                    }}>
+                        <AlertTitle>Xuất biểu mẫu hoàn thành đồ án thành công !</AlertTitle>
+                    </Alert>
+                </div>}
         </div >
 
     )
