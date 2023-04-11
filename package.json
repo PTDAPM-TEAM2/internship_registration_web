@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "moment": "^2.29.4",
+    "react-spinners": "^0.13.8"
+  }
+}

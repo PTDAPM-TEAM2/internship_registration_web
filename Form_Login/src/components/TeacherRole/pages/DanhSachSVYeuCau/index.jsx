@@ -62,7 +62,8 @@ const DSSVYC = () => {
                 <p className={styles.title}><b>Danh sách sinh viên yêu cầu</b></p>
                 <div className={styles.container}> 
                     { data?.map((item, key) =>  
-                      {
+                      <div>
+                        {
                         item.lecturer.id === body.lecturerId ? 
                         (<div className={styles.card} key = {key}> 
                           <div className={styles.cardItem} onClick={() => {toComponent(item)}}>
@@ -74,7 +75,8 @@ const DSSVYC = () => {
                               </div> 
                           </div>
                         </div>) : (<div></div>)
-                      }
+                        }
+                      </div>
                     )
                     } 
                 </div> 

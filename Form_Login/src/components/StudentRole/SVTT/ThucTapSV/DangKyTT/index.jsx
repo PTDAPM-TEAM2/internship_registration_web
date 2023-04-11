@@ -146,15 +146,11 @@ const DKTT = () => {
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.formAccount} >
                             <p>Thời gian thực tập:</p>
-                            
+
                             <div style={{ textAlign: 'start' }}>
                                 <>Thời gian đăng kí:</>
-                                <div>
-                                    <p>Ngày bắt đầu: {transferDate(start)}</p>
-                                </div>
-                                <div>
-                                    <p>Ngày kết thúc: {transferDate(end)}</p>
-                                </div>
+                                <p>Ngày bắt đầu: {transferDate(start)}</p>
+                                <p>Ngày kết thúc: {transferDate(end)}</p>
                             </div>
 
                         </div>

@@ -1,0 +1,140 @@
+package com.group4.edu.dto;
+
+import com.group4.edu.domain.Internship;
+
+import java.util.Date;
+
+public class RegisterinternshipDto {
+    private Long companyId;
+    private Date start;
+    private Date end;
+    private Long internshipId;
+    private String studentCode;
+    private Long studentId;
+    //vị trí thực tập
+    private String internshipPosition;
+    //tên công ty
+    private String nameCompany;
+    // email
+    private String email;
+    //sô điện thoại
+    private String phoneNumber;
+    //địa chỉ
+    private String address;
+    //mã số thuế
+    private String taxCode;
+    private CompanyDto company;
+
+    public RegisterinternshipDto (Internship internship){
+        if(internship != null){
+            this.company = new CompanyDto(internship.getCompany());
+            this.start = internship.getStart();
+            this.end = internship.getEnd();
+        }
+    }
+    public RegisterinternshipDto(){}
+
+    public String getInternshipPosition() {
+        return internshipPosition;
+    }
+
+    public void setInternshipPosition(String internshipPosition) {
+        this.internshipPosition = internshipPosition;
+    }
+
+    public String getStudentCode() {
+        return studentCode;
+    }
+
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public Long getInternshipId() {
+        return internshipId;
+    }
+
+    public void setInternshipId(Long internshipId) {
+        this.internshipId = internshipId;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getNameCompany() {
+        return nameCompany;
+    }
+
+    public void setNameCompany(String nameCompany) {
+        this.nameCompany = nameCompany;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTaxCode() {
+        return taxCode;
+    }
+
+    public void setTaxCode(String taxCode) {
+        this.taxCode = taxCode;
+    }
+
+    public CompanyDto getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDto company) {
+        this.company = company;
+    }
+}
